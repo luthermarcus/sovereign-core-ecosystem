@@ -1,0 +1,4 @@
+sovereign_metrics.db
+*.pid
+*.sock
+__pycache__/
