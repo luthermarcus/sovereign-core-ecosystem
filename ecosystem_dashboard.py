@@ -14,7 +14,7 @@ def render_cli():
     print("[v] STATUS: ALL SYSTEMS NOMINAL - NO ACTIVE FAULTS DETECTED")
     
     daemon_check = subprocess.run(["pgrep", "-f", "telemetry_daemon.py"], capture_output=True, text=True)
-    daemon_status = "[v] Active" if daemon_check.returncode == 0 else "[x] Inactive"
+    daemon_status = "[v] Active (Native Linux Mint Scraper)" if daemon_check.returncode == 0 else "[x] Inactive"
     print(f"=== ACTIONABLE EXECUTION CHECKLIST ===")
     print(f" 1. Background Telemetry Daemon : {daemon_status}")
     print(f" 2. SQLite WAL Ledger Permissions : [v] Secured (0o664)")
@@ -25,22 +25,8 @@ def render_cli():
     try:
         conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/wallet.db")
         c = conn.cursor()
-        c.execute("SELECT public_address, derivation_path FROM wallet_keys LIMIT 1")
-        k = c.fetchone()
-        if k:
-            print(f"=== SELF-CUSTODY WALLET CREDENTIALS ===")
-            print(f" Master Address : {k[0]}")
-            print(f" Derivation Path: {k[1]} (Zero Custodial Risk)")
-        conn.close()
-    except Exception as e:
-        print(f" Wallet Key Notice: Initialized Standby ({e})")
-    
-    print("-" * 65)
-    print("=== EXPANSIVE EARNINGS PORTFOLIO ===")
-    try:
-        conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/wallet.db")
-        c = conn.cursor()
         c.execute("SELECT app_name, status, traffic_or_tier, earnings_usd FROM earnings_portfolio")
+        print("=== EXPANSIVE EARNINGS PORTFOLIO (6 APPS + NODE) ===")
         for row in c.fetchall():
             print(f" [{row[0]}] : {row[1]} | Traffic: {row[2]} | Earnings: ${row[3]:.2f}")
         conn.close()

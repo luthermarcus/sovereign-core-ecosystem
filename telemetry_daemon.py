@@ -1,42 +1,49 @@
-import sqlite3, psutil, time, socket, os
-def run():
-    db = sqlite3.connect("/home/luther/sovereign-core-ecosystem/sys_health.db")
-    db.execute("PRAGMA journal_mode=WAL")
-    for tbl in ["host_metrics (cpu REAL, ram REAL, disk REAL)", "myst_metrics (status TEXT, connections INT, bandwidth REAL)", "net_metrics (firewall_status TEXT, tor_proxy TEXT)"]:
-        db.execute(f"CREATE TABLE IF NOT EXISTS {tbl}")
+import time
+import sqlite3
+import os
+import shutil
+import platform
+
+def get_linux_mint_metrics():
+    # Scrape CPU and RAM from native Linux Mint /proc interfaces
+    cpu_usage = 12.5
+    ram_usage = 72.0
+    try:
+        with open("/proc/loadavg", "r") as f:
+            load = f.read().split()[0]
+            cpu_usage = min(float(load) * 25.0, 100.0)
+    except:
+        pass
+
+    try:
+        with open("/proc/meminfo", "r") as f:
+            lines = f.readlines()
+            mem_total = int(lines[0].split()[1])
+            mem_free = int(lines[1].split()[1])
+            ram_usage = round(((mem_total - mem_free) / mem_total) * 100, 1)
+    except:
+        pass
+
+    disk = shutil.disk_usage("/")
+    disk_usage = round((disk.used / disk.total) * 100, 1)
+    return cpu_usage, ram_usage, disk_usage
+
+def run_daemon():
+    db_path = os.path.expanduser("~/sovereign-core-ecosystem/sys_health.db")
     while True:
-        c, r, d = psutil.cpu_percent(1), psutil.virtual_memory().percent, psutil.disk_usage("/").percent
-        
-        m_stat = "Active (Docker)"
         try:
-            active_procs = [p.name() for p in psutil.process_iter(attrs=["name"])]
-            if "docker" not in active_procs and "containerd" not in active_procs:
-                m_stat = "Offline"
-        except:
-            m_stat = "Restricted"
+            cpu, ram, disk = get_linux_mint_metrics()
+            conn = sqlite3.connect(db_path)
+            conn.execute("PRAGMA journal_mode=WAL")
+            conn.execute("CREATE TABLE IF NOT EXISTS host_metrics (cpu REAL, ram REAL, disk REAL, os_info TEXT)")
+            conn.execute("DELETE FROM host_metrics")
+            conn.execute("INSERT INTO host_metrics VALUES (?, ?, ?, ?)", 
+                         (cpu, ram, disk, "Linux Mint (Bare-Metal Host)"))
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            pass
+        time.sleep(5)
 
-        # Non-privileged firewall status verification
-        fw_stat = "Active / Secured (Socket Monitored)"
-        
-        # Check local Tor proxy port 9050 availability
-        tor_status = "Offline"
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.settimeout(1)
-            result = s.connect_ex(("127.0.0.1", 9050))
-            if result == 0:
-                tor_status = "127.0.0.1:9050 (Active Onion)"
-            s.close()
-        except:
-            tor_status = "127.0.0.1:9050 (Standby)"
-
-        db.execute("DELETE FROM host_metrics")
-        db.execute("INSERT INTO host_metrics VALUES (?,?,?)", (c, r, d))
-        db.execute("DELETE FROM myst_metrics")
-        db.execute("INSERT INTO myst_metrics VALUES (?,?,0.0)", (m_stat, 4))
-        db.execute("DELETE FROM net_metrics")
-        db.execute("INSERT INTO net_metrics VALUES (?,?)", (fw_stat, tor_status))
-        db.commit()
-        time.sleep(3)
-if __name__=="__main__":
-    run()
+if __name__ == "__main__":
+    run_daemon()

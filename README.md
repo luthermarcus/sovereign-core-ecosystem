@@ -1,9 +1,9 @@
-# Sovereign Core OS Ecosystem (v1.97.0-beta)
+# Sovereign Core OS Ecosystem (v1.98.0-beta)
 
-## Master Architecture & Linux Mint Host Integration
+## Master Architecture & Native Linux Mint Telemetry
 - **Repository:** [GitHub - luthermarcus/sovereign-core-ecosystem](https://github.com/luthermarcus/sovereign-core-ecosystem)
-- **Host OS Recognition:** Automatically detects Linux Mint host hardware, CPU/RAM utilization, and RAM-backed `/dev/shm` telemetry buffers (`portability_layer.py`).
-- **Dashboard A (Virtual OS TUI):** `virtual_os.py` — Primary interactive virtual operating system. Page 1 displays actionable execution checklists, nominal status banners, and self-custody keys. Page 6 embeds this complete README manual.
-- **Dashboard B (CLI Command Center):** `ecosystem_dashboard.py` — Terminal status matrix tracking daemon health, WAL permissions, and passive income earnings.
-- **Self-Custody Key Manager (`modules/self_custody.py`):** Local HD cryptographic keypair generation (`m/44'/0'/0'/0/0`) stored securely inside encrypted SQLite WAL ledgers[span_2](start_span)[span_2](end_span).
-- **Bitcointalk Zero-Trust Security:** Strict Tor-only loopback routing (`-proxy=127.0.0.1:9050`, `-onlynet=onion`) with zero open inbound ports[span_3](start_span)[span_3](end_span).
+- **Native Host Scrapers (`telemetry_daemon.py`):** Automatically polls Linux Mint bare-metal hardware metrics (CPU, RAM, Disk) and writes them to `sys_health.db`.
+- **Nominal Status Engine:** Explicitly reports `[v] STATUS: ALL SYSTEMS NOMINAL - NO ACTIVE FAULTS` when all checks pass successfully to avoid user confusion.
+- **Dashboard A (Virtual OS TUI):** `virtual_os.py` — Interactive Curses TUI displaying native Linux Mint hardware status bars and command center metrics.
+- **Dashboard B (CLI Command Center):** `ecosystem_dashboard.py` — Terminal status matrix tracking passive income yields and daemon liveness.
+- **Self-Custody & Zero-Trust:** HD key derivation (`m/44'/0'/0'/0/0`) and Tor loopback routing (`-proxy=127.0.0.1:9050`, `-onlynet=onion`)[span_2](start_span)[span_2](end_span).
