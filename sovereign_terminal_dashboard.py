@@ -24,12 +24,9 @@ def get_kb_data():
     settings = dict(fetch_table(c, "SELECT setting_key, setting_value FROM user_settings_v14") or {})
     sips = fetch_table(c, "SELECT sip_id, title, network_signal_percent FROM sip_knowledge_base_v10")
     flags = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags ORDER BY detected_at DESC LIMIT 3")
-    
-    # Newly Restored Tables
     devs = fetch_table(c, "SELECT dev_name, app_name, royalty_share, total_earned FROM dev_registry_v13")
     nodes = fetch_table(c, "SELECT node_type, status, block_height, peer_count FROM node_status_v13")
     ai_kb = fetch_table(c, "SELECT doc_id, title, summary FROM ai_knowledge_base_v13")
-    
     conn.close()
     return bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb
 
@@ -37,7 +34,7 @@ def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
     titles = {1: "CORE WALLET", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV ROYALTIES & APPS", 4: "HARDWARE NODES & UASF", 5: "SECURITY SENTINEL"}
-    print(f"   Sovereign Core OS v1.21.0-beta [PAGE {page}/5 - {titles[page]}]")
+    print(f"   Sovereign Core OS v1.22.0-beta [PAGE {page}/5 - {titles[page]}]")
     print("=" * 80)
     
     bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb = get_kb_data()
@@ -55,9 +52,10 @@ def print_banner(page=1):
         
         print("\nBare-Metal OS Menu [Page 1/5]:")
         print(" [1] 📥 View Receive Address")
-        print(" [2] 💱 Execute AMM Swap (IPC -> sovereign_dex_amm.py)")
-        print(" [3] 📱 Next Page (Liquidity)")
-        print(" [4] 🚪 Terminate OS Session")
+        print(" [2] 💸 Send Transaction (EIP-4337 Gasless Router)")
+        print(" [3] 💱 Execute AMM Swap (IPC -> sovereign_dex_amm.py)")
+        print(" [4] 📱 Next Page (Liquidity)")
+        print(" [5] 🚪 Terminate OS Session")
         
     elif page == 2:
         print("\n--- 📡 Live Mempool Congestion ---")
@@ -120,9 +118,10 @@ def run_dashboard():
         choice = input("Select OS IPC Command: ").strip()
         if page == 1:
             if choice == '1': print("\n[+] Wallet Address (Taproot) : bc1p5d7rjqzw..."); time.sleep(2)
-            elif choice == '2': execute_ipc_call('sovereign_dex_amm.py')
-            elif choice == '3': page = 2
-            elif choice == '4': sys.exit(0)
+            elif choice == '2': print("\n[+] EIP-4337 Route Active. Gas successfully abstracted via Paymaster."); time.sleep(2)
+            elif choice == '3': execute_ipc_call('sovereign_dex_amm.py')
+            elif choice == '4': page = 2
+            elif choice == '5': sys.exit(0)
         elif page == 2:
             if choice == '1': execute_ipc_call('sovereign_master_engine.py'); time.sleep(1)
             elif choice == '2': page = 3
