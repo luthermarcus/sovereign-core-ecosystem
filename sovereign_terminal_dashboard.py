@@ -24,17 +24,23 @@ def get_kb_data():
     settings = dict(fetch_table(c, "SELECT setting_key, setting_value FROM user_settings_v14") or {})
     sips = fetch_table(c, "SELECT sip_id, title, network_signal_percent FROM sip_knowledge_base_v10")
     flags = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags ORDER BY detected_at DESC LIMIT 3")
+    
+    # Newly Restored Tables
+    devs = fetch_table(c, "SELECT dev_name, app_name, royalty_share, total_earned FROM dev_registry_v13")
+    nodes = fetch_table(c, "SELECT node_type, status, block_height, peer_count FROM node_status_v13")
+    ai_kb = fetch_table(c, "SELECT doc_id, title, summary FROM ai_knowledge_base_v13")
+    
     conn.close()
-    return bals, pairs, paym, nets, settings, sips, flags
+    return bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb
 
 def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    titles = {1: "CORE WALLET & AMM", 2: "NETWORK & LIQUIDITY", 3: "DEVELOPER SANDBOX & UASF", 4: "SECURITY SENTINEL & DIAGNOSTICS"}
-    print(f"   Sovereign Core OS v1.20.0-beta [PAGE {page}/4 - {titles[page]}]")
+    titles = {1: "CORE WALLET", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV ROYALTIES & APPS", 4: "HARDWARE NODES & UASF", 5: "SECURITY SENTINEL"}
+    print(f"   Sovereign Core OS v1.21.0-beta [PAGE {page}/5 - {titles[page]}]")
     print("=" * 80)
     
-    bals, pairs, paym, nets, settings, sips, flags = get_kb_data()
+    bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb = get_kb_data()
     
     print("\n--- 🛡️ Microkernel IPC Flags ---")
     if flags:
@@ -44,17 +50,14 @@ def print_banner(page=1):
         print("\n--- 🪙 Active Financial Portfolio ---")
         if bals:
             for r in bals:
-                # Custom formatting to eliminate scientific notation on mobile
                 pr_fmt = f"${r[2]:,.2f}" if r[2] >= 0.01 else f"${r[2]:.6f}"
-                val = r[1] * r[2]
-                print(f" ├── {r[0]:<5}| Bal: {r[1]:<10,.2f}| Pr: {pr_fmt:<10}| Val: ${val:,.2f}")
+                print(f" ├── {r[0]:<5}| Bal: {r[1]:<10,.2f}| Pr: {pr_fmt:<10}| Val: ${r[1]*r[2]:,.2f}")
         
-        print("\nBare-Metal OS Menu [Page 1/4]:")
-        print(" [1] 📥 View Receive Address (Taproot/EVM)")
-        print(" [2] 💸 Send Transaction (EIP-4337 Gasless)")
-        print(" [3] 💱 Execute AMM Swap (IPC -> sovereign_dex_amm.py)")
-        print(" [4] 📱 Switch to Page 2 (Network & Liquidity)")
-        print(" [5] 🚪 Terminate OS Session")
+        print("\nBare-Metal OS Menu [Page 1/5]:")
+        print(" [1] 📥 View Receive Address")
+        print(" [2] 💱 Execute AMM Swap (IPC -> sovereign_dex_amm.py)")
+        print(" [3] 📱 Next Page (Liquidity)")
+        print(" [4] 🚪 Terminate OS Session")
         
     elif page == 2:
         print("\n--- 📡 Live Mempool Congestion ---")
@@ -65,34 +68,48 @@ def print_banner(page=1):
         if pairs:
             for p in pairs: print(f" ├── [{p[0]}]: Liq ${p[1]:,.2f} | APY: {p[2]}")
         
-        print("\nBare-Metal OS Menu [Page 2/4]:")
+        print("\nBare-Metal OS Menu [Page 2/5]:")
         print(" [1] 🔄 Sync Ecosystem Knowledge Base")
-        print(" [2] 📱 Switch to Page 3 (Dev Sandbox & UASF)")
+        print(" [2] 📱 Next Page (Dev Sandbox)")
         print(" [3] 🔙 Page 1")
         
     elif page == 3:
         sandbox_status = settings.get('sandbox_bypass', 'DISABLED')
-        print("\n--- ⚙️ OS Kernel Settings ---")
-        print(f" ├── MEV Slippage Tolerance : {settings.get('slippage_tolerance', '0.50%')}")
-        print(f" └── Developer Tax Sandbox  : {sandbox_status} (0-Fee Override)")
+        print("\n--- 👨‍💻 Developer Sandbox & 5% Royalty Matrix ---")
+        print(f" [+] Developer Tax Sandbox  : {sandbox_status} (0-Fee Override)")
+        if devs:
+            for d in devs: print(f" ├── Dev: {d[0]:<12} | App: {d[1]:<18} | Royalties: ${d[3]:,.2f}")
+            
+        print("\n--- 🧠 AI Knowledge Base & Whitepapers ---")
+        if ai_kb:
+            for doc in ai_kb: print(f" ├── [{doc[0]}] {doc[1]} \n │   └── {doc[2]}")
+
+        print("\nBare-Metal OS Menu [Page 3/5]:")
+        print(" [1] ⚙️ Toggle Developer Sandbox Zero-Fee Bypass")
+        print(" [2] 📱 Next Page (Hardware Nodes)")
+        print(" [3] 🔙 Page 1")
         
+    elif page == 4:
+        print("\n--- 🔌 Hardware Node Portfolio & Passive Income ---")
+        if nodes:
+            for n in nodes: print(f" ├── [{n[0]}] Status: {n[1]} | Height: {n[2]}")
+            
         print("\n--- 💻 UASF Node Signaling ---")
         if sips:
             for s in sips: print(f" ├── [{s[0]}] Support: {s[2]}%")
 
-        print("\nBare-Metal OS Menu [Page 3/4]:")
-        print(" [1] ⚙️ Toggle Developer Sandbox Bypass")
-        print(" [2] 🛠️ Toggle UASF Network Signal")
-        print(" [3] 📱 Switch to Page 4 (Security & Diagnostics)")
-        print(" [4] 🔙 Page 1")
+        print("\nBare-Metal OS Menu [Page 4/5]:")
+        print(" [1] 🛠️ Toggle UASF Network Signal")
+        print(" [2] 📱 Next Page (Security & Diagnostics)")
+        print(" [3] 🔙 Page 1")
         
-    elif page == 4:
+    elif page == 5:
         print("\n--- 🚨 Security Sentinel & System Diagnostics ---")
         print(" [+] Microkernel architecture active. Python execution fully isolated.")
         print(" [+] SQLite WAL enabled. Database is self-healing.")
 
-        print("\nBare-Metal OS Menu [Page 4/4]:")
-        print(" [1] 🧪 Dispatch IPC -> Fuzz Test & Diagnostic Suite (sovereign_stress_test.py)")
+        print("\nBare-Metal OS Menu [Page 5/5]:")
+        print(" [1] 🧪 Trigger Core Stress Test (sovereign_stress_test.py)")
         print(" [2] 🔙 Page 1")
     print("=" * 80)
 
@@ -103,10 +120,9 @@ def run_dashboard():
         choice = input("Select OS IPC Command: ").strip()
         if page == 1:
             if choice == '1': print("\n[+] Wallet Address (Taproot) : bc1p5d7rjqzw..."); time.sleep(2)
-            elif choice == '2': print("\n[+] Initializing Paymaster wrapper. Gas abstracted."); time.sleep(2)
-            elif choice == '3': execute_ipc_call('sovereign_dex_amm.py')
-            elif choice == '4': page = 2
-            elif choice == '5': sys.exit(0)
+            elif choice == '2': execute_ipc_call('sovereign_dex_amm.py')
+            elif choice == '3': page = 2
+            elif choice == '4': sys.exit(0)
         elif page == 2:
             if choice == '1': execute_ipc_call('sovereign_master_engine.py'); time.sleep(1)
             elif choice == '2': page = 3
@@ -119,10 +135,13 @@ def run_dashboard():
                 conn.execute("INSERT OR REPLACE INTO user_settings_v14 VALUES ('sandbox_bypass', ?)", (new_val,))
                 conn.commit(); conn.close()
                 print(f"\n[+] Developer Sandbox Bypass set to {new_val}."); time.sleep(1)
-            elif choice == '2': print("\n[+] UASF Network Signaling Intent broadcasted."); time.sleep(1)
-            elif choice == '3': page = 4
-            elif choice == '4': page = 1
+            elif choice == '2': page = 4
+            elif choice == '3': page = 1
         elif page == 4:
+            if choice == '1': print("\n[+] UASF Network Signaling Intent broadcasted."); time.sleep(1)
+            elif choice == '2': page = 5
+            elif choice == '3': page = 1
+        elif page == 5:
             if choice == '1': execute_ipc_call('sovereign_stress_test.py')
             elif choice == '2': page = 1
 

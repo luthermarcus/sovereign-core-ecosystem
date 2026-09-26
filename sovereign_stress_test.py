@@ -17,7 +17,7 @@ def write_worker(thread_id):
 def run_stress_test():
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    print("   Sovereign Core OS v1.20.0-beta [SURGICAL DIAGNOSTIC SUITE]")
+    print("   Sovereign Core OS v1.21.0-beta [SURGICAL DIAGNOSTIC SUITE]")
     print("=" * 80)
     
     print("\n[1/3] Testing EIP-4337 Paymaster IPC Routing...")

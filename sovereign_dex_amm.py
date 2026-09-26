@@ -5,7 +5,7 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sovereign_me
 def run_amm_swap():
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    print("   Sovereign Core v1.20.0-beta [EIP-4337 AMM & TAX WAIVER ENGINE]")
+    print("   Sovereign Core v1.21.0-beta [EIP-4337 AMM & TAX WAIVER ENGINE]")
     print("=" * 80)
     
     conn = sqlite3.connect(DB_PATH, timeout=10)
@@ -28,17 +28,15 @@ def run_amm_swap():
         res_out = c.fetchone()
         balance_out, price_out = res_out if res_out else (0.0, price_in)
 
-        # Developer Sandbox Bypass Check
         c.execute("SELECT setting_value FROM user_settings_v14 WHERE setting_key='sandbox_bypass'")
         sandbox_flag = c.fetchone()
         sandbox_mode = sandbox_flag and sandbox_flag[0] == 'ENABLED'
-        
         eco_tax = 0.0 if sandbox_mode else amount_in * 0.05
         
         if sandbox_mode:
-            print(f"    [+] Sandbox Mode: minrelaytxfee equivalent set to 0.")
+            print(f"    [+] Sandbox Mode: minrelaytxfee equivalent set to 0. No Dev Tax.")
         else:
-            print(f"    [+] Ethical Protocol Tax: 5% captured for Ecosystem Treasury ({eco_tax:.4f} {token_in}).")
+            print(f"    [+] Ethical Protocol Tax: 5% ({eco_tax:.4f} {token_in}) captured for Dev Royalties & POL.")
 
         swap_amount = amount_in - eco_tax
         amount_out = ((2500000.0/2/price_out) * (swap_amount * 0.997)) / ((2500000.0/2/price_in) + (swap_amount * 0.997))
@@ -48,8 +46,11 @@ def run_amm_swap():
         if input("\n[?] Execute cross-chain transaction? (y/N): ").strip().lower() == 'y':
             c.execute("UPDATE global_assets_v7 SET balance=? WHERE token=?", (balance_in - amount_in, token_in))
             c.execute("UPDATE global_assets_v7 SET balance=? WHERE token=?", (balance_out + amount_out, token_out))
+            if not sandbox_mode:
+                # Issue royalty to developer
+                c.execute("UPDATE dev_registry_v13 SET total_earned = total_earned + ? WHERE dev_id='DEV-01'", (eco_tax * price_in,))
             conn.commit()
-            print("\n[+] Trade Executed. Balances atomically updated via WAL.")
+            print("\n[+] Trade Executed. Balances & Royalties atomically updated via WAL.")
         else:
             print("\n[-] Cancelled.")
     except Exception as e:
