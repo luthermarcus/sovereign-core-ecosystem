@@ -7,11 +7,9 @@ PLUGIN_NAME = "ActionableChecklist"
 VERSION = "1.0.0"
 
 def execute_audit():
-    # 1. Verify telemetry daemon process
     daemon_check = subprocess.run(["pgrep", "-f", "telemetry_daemon.py"], capture_output=True, text=True)
     daemon_active = daemon_check.returncode == 0
     
-    # 2. Verify WAL permissions across ledgers
     dbs = ["sys_health.db", "wallet.db", "discipline_ledger.db", "knowledge.db"]
     perms_ok = True
     target_dir = os.path.expanduser("~/sovereign-core-ecosystem")

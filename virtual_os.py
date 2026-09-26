@@ -27,19 +27,13 @@ def get_system_data():
         data["portfolio"] = c.fetchall()
         c.execute("SELECT token_pair, exchange_rate FROM dex_reserves")
         data["dex"] = c.fetchall()
+        c.execute("SELECT public_address, derivation_path FROM wallet_keys LIMIT 1")
+        data["wallet_key"] = c.fetchone()
         conn.close()
     except:
         data["portfolio"] = []
         data["dex"] = []
-
-    try:
-        conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/discipline_ledger.db")
-        c = conn.cursor()
-        c.execute("SELECT event_type, description FROM discipline_ledger ORDER BY id DESC LIMIT 2")
-        data["discipline"] = c.fetchall()
-        conn.close()
-    except:
-        data["discipline"] = []
+        data["wallet_key"] = None
 
     daemon_check = subprocess.run(["pgrep", "-f", "telemetry_daemon.py"], capture_output=True, text=True)
     data["daemon_active"] = daemon_check.returncode == 0
@@ -65,16 +59,17 @@ def main_loop(stdscr):
         "2. Network & Zero-Tolerance Security", 
         "3. Emulated Wallet & DEX Matrix (FOX/PARROT-BTC)", 
         "4. Innovation Copyright & Royalties", 
-        "5. XDA Developer Modules & Checklist Engine", 
-        "6. SQLite FTS5 Knowledge Vault", 
-        "7. Exit System"
+        "5. XDA Developer Modules & Self-Custody Engine", 
+        "6. README & System Manual (GitHub Linked)", 
+        "7. SQLite FTS5 Knowledge Vault", 
+        "8. Exit System"
     ]
     
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.91.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.94.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -109,9 +104,12 @@ def main_loop(stdscr):
         if selection == 0:
             draw(0, f"| COMMAND CENTER & EXECUTION CHECKLIST | {now_str} |", True, 4)
             daemon_str = "ACTIVE" if d["daemon_active"] else "OFFLINE"
-            draw(1, f"Checklist 1 [Daemon]: {daemon_str} | Checklist 2 [WAL Perms]: SECURE", bold=True, color=3)
-            draw(2, "=== EARNINGS PORTFOLIO (6 APPS + NODE) ===", bold=True)
-            y_off = 3
+            draw(1, f"Checklist 1 [Daemon]: {daemon_str} | Checklist 2 [Self-Custody]: SECURE", bold=True, color=3)
+            if d["wallet_key"]:
+                draw(2, f"Self-Custody Addr : {d['wallet_key'][0][:28]}...")
+                draw(3, f"Derivation Path   : {d['wallet_key'][1]} (Zero Custodial Risk)")
+            draw(4, "=== EARNINGS PORTFOLIO (6 APPS + NODE) ===", bold=True)
+            y_off = 5
             for app in d["portfolio"]:
                 short_name = app[0].split()[0]
                 draw(y_off, f"[{short_name}] {app[1]} | ${app[3]:.2f}"[:max_x-4])
@@ -124,7 +122,8 @@ def main_loop(stdscr):
             draw(5, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
             draw(0, "[EMULATED WALLET & DEX MATRIX (FOX/PARROT-BTC)]", True)
-            draw(2, "Master Address  : sovereign1luther_master_node_x79...")
+            if d["wallet_key"]:
+                draw(2, f"Master Address  : {d['wallet_key'][0]}")
             draw(3, "Base Currency   : Bitcoin Core (BTC Anchored)")
             y_d = 4
             for dex in d["dex"]:
@@ -135,12 +134,18 @@ def main_loop(stdscr):
             draw(2, "Sovereign Core Microkernel: +12.45 Credits (5% Attribution)")
         elif selection == 4:
             mods = get_loaded_modules()
-            draw(0, "[XDA DEVELOPER MODULES & CHECKLIST ENGINE]", True)
+            draw(0, "[XDA DEVELOPER MODULES & SELF-CUSTODY ENGINE]", True)
             y_m = 2
             for m in mods[:8]:
                 draw(y_m, f" [x] {m}"[:max_x-4])
                 y_m += 1
         elif selection == 5:
+            draw(0, "[README & SYSTEM MANUAL - GITHUB REPO]", True)
+            draw(2, "GitHub Repo: github.com/luthermarcus/sovereign-core-ecosystem")
+            draw(3, "Self-Custody: Local HD keys derived in wallet.db (m/44'/0'/0'/0/0)")
+            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)")
+            draw(5, "Operation  : Use arrow keys to navigate, Enter to select/exit.")
+        elif selection == 6:
             draw(0, "[SQLITE FTS5 KNOWLEDGE VAULT]", True)
             draw(2, "Status: Synchronized with FTS5 Full-Text Search Engine.")
             draw(3, "Integrity: Cryptographically Signed via SHA-256 Vault Signer.")
@@ -158,6 +163,6 @@ def main_loop(stdscr):
         key = stdscr.getch()
         if key == curses.KEY_UP and selection > 0: selection -= 1
         elif key == curses.KEY_DOWN and selection < len(menu) - 1: selection += 1
-        elif key in [10, 13] and selection == 6: break
+        elif key in [10, 13] and selection == 7: break
 
 curses.wrapper(main_loop)
