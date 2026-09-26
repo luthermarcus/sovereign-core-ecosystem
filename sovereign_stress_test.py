@@ -11,13 +11,13 @@ def write_worker(thread_id):
             c.execute("INSERT OR REPLACE INTO scraper_flags VALUES (?, 'YELLOW', 'Concurrency Test', ?)", (f'TEST_{thread_id}_{i}', str(time.time())))
         conn.commit()
         conn.close()
-    except Exception as e:
+    except Exception:
         pass
 
 def run_stress_test():
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    print("   Sovereign Core OS v1.19.0-beta [SURGICAL DIAGNOSTIC SUITE]")
+    print("   Sovereign Core OS v1.20.0-beta [SURGICAL DIAGNOSTIC SUITE]")
     print("=" * 80)
     
     print("\n[1/3] Testing EIP-4337 Paymaster IPC Routing...")

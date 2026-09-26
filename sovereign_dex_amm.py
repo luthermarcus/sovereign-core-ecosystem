@@ -5,7 +5,7 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sovereign_me
 def run_amm_swap():
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    print("   Sovereign Core v1.19.0-beta [EIP-4337 AMM & TAX WAIVER ENGINE]")
+    print("   Sovereign Core v1.20.0-beta [EIP-4337 AMM & TAX WAIVER ENGINE]")
     print("=" * 80)
     
     conn = sqlite3.connect(DB_PATH, timeout=10)
@@ -23,13 +23,16 @@ def run_amm_swap():
         print(f"    Available Balance: {balance_in:,.4f} {token_in}")
         amount_in = float(input(f"[?] Enter amount to swap: ").strip())
         
-        token_out = input("[?] Enter Token to Buy (e.g., USDC): ").strip().upper()
+        token_out = input("[?] Enter Token to Buy (e.g., USDC, SOL): ").strip().upper()
         c.execute("SELECT balance, price_usd FROM global_assets_v7 WHERE token=?", (token_out,))
         res_out = c.fetchone()
         balance_out, price_out = res_out if res_out else (0.0, price_in)
 
-        # Developer Sandbox Bypass
-        sandbox_mode = input("\n[?] Apply Developer Sandbox Zero-Fee Bypass? (y/N): ").strip().lower() == 'y'
+        # Developer Sandbox Bypass Check
+        c.execute("SELECT setting_value FROM user_settings_v14 WHERE setting_key='sandbox_bypass'")
+        sandbox_flag = c.fetchone()
+        sandbox_mode = sandbox_flag and sandbox_flag[0] == 'ENABLED'
+        
         eco_tax = 0.0 if sandbox_mode else amount_in * 0.05
         
         if sandbox_mode:
@@ -53,7 +56,7 @@ def run_amm_swap():
         print(f"\n[!] Trade Error: {str(e)}")
     finally:
         conn.close()
-        time.sleep(3)
+        time.sleep(2)
 
 if __name__ == "__main__":
     run_amm_swap()

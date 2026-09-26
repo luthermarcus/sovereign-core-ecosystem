@@ -1,6 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$0")"
-echo -e "\033[96m=== Booting Sovereign Core OS v1.19.0-beta ===\033[0m"
+echo -e "\033[96m=== Booting Sovereign Core OS v1.20.0-beta ===\033[0m"
 
 VENV_PYTHON="./.venv/bin/python3"
 if [ ! -f "$VENV_PYTHON" ]; then python3 -m venv .venv; fi
