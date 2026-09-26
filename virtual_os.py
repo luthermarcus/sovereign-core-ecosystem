@@ -57,12 +57,12 @@ def main():
         d = get_system_data()
         
         print("=" * 65)
-        print(f"=== Sovereign Core OS v1.35.0-master [PAGE {current_page}/5 - CORE HUB] ===")
+        print(f"=== Sovereign Core OS v1.36.0-master [PAGE {current_page}/5 - CORE HUB] ===")
         print("=" * 65)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.35.0 synced. Scientific notation fixed.")
+            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.36.0 synced. Scientific notation fixed.")
             print("[GREEN] FLAG_UNIFIED_BUILD : All 5 pages & AMM contracts connected.")
             print(f"[GREEN] FLAG_SCRAPER_AI  : {d.get('scraper_status', 'Active')}")
             print("\n--- 🟡 Active Financial Portfolio ---")

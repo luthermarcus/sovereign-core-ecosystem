@@ -4,7 +4,7 @@ import os
 import datetime
 
 PLUGIN_NAME = "BackupAudit"
-VERSION = "1.4.0"
+VERSION = "1.5.0"
 
 def execute_audit():
     root_dir = os.path.expanduser("~/sovereign-core-ecosystem")
