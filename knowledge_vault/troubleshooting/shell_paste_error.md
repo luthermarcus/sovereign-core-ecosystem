@@ -1,0 +1,1 @@
+# Troubleshooting: Direct Markdown Shell Paste Errors\n- **Anomaly:** Pasting markdown text directly into an active Bash prompt causes command-not-found errors and syntax failures.\n- **Resolution:** Always wrap multi-line text and deployment payloads inside Python file-writing scripts or isolatedinterpreter wrappers.\n
