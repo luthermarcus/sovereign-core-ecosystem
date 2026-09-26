@@ -33,8 +33,8 @@ def get_kb_data():
 def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    titles = {1: "CORE WALLET", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV ROYALTIES & APPS", 4: "HARDWARE NODES & UASF", 5: "SECURITY SENTINEL"}
-    print(f"   Sovereign Core OS v1.22.0-beta [PAGE {page}/5 - {titles[page]}]")
+    titles = {1: "CORE WALLET", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV ROYALTIES & APPS", 4: "DePIN MINING & UASF", 5: "SECURITY SENTINEL"}
+    print(f"   Sovereign Core OS v1.23.0-beta [PAGE {page}/5 - {titles[page]}]")
     print("=" * 80)
     
     bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb = get_kb_data()
@@ -84,22 +84,23 @@ def print_banner(page=1):
 
         print("\nBare-Metal OS Menu [Page 3/5]:")
         print(" [1] ⚙️ Toggle Developer Sandbox Zero-Fee Bypass")
-        print(" [2] 📱 Next Page (Hardware Nodes)")
+        print(" [2] 📱 Next Page (DePIN Mining & Hardware)")
         print(" [3] 🔙 Page 1")
         
     elif page == 4:
-        print("\n--- 🔌 Hardware Node Portfolio & Passive Income ---")
+        print("\n--- 🔌 DePIN Mining Portfolio & Passive Income ---")
         if nodes:
-            for n in nodes: print(f" ├── [{n[0]}] Status: {n[1]} | Height: {n[2]}")
+            for n in nodes: print(f" ├── [{n[0]}] Status: {n[1]} | Sync: {n[2]}")
             
         print("\n--- 💻 UASF Node Signaling ---")
         if sips:
             for s in sips: print(f" ├── [{s[0]}] Support: {s[2]}%")
 
         print("\nBare-Metal OS Menu [Page 4/5]:")
-        print(" [1] 🛠️ Toggle UASF Network Signal")
-        print(" [2] 📱 Next Page (Security & Diagnostics)")
-        print(" [3] 🔙 Page 1")
+        print(" [1] ⛏️ Harvest DePIN Mining Yields (Sweep to Wallet & Paymaster)")
+        print(" [2] 🛠️ Toggle UASF Network Signal")
+        print(" [3] 📱 Next Page (Security & Diagnostics)")
+        print(" [4] 🔙 Page 1")
         
     elif page == 5:
         print("\n--- 🚨 Security Sentinel & System Diagnostics ---")
@@ -137,9 +138,10 @@ def run_dashboard():
             elif choice == '2': page = 4
             elif choice == '3': page = 1
         elif page == 4:
-            if choice == '1': print("\n[+] UASF Network Signaling Intent broadcasted."); time.sleep(1)
-            elif choice == '2': page = 5
-            elif choice == '3': page = 1
+            if choice == '1': execute_ipc_call('sovereign_depin_bridge.py')
+            elif choice == '2': print("\n[+] UASF Network Signaling Intent broadcasted."); time.sleep(1)
+            elif choice == '3': page = 5
+            elif choice == '4': page = 1
         elif page == 5:
             if choice == '1': execute_ipc_call('sovereign_stress_test.py')
             elif choice == '2': page = 1
