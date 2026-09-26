@@ -19,3 +19,4 @@ ecosystem_metrics.db
 dashboard_error_logs/
 sovereign_metrics.db
 venv/
+/home/luther/node-stack/backups/
