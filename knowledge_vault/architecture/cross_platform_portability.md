@@ -1,0 +1,1 @@
+# Architecture: Cross-Platform Portability & Modular Extensibility\n- **OS Abstraction:** The core engine detects host operating systems (Linux, Windows, macOS, Android/Termux) dynamically using platform bindings.\n- **XDA Modular Pattern:** Developers can drop standalone Python scripts into the /modules directory to extend functionality without altering core microkernel files.\n

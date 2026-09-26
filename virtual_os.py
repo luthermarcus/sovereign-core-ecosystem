@@ -1,5 +1,7 @@
 import curses
 import sqlite3
+import os
+from portability_layer import get_environment_profile
 
 def get_wallet_data():
     try:
@@ -29,6 +31,12 @@ def get_live_telemetry():
     except:
         return None, None, None
 
+def get_loaded_modules():
+    mod_dir = "/home/luther/sovereign-core-ecosystem/modules"
+    if os.path.exists(mod_dir):
+        return [f for f in os.listdir(mod_dir) if f.endswith(".py")]
+    return []
+
 def main_loop(stdscr):
     curses.curs_set(0)
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
@@ -36,13 +44,13 @@ def main_loop(stdscr):
     curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
     
     selection = 0
-    menu = ["Telemetry Matrix", "Network & Security", "Emulated Wallet & DEX", "Innovation Copyright", "Knowledge Vault", "Exit System"]
+    menu = ["Telemetry Matrix", "Network & Security", "Emulated Wallet & DEX", "Innovation Copyright", "Developer Modules", "Knowledge Vault", "Exit System"]
     
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.57.0] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.60.0] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -71,10 +79,12 @@ def main_loop(stdscr):
 
         if selection == 0:
             host, myst, _ = get_live_telemetry()
+            env = get_environment_profile()
             draw(0, "[DEPIN NODE & HOST TELEMETRY]", True)
             if host and myst:
-                draw(2, f"CPU Usage: {host[0]}%  |  RAM: {host[1]}%  |  Disk: {host[2]}%")
-                draw(3, f"Mysterium Container: {myst[0]}  |  Peers: {myst[1]}")
+                draw(2, f"Host OS: {env['os']} ({env['architecture']})")
+                draw(3, f"CPU Usage: {host[0]}%  |  RAM: {host[1]}%  |  Disk: {host[2]}%")
+                draw(4, f"Mysterium Container: {myst[0]}  |  Peers: {myst[1]}")
             else:
                 draw(2, "Awaiting Telemetry Daemon Sync...")
         elif selection == 1:
@@ -104,6 +114,14 @@ def main_loop(stdscr):
                 draw(y_offset, f" - {inv[0]}: +{inv[1]} Credits (5% Royalty)")
                 y_offset += 1
         elif selection == 4:
+            mods = get_loaded_modules()
+            draw(0, "[DEVELOPER MODULES & PLUGINS]", True)
+            draw(2, "Loaded XDA-Style Modular Extensions:")
+            y_offset = 3
+            for m in mods:
+                draw(y_offset, f" [x] Plugin Loaded: {m}")
+                y_offset += 1
+        elif selection == 5:
             draw(0, "[KNOWLEDGE VAULT - FTS5]", True)
             draw(2, "Status: Synchronized with local SQLite FTS5 index.")
             
@@ -120,6 +138,6 @@ def main_loop(stdscr):
         key = stdscr.getch()
         if key == curses.KEY_UP and selection > 0: selection -= 1
         elif key == curses.KEY_DOWN and selection < len(menu) - 1: selection += 1
-        elif key in [10, 13] and selection == 5: break
+        elif key in [10, 13] and selection == 6: break
 
 curses.wrapper(main_loop)
