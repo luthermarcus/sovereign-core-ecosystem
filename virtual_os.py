@@ -34,7 +34,7 @@ def get_system_data():
     try:
         conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/discipline_ledger.db")
         c = conn.cursor()
-        c.execute("SELECT event_type, description FROM discipline_ledger ORDER BY id DESC LIMIT 3")
+        c.execute("SELECT event_type, description FROM discipline_ledger ORDER BY id DESC LIMIT 2")
         data["discipline"] = c.fetchall()
         conn.close()
     except:
@@ -70,7 +70,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.82.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.87.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -100,19 +100,20 @@ def main_loop(stdscr):
                 if color > 0: stdscr.attroff(curses.color_pair(color))
 
         d = get_system_data()
-        now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         if selection == 0:
-            draw(0, f"| LUTHER'S EXPANSIVE ECOSYSTEM COMMAND CENTER (DASHBOARD B) | {now_str} |", True, 4)
-            draw(2, "=== CRITICAL SYSTEM & DISCIPLINE FLAGS ===", bold=True)
-            y_f = 3
+            draw(0, f"| COMMAND CENTER | {now_str} |", True, 4)
+            draw(1, "=== SYSTEM & DISCIPLINE FLAGS ===", bold=True)
+            y_f = 2
             for disc in d["discipline"]:
-                draw(y_f, f"[{disc[0]}] {disc[1]}", color=3)
+                draw(y_f, f"[{disc[0]}] {disc[1]}"[:max_x-4], color=3)
                 y_f += 1
-            draw(y_f + 1, "=== EXPANSIVE EARNINGS PORTFOLIO (NATIVE & 6 APPS) ===", bold=True)
-            y_off = y_f + 2
+            draw(y_f, "=== EARNINGS PORTFOLIO (6 APPS + NODE) ===", bold=True)
+            y_off = y_f + 1
             for app in d["portfolio"]:
-                draw(y_off, f"[{app[0]}] : {app[1]} | Traffic: {app[2]} | Earnings: ${app[3]:.2f}")
+                short_name = app[0].split()[0]
+                draw(y_off, f"[{short_name}] {app[1]} | ${app[3]:.2f}"[:max_x-4])
                 y_off += 1
         elif selection == 1:
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
@@ -126,17 +127,17 @@ def main_loop(stdscr):
             draw(3, "Base Currency   : Bitcoin Core (BTC Anchored)")
             y_d = 4
             for dex in d["dex"]:
-                draw(y_d, f" DEX Pair       : {dex[0]} | Rate: {dex[1]} (Off-Chain Settlement)")
+                draw(y_d, f" DEX Pair       : {dex[0]} | Rate: {dex[1]} (Off-Chain)")
                 y_d += 1
         elif selection == 3:
             draw(0, "[INNOVATION COPYRIGHT & 5% SMART ROYALTIES]", True)
             draw(2, "Sovereign Core Microkernel: +12.45 Credits (5% Attribution)")
         elif selection == 4:
             mods = get_loaded_modules()
-            draw(0, "[XDA DEVELOPER MODULES & SMART CONTRACT PORT BRIDGE]", True)
+            draw(0, "[XDA DEVELOPER MODULES & SMART CONTRACT BRIDGE]", True)
             y_m = 2
-            for m in mods:
-                draw(y_m, f" [x] Audited Plugin: {m}")
+            for m in mods[:8]: # Compact render for small terminals
+                draw(y_m, f" [x] {m}"[:max_x-4])
                 y_m += 1
         elif selection == 5:
             draw(0, "[SQLITE FTS5 KNOWLEDGE VAULT]", True)
@@ -147,7 +148,7 @@ def main_loop(stdscr):
         if d["host"] and max_y > 5:
             bar_y = max_y - 3
             stdscr.addstr(bar_y - 1, 2, ("=" * (max_x - 4))[:max_x-4])
-            status_bar = f" INTEROPERABLE SANDBOX -> CPU: {d['host'][0]}% | RAM: {d['host'][1]}% | Disk: {d['host'][2]}%"
+            status_bar = f" SANDBOX -> CPU: {d['host'][0]}% | RAM: {d['host'][1]}% | Disk: {d['host'][2]}%"
             stdscr.attron(curses.color_pair(3))
             stdscr.addstr(bar_y, 2, status_bar[:max_x-3], curses.A_BOLD)
             stdscr.attroff(curses.color_pair(3))
