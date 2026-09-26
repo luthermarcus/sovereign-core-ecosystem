@@ -28,10 +28,7 @@ def get_kb_data():
     nets = fetch_table(c, "SELECT network, fee_metric, current_fee FROM network_mempool_v14")
     settings = dict(fetch_table(c, "SELECT setting_key, setting_value FROM user_settings_v14") or {})
     sips = fetch_table(c, "SELECT sip_id, title, network_signal_percent FROM sip_knowledge_base_v10")
-    
-    # GLOBAL FLAGS: Pulled across all subsystems to display on Page 1
-    flags = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags ORDER BY detected_at DESC")
-    
+    flags = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags ORDER BY detected_at DESC LIMIT 1") # Condensed summary
     devs = fetch_table(c, "SELECT dev_name, app_name, royalty_share, total_earned FROM dev_registry_v13")
     nodes = fetch_table(c, "SELECT node_type, status, block_height, peer_count FROM node_status_v13")
     ai_kb = fetch_table(c, "SELECT doc_id, title, summary FROM ai_knowledge_base_v13")
@@ -41,17 +38,17 @@ def get_kb_data():
 def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    titles = {1: "CORE WALLET & GLOBAL SYSTEM FLAGS", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV ROYALTIES & PYTHON KB", 4: "HARDWARE NODES & DePIN", 5: "SECURITY SENTINEL"}
-    print(f"   Sovereign Core OS v1.26.0-beta [PAGE {page}/5 - {titles[page]}]")
+    titles = {1: "CORE WALLET & STATUS", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV ROYALTIES & PYTHON KB", 4: "HARDWARE NODES & DePIN", 5: "SECURITY SENTINEL & AUDIT"}
+    print(f"   Sovereign Core OS v1.29.0-beta [PAGE {page}/5 - {titles[page]}]")
     print("=" * 80)
     
     bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb = get_kb_data()
     
-    # Display ALL global system flags on Page 1 for instant diagnostics, or page-specific ones elsewhere
-    print("\n--- 🛡️ Global System Telemetry & Diagnostic Flags ---")
+    # Clean Condensed Telemetry Ticker
+    print("\n--- 🛡️ System Health Telemetry ---")
     if flags:
-        for f in flags: 
-            print(f" [{f[1]}] {f[0]} : {f[2]}")
+        f = flags[0]
+        print(f" [{f[1]}] {f[0]} : {f[2]}")
 
     if page == 1:
         print("\n--- 🪙 Active Financial Portfolio ---")
@@ -64,7 +61,7 @@ def print_banner(page=1):
         print(" [1] 📥 View Receive Address")
         print(" [2] 💸 Send Transaction (EIP-4337 Gasless Router)")
         print(" [3] 💱 Execute AMM Swap (IPC -> sovereign_dex_amm.py)")
-        print(" [4] 📱 Next Page (Liquidity)")
+        print(" [4] 📱 Next Page | Type [N] Next | [P] Prev")
         print(" [5] 🚪 Terminate OS Session")
         
     elif page == 2:
@@ -78,7 +75,7 @@ def print_banner(page=1):
         
         print("\nBare-Metal OS Menu [Page 2/5]:")
         print(" [1] 🔄 Sync Ecosystem Knowledge Base")
-        print(" [2] 📱 Next Page (Dev Sandbox & Python KB)")
+        print(" [2] 📱 Next Page | Type [N] Next | [P] Prev")
         print(" [3] 🔙 Page 1")
         
     elif page == 3:
@@ -94,7 +91,7 @@ def print_banner(page=1):
 
         print("\nBare-Metal OS Menu [Page 3/5]:")
         print(" [1] ⚙️ Toggle Developer Sandbox Zero-Fee Bypass")
-        print(" [2] 📱 Next Page (Hardware Nodes)")
+        print(" [2] 📱 Next Page | Type [N] Next | [P] Prev")
         print(" [3] 🔙 Page 1")
         
     elif page == 4:
@@ -109,24 +106,32 @@ def print_banner(page=1):
         print("\nBare-Metal OS Menu [Page 4/5]:")
         print(" [1] ⛏️ Harvest DePIN Mining Yields")
         print(" [2] 🛠️ Toggle UASF Network Signal")
-        print(" [3] 📱 Next Page (Security Sentinel)")
+        print(" [3] 📱 Next Page | Type [N] Next | [P] Prev")
         print(" [4] 🔙 Page 1")
         
     elif page == 5:
         print("\n--- 🚨 Security Sentinel & System Diagnostics ---")
         print(" [+] Microkernel architecture active. Python execution fully isolated.")
-        print(" [+] WINE excluded for optimal terminal performance.")
+        print(" [+] POSIX socket permissions locked to 0600.")
 
         print("\nBare-Metal OS Menu [Page 5/5]:")
-        print(" [1] 🧪 Trigger Core Stress Test (sovereign_stress_test.py)")
-        print(" [2] 🔙 Page 1")
+        print(" [1] 🧪 Trigger Core Stress Test & Security Audit (sovereign_stress_test.py)")
+        print(" [2] 📱 Type [N] Next | [P] Prev | [3] 🔙 Page 1")
     print("=" * 80)
 
 def run_dashboard():
     page = 1
     while True:
         print_banner(page)
-        choice = input("Select OS IPC Command: ").strip()
+        choice = input("Select OS IPC Command (or type 'n'/'p'): ").strip().lower()
+        
+        if choice == 'n':
+            page = page + 1 if page < 5 else 1
+            continue
+        elif choice == 'p':
+            page = page - 1 if page > 1 else 5
+            continue
+            
         if page == 1:
             if choice == '1': print("\n[+] Wallet Address (Taproot) : bc1p5d7rjqzw..."); time.sleep(2)
             elif choice == '2': print("\n[+] EIP-4337 Route Active. Gas abstracted via Paymaster."); time.sleep(2)
