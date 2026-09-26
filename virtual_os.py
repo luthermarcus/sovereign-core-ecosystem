@@ -24,17 +24,17 @@ def main():
     while True:
         clear_screen()
         print("=" * 70)
-        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.0.0-beta [PAGE {current_page}/5] ===")
+        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.0.1-beta [PAGE {current_page}/5] ===")
         print("=" * 70)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC   : Microkernel v2.0.0-beta synced.")
+            print("[GREEN] FLAG_MASTER_SYNC   : Microkernel v2.0.1-beta synced.")
             print("[GREEN] FLAG_UNIFIED_BUILD : All 3 Dashboards & AMM contracts connected.")
             print("[GREEN] FLAG_SCRAPER_AI    : Active (Self-Healing Scraper Monitoring Logs)")
             print("\n--- 🟡 Active Financial Portfolio (Wallet Sync) ---")
             for asset in get_financial_portfolio():
-                print(f"  {asset[0]:<5} | Bal: {asset[1]:<12,.2f} | Pr: ${asset[2]:<10,.2f} \vert{} Val:${asset[3]:,.2f}")
+                print(f"  {asset[0]:<5} | Bal: {asset[1]:<12,.2f} | Pr: ${asset[2]:<10,.2f} | Val: ${asset[3]:,.2f}")
             print("\nBare-Metal OS Menu [Page 1/5]:")
             print("  [1] 📥 View Receive Address (Taproot/EVM)")
             print("  [2] 💸 Send Transaction (EIP-4337 Gasless)")
