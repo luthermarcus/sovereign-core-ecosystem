@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 PLUGIN_NAME = "DEXPortBridge"
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 def execute_audit():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")
@@ -12,7 +12,10 @@ def execute_audit():
         c = conn.cursor()
         c.execute("SELECT COUNT(*) FROM dex_reserves")
         count = c.fetchone()[0]
+        
+        # Perform routine SQLite WAL checkpoint maintenance
+        conn.execute("PRAGMA wal_checkpoint(PASSIVE)")
         conn.close()
-        return f"Status: Active ({count} Smart Contract Liquidity Pairs Ported - Off-Chain WAL Settlement)"
+        return f"Status: Active ({count} Smart Contract Pairs | Off-Chain WAL Settlement Optimized)"
     except:
         return "Status: DEX Port Bridge Standby"
