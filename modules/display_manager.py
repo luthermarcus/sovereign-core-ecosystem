@@ -1,6 +1,4 @@
-import os
-import json
-import time
+import os, json, time
 
 class MultiDisplayManager:
     CONFIG_PATH = os.path.expanduser("~/sovereign-core-ecosystem/ecosystem_config.json")
@@ -9,8 +7,7 @@ class MultiDisplayManager:
     def render_all_displays_summary(cls):
         try:
             with open(cls.CONFIG_PATH, "r") as f:
-                cfg = json.load(f)
-            stack = cfg.get("depin_stack", {})
+                stack = json.load(f).get("depin_stack", {})
         except Exception:
             stack = {"mysterium": 14.25, "earnapp": 8.50, "traffmonetizer": 5.10, "packetstream": 3.20, "pawns": 6.75, "honeygain": 11.40}
 
