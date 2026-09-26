@@ -27,26 +27,25 @@ def get_kb_data():
     nets = fetch_table(c, "SELECT network, fee_metric, current_fee FROM network_mempool_v14")
     settings = dict(fetch_table(c, "SELECT setting_key, setting_value FROM user_settings_v14") or {})
     
-    # Fetch Security & Repo Data
     anomaly_flags = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags WHERE status='RED'")
     nominal_flag = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags WHERE flag_id='FLAG_SYSTEM_NOMINAL'", fetch_one=True)
     repos = fetch_table(c, "SELECT repo_name, commit_status, security_audit FROM repo_health_registry_v31")
     depin_bridge = fetch_table(c, "SELECT node_app, connected_pair, staked_yield FROM depin_dex_pool_bridge_v31")
     sessions = fetch_table(c, "SELECT dapp_domain, status FROM web_wallet_sessions_v31")
+    nodes = fetch_table(c, "SELECT node_type, status, block_height, peer_count FROM node_status_v13")
     
     conn.close()
-    return bals, pairs, nets, settings, anomaly_flags, nominal_flag, repos, depin_bridge, sessions
+    return bals, pairs, nets, settings, anomaly_flags, nominal_flag, repos, depin_bridge, sessions, nodes
 
 def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
     titles = {1: "CORE WALLET & STATUS", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV REPO HEALTH & KB", 4: "DePIN MINING & DEX BRIDGE", 5: "SECURITY SENTINEL & PAIRING"}
-    print(f"   Sovereign Core OS v1.31.0-beta [PAGE {page}/5 - {titles[page]}]")
+    print(f"   Sovereign Core OS v1.34.0-beta [PAGE {page}/5 - {titles[page]}]")
     print("=" * 80)
     
-    bals, pairs, nets, settings, anomaly_flags, nominal_flag, repos, depin_bridge, sessions = get_kb_data()
+    bals, pairs, nets, settings, anomaly_flags, nominal_flag, repos, depin_bridge, sessions, nodes = get_kb_data()
     
-    # Anomaly Auto-Elevation Ticker
     print("\n--- 🛡️ System Health & Security Telemetry ---")
     if anomaly_flags:
         for af in anomaly_flags:
@@ -93,10 +92,13 @@ def print_banner(page=1):
         print(" [2] 🔙 Page 1")
         
     elif page == 4:
-        print("\n--- 🌉 DePIN Mining to DEX Liquidity Bridge ---")
+        print("\n--- 🔌 DePIN Mining Node Parameters & DEX Bridge ---")
+        if nodes:
+            for n in nodes:
+                print(f" ├── [{n[0]}] Status: {n[1]} | Height: {n[2]} | Peers: {n[3]}")
         if depin_bridge:
             for b in depin_bridge:
-                print(f" ├── [{b[0]}] Yield Source -> LP Pair [{b[1]}]: Staked {b[2]} tokens")
+                print(f" ├── [Bridge] {b[0]} -> Pool [{b[1]}]: Staked {b[2]} tokens")
 
         print("\nBare-Metal OS Menu [Page 4/5]:")
         print(" [1] ⛏️ Harvest DePIN Yields & Route to DEX Pool")
@@ -120,16 +122,24 @@ def print_banner(page=1):
 def run_dashboard():
     page = 1
     while True:
-        print_banner(page)
-        choice = input("Select OS IPC Command (or type 'n'/'p'): ").strip().lower()
+        try:
+            print_banner(page)
+            raw_choice = input("Select OS IPC Command (or type 'n'/'p'): ").strip().lower()
+        except KeyboardInterrupt:
+            print("\n[+] Interrupt caught. Returning to Page 1 Core Wallet...")
+            time.sleep(1)
+            page = 1
+            continue
         
-        if choice == 'n':
+        if raw_choice in ['n', 'next']:
             page = page + 1 if page < 5 else 1
             continue
-        elif choice == 'p':
+        elif raw_choice in ['p', 'prev', 'previous']:
             page = page - 1 if page > 1 else 5
             continue
             
+        choice = raw_choice
+        
         if page == 1:
             if choice == '1': print("\n[+] Wallet Address (Taproot) : bc1p5d7rjqzw..."); time.sleep(2)
             elif choice == '2': print("\n[+] EIP-4337 Route Active. Gas abstracted via Paymaster."); time.sleep(2)
