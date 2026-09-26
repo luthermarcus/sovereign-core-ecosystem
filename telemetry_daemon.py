@@ -1,35 +1,16 @@
-import sqlite3
-import psutil
-import time
-import urllib.request
-import json
-
-DB_PATH = "/home/luther/sovereign-core-ecosystem/sys_health.db"
-conn = sqlite3.connect(DB_PATH)
-conn.execute("PRAGMA journal_mode=WAL")
-conn.execute("CREATE TABLE IF NOT EXISTS host_metrics (cpu REAL, ram REAL, disk REAL)")
-conn.execute("CREATE TABLE IF NOT EXISTS myst_metrics (status TEXT, connections INT, bandwidth REAL)")
-
-# Scrape universal host hardware
-cpu = psutil.cpu_percent(interval=1)
-ram = psutil.virtual_memory().percent
-disk = psutil.disk_usage("/").percent
-
-conn.execute("DELETE FROM host_metrics")
-conn.execute("INSERT INTO host_metrics VALUES (?, ?, ?)", (cpu, ram, disk))
-
-# Scrape Mysterium Node API (Localhost default port 4449)
-try:
-    req = urllib.request.Request("http://127.0.0.1:4449/tequilapi/node")
-    with urllib.request.urlopen(req, timeout=2) as response:
-        data = json.loads(response.read())
-        status = data.get("status", "Unknown")
-        conns = data.get("connections", 0)
-        conn.execute("DELETE FROM myst_metrics")
-        conn.execute("INSERT INTO myst_metrics VALUES (?, ?, 0.0)", (status, conns))
-except:
-    conn.execute("DELETE FROM myst_metrics")
-    conn.execute("INSERT INTO myst_metrics VALUES (?, ?, ?)", ("Offline/Restricted", 0, 0.0))
-
-conn.commit()
-conn.close()
+import sqlite3, psutil, time, subprocess
+def run():
+    db = sqlite3.connect("/home/luther/sovereign-core-ecosystem/sys_health.db")
+    db.execute("PRAGMA journal_mode=WAL")
+    for tbl in ["host_metrics (cpu REAL, ram REAL, disk REAL)", "myst_metrics (status TEXT, connections INT, bandwidth REAL)"]:
+        db.execute(f"CREATE TABLE IF NOT EXISTS {tbl}")
+    while True:
+        c, r, d = psutil.cpu_percent(1), psutil.virtual_memory().percent, psutil.disk_usage("/").percent
+        try:
+            m_out = subprocess.check_output(["docker", "ps", "-f", "name=myst", "--format", "{{.Status}}"]).decode().strip()
+            m_stat = "Active (Docker)" if "Up" in m_out else "Offline"
+        except: m_stat = "Restricted/Not Found"
+        db.execute("DELETE FROM host_metrics"); db.execute("INSERT INTO host_metrics VALUES (?,?,?)", (c,r,d))
+        db.execute("DELETE FROM myst_metrics"); db.execute("INSERT INTO myst_metrics VALUES (?,?,0.0)", (m_stat,0))
+        db.commit(); time.sleep(3)
+if __name__=="__main__": run()
