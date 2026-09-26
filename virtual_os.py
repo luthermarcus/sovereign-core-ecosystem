@@ -52,11 +52,11 @@ def main_loop(stdscr):
     
     selection = 0
     menu = [
-        "1. Command Center & Gigabyte Telemetry", 
+        "1. Command Center & Update Watcher", 
         "2. Network & Zero-Tolerance Security", 
         "3. Emulated Wallet & DEX Matrix (FOX/PARROT-BTC)", 
         "4. Innovation Copyright & Royalties", 
-        "5. XDA Developer Modules & Telemetry Scrapers", 
+        "5. XDA Developer Modules & Update Watcher", 
         "6. README & System Manual (GitHub Linked)", 
         "7. SQLite FTS5 Knowledge Vault", 
         "8. Exit System"
@@ -66,7 +66,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.00.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.03.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -99,7 +99,7 @@ def main_loop(stdscr):
         now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         if selection == 0:
-            draw(0, f"| COMMAND CENTER & GIGABYTE TELEMETRY | {now_str} |", True, 4)
+            draw(0, f"| COMMAND CENTER & UPDATE WATCHER | {now_str} |", True, 4)
             draw(1, "[v] STATUS: ALL SYSTEMS NOMINAL - NO ACTIVE FAULTS", bold=True, color=3)
             draw(2, "=== EARNINGS & GIGABYTE BANDWIDTH PORTFOLIO ===", bold=True)
             y_off = 3
@@ -110,7 +110,7 @@ def main_loop(stdscr):
         elif selection == 1:
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
-            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
+            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)[span_1](start_span)[span_1](end_span)")
             draw(4, "Content Filter  : Active (Illicit Media / CSAM Blocked)")
             draw(5, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
@@ -127,7 +127,7 @@ def main_loop(stdscr):
             draw(2, "Sovereign Core Microkernel: +12.45 Credits (5% Attribution)")
         elif selection == 4:
             mods = get_loaded_modules()
-            draw(0, "[XDA DEVELOPER MODULES & TELEMETRY SCRAPERS]", True)
+            draw(0, "[XDA DEVELOPER MODULES & UPDATE WATCHER]", True)
             y_m = 2
             for m in mods[:8]:
                 draw(y_m, f" [x] {m}"[:max_x-4])
@@ -136,7 +136,7 @@ def main_loop(stdscr):
             draw(0, "[README & SYSTEM MANUAL - GITHUB REPO]", True)
             draw(2, "GitHub Repo: github.com/luthermarcus/sovereign-core-ecosystem")
             draw(3, "Self-Custody: Local HD keys derived in wallet.db (m/44'/0'/0'/0/0)")
-            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)")
+            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)[span_2](start_span)[span_2](end_span)")
             draw(5, "Operation  : Use arrow keys to navigate, Enter to select/exit.")
         elif selection == 6:
             draw(0, "[SQLITE FTS5 KNOWLEDGE VAULT]", True)

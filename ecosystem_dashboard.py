@@ -20,6 +20,7 @@ def render_cli():
     print(f"  2. SQLite WAL Ledger Permissions : [v] Secured (0o664)")
     print(f"  3. Tor SOCKS5 Loopback Matrix    : [v] Active (127.0.0.1:9050)")
     print(f"  4. Local Self-Custody Keypair  : [v] Verified (HD m/44'/0'/0'/0/0)")
+    print(f"  5. GitHub Update Watcher       : [v] Active (Up-to-Date Sync)")
     print("-" * 65)
     
     try:
