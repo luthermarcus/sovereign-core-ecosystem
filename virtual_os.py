@@ -43,16 +43,16 @@ def subview_amm_swap():
     print("=" * 70)
     print("=== DEV SANDBOX: NATIVE FOX SIDECHAIN DEX & SC-GPL CAPITAL RAISE ===")
     print("=" * 70)
-    print("  Architecture : Native FOX Sidechain Token (No Custodial Wrappers)")
-    print("  Engine       : Constant Product AMM (x * y = k)")
+    print("  Community Consensus : Bitcointalk Purist (No Wrapped 'foxBTC' Tokens)")
+    print("  Architecture        : 2-Way Peg Native FOX L2 paired with Native USDC")
+    print("  Engine              : Constant Product AMM (x * y = k)")
     print("-" * 70)
     
     x = 50000.00  # USDC Reserve
     y = 10000.00  # FOX Reserve
     k = x * y
-    dx = 1000.00  # User trades 1000 USDC for FOX
+    dx = 1000.00  # Dev trades 1000 USDC for FOX
     
-    # 5% SC-GPL Developer Capital Raise
     capital_raise = dx * 0.05
     net_dx = dx - capital_raise
     
@@ -61,9 +61,9 @@ def subview_amm_swap():
     dy = y - new_y
     
     print(f"  [1] Initial DEX Pool : {x:,.2f} USDC / {y:,.2f} FOX")
-    print(f"  [2] User Execution   : Swapping {dx:,.2f} USDC for native FOX")
-    print(f"  [3] Capital Raise    : 5% SC-GPL Royalty (${capital_raise:,.2f} USDC) sent to Dev Treasury")
-    print(f"  [4] Output Yield     : User receives {dy:,.2f} FOX")
+    print(f"  [2] Trade Execution  : Swapping {dx:,.2f} USDC for native FOX")
+    print(f"  [3] Capital Raise    : 5% SC-GPL Royalty (${capital_raise:,.2f} USDC) routed to Dev Treasury")
+    print(f"  [4] Output Yield     : Dev receives {dy:,.2f} FOX natively")
     print(f"  [5] System Integrity : Post-Swap Invariant (k) Verified ({new_x * new_y:,.2f} == k)")
     print("=" * 70)
     print("\nPress any key to return to Sovereign Core OS Hub...")
@@ -83,17 +83,17 @@ def fetch_depin_matrix():
 
 def main():
     current_page = 1
-    status_msg = "Dev Sandbox Active. Instant execution enabled (No [ENTER] needed)."
+    status_msg = "Dev Sandbox Active. Navigation stabilized. [N]ext, [P]rev, [Q]uit."
     
     while True:
         clear_screen()
         print("=" * 70)
-        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.5.0-beta [PAGE {current_page}/5] ===")
+        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.6.0-beta [PAGE {current_page}/5] ===")
         print("=" * 70)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC    : Microkernel v2.5.0-beta synced.")
+            print("[GREEN] FLAG_MASTER_SYNC    : Microkernel v2.6.0-beta synced.")
             print("[GREEN] FLAG_SIDECHAIN_NODE : Native FOX L2 active (No Wrappers).")
             print("[GREEN] FLAG_CAPITAL_RAISE  : 5% SC-GPL Developer Treasury active.")
             print("\n--- 🟡 Active Financial Portfolio (Wallet Sync) ---")
@@ -102,8 +102,8 @@ def main():
             print("\nBare-Metal OS Menu [Page 1/5]:")
             print("  [1] 📥 View Receive Address (BIP44 Vault)")
             print("  [2] 💸 Send Transaction (EIP-4337 Gasless)")
-            print("  [3] 🔄 Test SC-GPL Capital Raise (FOX / USDC AMM)")
-            print("  [4] ➡️  Switch to Page 2 (Network & Security) [Hotkey: N]")
+            print("  [3] 🔄 Test SC-GPL Capital Raise (Native FOX / USDC AMM)")
+            print("  [4] ⛏️  Run DePIN Block Validation Simulation")
             print("  [5] 🛑 Exit to Native Dell Shell [Hotkey: Q]")
             
         elif current_page == 2:
@@ -159,9 +159,12 @@ def main():
         except (KeyboardInterrupt, EOFError):
             flush_and_exit()
         
-        if choice in ['Q', '5', '\x03', '\x04'] and current_page == 1:
-            flush_and_exit()
-        elif choice == '3' and current_page > 1:
+        # Globally handle straggler ENTER keys from fast typing
+        if choice in ['\r', '\n', '']:
+            continue
+            
+        # Global Navigation Hotkeys
+        if choice in ['Q', '\x03', '\x04']:
             flush_and_exit()
         elif choice == 'N':
             current_page = (current_page % 5) + 1
@@ -172,6 +175,7 @@ def main():
             status_msg = f"Navigated to Page {current_page}."
             continue
 
+        # Page-Specific Subview Mapping
         if current_page == 1:
             if choice == '1': 
                 clear_screen()
@@ -187,10 +191,18 @@ def main():
                 status_msg = "Tested EIP-4337 Relay."
             elif choice == '3': 
                 subview_amm_swap()
-                status_msg = "Tested 5% SC-GPL Capital Raise via AMM Swap."
-            elif choice == '4':
-                current_page = 2
-                status_msg = "Navigated to Page 2."
+                status_msg = "Tested 5% SC-GPL Capital Raise via Native AMM Swap."
+            elif choice == '4': 
+                clear_screen()
+                print("=== VIRTUAL SANDBOX: DEPIN MINING ===\nValidating hashes...")
+                for i in range(3):
+                    print(f"[v] Block {i} Validated.")
+                    time.sleep(0.3)
+                print("\nPress any key to return...")
+                get_single_keypress()
+                status_msg = "Simulated DePIN Block Validation."
+            elif choice == '5':
+                flush_and_exit()
             else: 
                 status_msg = f"Invalid command '{choice}'."
         else:
@@ -200,6 +212,8 @@ def main():
             elif choice == '2': 
                 current_page = (current_page % 5) + 1
                 status_msg = f"Navigated to Page {current_page}."
+            elif choice == '3': 
+                flush_and_exit()
             else: 
                 status_msg = f"Invalid command '{choice}'."
 
