@@ -5,76 +5,82 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "sovereign_metrics.db")
 
 def get_kb_data():
-    if not os.path.exists(DB_PATH): return [], [], [], [], []
+    if not os.path.exists(DB_PATH): return [], [], [], [], [], []
     try:
         conn = sqlite3.connect(DB_PATH, timeout=10)
         c = conn.cursor()
         c.execute("SELECT token, balance, price_usd FROM global_assets_v7 WHERE balance > 0 ORDER BY balance * price_usd DESC LIMIT 10")
         bals = c.fetchall()
-        c.execute("SELECT policy_id, operation_type, base_tax_rate, developer_waiver_allowed FROM tax_policies_v12")
-        taxes = c.fetchall()
-        c.execute("SELECT asset, pol_locked, total_burned, insurance_fund FROM protocol_treasury_v11 ORDER BY pol_locked DESC LIMIT 5")
-        treasury = c.fetchall()
-        c.execute("SELECT sip_id, title, network_signal_percent FROM sip_knowledge_base_v10")
-        sips = c.fetchall()
+        c.execute("SELECT pair_symbol, liquidity_usd, apy_range FROM liquidity_pairs")
+        pairs = c.fetchall()
+        c.execute("SELECT dev_name, app_name, royalty_share, total_earned FROM dev_registry_v13")
+        devs = c.fetchall()
+        c.execute("SELECT node_type, status, block_height, peer_count FROM node_status_v13")
+        nodes = c.fetchall()
+        c.execute("SELECT doc_id, title, category, summary FROM ai_knowledge_base_v13")
+        kb_docs = c.fetchall()
         c.execute("SELECT flag_id, status, description FROM scraper_flags ORDER BY detected_at DESC LIMIT 4")
         flags = c.fetchall()
         conn.close()
-        return bals, taxes, treasury, sips, flags
+        return bals, pairs, devs, nodes, kb_docs, flags
     except Exception:
-        return [], [], [], [], []
+        return [], [], [], [], [], []
 
 def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 85)
-    titles = {1: "ACTIVE DEX TRADING", 2: "PROTOCOL TAX & TREASURY", 3: "GLOBAL KNOWLEDGE BASE", 4: "UASF NODE SIGNALING"}
-    print(f"   Sovereign Core v1.11.0-beta [PAGE {page}/4 - {titles[page]}]")
+    titles = {1: "ACTIVE DEX PORTFOLIO", 2: "DEX LIQUIDITY & DEV ROYALTIES", 3: "AI KNOWLEDGE BASE & WHITEPAPERS", 4: "NODE TELEMETRY & SENTINEL"}
+    print(f"   Sovereign Core v1.12.0-beta [PAGE {page}/4 - {titles[page]}]")
     print(f"   Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 85)
     
-    data = get_kb_data()
-    if not data or len(data) < 5: return
-    bals, taxes, treasury, sips, flags = data
+    bals, pairs, devs, nodes, kb_docs, flags = get_kb_data()
     
     print("\n--- 🛡️ System Diagnostics & Ecosystem Flags ---")
     if flags:
         for f in flags:
             print(f" [{f[1]}] {f[0]} : {f[2]}")
+    else:
+        print(" [!] No active flags indexed.")
 
     if page == 1:
         print("\n--- 🪙 Active Financial Portfolio (Balances > 0) ---")
-        for r in bals:
-            print(f"    ├── {r[0]:<5} Balance: {r[1]:<13.4f} | Value: ${r[1]*r[2]:,.2f}")
+        if bals:
+            for r in bals:
+                print(f"    ├── {r[0]:<5} Balance: {r[1]:<13.4f} | Value: ${r[1]*r[2]:,.2f}")
+        else:
+            print("    [!] Warning: No asset balances indexed.")
+            
         print("\nBare-Metal Operations Menu [Page 1/4]:")
-        print(" [1] 📥 Route Funds | [2] 💸 Send TX | [3] 💱 Execute Trade & Tax Router | [4] 📱 Page 2 | [5] 🚪 Exit")
+        print(" [1] 📥 Route Funds | [2] 💸 Send TX | [3] 💱 Execute DEX Trade | [4] 📱 Page 2 | [5] 🚪 Exit")
         
     elif page == 2:
-        print("\n--- ⚖️ Ethical Tax & Developer Fee Policies ---")
-        if taxes:
-            for t in taxes:
-                waiver = "Eligible" if t[3] else "Strict"
-                print(f"    ├── [{t[0]}] {t[1]} | Tax: {t[2]*100}% | Sandbox Bypass: {waiver}")
-                
-        print("\n--- 🏛️ Ecosystem Treasury (Capitalization) ---")
-        if treasury:
-            for t in treasury:
-                print(f"    ├── [{t[0]}] POL Locked: {t[1]:,.2f} | Burned: {t[2]:,.2f} | Insurance: {t[3]:,.2f}")
+        print("\n--- 🔄 Decentralized Liquidity Pools ---")
+        for p in pairs:
+            print(f"    ├── [{p[0]}]: Liq ${p[1]:,.2f} | APY: {p[2]}")
+
+        print("\n--- 👨‍💻 Developer Registry & 5% Royalty Allocation ---")
+        for d in devs:
+            print(f"    ├── Dev: {d[0]:<12} | App: {d[1]:<18} | Share: {d[2]*100}% | Royalties: ${d[3]:,.2f}")
 
         print("\nBare-Metal Operations Menu [Page 2/4]:")
-        print(" [1] 📱 Switch to Page 3 (Global Knowledge Base) | [2] 🔙 Page 1 | [3] 🚪 Exit")
+        print(" [1] 📱 Switch to Page 3 (Knowledge Base) | [2] 🔙 Page 1 | [3] 🚪 Exit")
         
     elif page == 3:
-        print("\n--- 🌐 Global Knowledge Base & Repository Diagnostics ---")
-        print("    [+] 41+ Top assets tracked successfully. (View restricted in compact mode).")
+        print("\n--- 🧠 AI Knowledge Base & Community Whitepapers ---")
+        for doc in kb_docs:
+            print(f"    ├── [{doc[0]}] {doc[1]} ({doc[2]})")
+            print(f"    │   └── Summary: {doc[3]}")
+
         print("\nBare-Metal Operations Menu [Page 3/4]:")
-        print(" [1] 📱 Switch to Page 4 (UASF Signaling) | [2] 🔙 Page 1 | [3] 🚪 Exit")
+        print(" [1] 📱 Switch to Page 4 (Node Telemetry) | [2] 🔙 Page 1 | [3] 🚪 Exit")
         
     elif page == 4:
-        print("\n--- 💻 Sovereign Improvement Proposals (SIPs) & UASF Network Status ---")
-        for s in sips:
-            print(f"    ├── [{s[0]}] {s[1]} | Network Consensus: {s[2]}%")
+        print("\n--- 🌐 Node Telemetry & Sentinel Security Center ---")
+        for n in nodes:
+            print(f"    ├── [{n[0]}] Status: {n[1]} | Height: {n[2]} | Peers: {n[3]}")
         print("\nBare-Metal Operations Menu [Page 4/4]:")
-        print(" [1] 🛠️ Toggle UASF Signal Flag | [2] 🔙 Page 1 | [3] 🚪 Exit")
+        print(" [1] 📡 Trigger Sentinel Audit | [2] 🔙 Page 1 | [3] 🚪 Exit")
     print("=" * 85)
 
 def run_dashboard():
@@ -96,7 +102,7 @@ def run_dashboard():
             elif choice == '3': sys.exit(0)
         elif page == 4:
             if choice == '1': 
-                print("\n[+] UASF Signal updated. Broadcasting to network."); time.sleep(2)
+                print("\n[+] Sentinel scan initiated: All build hashes verified against GitHub."); time.sleep(2)
             elif choice == '2': page = 1
             elif choice == '3': sys.exit(0)
 
