@@ -1,9 +1,6 @@
-# Sovereign Core OS (v1.47.0-beta)
+# Sovereign Core OS Ecosystem (v1.54.0-beta)
 
-A standalone, autonomous Sovereign Core DEX aggregator, Web3 wallet emulator, and financial sandbox decoupled from hardware node stacks. Designed with a strict Microkernel architecture.
-
-## 🛡️ Architecture & Security
-- **Microkernel IPC Routing:** The terminal UI acts purely as an IPC message router; all financial logic runs in isolated Python subprocesses.
-- **Database Atomicity (Schema v38):** SQLite upgraded with Write-Ahead Logging (WAL) and enforced `5000ms` busy timeouts.
-- **Categorized Telemetry & Anomaly Counters:** Dynamic subsystem health aggregation across all 5 microkernel pages.
-- **Forks & Upstream Credits:** Audited against Bitcoin Core, OpenZeppelin EIP-4337 bundlers, and DePIN node protocols.
+## Architecture Overview
+- **DePIN Node & Mining Engine:** Operates as an independent decentralized node running containerized routing protocols (Mysterium) and Tor-secured Bitcoin RPC validation[span_10](start_span)[span_10](end_span).
+- **Innovation Copyright Protocol:** Features an automated 5% micro-royalty ledger (`wallet.db`) tracking deployed scripts and routing earnings directly to the master wallet.
+- **Emulated Wallet & DEX TUI:** Provides secure, zero-clearnet visibility into portfolio balances and network staking power directly inside the mobile Curses interface.

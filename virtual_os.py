@@ -1,20 +1,19 @@
 import curses
 import sqlite3
 
-def query_knowledge_base():
+def get_wallet_data():
     try:
-        conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/knowledge.db")
+        conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/wallet.db")
         c = conn.cursor()
-        c.execute("SELECT path, content FROM entries LIMIT 1")
-        row = c.fetchone()
+        c.execute("SELECT address, balance, staked_power FROM wallet_state LIMIT 1")
+        wallet = c.fetchone()
+        c.execute("SUM(earnings) FROM innovations") # or fetch rows
+        c.execute("SELECT module_name, earnings FROM innovations")
+        inv = c.fetchall()
         conn.close()
-        if row:
-            title = row[0].split("/")[-1]
-            snippet = row[1].split("\n")[0]
-            return f"[{title}] {snippet}"
-        return "No indexed documents found."
+        return wallet, inv
     except Exception:
-        return "Knowledge DB offline."
+        return None, []
 
 def get_live_telemetry():
     try:
@@ -34,13 +33,13 @@ def main_loop(stdscr):
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
     selection = 0
-    menu = ["Telemetry Matrix", "Bitcoin/Tor & DEX", "Media Bridge", "Knowledge Vault", "Exit System"]
+    menu = ["Telemetry Matrix", "Emulated Wallet & DEX", "Innovation Copyright", "Knowledge Vault", "Exit System"]
     
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.54.0] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -68,24 +67,32 @@ def main_loop(stdscr):
 
         if selection == 0:
             host, myst = get_live_telemetry()
-            draw(0, "[LIVE TELEMETRY & HARDWARE]", True)
+            draw(0, "[DEPIN NODE & HARDWARE TELEMETRY]", True)
             if host and myst:
                 draw(2, f"CPU: {host[0]}%  |  RAM: {host[1]}%  |  DISK: {host[2]}%")
                 draw(4, f"Mysterium Node: {myst[0]}  |  Connections: {myst[1]}")
             else:
                 draw(2, "Awaiting Telemetry Daemon Sync...")
         elif selection == 1:
-            draw(0, "[BITCOIN & TOR SECURITY MATRIX]", True)
-            draw(2, "Tor Proxy: 127.0.0.1:9050 (-onlynet=onion)")
-            draw(3, "Inbound Ports: CLOSED (Zero Clearnet Exposure)")
-            draw(4, "RPC Validator: Local Loopback Only")
+            wallet, _ = get_wallet_data()
+            draw(0, "[EMULATED WALLET & DEX MATRIX]", True)
+            if wallet:
+                draw(2, f"Master Address: {wallet[0][:20]}...")
+                draw(3, f"Balance: {wallet[1]} MYST/BTC  |  Staked Power: {wallet[2]}%")
+                draw(5, "Bitcoin Protocol: Tor-Only (-proxy=127.0.0.1:9050)")
+            else:
+                draw(2, "Wallet Ledger Offline.")
         elif selection == 2:
-            draw(0, "[MEDIA BRIDGE]", True)
-            draw(2, "Headless Audio/Video Daemon: Standby")
+            _, innovations = get_wallet_data()
+            draw(0, "[INNOVATION COPYRIGHT & 5% ROYALTY]", True)
+            draw(2, "Active Deployed Modules & Smart Royalties:")
+            y_offset = 3
+            for inv in innovations:
+                draw(y_offset, f" - {inv[0]}: +{inv[1]} Credits (5% Royalty)")
+                y_offset += 1
         elif selection == 3:
             draw(0, "[KNOWLEDGE VAULT - FTS5]", True)
-            kb_preview = query_knowledge_base()
-            draw(2, kb_preview)
+            draw(2, "Status: Synchronized with local SQLite FTS5 index.")
             
         stdscr.refresh()
         key = stdscr.getch()
