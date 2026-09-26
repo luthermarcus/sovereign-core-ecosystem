@@ -2,13 +2,14 @@
 import os
 import sys
 import sqlite3
-import datetime
 
 sys.path.append(os.path.expanduser("~/sovereign-core-ecosystem/modules"))
 try:
+    import portability_layer
     import amm_smart_contract
     import self_healer_scraper
 except ImportError:
+    portability_layer = None
     amm_smart_contract = None
     self_healer_scraper = None
 
@@ -17,6 +18,11 @@ def clear_screen():
 
 def get_system_data():
     data = {}
+    if portability_layer:
+        data["env"] = portability_layer.get_environment_profile()
+    else:
+        data["env"] = {"distro": "Linux Mint (Bare-Metal)"}
+
     if amm_smart_contract:
         try:
             data["amm_status"] = amm_smart_contract.execute_amm_compounding()
@@ -51,12 +57,12 @@ def main():
         d = get_system_data()
         
         print("=" * 65)
-        print(f"=== Sovereign Core OS v1.29.0-master [PAGE {current_page}/4 - CORE WALLET & AMM] ===")
+        print(f"=== Sovereign Core OS v1.31.0-master [PAGE {current_page}/4 - CORE WALLET & AMM] ===")
         print("=" * 65)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.29.0 synced. Scientific notation fixed.")
+            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.31.0 synced. Scientific notation fixed.")
             print("[GREEN] FLAG_UNIFIED_BUILD : All IPC engines and AMM contracts connected.")
             print(f"[GREEN] FLAG_SCRAPER_AI  : {d.get('scraper_status', 'Active')}")
             print("\n--- 🟡 Active Financial Portfolio ---")

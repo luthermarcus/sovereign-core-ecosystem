@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 PLUGIN_NAME = "SelfHealerScraper"
-VERSION = "1.2.0"
+VERSION = "1.4.0"
 
 def audit_and_scrape_errors():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/knowledge.db")
@@ -23,7 +23,7 @@ def audit_and_scrape_errors():
                      ("CoreMicrokernel", "No critical faults detected. System nominal.", "Resolved"))
         conn.commit()
         conn.close()
-        return "Active (Self-Healing Scraper Monitoring System Logs)"
+        return "Active (Self-Healing Scraper Monitoring Logs)"
     except Exception as e:
         return f"Standby ({e})"
 

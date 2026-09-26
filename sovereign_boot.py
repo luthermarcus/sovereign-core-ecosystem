@@ -11,10 +11,10 @@ except:
     backup_status = "Status: Backup Engine Offline"
 
 def boot():
-    print("[*] Booting Sovereign Core OS v1.29.0-master [INTERACTIVE PAGED HUB] on Linux Mint...")
+    print("[*] Booting Sovereign Core OS v1.31.0-master [INTERACTIVE PAGED HUB] on Linux Mint...")
     time.sleep(1)
     print(f"[+] Ledger Snapshot Engine: {backup_status}")
-    print("[+] Microkernel IPC Flags & Self-Healing Scraper synchronized.")
+    print("[+] Microkernel IPC Flags & Portability Layer synchronized.")
     print("[+] Zero-Trust Tor SOCKS5 network loopback established.")
     print("[+] Active Financial Portfolio & AMM Subsystem loaded.")
     
