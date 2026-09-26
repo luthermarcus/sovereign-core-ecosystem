@@ -1,6 +1,7 @@
-# Sovereign Core OS Ecosystem (v1.54.0-beta)
+# Sovereign Core OS Ecosystem (v1.72.0-beta)
 
-## Architecture Overview
-- **DePIN Node & Mining Engine:** Operates as an independent decentralized node running containerized routing protocols (Mysterium) and Tor-secured Bitcoin RPC validation[span_10](start_span)[span_10](end_span).
-- **Innovation Copyright Protocol:** Features an automated 5% micro-royalty ledger (`wallet.db`) tracking deployed scripts and routing earnings directly to the master wallet.
-- **Emulated Wallet & DEX TUI:** Provides secure, zero-clearnet visibility into portfolio balances and network staking power directly inside the mobile Curses interface.
+## Master Architecture & Interoperability
+- **Master Dashboard Terminal:** Centralized Option 1 view aggregating real-time system flags, anomaly alerts, and telemetry streams.
+- **XDA Modular Plugin Loader:** Dynamic extension architecture in `modules/` handling peer discovery, DB checkpoints, crypto integrity, and flag auditing.
+- **Bitcointalk Zero-Trust Security:** Strict Tor-only routing (`-proxy=127.0.0.1:9050`, `-onlynet=onion`) with zero open inbound ports.
+- **Zero-Tolerance Content Filtering:** Absolute network firewall blocking illicit media and unauthorized data vectors.
