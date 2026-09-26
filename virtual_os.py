@@ -9,9 +9,11 @@ sys.path.append(os.path.expanduser("~/sovereign-core-ecosystem/modules"))
 try:
     import royalty_distributor
     import peer_discovery
+    import dex_bridge
 except ImportError:
     royalty_distributor = None
     peer_discovery = None
+    dex_bridge = None
 
 def get_system_data():
     data = {}
@@ -49,6 +51,11 @@ def get_system_data():
         data["p2p_status"] = peer_discovery.execute_audit()
     else:
         data["p2p_status"] = "Status: Native P2P Discovery Standby"
+
+    if dex_bridge:
+        data["bridge_status"] = dex_bridge.check_bridge_status()
+    else:
+        data["bridge_status"] = "Status: Bridge Standby"
 
     try:
         sc = subprocess.run(["git", "status", "-uno"], capture_output=True, text=True, timeout=2)
@@ -88,7 +95,7 @@ def main_loop(stdscr):
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.18.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.19.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -134,7 +141,7 @@ def main_loop(stdscr):
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
             draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
             draw(4, f"Tor P2P Gateway : {d.get('p2p_status', 'Standby')}")
-            draw(5, "Content Filter  : Active (Zero-Tolerance Network Policy)")
+            draw(5, f"DEX Socket Link : {d.get('bridge_status', 'Standby')}")
             draw(6, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
             draw(0, "[EMULATED BIP44 WALLET & DEX MATRIX]", True)
