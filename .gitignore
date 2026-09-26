@@ -17,3 +17,5 @@ ecosystem_metrics.db
 /home/luther/node-stack/ledgers/
 ~/.bashrc_backups/
 dashboard_error_logs/
+sovereign_metrics.db
+venv/
