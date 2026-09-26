@@ -21,3 +21,4 @@ sovereign_metrics.db
 venv/
 /home/luther/node-stack/backups/
 knowledge.db
+.hidden_ecosystem_notes.md
