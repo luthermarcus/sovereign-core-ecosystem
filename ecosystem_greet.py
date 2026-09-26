@@ -1,4 +1,4 @@
-# Sovereign Core Production Utility: Triple-Dashboard SSH Startup Sequence
+# Sovereign Core Production Utility: Quad-Dashboard SSH Startup Sequence
 import os
 import subprocess
 import time
@@ -13,6 +13,11 @@ def run_startup_sequence():
     
     # Dashboard 2: 6-App Passive Income Matrix
     subprocess.run(["python3", os.path.join(eco_dir, "ecosystem_earnings.py")])
+    print("\n")
+    time.sleep(0.3)
+    
+    # Dashboard 4: Cross-OS Flags & Telemetry Matrix
+    subprocess.run(["python3", os.path.join(eco_dir, "ecosystem_flags.py")])
     print("\n")
     time.sleep(0.3)
     
