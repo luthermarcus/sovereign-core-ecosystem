@@ -1,14 +1,14 @@
-# Sovereign Core Production Plugin: Tor Onion P2P Peer Discovery
+# Sovereign Core Production Plugin: Native Tor Onion P2P Peer Discovery
 import sqlite3
 import os
 import subprocess
 
 PLUGIN_NAME = "TorPeerDiscovery"
-VERSION = "1.0.0"
+VERSION = "2.0.0"
 
 def execute_audit():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/knowledge.db")
-    onion_address = "sovereign_dex_p2p_v3_local.onion"
+    onion_address = "pending_generation.onion"
     status = "Active"
     
     try:
@@ -28,7 +28,7 @@ def execute_audit():
     except:
         pass
         
-    return f"Status: P2P Discovery {status} ({onion_address})"
+    return f"Status: Native P2P Discovery {status} ({onion_address})"
 
 if __name__ == "__main__":
     print(execute_audit())
