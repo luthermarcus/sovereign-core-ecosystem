@@ -4,7 +4,7 @@ from modules.display_manager import MultiDisplayManager
 def main():
     res = MultiDisplayManager.render_all_displays_summary()
     print("=" * 70)
-    print("=== SOVEREIGN CORE OS v6.5.0-beta : ALL DISPLAYS ACTIVE ===")
+    print("=== SOVEREIGN CORE OS v6.6.0-beta : ALL 4 DISPLAYS ACTIVE ===")
     print("=" * 70)
     d1 = res["display_1_depin"]
     d2 = res["display_2_hardware"]
