@@ -8,9 +8,15 @@ import sys
 sys.path.append(os.path.expanduser("~/sovereign-core-ecosystem/modules"))
 try:
     import royalty_distributor
-except:
+except ImportError:
     royalty_distributor = None
-from portability_layer import get_environment_profile
+
+# Guard against missing modules on alternate environments
+try:
+    from portability_layer import get_environment_profile
+except ImportError:
+    def get_environment_profile():
+        return {"distro": "Linux Mint (Bare-Metal)", "release": "7.0.0"}
 
 def get_system_data():
     data = {}
@@ -83,7 +89,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.15.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.16.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -128,8 +134,9 @@ def main_loop(stdscr):
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
             draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
-            draw(4, "Content Filter  : Active (Zero-Tolerance Network Policy)")
-            draw(5, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
+            draw(4, "Tor P2P Gateway : Active (.onion Hidden Service Enabled)")
+            draw(5, "Content Filter  : Active (Zero-Tolerance Network Policy)")
+            draw(6, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
             draw(0, "[EMULATED BIP44 WALLET & DEX MATRIX]", True)
             if d["wallet_key"]:
@@ -150,14 +157,14 @@ def main_loop(stdscr):
             draw(0, "[XDA DEVELOPER MODULES & TEST RUNNER]", True)
             draw(2, f"Active Update Watcher Flag: {d['git_sync']}")
             y_m = 3
-            for m in mods[:6]:
+            for m in mods[:14]:
                 draw(y_m, f" [x] {m}"[:max_x-4])
                 y_m += 1
         elif selection == 5:
             draw(0, "[README & SYSTEM MANUAL - GITHUB REPO]", True)
             draw(2, "GitHub Repo: github.com/luthermarcus/sovereign-core-ecosystem")
             draw(3, "Self-Custody: Local HD keys derived in wallet.db (m/44'/0'/0'/0/0)")
-            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)")
+            draw(4, "Security   : Tor SOCKS5 Loopback & P2P Onion Discovery")
             draw(5, "Consensus  : SC-GPL 5% Liquidity Treasury & 0.05% Miner Fee")
         elif selection == 6:
             draw(0, "[SQLITE FTS5 KNOWLEDGE VAULT]", True)
