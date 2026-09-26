@@ -2,6 +2,7 @@ import curses
 import sqlite3
 import os
 import datetime
+import subprocess
 from portability_layer import get_environment_profile
 
 def get_system_data():
@@ -34,11 +35,14 @@ def get_system_data():
     try:
         conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/discipline_ledger.db")
         c = conn.cursor()
-        c.execute("SELECT event_type, description FROM discipline_ledger ORDER BY id DESC LIMIT 3")
+        c.execute("SELECT event_type, description FROM discipline_ledger ORDER BY id DESC LIMIT 2")
         data["discipline"] = c.fetchall()
         conn.close()
     except:
         data["discipline"] = []
+
+    daemon_check = subprocess.run(["pgrep", "-f", "telemetry_daemon.py"], capture_output=True, text=True)
+    data["daemon_active"] = daemon_check.returncode == 0
 
     return data
 
@@ -57,11 +61,11 @@ def main_loop(stdscr):
     
     selection = 0
     menu = [
-        "1. Command Center & Self-Healing Flags", 
+        "1. Command Center & Execution Checklist", 
         "2. Network & Zero-Tolerance Security", 
         "3. Emulated Wallet & DEX Matrix (FOX/PARROT-BTC)", 
         "4. Innovation Copyright & Royalties", 
-        "5. XDA Developer Modules & Self-Heal Engine", 
+        "5. XDA Developer Modules & Checklist Engine", 
         "6. SQLite FTS5 Knowledge Vault", 
         "7. Exit System"
     ]
@@ -70,7 +74,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.90.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.91.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -103,14 +107,11 @@ def main_loop(stdscr):
         now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         if selection == 0:
-            draw(0, f"| COMMAND CENTER & SELF-HEALING FLAGS | {now_str} |", True, 4)
-            draw(1, "=== AUTONOMOUS SELF-HEALING & DISCIPLINE LOG ===", bold=True)
-            y_f = 2
-            for disc in d["discipline"]:
-                draw(y_f, f"[{disc[0]}] {disc[1]}"[:max_x-4], color=3)
-                y_f += 1
-            draw(y_f, "=== EARNINGS PORTFOLIO (6 APPS + NODE) ===", bold=True)
-            y_off = y_f + 1
+            draw(0, f"| COMMAND CENTER & EXECUTION CHECKLIST | {now_str} |", True, 4)
+            daemon_str = "ACTIVE" if d["daemon_active"] else "OFFLINE"
+            draw(1, f"Checklist 1 [Daemon]: {daemon_str} | Checklist 2 [WAL Perms]: SECURE", bold=True, color=3)
+            draw(2, "=== EARNINGS PORTFOLIO (6 APPS + NODE) ===", bold=True)
+            y_off = 3
             for app in d["portfolio"]:
                 short_name = app[0].split()[0]
                 draw(y_off, f"[{short_name}] {app[1]} | ${app[3]:.2f}"[:max_x-4])
@@ -134,7 +135,7 @@ def main_loop(stdscr):
             draw(2, "Sovereign Core Microkernel: +12.45 Credits (5% Attribution)")
         elif selection == 4:
             mods = get_loaded_modules()
-            draw(0, "[XDA DEVELOPER MODULES & SELF-HEAL ENGINE]", True)
+            draw(0, "[XDA DEVELOPER MODULES & CHECKLIST ENGINE]", True)
             y_m = 2
             for m in mods[:8]:
                 draw(y_m, f" [x] {m}"[:max_x-4])

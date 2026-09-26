@@ -1,7 +1,7 @@
-# Sovereign Core OS Ecosystem (v1.90.0-beta)
+# Sovereign Core OS Ecosystem (v1.91.0-beta)
 
-## Autonomous Self-Healing & Flag Integration Architecture
-- **Dashboard A (Virtual OS TUI):** `virtual_os.py` — Primary interactive virtual operating system. Page 1 integrates self-healing auto-test flags and discipline logs.
-- **Dashboard B (Ecosystem Command Center CLI):** `ecosystem_dashboard.py` — CLI status matrix tracking auto-healing events and passive income yields.
-- **Self-Healing Test Runner (`modules/test_auto_runner.py`):** Continuously validates Tor sockets and SQLite WAL integrity, automatically executing permission repairs (`0o664`) and WAL checkpoints on anomaly detection.
-- **Perpetual Discipline Ledger (`discipline_ledger.db`):** Institutional accountability logging for all system events and automated remediations.
+## Master Architecture & Actionable Execution Checklist
+- **Dashboard A (Virtual OS TUI):** `virtual_os.py` — Interactive Curses TUI featuring integrated Actionable Execution Checklist verification on Page 1.
+- **Dashboard B (CLI Command Center):** `ecosystem_dashboard.py` — Terminal status matrix displaying live daemon checks, WAL permissions, and passive income earnings.
+- **Actionable Execution Checklist Engine (`modules/actionable_checklist.py`):** Automatically validates background telemetry processes and SQLite WAL integrity at runtime.
+- **Bitcointalk Zero-Trust Security:** Strict Tor-only routing (`-proxy=127.0.0.1:9050`, `-onlynet=onion`) with zero open inbound ports.
