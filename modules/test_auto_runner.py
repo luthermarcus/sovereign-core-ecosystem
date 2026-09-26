@@ -2,17 +2,15 @@
 import sqlite3
 import os
 import socket
-import subprocess
 
 PLUGIN_NAME = "MasterTestRunner"
-VERSION = "6.0.0"
+VERSION = "6.2.0"
 
 def run_integration_tests():
     print("[*] Executing Sovereign Core OS - Stress, Security & Interoperability Tests...")
     tests_passed = True
     report = []
 
-    # Test 1: OS Host Telemetry & WAL Quick Check
     try:
         db_path = os.path.expanduser("~/sovereign-core-ecosystem/sys_health.db")
         conn = sqlite3.connect(db_path)
@@ -23,7 +21,6 @@ def run_integration_tests():
         tests_passed = False
         report.append(f"[x] Test 1 Failed: {e}")
 
-    # Test 2: Pure DePIN Infrastructure & AMM Pools
     try:
         wallet_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")
         conn = sqlite3.connect(wallet_path)
@@ -47,7 +44,6 @@ def run_integration_tests():
         tests_passed = False
         report.append(f"[x] Test 2 Failed: {e}")
 
-    # Test 3: Blockchain BIP44 HD Key Derivation
     try:
         conn = sqlite3.connect(wallet_path)
         c = conn.cursor()
@@ -63,7 +59,6 @@ def run_integration_tests():
         tests_passed = False
         report.append(f"[x] Test 3 Failed: {e}")
 
-    # Test 4: Tor SOCKS5 Zero-Trust Network & Security Stress Test
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(1.0)

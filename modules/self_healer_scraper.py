@@ -1,10 +1,9 @@
 # Sovereign Core Production Plugin: Self-Healing Error Scraper & Knowledge Indexer
 import sqlite3
 import os
-import datetime
 
 PLUGIN_NAME = "SelfHealerScraper"
-VERSION = "1.0.0"
+VERSION = "1.2.0"
 
 def audit_and_scrape_errors():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/knowledge.db")
@@ -20,14 +19,13 @@ def audit_and_scrape_errors():
                 resolution_status TEXT
             )
         """)
-        # Log a healthy telemetry heartbeat scrape
         conn.execute("INSERT INTO error_telemetry (module_name, error_message, resolution_status) VALUES (?, ?, ?)", 
                      ("CoreMicrokernel", "No critical faults detected. System nominal.", "Resolved"))
         conn.commit()
         conn.close()
-        return "Status: Active (Self-Healing Scraper Monitoring System Logs)"
+        return "Active (Self-Healing Scraper Monitoring System Logs)"
     except Exception as e:
-        return f"Status: Scraper Standby ({e})"
+        return f"Standby ({e})"
 
 if __name__ == "__main__":
     print(audit_and_scrape_errors())

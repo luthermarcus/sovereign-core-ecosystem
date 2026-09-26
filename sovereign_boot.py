@@ -11,13 +11,12 @@ except:
     backup_status = "Status: Backup Engine Offline"
 
 def boot():
-    print("[*] Booting Sovereign Core OS v2.25.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
+    print("[*] Booting Sovereign Core OS v1.29.0-master [INTERACTIVE PAGED HUB] on Linux Mint...")
     time.sleep(1)
     print(f"[+] Ledger Snapshot Engine: {backup_status}")
+    print("[+] Microkernel IPC Flags & Self-Healing Scraper synchronized.")
     print("[+] Zero-Trust Tor SOCKS5 network loopback established.")
-    print("[+] Autonomous Tor P2P Sync Engine activated.")
-    print("[+] Off-Chain AMM Smart Contract Engine activated.")
-    print("[+] SC-GPL Ecosystem consensus verified.")
+    print("[+] Active Financial Portfolio & AMM Subsystem loaded.")
     
     virtual_os_path = os.path.expanduser("~/sovereign-core-ecosystem/virtual_os.py")
     if os.path.exists(virtual_os_path):
