@@ -5,39 +5,23 @@ class OSStateRollup:
     IPC_PATH = "/dev/shm/l2_state_root.json"
     
     @classmethod
-    def execute_compressed_rollup(cls, depin_data, amm_data, license_data):
-        """
-        Replaces fragmented sidechains. Compresses all ecosystem state into a 
-        single unified payload, significantly reducing L1 anchoring overhead.
-        """
+    def execute_rollup_to_l1(cls, l2_flags):
         hw_state = HardwareWarden.audit_physical_hardware()
         
-        # Uncompressed Simulation Data (Legacy Bloat)
-        legacy_bloat_bytes = len(json.dumps(depin_data)) + len(json.dumps(amm_data)) + len(json.dumps(license_data))
-        
-        # Unified State Compression
-        unified_state = {
-            "l1_hw": hw_state['thermal_celsius'],
-            "d_yield": depin_data.get('total_gross', 0),
-            "a_k": amm_data.get('invariant_k', 0),
-            "l_hash": license_data.get('commit_hash', '')[:8],
-            "ts": int(time.time())
+        combined = {
+            "l1_hardware": hw_state,
+            "l2_rollup": l2_flags,
+            "timestamp": time.time()
         }
-        
-        serialized = json.dumps(unified_state, separators=(',', ':')).encode()
-        compressed_bytes = len(serialized)
-        state_root = hashlib.sha256(serialized).hexdigest()
-        
-        compression_ratio = round((1.0 - (compressed_bytes / float(legacy_bloat_bytes))) * 100, 2) if legacy_bloat_bytes > 0 else 0
+        state_root = hashlib.sha256(json.dumps(combined, sort_keys=True).encode()).hexdigest()
         
         payload = {
             "state_root": state_root,
-            "l1_status": "Anchored via Unified Sequencer",
-            "l2_status": "Synchronized & Compressed",
-            "legacy_bytes": legacy_bloat_bytes,
-            "compressed_bytes": compressed_bytes,
-            "efficiency_gain_pct": compression_ratio,
-            "thermal_health": f"{hw_state['thermal_celsius']}°C"
+            "l1_status": "Anchored via L1 Warden",
+            "l2_status": "Synchronized PoUW",
+            "thermal_health": f"{hw_state['thermal_celsius']}°C",
+            "fan_state": hw_state['fan_state'],
+            "pouw_multiplier": hw_state['l2_workload_multiplier']
         }
         
         try:

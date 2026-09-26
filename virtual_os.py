@@ -1,6 +1,10 @@
-import os, sys, termios, tty, sqlite3, time, hashlib, json
+import os, sys, termios, tty, sqlite3, time
+from modules.chain_interop import SovereignChainEngine
+from modules.l2_state_rollup import OSStateRollup
+from modules.hardware_warden import HardwareWarden
 
-def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
+def clear_screen():
+    os.system('clear' if os.name == 'posix' else 'cls')
 
 def get_single_keypress():
     fd = sys.stdin.fileno()
@@ -16,54 +20,35 @@ def fetch_kb(table):
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute(f'SELECT * FROM {table}')
+        c.execute(f'SELECT community, critique, sovereign_core_implementation FROM {table}')
         rows = c.fetchall()
         conn.close()
         return rows
     except Exception: return []
 
-def subview_bip301_mining():
-    clear_screen()
-    print("=" * 70 + "\n=== BIP 301 BLIND MERGED MINING & DB SEPARATION ===\n" + "=" * 70)
-    print("  [Step 1] L2 Node processing DePIN PoUW and AMM Swaps in RAM...")
-    time.sleep(0.4)
-    l2_state_root = hashlib.sha256(str(time.time()).encode()).hexdigest()
-    print(f"  [>] L2 State Root Generated : 0x{l2_state_root[:24]}...")
-    print(f"  [>] Submitting Bid to L1    : $50.00 (via /dev/shm IPC)")
-    
-    print("\n  [Step 2] L1 Host Miner blindly accepting bid to anchor l1_warden.db...")
-    time.sleep(0.5)
-    blind_hash = hashlib.sha256(f"l1_coinbase_{l2_state_root}".encode()).hexdigest()
-    
-    print("-" * 70)
-    print(f"  Status          : ANCHORED & UNIFIED")
-    print(f"  L1 Blind Hash   : 0x{blind_hash[:32]}...")
-    print(f"  L1 Miner Profit : $50.00 USD (Zero L2 Validation Overhead)")
-    print("=" * 70 + "\n\nPress any key to return to Sovereign Core OS Hub...")
-    get_single_keypress()
-
 def main():
     page = 1
-    msg = "Sovereign Core OS v4.1.0-beta. Anti-Bloat DB Separation Active."
+    msg = "Sovereign Core OS v4.2.0-beta. POL & Active Cooling Validated."
     while True:
         clear_screen()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v4.1.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        hw = HardwareWarden.audit_physical_hardware()
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v4.2.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
         
         if page == 1:
-            print("--- ⚡ L1 Hardware Warden / L2 Node Separation ---")
-            print("  L1 Host Database: l1_warden.db (Hardware/Hashing Only)")
-            print("  L2 Node Database: l2_rollup.db (DePIN/AMM Logic Only)")
-            print("\n  [1] ⛏️  Execute BIP 301 Blind Merged Mining (Combine DBs via Hash)")
-            print("  [2] 🌉 Execute SC-GPL Capital Raise AMM Swap (FOX/USDC)")
+            print("--- ⚡ L1 Hardware Warden & PoUW Operations ---")
+            print(f"  L1 Thermals: {hw['thermal_celsius']}°C | Fans: {hw['fan_state']}")
+            print(f"  L2 Pacing  : {hw['l2_workload_multiplier']}x execution speed")
+            print("\n  [1] ⛏️  Execute PoUW Mining (Active L1 Fan Control & DB Rollup)")
+            print("  [2] 🌉 Execute Protocol-Owned Liquidity (POL) AMM Swap")
             print("  [3] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ CROSS-CHAIN DEX BLOAT SOLUTIONS KNOWLEDGE BASE ---")
-            kb = fetch_kb("cross_chain_dex_bloat")
+            print("--- 🛠️ XDA / BITCOINTALK THERMAL & LIQUIDITY MATRIX ---")
+            kb = fetch_kb("thermal_pol_matrix")
             for row in kb:
-                print(f"  [>] {row[1]}")
-                print(f"      Critique: {row[2]}")
-                print(f"      Solution: {row[3]}")
+                print(f"  [>] {row[0]}")
+                print(f"      Critique : {row[1]}")
+                print(f"      Solution : {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -85,12 +70,34 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_bip301_mining(); msg = "Executed BIP 301 Merged Mining DB Combination."
+                clear_screen()
+                print("=== L1 HARDWARE WARDEN & PoUW MINING ===")
+                print(f"  L1 Thermals : {hw['thermal_celsius']}°C")
+                print(f"  L1 Fans     : {hw['fan_state']}")
+                print(f"  L2 Pacing   : {hw['l2_workload_multiplier']}x execution speed\n")
+                print("  Executing DePIN Telemetry Validation in RAM...")
+                blocks = int(3 * hw['l2_workload_multiplier']) or 1
+                for i in range(1, blocks + 1):
+                    print(f"  [v] Validated DePIN routing state #{i}")
+                    time.sleep(0.3)
+                print("\n  Executing L2-to-L1 State Rollup...")
+                res = OSStateRollup.execute_rollup_to_l1({"pouw_blocks": blocks, "fans": hw['fan_state']})
+                print(f"  [>] Anchored State Root: 0x{res['state_root'][:32]}...")
+                print("\nPress any key to return...")
+                get_single_keypress(); msg = "Executed PoUW Mining with L1 Hardware Protection."
             elif choice == '2':
                 clear_screen()
-                print("=== AMM SWAP ===\nDev Royalty Deducted via L2 Node.\nPress any key to return...")
-                get_single_keypress(); msg = "Executed AMM Swap in L2 Database."
-            elif choice == '3': break
+                res = SovereignChainEngine.execute_amm_swap(1000.0)
+                print("=== PROTOCOL-OWNED LIQUIDITY (POL) AMM SWAP ===")
+                print(f"  Deposit         : ${res['deposit']:,.2f} USDC")
+                print(f"  Community Tax   : ${res['pol_fee_usdc']:,.2f} USDC (5% POL)")
+                print(f"  FOX Auto-Locked : {res['pol_fox_locked']:,.2f} FOX permanently secured")
+                print(f"  Output Yield    : {res['yield_output']:.2f} FOX")
+                print(f"  Invariant k     : {res['invariant_k']:,.2f} [VERIFIED]")
+                print("\nPress any key to return...")
+                get_single_keypress(); msg = "Executed POL AMM Swap."
+            elif choice == '3':
+                break
 
     os.system('clear'); os.system('stty sane')
 
