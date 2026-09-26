@@ -1,31 +1,16 @@
-# Sovereign Core Production Utility: Quad-Dashboard SSH Startup Sequence
 import os
 import subprocess
-import time
 
-def run_startup_sequence():
-    eco_dir = os.path.expanduser("~/sovereign-core-ecosystem")
-    
-    # Dashboard 1: DePIN Infrastructure & AMM
-    subprocess.run(["python3", os.path.join(eco_dir, "ecosystem_dashboard.py")])
-    print("\n")
-    time.sleep(0.3)
-    
-    # Dashboard 2: 6-App Passive Income Matrix
-    subprocess.run(["python3", os.path.join(eco_dir, "ecosystem_earnings.py")])
-    print("\n")
-    time.sleep(0.3)
-    
-    # Dashboard 4: Cross-OS Flags & Telemetry Matrix
-    subprocess.run(["python3", os.path.join(eco_dir, "ecosystem_flags.py")])
-    print("\n")
-    time.sleep(0.3)
-    
-    print("[*] Initializing Dashboard 3 (Interactive Sovereign Core OS Hub)...")
-    time.sleep(0.5)
-    
-    # Dashboard 3: Interactive 5-Page TUI OS Hub
-    subprocess.run(["python3", os.path.join(eco_dir, "virtual_os.py")])
+def run_login_hud():
+    eco = os.path.expanduser("~/sovereign-core-ecosystem")
+    subprocess.run(["python3", os.path.join(eco, "ecosystem_dashboard.py")])
+    print("")
+    subprocess.run(["python3", os.path.join(eco, "ecosystem_earnings.py")])
+    print("")
+    subprocess.run(["python3", os.path.join(eco, "ecosystem_flags.py")])
+    print("")
+    print(">>> Native Host Prompt Ready. Type 'sos' to enter Sovereign Core Virtual OS.")
+    print("=" * 70)
 
 if __name__ == "__main__":
-    run_startup_sequence()
+    run_login_hud()

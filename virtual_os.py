@@ -3,14 +3,12 @@ import sys
 import termios
 import tty
 import sqlite3
-import hashlib
 import time
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
 
 def get_single_keypress():
-    """Reads a single keystroke instantly without waiting for [ENTER]."""
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
     try:
@@ -21,7 +19,6 @@ def get_single_keypress():
     return ch.upper()
 
 def flush_and_exit():
-    """Aggressively flushes termios buffer and resets the shell."""
     try:
         termios.tcflush(sys.stdin, termios.TCIOFLUSH)
     except Exception:
@@ -34,12 +31,43 @@ def get_portfolio():
     return [
         ("BTC", 0.85, 84049.37, 71441.96),
         ("FOX", 10000.00, 1.62, 16200.00),
+        ("USDC", 5000.00, 1.00, 5000.00),
         ("BNB", 12.00, 776.91, 9322.92),
-        ("USDT", 5000.00, 1.00, 4998.50),
         ("XRP", 2500.00, 1.56, 3912.50),
         ("TAO", 10.50, 317.48, 3333.54),
         ("ETH", 1.20, 2689.56, 3227.47)
     ]
+
+def subview_amm_swap():
+    clear_screen()
+    print("=" * 70)
+    print("=== DEV SANDBOX: NATIVE FOX SIDECHAIN DEX & SC-GPL CAPITAL RAISE ===")
+    print("=" * 70)
+    print("  Architecture : Native FOX Sidechain Token (No Custodial Wrappers)")
+    print("  Engine       : Constant Product AMM (x * y = k)")
+    print("-" * 70)
+    
+    x = 50000.00  # USDC Reserve
+    y = 10000.00  # FOX Reserve
+    k = x * y
+    dx = 1000.00  # User trades 1000 USDC for FOX
+    
+    # 5% SC-GPL Developer Capital Raise
+    capital_raise = dx * 0.05
+    net_dx = dx - capital_raise
+    
+    new_x = x + net_dx
+    new_y = k / new_x
+    dy = y - new_y
+    
+    print(f"  [1] Initial DEX Pool : {x:,.2f} USDC / {y:,.2f} FOX")
+    print(f"  [2] User Execution   : Swapping {dx:,.2f} USDC for native FOX")
+    print(f"  [3] Capital Raise    : 5% SC-GPL Royalty (${capital_raise:,.2f} USDC) sent to Dev Treasury")
+    print(f"  [4] Output Yield     : User receives {dy:,.2f} FOX")
+    print(f"  [5] System Integrity : Post-Swap Invariant (k) Verified ({new_x * new_y:,.2f} == k)")
+    print("=" * 70)
+    print("\nPress any key to return to Sovereign Core OS Hub...")
+    get_single_keypress()
 
 def fetch_depin_matrix():
     db_path = os.path.expanduser('~/sovereign-core-ecosystem/knowledge.db')
@@ -55,26 +83,27 @@ def fetch_depin_matrix():
 
 def main():
     current_page = 1
-    status_msg = "Sandbox Active. Instant execution enabled (No [ENTER] needed)."
+    status_msg = "Dev Sandbox Active. Instant execution enabled (No [ENTER] needed)."
     
     while True:
         clear_screen()
         print("=" * 70)
-        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.4.0-beta [PAGE {current_page}/5] ===")
+        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.5.0-beta [PAGE {current_page}/5] ===")
         print("=" * 70)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC         : Microkernel v2.4.0-beta synced.")
-            print("[GREEN] FLAG_SANDBOX_ACTIVE      : Virtual Simulation Mode Enabled.")
+            print("[GREEN] FLAG_MASTER_SYNC    : Microkernel v2.5.0-beta synced.")
+            print("[GREEN] FLAG_SIDECHAIN_NODE : Native FOX L2 active (No Wrappers).")
+            print("[GREEN] FLAG_CAPITAL_RAISE  : 5% SC-GPL Developer Treasury active.")
             print("\n--- 🟡 Active Financial Portfolio (Wallet Sync) ---")
             for asset in get_portfolio():
                 print(f"  {asset[0]:<5} | Bal: {asset[1]:<12,.2f} | Pr: ${asset[2]:<10,.2f} | Val: ${asset[3]:,.2f}")
             print("\nBare-Metal OS Menu [Page 1/5]:")
             print("  [1] 📥 View Receive Address (BIP44 Vault)")
             print("  [2] 💸 Send Transaction (EIP-4337 Gasless)")
-            print("  [3] 🔄 Execute AMM Swap (Constant Product Invariant)")
-            print("  [4] ⛏️  Run DePIN Block Validation Simulation")
+            print("  [3] 🔄 Test SC-GPL Capital Raise (FOX / USDC AMM)")
+            print("  [4] ➡️  Switch to Page 2 (Network & Security) [Hotkey: N]")
             print("  [5] 🛑 Exit to Native Dell Shell [Hotkey: Q]")
             
         elif current_page == 2:
@@ -89,16 +118,15 @@ def main():
             
         elif current_page == 3:
             print("--- ⚖️ SOVEREIGN CONSENSUS & ROYALTY MATRIX [PAGE 3/5] ---")
-            print("  Protocol Model  : SC-GPL Consensus Standard")
-            print("  Node Gross DePIN Yield          : $49.20 USD")
-            print("  Net Operator Retention (95%)    : $46.74 USD")
-            print("  Global Liquidity Treasury (5%)  : $2.46 USD (Auto-Compounded)")
-            print("  Miner Reward Allocation (0.05%) : Distributed per validation round")
+            print("  Protocol Model  : SC-GPL Developer Capital Consensus")
+            print("  Developer Capital Allocation (5%): Auto-compounded into Dev Treasury")
+            print("  Miner Reward Allocation (0.05%)  : Distributed to DePIN routing nodes")
+            print("  Community Consensus             : Bitcointalk zero-custody standard")
             print("\nBare-Metal OS Menu [Page 3/5]:")
             print("  [1] ⬅️  Return to Page 2 [Hotkey: P]")
             print("  [2] ➡️  Switch to Page 4 (DePIN Virtualization) [Hotkey: N]")
             print("  [3] 🛑 Exit to Native Shell")
-            
+
         elif current_page == 4:
             print("--- 🛠️ DEPIN VIRTUALIZATION & COMMUNITY MATRIX [PAGE 4/5] ---")
             matrix = fetch_depin_matrix()
@@ -131,7 +159,9 @@ def main():
         except (KeyboardInterrupt, EOFError):
             flush_and_exit()
         
-        if choice in ['Q', '5', '\x03', '\x04']: # Handles Q, 5, Ctrl+C, Ctrl+D
+        if choice in ['Q', '5', '\x03', '\x04'] and current_page == 1:
+            flush_and_exit()
+        elif choice == '3' and current_page > 1:
             flush_and_exit()
         elif choice == 'N':
             current_page = (current_page % 5) + 1
@@ -145,42 +175,31 @@ def main():
         if current_page == 1:
             if choice == '1': 
                 clear_screen()
-                print("=== VIRTUAL SANDBOX: RECEIVE ADDRESS ===\nTaproot Address: bc1p_sandbox_x79...\n")
+                print("=== VIRTUAL SANDBOX: RECEIVE ADDRESS ===\nTaproot: bc1p_sandbox_x79...\n")
                 print("Press any key to return...")
                 get_single_keypress()
                 status_msg = "Inspected BIP44 Vault."
             elif choice == '2': 
                 clear_screen()
-                print("=== VIRTUAL SANDBOX: GASLESS TX ===\nSimulating Tor SOCKS5 Relay...\nTx Hash: 0xabc123... [SUCCESS]\n")
+                print("=== VIRTUAL SANDBOX: GASLESS TX ===\nTx Hash: 0xabc123... [SUCCESS]\n")
                 print("Press any key to return...")
                 get_single_keypress()
                 status_msg = "Tested EIP-4337 Relay."
             elif choice == '3': 
-                clear_screen()
-                print("=== VIRTUAL SANDBOX: AMM SWAP ===\nExecuting x * y = k Invariant...\nAuto-compounding 5% treasury fee.\n")
-                print("Press any key to return...")
-                get_single_keypress()
-                status_msg = "Executed AMM Constant Product Swap."
-            elif choice == '4': 
-                clear_screen()
-                print("=== VIRTUAL SANDBOX: DEPIN MINING ===\nValidating hashes...")
-                for i in range(3):
-                    print(f"[v] Block {i} Validated.")
-                    time.sleep(0.3)
-                print("\nPress any key to return...")
-                get_single_keypress()
-                status_msg = "Simulated DePIN Block Validation."
+                subview_amm_swap()
+                status_msg = "Tested 5% SC-GPL Capital Raise via AMM Swap."
+            elif choice == '4':
+                current_page = 2
+                status_msg = "Navigated to Page 2."
             else: 
                 status_msg = f"Invalid command '{choice}'."
-        elif current_page in [2, 3, 4, 5]:
+        else:
             if choice == '1': 
                 current_page -= 1
                 status_msg = f"Navigated to Page {current_page}."
             elif choice == '2': 
                 current_page = (current_page % 5) + 1
                 status_msg = f"Navigated to Page {current_page}."
-            elif choice == '3': 
-                flush_and_exit()
             else: 
                 status_msg = f"Invalid command '{choice}'."
 

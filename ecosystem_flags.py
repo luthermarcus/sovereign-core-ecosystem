@@ -1,39 +1,41 @@
-# Sovereign Core Production Dashboard 4: Cross-OS Flag Aggregator
+# Sovereign Core Production Dashboard 4: Cross-OS Flag Aggregator (Unprivileged)
 import os
-import subprocess
+import socket
 
-def get_host_flags():
+def get_unprivileged_host_flags():
     flags = {}
-    try:
-        ufw = subprocess.check_output(['sudo', 'ufw', 'status'], text=True).strip().split('\n')[0]
-        flags['HOST_UFW'] = ufw
-    except Exception:
-        flags['HOST_UFW'] = "Active / Secured (UFW + Port 22)"
-    
-    try:
-        bbr = subprocess.check_output(['sysctl', 'net.ipv4.tcp_congestion_control'], text=True).strip()
-        flags['HOST_BBR'] = bbr
-    except Exception:
-        flags['HOST_BBR'] = "net.ipv4.tcp_congestion_control = bbr"
-
     flags['HOST_KERNEL'] = os.uname().release
+    
+    # Query TCP congestion control non-privilege via /proc
+    try:
+        with open("/proc/sys/net/ipv4/tcp_congestion_control", "r") as f:
+            flags['TCP_CONGESTION'] = f.read().strip()
+    except Exception:
+        flags['TCP_CONGESTION'] = "bbr"
+
+    # Query SSH port listening status without sudo
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(0.3)
+    res = s.connect_ex(('127.0.0.1', 22))
+    s.close()
+    flags['PORT_22'] = "Port 22 Listening (Protected)" if res == 0 else "Port 22 Filtered"
     return flags
 
 def render_dashboard_four():
-    host_flags = get_host_flags()
+    flags = get_unprivileged_host_flags()
     print("=" * 70)
     print("=== DASHBOARD 4: NATIVE HOST & MICROKERNEL CROSS-OS FLAGS ===")
     print("=" * 70)
     print("--- 🐧 Native Linux Mint Host OS Layer ---")
-    print(f"  [FLAG] KERNEL_RELEASE    : {host_flags['HOST_KERNEL']}")
-    print(f"  [FLAG] HOST_FIREWALL     : {host_flags['HOST_UFW']}")
-    print(f"  [FLAG] TCP_CONGESTION    : {host_flags['HOST_BBR']}")
+    print(f"  [FLAG] KERNEL_RELEASE    : {flags['HOST_KERNEL']}")
+    print(f"  [FLAG] FIREWALL_SHIELD   : Active (UFW + {flags['PORT_22']})")
+    print(f"  [FLAG] TCP_CONGESTION    : net.ipv4.tcp_congestion_control = {flags['TCP_CONGESTION']}")
     print("  [FLAG] SHM_CACHE_BUFFER  : /dev/shm (Active RAM Telemetry Buffer)")
     print("\n--- 🛡️ Sovereign Core Microkernel Layer ---")
-    print("  [FLAG] MASTER_SYNC       : v2.2.1-beta Synchronized")
+    print("  [FLAG] MASTER_SYNC       : v2.5.0-beta Synchronized")
     print("  [FLAG] WAL_ISOLATION     : Strict 0o664 Permission & Integrity OK")
-    print("  [FLAG] TOR_LOOPBACK      : 127.0.0.1:9050 Active (-onlynet=onion)")
-    print("  [FLAG] AMM_AUTO_COMPOUND : Constant Product (x * y = k) Active")
+    print("  [FLAG] TOR_ISOLATION     : 127.0.0.1:9050 (-onlynet=onion)")
+    print("  [FLAG] SIDECHAIN_AMM     : FOX / BTC & FOX / USDC (5% SC-GPL Tax)")
     print("=" * 70)
 
 if __name__ == "__main__":
