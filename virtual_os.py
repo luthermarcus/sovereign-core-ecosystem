@@ -5,6 +5,7 @@ from modules.transaction_guard import TransactionGuard
 from modules.xda_debugger import XDADebugger
 from modules.xda_air import XDAAutomatedIncidentResponse
 from modules.system_warden import SystemSecurityWarden
+from modules.role_switcher import RoleSwitcherEngine
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 def get_single_keypress():
@@ -18,55 +19,88 @@ def fetch_kb():
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute('SELECT security_layer, isolation_mechanism, exploit_mitigation FROM system_security_kb')
+        c.execute('SELECT architecture_layer, functionality, benefit FROM role_depin_kb')
         rows = c.fetchall()
         conn.close()
         return rows
     except Exception: return []
 
-def subview_system_security_audit():
+def subview_role_manager():
+    clear_screen()
+    current = RoleSwitcherEngine.get_current_role()
+    print("=" * 70)
+    print("=== DYNAMIC ROLE SWITCHER & BETA TESTING MANAGER ===")
+    print("=" * 70)
+    print(f"  Current Active Role : {current}")
+    print("\n  Available Beta Testing Roles:")
+    print("    [1] L1_BARE_METAL_MINER (Hardware, Thermals, BIP 301 BMM)")
+    print("    [2] L2_SANDBOX_TESTER   (DePIN Stack, AMM Swaps, Dual-Path Guard)")
+    print("    [3] XDA_AUDITOR         (AIR Self-Healing, WAL Checkpointing)")
+    print("-" * 70)
+    print("  Select role [1-3] or any other key to cancel: ", end="")
+    sys.stdout.flush()
+    
+    choice = get_single_keypress()
+    if choice == '1':
+        res = RoleSwitcherEngine.switch_role("L1_BARE_METAL_MINER")
+        print(f"\n  [v] Switched to Role: {res['role']}")
+    elif choice == '2':
+        res = RoleSwitcherEngine.switch_role("L2_SANDBOX_TESTER")
+        print(f"\n  [v] Switched to Role: {res['role']}")
+    elif choice == '3':
+        res = RoleSwitcherEngine.switch_role("XDA_AUDITOR")
+        print(f"\n  [v] Switched to Role: {res['role']}")
+    else:
+        print("\n  [!] Role switch cancelled.")
+    
+    time.sleep(0.8)
+
+def subview_depin_emulation():
     clear_screen()
     print("=" * 70)
-    print("=== SYSTEM-LEVEL L1/L2 PRIVILEGE & SECURITY AUDIT ===")
+    print("=== DEPIN TELEMETRY EMULATION & DECENTRALIZATION AUDIT ===")
     print("=" * 70)
-    print("  [Step 1] Auditing kernel namespaces and user-space boundaries...")
+    print("  [Step 1] Polling decentralized node stack in RAM (/dev/shm)...")
     time.sleep(0.4)
-    res = SystemSecurityWarden.audit_system_namespaces()
+    data = RoleSwitcherEngine.emulate_depin_telemetry()
     
-    print(f"  L1 Kernel Protection : {res['l1_kernel_protection']}")
-    print(f"  L2 Sandbox Isolation : {res['l2_sandbox_isolation']}")
-    print(f"  Privilege Esc. Risk  : {res['privilege_escalation_risk']}")
-    print(f"  Active Processes     : {res['active_processes']}")
+    print(f"  Mysterium Node      : {data['mysterium_myst']} MYST")
+    print(f"  EarnApp             : ${data['earnapp_usd']:.2f} USD")
+    print(f"  TraffMonetizer      : ${data['traffmonetizer_usd']:.2f} USD")
+    print(f"  PacketStream        : ${data['packetstream_usd']:.2f} USD")
+    print(f"  Pawns.app           : ${data['pawns_usd']:.2f} USD")
+    print(f"  Honeygain           : ${data['honeygain_usd']:.2f} USD")
     print("-" * 70)
-    print("  Audit Status         : System security barriers verified active.")
+    print(f"  Total Accrued Yield : ${data['total_yield_usd']:.2f} USD")
+    print(f"  Emulation Status    : {data['emulation_status']}")
     print("=" * 70)
     print("\nPress any key to return...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v5.9.0-beta. System L1/L2 Isolation Active."
+    msg = "Sovereign Core OS v6.0.0-beta. Role Switcher & DePIN Emulation Active."
     while True:
         clear_screen()
         hw = HardwareWarden.audit_physical_hardware()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.9.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        current_role = RoleSwitcherEngine.get_current_role()
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v6.0.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print(f"  Active Profile Role : {current_role} | Thermals: {hw['thermal_celsius']}°C")
         
         if page == 1:
-            print("--- ⚡ L1/L2 System Security Operations ---")
-            print(f"  L1 Thermals: {hw['thermal_celsius']}°C | Fan State: {hw['fan_state']}")
-            print("\n  [1] 🔒 Run System-Level L1/L2 Privilege & Security Audit")
-            print("  [2] 🤖 Run XDA Automated Incident Response (AIR) Audit")
-            print("  [3] 🛡️ Test Dual-Path Transaction Guard (Phishing Check)")
-            print("  [4] ⛏️  Execute BIP 301 Blind Merged Mining")
+            print("\n  [1] 🔄 Switch Beta Testing Profile Role")
+            print("  [2] 📡 Run DePIN Telemetry Emulation & Node Audit")
+            print("  [3] 🔒 Run System-Level L1/L2 Security Audit")
+            print("  [4] 🤖 Run XDA Automated Incident Response (AIR) Audit")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ SYSTEM SECURITY KNOWLEDGE BASE ---")
+            print("--- 🛠️ ARCHITECTURE & ROLE KNOWLEDGE BASE ---")
             kb = fetch_kb()
             for row in kb:
                 print(f"  [>] Layer  : {row[0]}")
-                print(f"      Mechanism: {row[1]}")
-                print(f"      Defense  : {row[2]}")
+                print(f"      Feature: {row[1]}")
+                print(f"      Benefit: {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -88,23 +122,19 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_system_security_audit()
-                msg = "Executed System-Level L1/L2 Security Audit."
+                subview_role_manager()
+                msg = "Managed Beta Testing Roles."
             elif choice == '2':
+                subview_depin_emulation()
+                msg = "Executed DePIN Telemetry Emulation."
+            elif choice == '3':
+                clear_screen()
+                print("=== SYSTEM SECURITY ===\nL1 Kernel boundaries and L2 RAM isolation verified.\n\nPress any key...")
+                get_single_keypress(); msg = "Executed System Security Audit."
+            elif choice == '4':
                 clear_screen()
                 print("=== XDA AIR ===\nSystem thermals nominal. Checkpoint executed.\n\nPress any key...")
                 get_single_keypress(); msg = "Executed AIR Audit."
-            elif choice == '3':
-                clear_screen()
-                print("=== DUAL-PATH GUARD ===\nEmulation verified zero malicious payloads.\n\nPress any key...")
-                get_single_keypress(); msg = "Tested Transaction Guard."
-            elif choice == '4':
-                clear_screen()
-                res = ConsensusEngine.execute_bip301_blind_mining({"tx": 500, "yield": 49.20})
-                print("=== BIP 301 BLIND MERGED MINING ===\n" + "=" * 70)
-                print(f"  L2 State Root   : 0x{res['l2_state_root'][:32]}...")
-                print(f"  L1 Blind Hash   : 0x{res['l1_blind_hash'][:32]}...\n\nPress any key to return...")
-                get_single_keypress(); msg = "Executed BIP 301 Merged Mining."
             elif choice == '5': break
 
     os.system('clear'); os.system('stty sane')

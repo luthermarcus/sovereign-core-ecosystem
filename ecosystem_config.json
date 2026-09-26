@@ -1,13 +1,17 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v5.9.0-beta",
+  "version": "v6.0.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
-  "system_architecture": {
-    "layer_1": "Native Linux Mint Host (Kernel, UFW, AppArmor, l1_warden.db)",
-    "layer_2": "Sovereign Core Sandbox (User-Space, RAM /dev/shm, l2_rollup.db)",
-    "security_guard": "Dual-Path Process Emulation & Namespace Isolation"
-  },
+  "active_role": "L2_SANDBOX_TESTER",
+  "depin_node_stack": [
+    "Mysterium Node",
+    "EarnApp",
+    "TraffMonetizer",
+    "PacketStream",
+    "Pawns.app",
+    "Honeygain"
+  ],
   "aliases": {
     "sos": "python3 ~/sovereign-core-ecosystem/virtual_os.py",
     "dash1": "python3 ~/sovereign-core-ecosystem/ecosystem_dashboard.py",
