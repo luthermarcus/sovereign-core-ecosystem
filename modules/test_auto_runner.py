@@ -4,7 +4,7 @@ import os
 import socket
 
 PLUGIN_NAME = "MasterTestRunner"
-VERSION = "8.0.0"
+VERSION = "9.0.0"
 
 def run_integration_tests():
     print("[*] Executing Sovereign Core OS - Stress, Security & Interoperability Tests...")

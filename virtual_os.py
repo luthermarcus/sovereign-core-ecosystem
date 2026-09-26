@@ -57,12 +57,12 @@ def main():
         d = get_system_data()
         
         print("=" * 65)
-        print(f"=== Sovereign Core OS v1.31.0-master [PAGE {current_page}/4 - CORE WALLET & AMM] ===")
+        print(f"=== Sovereign Core OS v1.32.0-master [PAGE {current_page}/4 - CORE WALLET & AMM] ===")
         print("=" * 65)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.31.0 synced. Scientific notation fixed.")
+            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.32.0 synced. Scientific notation fixed.")
             print("[GREEN] FLAG_UNIFIED_BUILD : All IPC engines and AMM contracts connected.")
             print(f"[GREEN] FLAG_SCRAPER_AI  : {d.get('scraper_status', 'Active')}")
             print("\n--- 🟡 Active Financial Portfolio ---")
@@ -122,22 +122,22 @@ def main():
             elif choice == '3': status_msg = "AMM Swap executed successfully via Constant Product formula."
             elif choice == '4': current_page = 2; status_msg = "Switched to Page 2."
             elif choice == '5': print("Terminating OS Session."); break
-            else: status_msg = "Invalid command. Enter [1-5]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-5]."
         elif current_page == 2:
             if choice == '1': current_page = 1; status_msg = "Returned to Page 1."
             elif choice == '2': current_page = 3; status_msg = "Switched to Page 3."
             elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = "Invalid command. Enter [1-3]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-3]."
         elif current_page == 3:
             if choice == '1': current_page = 2; status_msg = "Returned to Page 2."
             elif choice == '2': current_page = 4; status_msg = "Switched to Page 4."
             elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = "Invalid command. Enter [1-3]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-3]."
         elif current_page == 4:
             if choice == '1': current_page = 3; status_msg = "Returned to Page 3."
             elif choice == '2': current_page = 1; status_msg = "Returned to Page 1."
             elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = "Invalid command. Enter [1-3]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-3]."
 
 if __name__ == "__main__":
     main()

@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 PLUGIN_NAME = "SelfHealerScraper"
-VERSION = "1.4.0"
+VERSION = "1.5.0"
 
 def audit_and_scrape_errors():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/knowledge.db")
