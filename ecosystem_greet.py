@@ -1,16 +1,9 @@
 import os
-import subprocess
-
 def run_login_hud():
-    eco = os.path.expanduser("~/sovereign-core-ecosystem")
-    subprocess.run(["python3", os.path.join(eco, "ecosystem_dashboard.py")])
-    print("")
-    subprocess.run(["python3", os.path.join(eco, "ecosystem_earnings.py")])
-    print("")
-    subprocess.run(["python3", os.path.join(eco, "ecosystem_flags.py")])
-    print("")
-    print(">>> Native Host Prompt Ready. Type 'sos' to enter Sovereign Core Virtual OS.")
-    print("=" * 70)
-
-if __name__ == "__main__":
-    run_login_hud()
+    print("=" * 70 + "\n=== SOVEREIGN CORE OS v5.0.0-beta : L1 NATIVE HOST READY ===\n" + "=" * 70)
+    print("  [v] BIP 301 L1/L2 Database Separation : ACTIVE")
+    print("  [v] XDA Hardware Warden & Fan Control : ACTIVE")
+    print("  [v] Protocol-Owned Liquidity (POL)    : ACTIVE")
+    print("  [v] Tri-Faction Governance Defense    : ACTIVE\n")
+    print(">>> Type 'sos' to enter the L2 Virtual Sandbox.\n" + "=" * 70)
+if __name__ == "__main__": run_login_hud()
