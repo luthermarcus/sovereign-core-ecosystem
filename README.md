@@ -1,15 +1,15 @@
-# Sovereign Core OS Ecosystem (v2.26.0-master)
+# Sovereign Core OS (`v2.0.0-beta`)
+*Bare-Metal Linux Mint DePIN & Sovereign Financial Microkernel*
 
-## Production Master Architecture & System Manifest
-- **Repository:** [GitHub - luthermarcus/sovereign-core-ecosystem](https://github.com/luthermarcus/sovereign-core-ecosystem)
-- **Host Environment:** Linux Mint bare-metal host (`luther-Inspiron-1525`) managed via command-line terminal and SSH interfaces.
-- **Pure DePIN Infrastructure:** Exclusively orchestrates decentralized routing (native and containerized Mysterium node telemetry) while permanently purging centralized proxy applications.
-- **Off-Chain AMM Smart Contract Engine (`amm_smart_contract.py`):** Algorithmically compounds the 5% SC-GPL Treasury tax into FOX and PARROT SQLite DEX pools using Constant Product invariant formulas ($x \times y = k$).
-- **Tor v3 P2P Gossip & SOCKS5 Routing:** Zero-trust network isolation via local loopbacks (`127.0.0.1:9050`) coupled with an autonomous background `.onion` sync daemon (`dex_daemon.py`).
-- **Atomic Ledger Snapshots (`backup_audit.py`):** Pre-execution environment automatically isolates timestamped copies of SQLite ledgers into `backups/` to prevent corruption.
-- **BIP44 HD Self-Custody:** Key derivation strictly bound to path `m/44'/0'/0'/0/0` within local encrypted vaults.
+## Community Attributions & Acknowledgments
+Sovereign Core OS stands upon the shoulders of giants across the decentralized systems engineering landscape:
+- **Bitcoin Core Community:** For foundational decentralized consensus models, transaction validation rigor, and BIP44 hierarchical deterministic (HD) self-custody key derivation standards (`m/44'/0'/0'/0/0`).
+- **Ethereum Foundation & DeFi Pioneers:** For inspiring off-chain AMM smart contract engines (`amm_smart_contract.py`) executing Constant Product invariant formulas ($x \times y = k$) and Beefy-style yield compounding vaults.
+- **XDA Developers Community:** For elite hardware modding standards, sandboxing principles, and secure Linux namespace isolation (`unshare`) for native OS telemetry querying.
+- **Bitcointalk Privacy Collective:** For enforcing zero-trust privacy consensus (Tor-only routing via `127.0.0.1:9050`, zero open inbound ports, and native Tor v3 Hidden Service discovery).
+- **GitHub Open-Source Maintainers:** For collaborative version control, automated CI/CD pipeline testing, and modular plugin architectures.
 
-## Community Attribution & Open-Source Acknowledgments
-- **Bitcointalk.org:** Credited for zero-trust network consensus, onion routing specifications, and privacy-first threat models.
-- **XDA Developers:** Credited for modular plugin design patterns (`modules/`), terminal UI optimization, and bare-metal resource management.
-- **GitHub Open-Source Ecosystem:** Credited for decentralized routing protocols (Mysterium Network) and robust SQLite WAL database engineering standards.
+## Architecture & Triple-Dashboard Startup Sequence
+1. **Dashboard 1 (DePIN Infrastructure & AMM):** Monitors Tor SOCKS5 loopbacks, onion gossip daemons, and auto-compounded DEX liquidity pools.
+2. **Dashboard 2 (6-App Node Earnings Matrix):** Tracks real-time WAL telemetry across Mysterium Node, EarnApp, TraffMonetizer, PacketStream, Pawns.app, and Honeygain.
+3. **Dashboard 3 (Interactive 5-Page Sovereign Core OS Hub):** Provides complete terminal OS navigation (`virtual_os.py`) for wallet management, EIP-4337 gasless transactions, AMM swaps, XDA modules, and SQLite FTS5 knowledge vaults.
