@@ -43,7 +43,6 @@ def ingest_vault():
     conn.execute("INSERT INTO entries_fts(entries_fts) VALUES('rebuild')")
     conn.commit()
     conn.close()
-    print("[+] Knowledge Vault successfully indexed with SQLite FTS5.")
 
 if __name__ == "__main__":
     ingest_vault()

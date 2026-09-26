@@ -22,10 +22,12 @@ def get_live_telemetry():
         host = c.fetchone()
         c.execute("SELECT * FROM myst_metrics LIMIT 1")
         myst = c.fetchone()
+        c.execute("SELECT * FROM net_metrics LIMIT 1")
+        net = c.fetchone()
         conn.close()
-        return host, myst
+        return host, myst, net
     except:
-        return None, None
+        return None, None, None
 
 def main_loop(stdscr):
     curses.curs_set(0)
@@ -34,19 +36,17 @@ def main_loop(stdscr):
     curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
     
     selection = 0
-    menu = ["Telemetry Matrix", "Emulated Wallet & DEX", "Innovation Copyright", "Knowledge Vault", "Exit System"]
+    menu = ["Telemetry Matrix", "Network & Security", "Emulated Wallet & DEX", "Innovation Copyright", "Knowledge Vault", "Exit System"]
     
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        # Header
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.55.0] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.57.0] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
         
-        # Menu Sidebar
         menu_start_y = 3
         for idx, row in enumerate(menu):
             y = menu_start_y + idx
@@ -69,27 +69,33 @@ def main_loop(stdscr):
                 if bold: stdscr.addstr(target_y, 2, text[:max_x-3], curses.A_BOLD)
                 else: stdscr.addstr(target_y, 2, text[:max_x-3])
 
-        # Page Content Routing
         if selection == 0:
-            host, myst = get_live_telemetry()
+            host, myst, _ = get_live_telemetry()
             draw(0, "[DEPIN NODE & HOST TELEMETRY]", True)
             if host and myst:
                 draw(2, f"CPU Usage: {host[0]}%  |  RAM: {host[1]}%  |  Disk: {host[2]}%")
-                draw(3, f"Mysterium Container: {myst[0]}")
-                draw(4, f"Active Routing Connections: {myst[1]}")
+                draw(3, f"Mysterium Container: {myst[0]}  |  Peers: {myst[1]}")
             else:
                 draw(2, "Awaiting Telemetry Daemon Sync...")
         elif selection == 1:
+            _, _, net = get_live_telemetry()
+            draw(0, "[NETWORK & SECURITY MATRIX]", True)
+            if net:
+                draw(2, f"UFW Firewall Status: {net[0]}")
+                draw(3, f"Tor Proxy Tunnel: {net[1]}")
+                draw(5, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
+            else:
+                draw(2, "Network Telemetry Offline.")
+        elif selection == 2:
             wallet, _ = get_wallet_data()
             draw(0, "[EMULATED WALLET & DEX MATRIX]", True)
             if wallet:
                 draw(2, f"Master Address: {wallet[0][:18]}...")
                 draw(3, f"Vault Balance: {wallet[1]} MYST/BTC")
                 draw(4, f"Network Staked Power: {wallet[2]}%")
-                draw(6, "Bitcoin Protocol: Tor-Only (-proxy=127.0.0.1:9050)")
             else:
                 draw(2, "Wallet Ledger Offline.")
-        elif selection == 2:
+        elif selection == 3:
             _, innovations = get_wallet_data()
             draw(0, "[INNOVATION COPYRIGHT & 5% ROYALTY]", True)
             draw(2, "Active Deployed Modules & Smart Royalties:")
@@ -97,12 +103,11 @@ def main_loop(stdscr):
             for inv in innovations:
                 draw(y_offset, f" - {inv[0]}: +{inv[1]} Credits (5% Royalty)")
                 y_offset += 1
-        elif selection == 3:
+        elif selection == 4:
             draw(0, "[KNOWLEDGE VAULT - FTS5]", True)
             draw(2, "Status: Synchronized with local SQLite FTS5 index.")
             
-        # Persistent Hardware Sandbox Status Bar at the Bottom of Every View
-        host, _ = get_live_telemetry()
+        host, _, _ = get_live_telemetry()
         if host and max_y > 5:
             bar_y = max_y - 3
             stdscr.addstr(bar_y - 1, 2, ("=" * (max_x - 4))[:max_x-4])
@@ -115,6 +120,6 @@ def main_loop(stdscr):
         key = stdscr.getch()
         if key == curses.KEY_UP and selection > 0: selection -= 1
         elif key == curses.KEY_DOWN and selection < len(menu) - 1: selection += 1
-        elif key in [10, 13] and selection == 4: break
+        elif key in [10, 13] and selection == 5: break
 
 curses.wrapper(main_loop)
