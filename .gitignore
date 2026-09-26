@@ -1,4 +1,4 @@
-# Sovereign Core OS - Git Ignore Policies
+# Sovereign Core OS - Git Ignore Policies (Credential & DB Protection)
 venv/
 .venv/
 __pycache__/
