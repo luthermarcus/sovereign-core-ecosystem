@@ -10,13 +10,22 @@ try:
     import royalty_distributor
     import peer_discovery
     import dex_bridge
+    import amm_smart_contract
 except ImportError:
     royalty_distributor = None
     peer_discovery = None
     dex_bridge = None
+    amm_smart_contract = None
 
 def get_system_data():
     data = {}
+    
+    # Run the Smart Contract Auto-Compounder automatically on data fetch
+    if amm_smart_contract:
+        data["amm_status"] = amm_smart_contract.execute_amm_compounding()
+    else:
+        data["amm_status"] = "Status: AMM Engine Offline"
+
     try:
         conn = sqlite3.connect(os.path.expanduser("~/sovereign-core-ecosystem/sys_health.db"))
         c = conn.cursor()
@@ -34,7 +43,7 @@ def get_system_data():
         data["portfolio"] = c.fetchall()
         c.execute("SELECT public_address, derivation_path FROM wallet_keys LIMIT 1")
         data["wallet_key"] = c.fetchone()
-        c.execute("SELECT token_pair, exchange_rate FROM dex_reserves")
+        c.execute("SELECT token_pair, base_reserve, exchange_rate FROM dex_reserves")
         data["dex"] = c.fetchall()
         conn.close()
     except:
@@ -57,14 +66,6 @@ def get_system_data():
     else:
         data["bridge_status"] = "Status: Bridge Standby"
 
-    try:
-        sc = subprocess.run(["git", "status", "-uno"], capture_output=True, text=True, timeout=2)
-        if "behind" in sc.stdout: data["git_sync"] = "Behind Upstream"
-        elif "ahead" in sc.stdout: data["git_sync"] = "Ahead of Upstream"
-        else: data["git_sync"] = "Up-to-Date"
-    except:
-        data["git_sync"] = "Synchronized"
-
     return data
 
 def get_loaded_modules():
@@ -84,7 +85,7 @@ def main_loop(stdscr):
     menu = [
         "1. OS-Sandbox-Blockchain Command Center", 
         "2. Network & Zero-Tolerance Security (Tor)", 
-        "3. Emulated BIP44 Wallet & DEX Matrix", 
+        "3. Emulated BIP44 Wallet & DEX AMM Matrix", 
         "4. Sovereign Consensus & 5% Royalty Matrix", 
         "5. XDA Developer Modules & Test Runner", 
         "6. README & System Manual (GitHub Linked)", 
@@ -95,7 +96,7 @@ def main_loop(stdscr):
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.24.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.25.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -130,9 +131,8 @@ def main_loop(stdscr):
         if selection == 0:
             draw(0, f"| OS - SANDBOX - BLOCKCHAIN COMMAND CENTER | {now_str} |", True, 4)
             draw(1, "[v] STATUS: COMPLETE INTEROPERABILITY VERIFIED", bold=True, color=3)
-            draw(2, f"GitHub Release Flag State: {d['git_sync']} [Secured]", bold=True)
-            draw(3, "=== DEPIN INFRASTRUCTURE & DEX LIQUIDITY POOLS ===", bold=True)
-            y_off = 4
+            draw(2, "=== DEPIN INFRASTRUCTURE YIELDS ===", bold=True)
+            y_off = 3
             for app in d["portfolio"]:
                 draw(y_off, f"[{app[0][:18]}] {app[1]} | {app[2][:16]} | Yield: ${app[3]:.2f}"[:max_x-4])
                 y_off += 1
@@ -140,36 +140,38 @@ def main_loop(stdscr):
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
             draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
-            draw(4, f"{d.get('p2p_status', 'Status: Standby')}")
-            draw(5, f"DEX Socket Link : {d.get('bridge_status', 'Status: Standby')}")
+            draw(4, f"Tor P2P Gateway : {d.get('p2p_status', 'Standby')}")
+            draw(5, f"DEX Socket Link : {d.get('bridge_status', 'Standby')}")
             draw(6, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
-            draw(0, "[EMULATED BIP44 WALLET & DEX MATRIX]", True)
+            draw(0, "[EMULATED BIP44 WALLET & DEX AMM MATRIX]", True)
             if d["wallet_key"]:
-                draw(2, f"Master Address  : {d['wallet_key'][0]}")
-                draw(3, f"Derivation Path : {d['wallet_key'][1]} (BIP44 Standard)")
+                draw(2, f"Derivation Path : {d['wallet_key'][1]} (BIP44 Standard)")
+            draw(3, f"AMM Engine      : {d.get('amm_status', 'Offline')}")
             draw(4, "Base Currency   : Bitcoin Core (BTC Anchored)")
-            draw(5, "DEX Liquidity   : FOX/BTC | PARROT/BTC (Off-Chain SQLite)")
+            y_d = 5
+            for dex in d["dex"]:
+                draw(y_d, f" AMM Pool [{dex[0]}] : Base Res: ${dex[1]:.2f} | Rate: {dex[2]}")
+                y_d += 1
         elif selection == 3:
             draw(0, "[SOVEREIGN CONSENSUS & ROYALTY MATRIX]", True)
             draw(2, "SC-GPL Protocol: 5% Treasury Tax & 0.05% DEX Miner Fee", bold=True, color=3)
             con = d.get("consensus", {})
             draw(4, f"Node Gross DePIN Yield          : ${con.get('gross_yield', 0.0):.2f}")
             draw(5, f"Net Node Operator Retained (95%): ${con.get('net_node_yield', 0.0):.2f}")
-            draw(6, f"Liquidity Pool Treasury (5%)   : ${con.get('ecosystem_tax_5pct', 0.0):.2f}")
+            draw(6, f"Liquidity Pool Treasury (5%)   : ${con.get('ecosystem_tax_5pct', 0.0):.2f} (Auto-Compounded)")
             draw(7, f"Miner Reward Pool (0.05% DEX)   : ${con.get('miner_rewards_0_05pct', 0.0):.2f}")
         elif selection == 4:
             mods = get_loaded_modules()
             draw(0, "[XDA DEVELOPER MODULES & TEST RUNNER]", True)
-            draw(2, f"Active Update Watcher Flag: {d['git_sync']}")
-            y_m = 3
+            y_m = 2
             for m in mods[:14]:
                 draw(y_m, f" [x] {m}"[:max_x-4])
                 y_m += 1
         elif selection == 5:
             draw(0, "[README & SYSTEM MANUAL - GITHUB REPO]", True)
             draw(2, "GitHub Repo: github.com/luthermarcus/sovereign-core-ecosystem")
-            draw(3, "Self-Custody: Local HD keys derived in wallet.db (m/44'/0'/0'/0/0)")
+            draw(3, "Smart Contracts: Emulated via amm_smart_contract.py (Constant Product)")
             draw(4, "Security   : Tor SOCKS5 Loopback & P2P Onion Discovery")
             draw(5, "Consensus  : SC-GPL 5% Liquidity Treasury & 0.05% Miner Fee")
         elif selection == 6:
