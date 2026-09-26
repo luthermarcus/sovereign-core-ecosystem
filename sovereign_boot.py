@@ -3,7 +3,7 @@ import time
 import os
 
 def boot():
-    print("[*] Booting Sovereign Core OS v2.20.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
+    print("[*] Booting Sovereign Core OS v2.21.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
     time.sleep(1)
     print("[+] Dependencies resolved. SQLite WAL ledgers verified.")
     print("[+] Zero-Trust Tor SOCKS5 network loopback established.")

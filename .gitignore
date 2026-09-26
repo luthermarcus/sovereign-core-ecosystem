@@ -1,24 +1,8 @@
-# Python & Environment
-__pycache__/
-*.py[cod]
-.env
+# Sovereign Core OS - Git Ignore Policies
 venv/
-
-# Sovereign Core Telemetry & SQLite WAL Databases
-sys_health.db
-node_history.db
-myst_metrics.db
-ecosystem_metrics.db
-*.sqlite3
+__pycache__/
+*.db
+*.db-journal
 *.db-wal
 *.db-shm
-
-# AppArmor, UFW & Node Ledgers
-/home/luther/node-stack/ledgers/
-~/.bashrc_backups/
-dashboard_error_logs/
-sovereign_metrics.db
-venv/
-/home/luther/node-stack/backups/
-knowledge.db
-.hidden_ecosystem_notes.md
+.env
