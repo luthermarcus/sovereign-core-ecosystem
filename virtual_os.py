@@ -8,6 +8,8 @@ from modules.system_warden import SystemSecurityWarden
 from modules.role_switcher import RoleSwitcherEngine
 from modules.depin_sidechain import DePINSidechainEngine
 from modules.sovereign_core_kernel import SovereignCoreKernel
+from modules.os_compat import OSCompatibilityLayer
+from modules.cross_chain_peg import CrossChainPegModule
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 def get_single_keypress():
@@ -16,61 +18,61 @@ def get_single_keypress():
     finally: termios.tcsetattr(fd, termios.TCSADRAIN, old)
     return ch.upper()
 
-def fetch_sovereign_kb():
+def fetch_v63_kb():
     db_path = os.path.expanduser('~/sovereign-core-ecosystem/knowledge.db')
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute('SELECT community, strategy_implemented, operational_benefit FROM sovereign_kb')
+        c.execute('SELECT innovation, mechanism, community_source FROM v63_advanced_kb')
         rows = c.fetchall()
         conn.close()
         return rows
     except Exception: return []
 
-def subview_kernel_audit():
+def subview_cross_chain_peg():
     clear_screen()
     print("=" * 70)
-    print("=== SYSTEM-WIDE L1/L2 KERNEL INTEGRATION AUDIT ===")
+    print("=== BIP 300 TWO-WAY PEG SIMULATOR ===")
     print("=" * 70)
-    print("  [Step 1] Auditing system-wide L1/L2 architecture...")
+    print("  [Step 1] Locking 0.5 BTC on L1 Parent Chain escrow...")
     time.sleep(0.4)
-    res = SovereignCoreKernel.audit_kernel_integration()
+    res = CrossChainPegModule.initiate_two_way_peg(0.5, "Sovereign_Core_L2_Sidechain")
     
-    print(f"  L1 Host Kernel Status : {res['l1_host_status']}")
-    print(f"  L2 Sandbox Status     : {res['l2_sandbox_status']}")
-    print(f"  BIP 300 Drivechain    : {res['bip300_drivechain']}")
-    print(f"  BIP 301 BMM Consensus : {res['bip301_bmm']}")
-    print(f"  System Integrity      : {res['system_integrity']}")
+    print(f"  Peg Transaction ID : {res['peg_txid']}")
+    print(f"  Amount Locked      : {res['amount']} BTC")
+    print(f"  Destination        : {res['target']}")
+    print(f"  Status             : {res['status']}")
+    print(f"  Challenge Window   : {res['challenge_period_sec']} seconds")
     print("-" * 70)
-    print("  Status: All community-guided modules verified operational.")
+    print("  Status: Cross-chain peg initiated successfully.")
     print("=" * 70)
     print("\nPress any key to return...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v6.2.0-beta. System-Wide L1/L2 Active."
+    msg = "Sovereign Core OS v6.3.0-beta. Multi-OS & Cross-Chain Active."
     while True:
         clear_screen()
-        hw = HardwareWarden.audit_physical_hardware()
+        thermal = OSCompatibilityLayer.get_thermal_sensors()
         current_role = RoleSwitcherEngine.get_current_role()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v6.2.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
-        print(f"  Active Profile Role : {current_role} | Thermals: {hw['thermal_celsius']}°C")
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v6.3.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print(f"  Active Profile Role : {current_role} | Host Thermal: {thermal}°C")
         
         if page == 1:
-            print("\n  [1] ⚡ Run System-Wide L1/L2 Kernel Integration Audit")
+            print("\n  [1] 🌉 Run BIP 300 Two-Way Peg Simulator")
             print("  [2] 💰 Run DePIN Capital Routing & 5% POL Audit")
-            print("  [3] 🔄 Switch Beta Testing Profile Role")
+            print("  [3] ⚡ Run System-Wide L1/L2 Kernel Integration Audit")
             print("  [4] 🤖 Run XDA Automated Incident Response (AIR) Audit")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ COMMUNITY GUIDANCE & KNOWLEDGE BASE ---")
-            kb = fetch_sovereign_kb()
+            print("--- 🛠️ V6.3 ADVANCED INNOVATIONS KNOWLEDGE BASE ---")
+            kb = fetch_v63_kb()
             for row in kb:
-                print(f"  [>] Community : {row[0]}")
-                print(f"      Strategy  : {row[1]}")
-                print(f"      Benefit   : {row[2]}")
+                print(f"  [>] Innovation: {row[0]}")
+                print(f"      Mechanism : {row[1]}")
+                print(f"      Source    : {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -92,8 +94,8 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_kernel_audit()
-                msg = "Executed System-Wide L1/L2 Kernel Audit."
+                subview_cross_chain_peg()
+                msg = "Executed BIP 300 Two-Way Peg Simulator."
             elif choice == '2':
                 clear_screen()
                 res = DePINSidechainEngine.calculate_depin_capital_routing()
@@ -103,8 +105,11 @@ def main():
                 get_single_keypress(); msg = "Executed DePIN Audit."
             elif choice == '3':
                 clear_screen()
-                print("=== ROLE SWITCHER ===\nManaged via ecosystem_config.json ledger.\n\nPress any key...")
-                get_single_keypress(); msg = "Role Switcher accessed."
+                res = SovereignCoreKernel.audit_kernel_integration()
+                print("=== KERNEL INTEGRATION ===\n" + "=" * 70)
+                print(f"  L1 Host Status : {res['l1_host_status']}")
+                print(f"  L2 Sandbox     : {res['l2_sandbox_status']}\n\nPress any key...")
+                get_single_keypress(); msg = "Executed Kernel Audit."
             elif choice == '4':
                 clear_screen()
                 print("=== XDA AIR ===\nSystem thermals nominal. Checkpoint executed.\n\nPress any key...")

@@ -1,13 +1,15 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.2.0-beta",
+  "version": "v6.3.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
-  "architecture": "System-Wide L1/L2 Sidechain & Kernel Isolation",
-  "community_standards": [
-    "XDA Bare-Metal Hardware Optimization",
-    "Bitcointalk BIP 300/301 Sidechain Consensus",
-    "GitHub Decoupled Ledger State Management"
+  "architecture": "Multi-OS L1/L2 Sidechain with BIP 300 Pegs",
+  "modules": [
+    "os_compat.py",
+    "cross_chain_peg.py",
+    "depin_sidechain.py",
+    "xda_air.py",
+    "transaction_guard.py"
   ],
   "depin_stack": {
     "mysterium": 14.25,
