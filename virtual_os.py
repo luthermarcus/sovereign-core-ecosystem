@@ -3,6 +3,7 @@ from modules.hardware_warden import HardwareWarden
 from modules.consensus_engine import ConsensusEngine
 from modules.transaction_guard import TransactionGuard
 from modules.xda_debugger import XDADebugger
+from modules.xda_air import XDAAutomatedIncidentResponse
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 def get_single_keypress():
@@ -16,58 +17,56 @@ def fetch_kb():
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute('SELECT subsystem, diagnostic_metric, resolution_action FROM xda_developer_kb')
+        c.execute('SELECT event_trigger, automated_response, community_standard FROM xda_air_kb')
         rows = c.fetchall()
         conn.close()
         return rows
     except Exception: return []
 
-def subview_xda_diagnostics():
+def subview_air_simulation():
     clear_screen()
     print("=" * 70)
-    print("=== XDA DEVELOPER DIAGNOSTIC & TELEMETRY REPORT ===")
+    print("=== XDA AUTOMATED INCIDENT RESPONSE (AIR) AUDIT ===")
     print("=" * 70)
-    print("  [Step 1] Polling L1 Host kernel vitals & L2 security flags...")
+    print("  [Step 1] Scanning bare-metal kernel vitals and database journals...")
     time.sleep(0.4)
-    rep = XDADebugger.generate_xda_diagnostic_report()
+    res = XDAAutomatedIncidentResponse.execute_air_remediation()
     
-    print(f"  Host Kernel Version : {rep['kernel']}")
-    print(f"  CPU Load Average    : {rep['cpu_load']}")
-    print(f"  Core Temperature    : {rep['thermal_celsius']}°C")
-    print(f"  RAM Buffer (/dev/shm): {rep['shm_available_mb']} MB available")
-    print(f"  L1 Warden DB Status : {rep['l1_db_status']}")
-    print(f"  L2 Rollup DB Status : {rep['l2_db_status']}")
-    print(f"  Active Security Flag: {rep['active_security_flags'][0]}")
+    print(f"  Current Temperature : {res['thermal_celsius']}°C")
+    print(f"  Remediation Status  : {res['status']}")
+    print("  Actions Executed:")
+    for action in res['actions_executed']:
+        print(f"    - {action}")
     print("-" * 70)
-    print("  Diagnostic Status   : L1/L2 subsystems operating within optimal XDA tolerances.")
+    print("  System Health: Optimized and self-healed via XDA AIR protocols.")
     print("=" * 70)
     print("\nPress any key to return...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v5.6.0-beta. XDA Diagnostics Active."
+    msg = "Sovereign Core OS v5.7.0-beta. XDA AIR & TWAL Security Active."
     while True:
         clear_screen()
         hw = HardwareWarden.audit_physical_hardware()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.6.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.7.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
         
         if page == 1:
-            print("--- ⚡ L1 Warden / XDA Developer Operations ---")
+            print("--- ⚡ L1 Warden / XDA AIR Operations ---")
             print(f"  L1 Thermals: {hw['thermal_celsius']}°C | Fan State: {hw['fan_state']}")
-            print("\n  [1] 📊 Run XDA Developer Diagnostic & Telemetry Audit")
+            print("\n  [1] 🤖 Run XDA Automated Incident Response (AIR) Audit & Heal")
             print("  [2] 🛡️ Test Legitimate Connection (Side A Pass)")
             print("  [3] 🚨 Test Phishing Endpoint (Side A Block)")
             print("  [4] ⛏️  Execute BIP 301 Blind Merged Mining")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ XDA DEVELOPER DIAGNOSTIC KNOWLEDGE BASE ---")
+            print("--- 🛠️ XDA AIR & DEFENSE KNOWLEDGE BASE ---")
             kb = fetch_kb()
             for row in kb:
-                print(f"  [>] Subsystem : {row[0]}")
-                print(f"      Metric    : {row[1]}")
-                print(f"      Resolution: {row[2]}")
+                print(f"  [>] Trigger : {row[0]}")
+                print(f"      Response: {row[1]}")
+                print(f"      Standard: {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -89,8 +88,8 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_xda_diagnostics()
-                msg = "Executed XDA Developer Diagnostic Audit."
+                subview_air_simulation()
+                msg = "Executed XDA Automated Incident Response Audit."
             elif choice == '2':
                 clear_screen()
                 print("=== DUAL-PATH VERIFICATION ===\nSide A Pass -> Side B Official Connection Secured.\n\nPress any key...")

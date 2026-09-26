@@ -1,8 +1,11 @@
-# Sovereign Core OS (`v5.6.0-beta`)
-*XDA Developer Diagnostics, L1/L2 Fault Isolation & Dual-Path Security*
+# Sovereign Core OS (`v5.7.0-beta`)
+*XDA Automated Incident Response (AIR), Flash-Loan AMM Immunity & Dual-Path Security*
 
-## 1. XDA Developer Diagnostic Subsystem
-Designed specifically for bare-metal hardware modders and system developers:
-- **Unified Telemetry Logging:** Automatically aggregates L1 physical metrics (thermals, CPU load, RAM buffer headroom) and L2 software flags into structured reports stored in `l1_warden.db`.
-- **Fault Tree Isolation:** Separates hardware thermal anomalies from user-space transaction errors, preventing cascading system panics.
-- **RAM-Mapped Diagnostics:** Diagnostic logs bypass SSD NVMe controllers entirely, writing directly to `/dev/shm` memory banks.
+## 1. XDA Automated Incident Response (AIR)
+To eliminate manual intervention during bare-metal stress:
+- **Proactive Self-Healing:** The AIR daemon monitors thermals, CPU load, and SQLite WAL sizes in real time.
+- **Automated Mitigation:** Automatically triggers fan overrides at 60°C and checkpoints database journals when file sizes exceed 2MB.
+
+## 2. Flash-Loan & Liquidity Pool Defense
+- **Time-Weighted Average Liquidity (TWAL):** Prevents single-block flash-loan exploits by enforcing liquidity verification across multiple L2 state blocks.
+- **Protocol-Owned Liquidity (POL):** 5% AMM fees permanently deepen community reserves, locking capital against mercenary extraction.
