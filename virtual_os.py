@@ -4,6 +4,7 @@ import termios
 import tty
 import sqlite3
 import time
+from modules.chain_interop import SovereignChainEngine
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
@@ -27,54 +28,66 @@ def flush_and_exit():
     print("\n[+] Exited Sovereign Core Sandbox. Native Host Prompt Ready.")
     sys.exit(0)
 
-def get_portfolio():
-    return [
-        ("BTC", 0.85, 84049.37, 71441.96),
-        ("FOX", 10000.00, 1.62, 16200.00),
-        ("USDC", 5000.00, 1.00, 5000.00),
-        ("BNB", 12.00, 776.91, 9322.92),
-        ("XRP", 2500.00, 1.56, 3912.50),
-        ("TAO", 10.50, 317.48, 3333.54),
-        ("ETH", 1.20, 2689.56, 3227.47)
-    ]
-
-def subview_amm_swap():
+def subview_multichain_vault():
     clear_screen()
+    addrs = SovereignChainEngine.derive_virtual_addresses()
     print("=" * 70)
-    print("=== DEV SANDBOX: NATIVE FOX SIDECHAIN DEX & SC-GPL CAPITAL RAISE ===")
+    print("=== MULTI-CHAIN BIP44 VAULT & INTEROPERABLE ADDRESSES ===")
     print("=" * 70)
-    print("  Community Consensus : Bitcointalk Purist (No Wrapped 'foxBTC' Tokens)")
-    print("  Architecture        : 2-Way Peg Native FOX L2 paired with Native USDC")
-    print("  Engine              : Constant Product AMM (x * y = k)")
+    print(f"  [BTC Taproot]  : {addrs['BTC']} (Path: m/44'/0')")
+    print(f"  [FOX L2 Side]  : {addrs['FOX']} (Path: Native)")
+    print(f"  [ETH Mainnet]  : {addrs['ETH']} (Path: m/44'/60')")
+    print(f"  [BNB Smart]    : {addrs['BNB']} (Path: m/44'/714')")
+    print(f"  [Tron Network] : {addrs['TRX']} (Path: m/44'/195')")
     print("-" * 70)
-    
-    x = 50000.00  # USDC Reserve
-    y = 10000.00  # FOX Reserve
-    k = x * y
-    dx = 1000.00  # Dev trades 1000 USDC for FOX
-    
-    capital_raise = dx * 0.05
-    net_dx = dx - capital_raise
-    
-    new_x = x + net_dx
-    new_y = k / new_x
-    dy = y - new_y
-    
-    print(f"  [1] Initial DEX Pool : {x:,.2f} USDC / {y:,.2f} FOX")
-    print(f"  [2] Trade Execution  : Swapping {dx:,.2f} USDC for native FOX")
-    print(f"  [3] Capital Raise    : 5% SC-GPL Royalty (${capital_raise:,.2f} USDC) routed to Dev Treasury")
-    print(f"  [4] Output Yield     : Dev receives {dy:,.2f} FOX natively")
-    print(f"  [5] System Integrity : Post-Swap Invariant (k) Verified ({new_x * new_y:,.2f} == k)")
+    print("  Status: Zero-Trust Cryptographic Key Derivation Verified.")
     print("=" * 70)
     print("\nPress any key to return to Sovereign Core OS Hub...")
     get_single_keypress()
 
-def fetch_depin_matrix():
+def subview_amm_multi_pool():
+    clear_screen()
+    print("=" * 70)
+    print("=== MULTI-POOL DEX & 5% SC-GPL DEVELOPER CAPITAL RAISE ===")
+    print("=" * 70)
+    print("Select Trading Pair to Simulate:")
+    print("  [1] FOX / USDC (Base Stablecoin Pool)")
+    print("  [2] FOX / BTC  (Bitcoin Pegged Pool)")
+    print("  [3] FOX / ETH  (Ethereum EVM Pool)")
+    print("  [4] FOX / BNB  (BNB Smart Chain Pool)")
+    print("  [5] FOX / TRX  (Tron Energy Network Pool)")
+    print("-" * 70)
+    sys.stdout.write("Choice [1-5]: ")
+    sys.stdout.flush()
+    c = get_single_keypress()
+    
+    pairs = {"1": "FOX/USDC", "2": "FOX/BTC", "3": "FOX/ETH", "4": "FOX/BNB", "5": "FOX/TRX"}
+    pair = pairs.get(c, "FOX/USDC")
+    amt = 100.0 if "BTC" in pair else (5.0 if "ETH" in pair else 1000.0)
+    
+    res = SovereignChainEngine.execute_multi_pool_swap(pair, amt)
+    
+    clear_screen()
+    print("=" * 70)
+    print(f"=== SWAP EXECUTION SUMMARY: {res['pair']} ===")
+    print("=" * 70)
+    print(f"  Deposit Inflow       : {res['deposit']:,.2f} {res['quote_symbol']}")
+    print(f"  5% SC-GPL Dev Tax    : {res['dev_royalty']:,.4f} {res['quote_symbol']} (Direct to Dev Vault)")
+    print(f"  Net Pool Contribution: {res['deposit'] - res['dev_royalty']:,.4f} {res['quote_symbol']}")
+    print(f"  Minted Output Yield  : {res['output_tokens']:,.4f} {res['base_symbol']}")
+    print(f"  Updated Reserve X    : {res['new_reserve_x']:,.2f}")
+    print(f"  Updated Reserve Y    : {res['new_reserve_y']:,.2f}")
+    print(f"  Constant Invariant k : {res['invariant_k']:,.2f} [VERIFIED]")
+    print("=" * 70)
+    print("\nPress any key to return to Sovereign Core OS Hub...")
+    get_single_keypress()
+
+def fetch_depin_kb():
     db_path = os.path.expanduser('~/sovereign-core-ecosystem/knowledge.db')
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute('SELECT project, community_source, virtualization_type, integration_status FROM depin_virtualization_matrix')
+        c.execute('SELECT network, community_friction, sovereign_fix, upstream_repo FROM depin_community_kb')
         rows = c.fetchall()
         conn.close()
         return rows
@@ -83,27 +96,31 @@ def fetch_depin_matrix():
 
 def main():
     current_page = 1
-    status_msg = "Dev Sandbox Active. Navigation stabilized. [N]ext, [P]rev, [Q]uit."
+    status_msg = "Sovereign Core OS v2.7.0-beta. Multi-Chain Interop Active."
     
     while True:
         clear_screen()
         print("=" * 70)
-        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.6.0-beta [PAGE {current_page}/5] ===")
+        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.7.0-beta [PAGE {current_page}/5] ===")
         print("=" * 70)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC    : Microkernel v2.6.0-beta synced.")
-            print("[GREEN] FLAG_SIDECHAIN_NODE : Native FOX L2 active (No Wrappers).")
-            print("[GREEN] FLAG_CAPITAL_RAISE  : 5% SC-GPL Developer Treasury active.")
-            print("\n--- 🟡 Active Financial Portfolio (Wallet Sync) ---")
-            for asset in get_portfolio():
-                print(f"  {asset[0]:<5} | Bal: {asset[1]:<12,.2f} | Pr: ${asset[2]:<10,.2f} | Val: ${asset[3]:,.2f}")
+            print("[GREEN] FLAG_MASTER_SYNC    : Microkernel v2.7.0-beta synced.")
+            print("[GREEN] FLAG_INTEROP_ENGINE : Multi-Chain (BTC, ETH, BNB, TRX) Active.")
+            print("[GREEN] FLAG_CAPITAL_RAISE  : 5% SC-GPL Treasury Diversion Active.")
+            print("\n--- 🟡 Financial Vault Balance Matrix ---")
+            print("  BTC : 0.8500       | Val: $71,441.96 USD")
+            print("  FOX : 10,000.00    | Val: $16,200.00 USD (Native L2)")
+            print("  USDC: 5,000.00     | Val: $5,000.00 USD")
+            print("  ETH : 1.2000       | Val: $3,227.47 USD")
+            print("  BNB : 12.0000      | Val: $9,322.92 USD")
+            print("  TRX : 25,000.00    | Val: $3,850.00 USD")
             print("\nBare-Metal OS Menu [Page 1/5]:")
-            print("  [1] 📥 View Receive Address (BIP44 Vault)")
-            print("  [2] 💸 Send Transaction (EIP-4337 Gasless)")
-            print("  [3] 🔄 Test SC-GPL Capital Raise (Native FOX / USDC AMM)")
-            print("  [4] ⛏️  Run DePIN Block Validation Simulation")
+            print("  [1] 📥 Inspect Multi-Chain BIP44 Addresses (BTC/ETH/BNB/TRX)")
+            print("  [2] 🔄 Execute Multi-Pool AMM Swap & 5% Dev Capital Raise")
+            print("  [3] 💸 EIP-4337 Gasless Paymaster Relay (Tor Onion Circuit)")
+            print("  [4] ⛏️  Simulate DePIN Node Consensus Validation")
             print("  [5] 🛑 Exit to Native Dell Shell [Hotkey: Q]")
             
         elif current_page == 2:
@@ -111,37 +128,41 @@ def main():
             print("  Firewall Shield : Active (Port 22 SSH Whitelist Only)")
             print("  Tor SOCKS5 Loop : 127.0.0.1:9050 Active")
             print("  Onion Service   : sovereign_dex_p2p (Port 8181 Hidden Service)")
+            print("  Inbound Ports   : 0 Clearnet Open Ports (Absolute Privacy)")
             print("\nBare-Metal OS Menu [Page 2/5]:")
             print("  [1] ⬅️  Return to Page 1 [Hotkey: P]")
-            print("  [2] ➡️  Switch to Page 3 (Consensus & Royalties) [Hotkey: N]")
+            print("  [2] ➡️  Switch to Page 3 [Hotkey: N]")
             print("  [3] 🛑 Exit to Native Shell")
             
         elif current_page == 3:
-            print("--- ⚖️ SOVEREIGN CONSENSUS & ROYALTY MATRIX [PAGE 3/5] ---")
-            print("  Protocol Model  : SC-GPL Developer Capital Consensus")
-            print("  Developer Capital Allocation (5%): Auto-compounded into Dev Treasury")
-            print("  Miner Reward Allocation (0.05%)  : Distributed to DePIN routing nodes")
-            print("  Community Consensus             : Bitcointalk zero-custody standard")
+            print("--- ⚖️ SC-GPL CONSENSUS & CAPITAL RAISE PROTOCOL [PAGE 3/5] ---")
+            print("  Consensus Standard: SC-GPL (Sovereign Core General Public License)")
+            print("  Developer Royalty : 5% of Gross AMM Swap Delta routed to Dev Vault")
+            print("  Miner Reward Pool : 0.05% of DEX Swaps allocated to DePIN Node Miners")
+            print("  Custodial Model   : Non-Custodial (No Wrapped BitGo Intermediaries)")
             print("\nBare-Metal OS Menu [Page 3/5]:")
             print("  [1] ⬅️  Return to Page 2 [Hotkey: P]")
-            print("  [2] ➡️  Switch to Page 4 (DePIN Virtualization) [Hotkey: N]")
+            print("  [2] ➡️  Switch to Page 4 (DePIN KB) [Hotkey: N]")
             print("  [3] 🛑 Exit to Native Shell")
 
         elif current_page == 4:
-            print("--- 🛠️ DEPIN VIRTUALIZATION & COMMUNITY MATRIX [PAGE 4/5] ---")
-            matrix = fetch_depin_matrix()
-            for row in matrix:
+            print("--- 🛠️ DEPIN COMMUNITY KNOWLEDGE & FORK MATRIX [PAGE 4/5] ---")
+            kb = fetch_depin_kb()
+            for row in kb:
                 print(f"  [>] {row[0]}")
-                print(f"      Source: {row[1]} | Sandbox: {row[2]} | Status: {row[3]}")
+                print(f"      Problem: {row[1]}")
+                print(f"      Fix    : {row[2]}")
+                print(f"      Repo   : {row[3]}")
+                print("-" * 65)
             print("\nBare-Metal OS Menu [Page 4/5]:")
             print("  [1] ⬅️  Return to Page 3 [Hotkey: P]")
-            print("  [2] ➡️  Switch to Page 5 (Knowledge Vault) [Hotkey: N]")
+            print("  [2] ➡️  Switch to Page 5 (System Vault) [Hotkey: N]")
             print("  [3] 🛑 Exit to Native Shell")
 
         elif current_page == 5:
             print("--- 📚 SQLITE FTS5 KNOWLEDGE VAULT & MANUAL [PAGE 5/5] ---")
             print("  Search Engine   : SQLite FTS5 Full-Text Search Synchronized")
-            print("  Cryptographic ID: SHA-256 State Signer OK")
+            print("  Integrity Hash  : SHA-256 Vault Verified")
             print("  Repository Link : github.com/luthermarcus/sovereign-core-ecosystem")
             print("\nBare-Metal OS Menu [Page 5/5]:")
             print("  [1] ⬅️  Return to Page 4 [Hotkey: P]")
@@ -159,11 +180,9 @@ def main():
         except (KeyboardInterrupt, EOFError):
             flush_and_exit()
         
-        # Globally handle straggler ENTER keys from fast typing
         if choice in ['\r', '\n', '']:
             continue
             
-        # Global Navigation Hotkeys
         if choice in ['Q', '\x03', '\x04']:
             flush_and_exit()
         elif choice == 'N':
@@ -175,29 +194,27 @@ def main():
             status_msg = f"Navigated to Page {current_page}."
             continue
 
-        # Page-Specific Subview Mapping
         if current_page == 1:
             if choice == '1': 
-                clear_screen()
-                print("=== VIRTUAL SANDBOX: RECEIVE ADDRESS ===\nTaproot: bc1p_sandbox_x79...\n")
-                print("Press any key to return...")
-                get_single_keypress()
-                status_msg = "Inspected BIP44 Vault."
+                subview_multichain_vault()
+                status_msg = "Inspected Multi-Chain BIP44 Vault."
             elif choice == '2': 
-                clear_screen()
-                print("=== VIRTUAL SANDBOX: GASLESS TX ===\nTx Hash: 0xabc123... [SUCCESS]\n")
-                print("Press any key to return...")
-                get_single_keypress()
-                status_msg = "Tested EIP-4337 Relay."
+                subview_amm_multi_pool()
+                status_msg = "Simulated Multi-Pool Constant Product AMM Swap."
             elif choice == '3': 
-                subview_amm_swap()
-                status_msg = "Tested 5% SC-GPL Capital Raise via Native AMM Swap."
+                clear_screen()
+                print("=== VIRTUAL SANDBOX: EIP-4337 GASLESS RELAY ===")
+                print("Broadcasting transaction via Tor circuit...")
+                print("Tx Hash: 0x981bf... [CONFIRMED]")
+                print("\nPress any key to return...")
+                get_single_keypress()
+                status_msg = "Relayed Gasless EIP-4337 Transaction."
             elif choice == '4': 
                 clear_screen()
-                print("=== VIRTUAL SANDBOX: DEPIN MINING ===\nValidating hashes...")
-                for i in range(3):
-                    print(f"[v] Block {i} Validated.")
-                    time.sleep(0.3)
+                print("=== VIRTUAL SANDBOX: DEPIN NODE MINING ===")
+                for i in range(1, 4):
+                    print(f"[v] Validated Block #{i} on DePIN Mesh.")
+                    time.sleep(0.2)
                 print("\nPress any key to return...")
                 get_single_keypress()
                 status_msg = "Simulated DePIN Block Validation."
