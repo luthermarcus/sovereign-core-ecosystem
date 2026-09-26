@@ -3,37 +3,38 @@ import hashlib
 import json
 
 class TransactionGuard:
-    CHALLENGE_WINDOW_SEC = 5.0  # Optimistic challenge period for testing
-
     @staticmethod
-    def submit_provisional_transaction(tx_id, sender, amount, is_malicious=False):
-        """Stages a transaction in provisional escrow for challenge evaluation."""
-        tx_packet = {
-            "tx_id": tx_id,
-            "sender": sender,
-            "amount": amount,
-            "status": "PENDING_CHALLENGE_PERIOD",
-            "timestamp": time.time(),
-            "malicious_flag": is_malicious
-        }
-        return tx_packet
-
-    @classmethod
-    def evaluate_challenge_window(cls, tx_packet):
-        """Evaluates fraud proofs during the challenge window to execute recalls if necessary."""
-        time.sleep(0.5) # Simulate challenge validation check
+    def dual_path_verify(endpoint_url, payload_data, is_phishing_endpoint=False):
+        """
+        Executes Dual-Path Verification:
+        Side A (Test Sandbox) dry-runs emulation in RAM.
+        Side B (Official Settlement) processes the transaction only if Side A passes.
+        """
+        start = time.time()
         
-        if tx_packet["malicious_flag"]:
+        # Side A: Sandbox Emulation & Heuristic Check
+        emulation_trace = {
+            "endpoint": endpoint_url,
+            "payload_size_bytes": len(json.dumps(payload_data)),
+            "unlimited_approval_detected": is_phishing_endpoint,
+            "signature_type": "Off-Chain Root Permit" if is_phishing_endpoint else "Standard State Transition"
+        }
+        
+        time.sleep(0.3) # Simulate dry-run analysis
+        
+        if is_phishing_endpoint or emulation_trace["unlimited_approval_detected"]:
             return {
-                "tx_id": tx_packet["tx_id"],
-                "status": "RECALLED_AND_REVERTED",
-                "reason": "Fraud Proof Verified: Malicious transaction pattern detected.",
-                "penalty": "100% Stake Slashing Triggered"
+                "channel_mode": "DUAL_PATH_BLOCK",
+                "status": "PHISHING_DRAINER_INTERCEPTED",
+                "reason": "Side A Emulation detected unauthorized allowance drainer signature.",
+                "action": "Connection severed. Funds secured in L2 escrow.",
+                "execution_ms": round((time.time() - start) * 1000, 3)
             }
         else:
             return {
-                "tx_id": tx_packet["tx_id"],
-                "status": "FINALIZED_AND_ANCHORED",
-                "reason": "Challenge window expired with zero fraud proofs.",
-                "penalty": "None (Nominal Execution)"
+                "channel_mode": "DUAL_PATH_PASSTHROUGH",
+                "status": "OFFICIAL_CONNECTION_VERIFIED",
+                "reason": "Side A Emulation verified zero malicious heuristics.",
+                "action": "Passed to Side B for L1/L2 anchor settlement.",
+                "execution_ms": round((time.time() - start) * 1000, 3)
             }

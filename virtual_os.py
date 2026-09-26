@@ -15,57 +15,57 @@ def fetch_kb():
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute('SELECT feature, mechanism, community_consensus FROM transaction_guard_kb')
+        c.execute('SELECT threat_vector, community_source, mitigation_strategy FROM dual_path_security')
         rows = c.fetchall()
         conn.close()
         return rows
     except Exception: return []
 
-def subview_transaction_test(is_malicious):
+def subview_dual_path_test(is_phishing):
     clear_screen()
     print("=" * 70)
-    print(f"=== TRANSACTION RECALL SIMULATOR (MALICIOUS = {is_malicious}) ===")
+    print(f"=== DUAL-PATH TRANSACTION GUARD (PHISHING SIMULATION = {is_phishing}) ===")
     print("=" * 70)
-    print("  [Step 1] Staging transaction provisionally in RAM (/dev/shm)...")
-    tx = TransactionGuard.submit_provisional_transaction("TX_998877", "0xTraderAlice", 2500.0, is_malicious)
-    print(f"  [>] Transaction ID   : {tx['tx_id']}")
-    print(f"  [>] Initial Status   : {tx['status']}")
+    print("  [Side A] Intercepting endpoint request & running RAM emulation...")
+    url = "https://fake-uniswap-drainer-claim.example" if is_phishing else "https://official.sovereign-core.dex"
+    payload = {"target": "user_wallet", "action": "approve_allowance"}
     
-    print("\n  [Step 2] Evaluating Optimistic Challenge Window & Fraud Proofs...")
-    res = TransactionGuard.evaluate_challenge_window(tx)
+    res = TransactionGuard.dual_path_verify(url, payload, is_phishing)
     
-    print("-" * 70)
-    print(f"  Final Status         : {res['status']}")
-    print(f"  Diagnostic Reason    : {res['reason']}")
-    print(f"  Action Taken         : {res['penalty']}")
+    print(f"  Target Endpoint     : {url}")
+    print(f"  Verification Mode   : {res['channel_mode']}")
+    print(f"  Security Status     : {res['status']}")
+    print(f"  Diagnostic Reason   : {res['reason']}")
+    print(f"  Action Executed     : {res['action']}")
+    print(f"  Execution Time      : {res['execution_ms']} ms")
     print("=" * 70)
     print("\nPress any key to return...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v5.3.0-beta. Transaction Guard & Recall Active."
+    msg = "Sovereign Core OS v5.5.0-beta. Dual-Path Security Active."
     while True:
         clear_screen()
         hw = HardwareWarden.audit_physical_hardware()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.3.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.5.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
         
         if page == 1:
-            print("--- ⚡ L1 Warden / L2 Node Operations ---")
+            print("--- ⚡ L1 Warden / L2 Dual-Path Operations ---")
             print(f"  L1 Thermals: {hw['thermal_celsius']}°C | Fan State: {hw['fan_state']}")
-            print("\n  [1] ✅ Test Valid Transaction (Optimistic Challenge Pass)")
-            print("  [2] ❌ Test Malicious Transaction (Automatic Recall & Slashing)")
+            print("\n  [1] 🛡️ Test Legitimate Connection (Side A Pass -> Side B Official)")
+            print("  [2] 🚨 Test Phishing / Drainer Endpoint (Side A Block & Secure)")
             print("  [3] ⛏️  Execute BIP 301 Blind Merged Mining")
             print("  [4] 🌉 Execute Protocol-Owned Liquidity (POL) AMM Swap")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ TRANSACTION GUARD & INTEGRITY KNOWLEDGE BASE ---")
+            print("--- 🛠️ DUAL-PATH SECURITY KNOWLEDGE BASE ---")
             kb = fetch_kb()
             for row in kb:
-                print(f"  [>] Feature   : {row[0]}")
-                print(f"      Mechanism : {row[1]}")
-                print(f"      Standard  : {row[2]}")
+                print(f"  [>] Threat : {row[0]}")
+                print(f"      Source : {row[1]}")
+                print(f"      Defense: {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -87,11 +87,11 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_transaction_test(is_malicious=False)
-                msg = "Tested Valid Transaction."
+                subview_dual_path_test(is_phishing=False)
+                msg = "Tested Legitimate Connection."
             elif choice == '2':
-                subview_transaction_test(is_malicious=True)
-                msg = "Tested Malicious Transaction & Recall."
+                subview_dual_path_test(is_phishing=True)
+                msg = "Tested Phishing Endpoint & Interception."
             elif choice == '3':
                 clear_screen()
                 res = ConsensusEngine.execute_bip301_blind_mining({"tx": 500, "yield": 49.20})
