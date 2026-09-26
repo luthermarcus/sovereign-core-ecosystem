@@ -1,8 +1,9 @@
-# Sovereign Core OS Ecosystem (v2.19.0-master)
+# Sovereign Core OS Ecosystem (v2.20.0-master)
 
 ## Production Master Architecture & Automated Infrastructure
 - **Repository:** [GitHub - luthermarcus/sovereign-core-ecosystem](https://github.com/luthermarcus/sovereign-core-ecosystem)
-- **Tor v3 Native P2P DEX Gossip:** Generates cryptographic `.onion` hostnames dynamically, allowing seamless off-chain SQLite liquidity swaps via `dex_bridge.py`.
+- **Active DEX Daemon (`dex_daemon.py`):** An asynchronous Python socket server bound to the local Tor Hidden Service port, actively listening for peer liquidity requests without exposing clearnet IPs.
+- **Tor v3 Native P2P DEX Gossip:** Dynamically generated cryptographic `.onion` hostnames for true off-chain SQLite data swaps.
 - **SC-GPL Economic Consensus:** Mandates a 5% allocation of node routing yield to the Global Liquidity Treasury and a 0.05% DEX transaction fee to hardware miners.
-- **Pure DePIN Infrastructure:** Exclusively orchestrates decentralized routing (Mysterium) and off-chain liquidity pools. Centralized proxy applications are banned.
+- **Pure DePIN Infrastructure:** Exclusively orchestrates decentralized routing (Mysterium) and off-chain liquidity pools.
 - **BIP44 HD Self-Custody:** Key derivation strictly bound to path `m/44'/0'/0'/0/0`.

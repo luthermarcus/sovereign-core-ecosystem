@@ -95,7 +95,7 @@ def main_loop(stdscr):
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.19.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.20.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -140,8 +140,8 @@ def main_loop(stdscr):
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
             draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
-            draw(4, f"Tor P2P Gateway : {d.get('p2p_status', 'Standby')}")
-            draw(5, f"DEX Socket Link : {d.get('bridge_status', 'Standby')}")
+            draw(4, f"{d.get('p2p_status', 'Status: Standby')}")
+            draw(5, f"DEX Socket Link : {d.get('bridge_status', 'Status: Standby')}")
             draw(6, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
             draw(0, "[EMULATED BIP44 WALLET & DEX MATRIX]", True)

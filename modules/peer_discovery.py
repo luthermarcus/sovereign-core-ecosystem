@@ -4,7 +4,7 @@ import os
 import subprocess
 
 PLUGIN_NAME = "TorPeerDiscovery"
-VERSION = "3.0.0"
+VERSION = "3.1.0"
 
 def execute_audit():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/knowledge.db")
