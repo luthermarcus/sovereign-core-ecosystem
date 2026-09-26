@@ -1,12 +1,8 @@
-# Sovereign Core OS (`v5.8.0-beta`)
-*Decoupled JSON Configuration Ledger, L1 Hardware Warden & Dual-Path Transaction Guard*
+# Sovereign Core OS (`v5.9.0-beta`)
+*System-Level L1/L2 Privilege Isolation, Ecosystem Ledger & XDA Automated Incident Response*
 
-## 1. Ledger-Driven State Management
-To eradicate mobile SSH paste truncation and shell syntax errors:
-- **`ecosystem_config.json`:** Acts as the single immutable source of truth for all system aliases, routing paths, and environment settings.
-- **Dynamic Python Parser:** Automatically reconstructs `~/.bashrc` on login without relying on fragile multi-line heredoc scripts.
-
-## 2. Core Security & Hardware Safeguards
-- **L1/L2 Database Separation:** `l1_warden.db` manages thermals and basechain hashes; `l2_rollup.db` processes high-frequency AMM swaps and DePIN telemetry in RAM (`/dev/shm`).
-- **XDA Automated Incident Response (AIR):** Actively forces Dell fan overrides via `i8kutils` at 60°C and checkpoints SQLite journals when file sizes exceed 2MB.
-- **Dual-Path Transaction Guard:** Intercepts external endpoint connections and runs RAM emulations to block wallet drainers and phishing signatures before official settlement.
+## 1. System-Level L1/L2 Security Architecture
+Applying decentralized consensus principles to bare-metal operating system security:
+- **Layer 1 Host (Kernel Security):** Governs root permissions, AppArmor policies, UFW firewalls, and `l1_warden.db`. Unverified user processes are strictly barred from modifying system space.
+- **Layer 2 Sandbox (Process Isolation):** Encapsulates user applications, Python execution threads, and interactive menus within RAM (`/dev/shm`), neutralizing privilege escalation.
+- **Dual-Path Process Guard:** Evaluates external binaries and scripts in a sandboxed RAM environment before permitting system execution.

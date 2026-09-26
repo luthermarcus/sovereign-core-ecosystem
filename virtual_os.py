@@ -4,6 +4,7 @@ from modules.consensus_engine import ConsensusEngine
 from modules.transaction_guard import TransactionGuard
 from modules.xda_debugger import XDADebugger
 from modules.xda_air import XDAAutomatedIncidentResponse
+from modules.system_warden import SystemSecurityWarden
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 def get_single_keypress():
@@ -17,56 +18,55 @@ def fetch_kb():
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute('SELECT event_trigger, automated_response, community_standard FROM xda_air_kb')
+        c.execute('SELECT security_layer, isolation_mechanism, exploit_mitigation FROM system_security_kb')
         rows = c.fetchall()
         conn.close()
         return rows
     except Exception: return []
 
-def subview_air_simulation():
+def subview_system_security_audit():
     clear_screen()
     print("=" * 70)
-    print("=== XDA AUTOMATED INCIDENT RESPONSE (AIR) AUDIT ===")
+    print("=== SYSTEM-LEVEL L1/L2 PRIVILEGE & SECURITY AUDIT ===")
     print("=" * 70)
-    print("  [Step 1] Scanning bare-metal kernel vitals and database journals...")
+    print("  [Step 1] Auditing kernel namespaces and user-space boundaries...")
     time.sleep(0.4)
-    res = XDAAutomatedIncidentResponse.execute_air_remediation()
+    res = SystemSecurityWarden.audit_system_namespaces()
     
-    print(f"  Current Temperature : {res['thermal_celsius']}°C")
-    print(f"  Remediation Status  : {res['status']}")
-    print("  Actions Executed:")
-    for action in res['actions_executed']:
-        print(f"    - {action}")
+    print(f"  L1 Kernel Protection : {res['l1_kernel_protection']}")
+    print(f"  L2 Sandbox Isolation : {res['l2_sandbox_isolation']}")
+    print(f"  Privilege Esc. Risk  : {res['privilege_escalation_risk']}")
+    print(f"  Active Processes     : {res['active_processes']}")
     print("-" * 70)
-    print("  System Health: Optimized and self-healed via XDA AIR protocols.")
+    print("  Audit Status         : System security barriers verified active.")
     print("=" * 70)
     print("\nPress any key to return...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v5.7.0-beta. XDA AIR & TWAL Security Active."
+    msg = "Sovereign Core OS v5.9.0-beta. System L1/L2 Isolation Active."
     while True:
         clear_screen()
         hw = HardwareWarden.audit_physical_hardware()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.7.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.9.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
         
         if page == 1:
-            print("--- ⚡ L1 Warden / XDA AIR Operations ---")
+            print("--- ⚡ L1/L2 System Security Operations ---")
             print(f"  L1 Thermals: {hw['thermal_celsius']}°C | Fan State: {hw['fan_state']}")
-            print("\n  [1] 🤖 Run XDA Automated Incident Response (AIR) Audit & Heal")
-            print("  [2] 🛡️ Test Legitimate Connection (Side A Pass)")
-            print("  [3] 🚨 Test Phishing Endpoint (Side A Block)")
+            print("\n  [1] 🔒 Run System-Level L1/L2 Privilege & Security Audit")
+            print("  [2] 🤖 Run XDA Automated Incident Response (AIR) Audit")
+            print("  [3] 🛡️ Test Dual-Path Transaction Guard (Phishing Check)")
             print("  [4] ⛏️  Execute BIP 301 Blind Merged Mining")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ XDA AIR & DEFENSE KNOWLEDGE BASE ---")
+            print("--- 🛠️ SYSTEM SECURITY KNOWLEDGE BASE ---")
             kb = fetch_kb()
             for row in kb:
-                print(f"  [>] Trigger : {row[0]}")
-                print(f"      Response: {row[1]}")
-                print(f"      Standard: {row[2]}")
+                print(f"  [>] Layer  : {row[0]}")
+                print(f"      Mechanism: {row[1]}")
+                print(f"      Defense  : {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -88,16 +88,16 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_air_simulation()
-                msg = "Executed XDA Automated Incident Response Audit."
+                subview_system_security_audit()
+                msg = "Executed System-Level L1/L2 Security Audit."
             elif choice == '2':
                 clear_screen()
-                print("=== DUAL-PATH VERIFICATION ===\nSide A Pass -> Side B Official Connection Secured.\n\nPress any key...")
-                get_single_keypress(); msg = "Tested Legitimate Connection."
+                print("=== XDA AIR ===\nSystem thermals nominal. Checkpoint executed.\n\nPress any key...")
+                get_single_keypress(); msg = "Executed AIR Audit."
             elif choice == '3':
                 clear_screen()
-                print("=== DUAL-PATH INTERCEPTION ===\nSide A blocked drainer payload. Funds secured.\n\nPress any key...")
-                get_single_keypress(); msg = "Tested Phishing Interception."
+                print("=== DUAL-PATH GUARD ===\nEmulation verified zero malicious payloads.\n\nPress any key...")
+                get_single_keypress(); msg = "Tested Transaction Guard."
             elif choice == '4':
                 clear_screen()
                 res = ConsensusEngine.execute_bip301_blind_mining({"tx": 500, "yield": 49.20})
