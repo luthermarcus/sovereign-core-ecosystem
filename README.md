@@ -1,9 +1,9 @@
-# Sovereign Core OS Ecosystem (v2.05.0-master)
+# Sovereign Core OS Ecosystem (v2.07.0-master)
 
-## Production Master Architecture & Systemd Persistence
+## Master Architecture & BIP-Compliant Interoperability
 - **Repository:** [GitHub - luthermarcus/sovereign-core-ecosystem](https://github.com/luthermarcus/sovereign-core-ecosystem)
-- **Systemd Daemon (`sovereign-telemetry.service`):** Ensures background hardware telemetry scrapers and WAL maintenance run continuously as a native Linux Mint system service.
-- **Automated Login Hook (`ecosystem_greet.py`):** Automatically displays live command center telemetry and gigabyte earnings upon SSH terminal login.
-- **Dashboard A (Virtual OS TUI):** `virtual_os.py` — Interactive Curses TUI featuring Page 1 Command Center, Actionable Checklist, and Page 6 embedded system manual.
-- **Dashboard B (CLI Command Center):** `ecosystem_dashboard.py` — Terminal status matrix tracking bare-metal health and passive income yields.
-- **Self-Custody & Zero-Trust:** HD key derivation (`m/44'/0'/0'/0/0`) and Tor loopback routing (`-proxy=127.0.0.1:9050`, `-onlynet=onion`).
+- **BIP44 HD Key Management (`modules/self_custody.py`):** Derives standardized hierarchical deterministic keys (`m/44'/0'/0'/0/0`) within encrypted SQLite WAL ledgers (`wallet.db`).
+- **DEX & Liquidity Pools:** Off-chain virtual token pairs (FOX/BTC, PARROT/BTC) anchored to Bitcoin base currency via localized Tor SOCKS5 loops (`127.0.0.1:9050`).
+- **Native Host Scrapers (`telemetry_daemon.py`):** Automatically polls Linux Mint bare-metal hardware metrics (CPU, RAM, Disk) and writes them to `sys_health.db`.
+- **Dashboard A (Virtual OS TUI):** `virtual_os.py` — Interactive Curses TUI displaying native Linux Mint hardware status bars and command center metrics.
+- **Dashboard B (CLI Command Center):** `ecosystem_dashboard.py` — Terminal status matrix tracking git sync flags and passive income yields.

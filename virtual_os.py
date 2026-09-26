@@ -35,6 +35,14 @@ def get_system_data():
     daemon_check = subprocess.run(["pgrep", "-f", "telemetry_daemon.py"], capture_output=True, text=True)
     data["daemon_active"] = daemon_check.returncode == 0
 
+    try:
+        sc = subprocess.run(["git", "status", "-uno"], capture_output=True, text=True, timeout=2)
+        if "behind" in sc.stdout: data["git_sync"] = "Behind Upstream"
+        elif "ahead" in sc.stdout: data["git_sync"] = "Ahead of Upstream"
+        else: data["git_sync"] = "Up-to-Date"
+    except:
+        data["git_sync"] = "Synchronized"
+
     return data
 
 def get_loaded_modules():
@@ -52,11 +60,11 @@ def main_loop(stdscr):
     
     selection = 0
     menu = [
-        "1. Command Center & Update Watcher", 
-        "2. Network & Zero-Tolerance Security", 
-        "3. Emulated Wallet & DEX Matrix (FOX/PARROT-BTC)", 
+        "1. Command Center & Liquidity Matrix", 
+        "2. Network & Zero-Tolerance Security (Tor)", 
+        "3. Emulated BIP44 Wallet & DEX Matrix (FOX/PARROT-BTC)", 
         "4. Innovation Copyright & Royalties", 
-        "5. XDA Developer Modules & Update Watcher", 
+        "5. XDA Developer Modules & Self-Custody Engine", 
         "6. README & System Manual (GitHub Linked)", 
         "7. SQLite FTS5 Knowledge Vault", 
         "8. Exit System"
@@ -66,7 +74,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.03.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.07.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -99,44 +107,47 @@ def main_loop(stdscr):
         now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         if selection == 0:
-            draw(0, f"| COMMAND CENTER & UPDATE WATCHER | {now_str} |", True, 4)
+            draw(0, f"| COMMAND CENTER & LIQUIDITY MATRIX | {now_str} |", True, 4)
             draw(1, "[v] STATUS: ALL SYSTEMS NOMINAL - NO ACTIVE FAULTS", bold=True, color=3)
-            draw(2, "=== EARNINGS & GIGABYTE BANDWIDTH PORTFOLIO ===", bold=True)
-            y_off = 3
+            draw(2, f"GitHub Release Flag State: {d['git_sync']} [Secured]", bold=True)
+            draw(3, "=== EARNINGS & LIQUIDITY POOL BANDWIDTH ===", bold=True)
+            y_off = 4
             for app in d["portfolio"]:
                 short_name = app[0].split()[0]
-                draw(y_off, f"[{short_name}] {app[1]} | {app[2]} | ${app[3]:.2f}"[:max_x-4])
+                draw(y_off, f"[{short_name}] {app[1]} | {app[2]} | Yield: ${app[3]:.2f}"[:max_x-4])
                 y_off += 1
         elif selection == 1:
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
-            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)[span_1](start_span)[span_1](end_span)")
+            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
             draw(4, "Content Filter  : Active (Illicit Media / CSAM Blocked)")
             draw(5, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
-            draw(0, "[EMULATED WALLET & DEX MATRIX (FOX/PARROT-BTC)]", True)
+            draw(0, "[EMULATED BIP44 WALLET & DEX MATRIX (FOX/PARROT-BTC)]", True)
             if d["wallet_key"]:
                 draw(2, f"Master Address  : {d['wallet_key'][0]}")
-            draw(3, "Base Currency   : Bitcoin Core (BTC Anchored)")
-            y_d = 4
+                draw(3, f"Derivation Path : {d['wallet_key'][1]} (BIP44 Standard)")
+            draw(4, "Base Currency   : Bitcoin Core (BTC Anchored)")
+            y_d = 5
             for dex in d["dex"]:
-                draw(y_d, f" DEX Pair       : {dex[0]} | Rate: {dex[1]} (Off-Chain)")
+                draw(y_d, f" DEX Liquidity  : {dex[0]} | Rate: {dex[1]} (Off-Chain)")
                 y_d += 1
         elif selection == 3:
             draw(0, "[INNOVATION COPYRIGHT & 5% SMART ROYALTIES]", True)
             draw(2, "Sovereign Core Microkernel: +12.45 Credits (5% Attribution)")
         elif selection == 4:
             mods = get_loaded_modules()
-            draw(0, "[XDA DEVELOPER MODULES & UPDATE WATCHER]", True)
-            y_m = 2
-            for m in mods[:8]:
+            draw(0, "[XDA DEVELOPER MODULES & SELF-CUSTODY ENGINE]", True)
+            draw(2, f"Active Update Watcher Flag: {d['git_sync']}")
+            y_m = 3
+            for m in mods[:7]:
                 draw(y_m, f" [x] {m}"[:max_x-4])
                 y_m += 1
         elif selection == 5:
             draw(0, "[README & SYSTEM MANUAL - GITHUB REPO]", True)
             draw(2, "GitHub Repo: github.com/luthermarcus/sovereign-core-ecosystem")
             draw(3, "Self-Custody: Local HD keys derived in wallet.db (m/44'/0'/0'/0/0)")
-            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)[span_2](start_span)[span_2](end_span)")
+            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)")
             draw(5, "Operation  : Use arrow keys to navigate, Enter to select/exit.")
         elif selection == 6:
             draw(0, "[SQLITE FTS5 KNOWLEDGE VAULT]", True)
