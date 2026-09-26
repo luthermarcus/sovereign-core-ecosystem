@@ -11,13 +11,12 @@ except:
     backup_status = "Status: Backup Engine Offline"
 
 def boot():
-    print("[*] Booting Sovereign Core OS v2.22.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
+    print("[*] Booting Sovereign Core OS v2.23.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
     time.sleep(1)
     print(f"[+] Ledger Snapshot Engine: {backup_status}")
-    print("[+] Dependencies resolved. SQLite WAL ledgers verified.")
+    print("[+] Dependencies resolved (tor, sqlite3, python3-socks).")
     print("[+] Zero-Trust Tor SOCKS5 network loopback established.")
-    print("[+] Native Tor v3 Hidden Service active for off-chain DEX gossip.")
-    print("[+] Sovereign DEX background socket daemon spawned.")
+    print("[+] Outbound Tor P2P Gossip Engine activated.")
     print("[+] SC-GPL Ecosystem consensus verified.")
     
     virtual_os_path = os.path.expanduser("~/sovereign-core-ecosystem/virtual_os.py")

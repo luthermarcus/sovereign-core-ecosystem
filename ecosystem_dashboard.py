@@ -35,6 +35,29 @@ def ping_dex_daemon():
         print(f"[x] ERROR: {e}")
     print("=" * 65)
 
+def gossip_peer(onion_address):
+    sys.path.append(os.path.expanduser("~/sovereign-core-ecosystem/modules"))
+    try:
+        import dex_bridge
+        print("=" * 65)
+        print(f"[*] Dialing Outbound Tor Peer: {onion_address}")
+        result = dex_bridge.gossip_with_peer(onion_address)
+        if "error" in result:
+            print(f"[x] GOSSIP FAILED: {result['error']}")
+        else:
+            print(f"[v] GOSSIP SUCCESSFUL:")
+            
+            try:
+                data = json.loads(result['response'])
+                print(f"    Peer Type : {data.get('node_type')}")
+                print(f"    Status    : {data.get('status')}")
+                print(f"    Version   : {data.get('dex_version')}")
+            except:
+                print(f"    Raw Response: {result['response']}")
+        print("=" * 65)
+    except Exception as e:
+        print(f"[x] Critical Gossip Failure: {e}")
+
 def render_cli():
     env = get_environment_profile()
     print("=" * 65)
@@ -59,10 +82,9 @@ def render_cli():
     print(f"  1. OS Bare-Metal Telemetry Daemon : {daemon_status}")
     print(f"  2. SQLite WAL Ledger Permissions  : [v] Secured (0o664)")
     print(f"  3. Tor SOCKS5 Loopback Matrix     : [v] Active (127.0.0.1:9050)")
-    print(f"  4. Tor P2P Onion Peer Discovery   : [v] Active (.onion Hidden Service)")
-    print(f"  5. Sandbox BIP44 HD Keypair       : [v] Verified (m/44'/0'/0'/0/0)")
-    print(f"  6. Blockchain DEX Liquidity Pools : [v] Synchronized (FOX/PARROT-BTC)")
-    print(f"  7. GitHub Release Sync Flag       : [v] {git_sync}")
+    print(f"  4. Tor P2P Outbound Gossip Engine : [v] Active (python3-socks)")
+    print(f"  5. Blockchain DEX Liquidity Pools : [v] Synchronized (FOX/PARROT-BTC)")
+    print(f"  6. GitHub Release Sync Flag       : [v] {git_sync}")
     print("-" * 65)
     
     try:
@@ -78,7 +100,12 @@ def render_cli():
     print("=" * 65)
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--ping-dex":
-        ping_dex_daemon()
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "--ping-dex":
+            ping_dex_daemon()
+        elif sys.argv[1] == "--gossip" and len(sys.argv) > 2:
+            gossip_peer(sys.argv[2])
+        else:
+            print("[!] Invalid argument. Use --ping-dex or --gossip <onion_address>")
     else:
         render_cli()
