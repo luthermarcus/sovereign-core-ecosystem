@@ -1,8 +1,11 @@
 # Sovereign Core OS - Git Ignore Policies
 venv/
+.venv/
 __pycache__/
 *.db
 *.db-journal
 *.db-wal
 *.db-shm
 .env
+.*_notes.md
+backups/

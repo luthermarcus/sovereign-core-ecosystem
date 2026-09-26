@@ -1,10 +1,19 @@
 import subprocess
 import time
 import os
+import sys
+
+sys.path.append(os.path.expanduser("~/sovereign-core-ecosystem/modules"))
+try:
+    import backup_audit
+    backup_status = backup_audit.execute_audit()
+except:
+    backup_status = "Status: Backup Engine Offline"
 
 def boot():
-    print("[*] Booting Sovereign Core OS v2.21.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
+    print("[*] Booting Sovereign Core OS v2.22.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
     time.sleep(1)
+    print(f"[+] Ledger Snapshot Engine: {backup_status}")
     print("[+] Dependencies resolved. SQLite WAL ledgers verified.")
     print("[+] Zero-Trust Tor SOCKS5 network loopback established.")
     print("[+] Native Tor v3 Hidden Service active for off-chain DEX gossip.")
