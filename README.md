@@ -1,8 +1,8 @@
-# Sovereign Core OS (`v5.5.0-beta`)
-*Dual-Path Transaction Guard, Anti-Phishing Emulation & L1/L2 Hardware Warden*
+# Sovereign Core OS (`v5.6.0-beta`)
+*XDA Developer Diagnostics, L1/L2 Fault Isolation & Dual-Path Security*
 
-## 1. Dual-Path Security & Phishing Defense
-To protect users from fake dApps, wallet drainers, and malicious signature prompts:
-- **Side A (Test Sandbox Channel):** Intercepts all incoming connection requests and runs a dry-run emulation in RAM (`/dev/shm`) to inspect bytecode and permissions.
-- **Side B (Official Settlement Channel):** Only establishes an official connection and commits state anchors after Side A certifies zero-risk execution.
-- **Hardware Isolation:** L1 Host basechain ledgers (`l1_warden.db`) remain strictly partitioned from user-space network interactions.
+## 1. XDA Developer Diagnostic Subsystem
+Designed specifically for bare-metal hardware modders and system developers:
+- **Unified Telemetry Logging:** Automatically aggregates L1 physical metrics (thermals, CPU load, RAM buffer headroom) and L2 software flags into structured reports stored in `l1_warden.db`.
+- **Fault Tree Isolation:** Separates hardware thermal anomalies from user-space transaction errors, preventing cascading system panics.
+- **RAM-Mapped Diagnostics:** Diagnostic logs bypass SSD NVMe controllers entirely, writing directly to `/dev/shm` memory banks.
