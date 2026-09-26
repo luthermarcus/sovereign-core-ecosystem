@@ -1,6 +1,8 @@
-import os, sys, termios, tty, time
+import os, sys, termios, tty, time, sqlite3
 from modules.hardware_warden import HardwareWarden
 from modules.consensus_engine import ConsensusEngine
+from modules.license_vault import SovereignLicenseEngine
+from modules.liquidity_trap import LiquidityTrapEngine
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 def get_single_keypress():
@@ -9,46 +11,64 @@ def get_single_keypress():
     finally: termios.tcsetattr(fd, termios.TCSADRAIN, old)
     return ch.upper()
 
-def subview_fork_defense():
+def fetch_kb():
+    db_path = os.path.expanduser('~/sovereign-core-ecosystem/knowledge.db')
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute('SELECT attack_vector, penalty_percentage, redistribution_model FROM liquidity_trap_penalties')
+        rows = c.fetchall()
+        conn.close()
+        return rows
+    except Exception: return []
+
+def subview_liquidity_trap():
     clear_screen()
-    print("=" * 70 + "\n=== DECENTRALIZED GOVERNANCE: HOSTILE FORK DEFENSE ===\n" + "=" * 70)
-    print("  [ALERT] Vampire Attack Detected: Unauthorized fork stripped 5% POL fee.")
-    time.sleep(0.5)
-    res = ConsensusEngine.evaluate_hostile_fork("0xBADF00D...VAMPIRE")
-    print(f"\n  Attacker State Root : {res['attacker_hash']}")
-    print("  Initiating Tri-Faction Community Consensus Vote...")
-    time.sleep(0.5)
-    print(f"  [>] Bitcointalk Core : {res['btc_core_vote']}")
-    print(f"  [>] XDA Modders      : {res['xda_vote']}")
-    print(f"  [>] DeFi Maintainers : {res['defi_vote']}")
+    print("=" * 70)
+    print("=== MALICIOUS LIQUIDITY TRAP SIMULATOR (100% SLASHING) ===")
+    print("=" * 70)
+    print("  [Alert] Simulating Rogue Fork Attempt (Attacker staked $50,000 USD)...")
+    time.sleep(0.6)
+    
+    res = LiquidityTrapEngine.execute_slashing_protocol("0xRogueAttackerWhale999", 50000.0)
+    
+    print(f"  Attacker Address    : {res['attacker']}")
+    print(f"  Total Seized Capital: ${res['total_seized_usd']:,.2f} USD")
+    print(f"  POL Treasury Lock   : ${res['pol_treasury_lock_usd']:,.2f} USD (80% Permanent Burn/Lock)")
+    print(f"  L1 Miner Bounty     : ${res['l1_miner_bounty_usd']:,.2f} USD (20% Reward to Honest Nodes)")
+    print(f"  Slashing Status     : {res['status']}")
+    print(f"  Execution Time      : {res['execution_ms']} ms")
     print("-" * 70)
-    print(f"  Consensus Result : {res['l1_warden_action']}")
-    print("  Outcome          : Attackers stranded on dead chain. Ecosystem secured.")
-    print("=" * 70 + "\n\nPress any key to return...")
+    print("  Result: Attacker wiped out. Community liquidity permanently deepened.")
+    print("=" * 70)
+    print("\nPress any key to return...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v5.0.0-beta. Master Consensus Engine Active."
+    msg = "Sovereign Core OS v5.1.0-beta. Liquidity Trap Slashing Active."
     while True:
         clear_screen()
         hw = HardwareWarden.audit_physical_hardware()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.0.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v5.1.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
         
         if page == 1:
-            print("--- ⚡ L1 Warden / L2 Node Separation ---")
+            print("--- ⚡ L1 Warden / L2 Node Operations ---")
             print(f"  L1 Thermals: {hw['thermal_celsius']}°C | Fan State: {hw['fan_state']}")
-            print("\n  [1] ⛏️  Execute BIP 301 Blind Merged Mining (Combine DBs via Hash)")
+            print("\n  [1] ⛏️  Execute BIP 301 Blind Merged Mining")
             print("  [2] 🌉 Execute Protocol-Owned Liquidity (POL) AMM Swap")
-            print("  [3] 🛡️ Simulate Hostile Fork & Tri-Faction Consensus Defense")
-            print("  [4] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
+            print("  [3] 🪤 Simulate Malicious Fork & 100% Liquidity Trap Slash")
+            print("  [4] 🔐 Generate HMAC-SHA256 Copyright Commitment")
+            print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ HOSTILE FORK & VAMPIRE ATTACK KNOWLEDGE BASE ---")
-            print("  [>] Threat : Vampire Attack (Code Theft)")
-            print("      Defense: Cryptographic HMAC-SHA256 Commitments protect proprietary heuristics.")
-            print("  [>] Threat : Hostile Consensus Takeover (Steem/Hive scenario)")
-            print("      Defense: L1 Warden blacklists malicious L2 roots via Tri-Faction voting.")
+            print("--- 🛠️ LIQUIDITY TRAP & PENALTY KNOWLEDGE BASE ---")
+            kb = fetch_kb()
+            for row in kb:
+                print(f"  [>] Vector : {row[0]}")
+                print(f"      Penalty: {row[1]}")
+                print(f"      Split  : {row[2]}")
+                print("-" * 65)
             
         elif page == 3:
             print("--- 📚 SYSTEM ARCHITECTURE MANUAL ---")
@@ -73,20 +93,24 @@ def main():
                 res = ConsensusEngine.execute_bip301_blind_mining({"tx": 500, "yield": 49.20})
                 print("=== BIP 301 BLIND MERGED MINING ===\n" + "=" * 70)
                 print(f"  L2 State Root   : 0x{res['l2_state_root'][:32]}...")
-                print(f"  L1 Blind Hash   : 0x{res['l1_blind_hash'][:32]}...")
-                print(f"  L1 Warden State : {res['status']}\n\nPress any key to return...")
+                print(f"  L1 Blind Hash   : 0x{res['l1_blind_hash'][:32]}...\n\nPress any key to return...")
                 get_single_keypress(); msg = "Executed BIP 301 Merged Mining."
             elif choice == '2':
                 clear_screen()
                 res = ConsensusEngine.execute_amm_pol_swap(1000.0)
                 print("=== PROTOCOL-OWNED LIQUIDITY (POL) ===\n" + "=" * 70)
                 print(f"  Deposit     : ${res['deposit']:,.2f} USDC")
-                print(f"  5% POL Tax  : ${res['pol_fee']:,.2f} (Locked in Community Treasury)")
-                print(f"  Yield       : {res['yield']:.2f} FOX\n\nPress any key to return...")
+                print(f"  5% POL Tax  : ${res['pol_fee']:,.2f} (Locked in Community Treasury)\n\nPress any key to return...")
                 get_single_keypress(); msg = "Executed POL AMM Swap."
             elif choice == '3':
-                subview_fork_defense(); msg = "Executed Community Hard Fork Defense."
-            elif choice == '4': break
+                subview_liquidity_trap(); msg = "Executed Malicious Liquidity Trap Simulation."
+            elif choice == '4':
+                clear_screen()
+                commit = SovereignLicenseEngine.generate_commitment("proprietary_algorithm_x79")
+                print("=== CRYPTOGRAPHIC LICENSE VAULT ===\n" + "=" * 70)
+                print(f"  HMAC-SHA256 : {commit}\n\nPress any key to return...")
+                get_single_keypress(); msg = "Generated License Commitment."
+            elif choice == '5': break
 
     os.system('clear'); os.system('stty sane')
 if __name__ == "__main__": main()
