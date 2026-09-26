@@ -22,9 +22,9 @@ def sync_master_ecosystem():
     
     ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     
-    # Seed Global Telemetry Flags across all categories so Page 1 renders a global overview
+    # Seed Global Telemetry Flags for instant Page 1 visibility
     global_flags = [
-        ('FLAG_GLOBAL_HEALTH', 'GREEN', 'Microkernel v1.26.0 active. All 5 page subsystems nominal.'),
+        ('FLAG_GLOBAL_HEALTH', 'GREEN', 'Microkernel v1.27.0 active. All 5 page subsystems nominal.'),
         ('FLAG_DEX_AMM', 'GREEN', 'Constant product invariant (x*y=k) and slippage filters active.'),
         ('FLAG_PYTHON_WAL', 'GREEN', 'SQLite WAL atomicity and busy_timeout=5000ms verified.'),
         ('FLAG_DEPIN_NODES', 'GREEN', 'Passive income bridge synchronized with active node stack.')
