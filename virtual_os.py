@@ -5,6 +5,7 @@ import tty
 import sqlite3
 import time
 from modules.chain_interop import SovereignChainEngine
+from modules.anomaly_engine import AnomalyPredictor
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
@@ -64,7 +65,6 @@ def subview_amm_multi_pool():
     pairs = {"1": "FOX/USDC", "2": "FOX/BTC", "3": "FOX/ETH", "4": "FOX/BNB", "5": "FOX/TRX"}
     pair = pairs.get(c, "FOX/USDC")
     amt = 100.0 if "BTC" in pair else (5.0 if "ETH" in pair else 1000.0)
-    
     res = SovereignChainEngine.execute_multi_pool_swap(pair, amt)
     
     clear_screen()
@@ -75,9 +75,27 @@ def subview_amm_multi_pool():
     print(f"  5% SC-GPL Dev Tax    : {res['dev_royalty']:,.4f} {res['quote_symbol']} (Direct to Dev Vault)")
     print(f"  Net Pool Contribution: {res['deposit'] - res['dev_royalty']:,.4f} {res['quote_symbol']}")
     print(f"  Minted Output Yield  : {res['output_tokens']:,.4f} {res['base_symbol']}")
-    print(f"  Updated Reserve X    : {res['new_reserve_x']:,.2f}")
-    print(f"  Updated Reserve Y    : {res['new_reserve_y']:,.2f}")
     print(f"  Constant Invariant k : {res['invariant_k']:,.2f} [VERIFIED]")
+    print("=" * 70)
+    print("\nPress any key to return to Sovereign Core OS Hub...")
+    get_single_keypress()
+
+def subview_anomaly_diagnostics():
+    clear_screen()
+    anomalies = AnomalyPredictor.audit_system_anomalies()
+    print("=" * 70)
+    print("=== PREDICTIVE ANOMALY DIAGNOSTICS & SYSTEM TELEMETRY ===")
+    print("=" * 70)
+    if not anomalies:
+        print("  [v] No anomalies detected. System operating at 100% efficiency.")
+        print("  [v] Memory buffers (/dev/shm) healthy.")
+        print("  [v] SQLite WAL journals bounded under 1MB limits.")
+        print("  [v] Constant Product Invariant verification: Zero Drift.")
+    else:
+        for code, details, sev in anomalies:
+            print(f"  [!] {code} ({sev} SEVERITY)")
+            print(f"      Details: {details}")
+            print("      Action : Autonomous healer dispatched background checkpoint.")
     print("=" * 70)
     print("\nPress any key to return to Sovereign Core OS Hub...")
     get_single_keypress()
@@ -96,19 +114,20 @@ def fetch_depin_kb():
 
 def main():
     current_page = 1
-    status_msg = "Sovereign Core OS v2.7.0-beta. Multi-Chain Interop Active."
+    status_msg = "Sovereign Core OS v2.8.0-beta. Predictive Anomaly Engine Active."
     
     while True:
         clear_screen()
         print("=" * 70)
-        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.7.0-beta [PAGE {current_page}/5] ===")
+        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.8.0-beta [PAGE {current_page}/5] ===")
         print("=" * 70)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC    : Microkernel v2.7.0-beta synced.")
-            print("[GREEN] FLAG_INTEROP_ENGINE : Multi-Chain (BTC, ETH, BNB, TRX) Active.")
-            print("[GREEN] FLAG_CAPITAL_RAISE  : 5% SC-GPL Treasury Diversion Active.")
+            print("[GREEN] FLAG_MASTER_SYNC       : Microkernel v2.8.0-beta synced.")
+            print("[GREEN] FLAG_ANOMALY_PREDICTOR : Active (Continuous Telemetry Monitoring)")
+            print("[GREEN] FLAG_INTEROP_ENGINE    : Multi-Chain (BTC, ETH, BNB, TRX) Active")
+            print("[GREEN] FLAG_CAPITAL_RAISE     : 5% SC-GPL Treasury Diversion Active")
             print("\n--- 🟡 Financial Vault Balance Matrix ---")
             print("  BTC : 0.8500       | Val: $71,441.96 USD")
             print("  FOX : 10,000.00    | Val: $16,200.00 USD (Native L2)")
@@ -119,7 +138,7 @@ def main():
             print("\nBare-Metal OS Menu [Page 1/5]:")
             print("  [1] 📥 Inspect Multi-Chain BIP44 Addresses (BTC/ETH/BNB/TRX)")
             print("  [2] 🔄 Execute Multi-Pool AMM Swap & 5% Dev Capital Raise")
-            print("  [3] 💸 EIP-4337 Gasless Paymaster Relay (Tor Onion Circuit)")
+            print("  [3] 🔍 Run Autonomous Anomaly & Self-Healing Diagnostics")
             print("  [4] ⛏️  Simulate DePIN Node Consensus Validation")
             print("  [5] 🛑 Exit to Native Dell Shell [Hotkey: Q]")
             
@@ -202,13 +221,8 @@ def main():
                 subview_amm_multi_pool()
                 status_msg = "Simulated Multi-Pool Constant Product AMM Swap."
             elif choice == '3': 
-                clear_screen()
-                print("=== VIRTUAL SANDBOX: EIP-4337 GASLESS RELAY ===")
-                print("Broadcasting transaction via Tor circuit...")
-                print("Tx Hash: 0x981bf... [CONFIRMED]")
-                print("\nPress any key to return...")
-                get_single_keypress()
-                status_msg = "Relayed Gasless EIP-4337 Transaction."
+                subview_anomaly_diagnostics()
+                status_msg = "Evaluated Predictive Anomaly Engine."
             elif choice == '4': 
                 clear_screen()
                 print("=== VIRTUAL SANDBOX: DEPIN NODE MINING ===")
