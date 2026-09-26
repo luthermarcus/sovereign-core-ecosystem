@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 PLUGIN_NAME = "SelfCustodyEngine"
-VERSION = "3.2.0"
+VERSION = "3.4.0"
 
 def execute_audit():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")

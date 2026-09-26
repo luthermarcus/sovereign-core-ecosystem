@@ -60,7 +60,7 @@ def main_loop(stdscr):
     
     selection = 0
     menu = [
-        "1. Command Center & Liquidity Matrix", 
+        "1. DePIN Command Center & Liquidity Matrix", 
         "2. Network & Zero-Tolerance Security (Tor)", 
         "3. Emulated BIP44 Wallet & DEX Matrix (FOX/PARROT-BTC)", 
         "4. Innovation Copyright & Royalties", 
@@ -74,7 +74,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.09.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.11.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -107,10 +107,10 @@ def main_loop(stdscr):
         now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         if selection == 0:
-            draw(0, f"| COMMAND CENTER & LIQUIDITY MATRIX | {now_str} |", True, 4)
-            draw(1, "[v] STATUS: ALL SYSTEMS NOMINAL - NO ACTIVE FAULTS", bold=True, color=3)
+            draw(0, f"| DEPIN COMMAND CENTER & LIQUIDITY MATRIX | {now_str} |", True, 4)
+            draw(1, "[v] STATUS: PURE DEPIN INFRASTRUCTURE ACTIVE", bold=True, color=3)
             draw(2, f"GitHub Release Flag State: {d['git_sync']} [Secured]", bold=True)
-            draw(3, "=== EARNINGS & LIQUIDITY POOL BANDWIDTH ===", bold=True)
+            draw(3, "=== DECENTRALIZED DEPIN INFRASTRUCTURE & POOLS ===", bold=True)
             y_off = 4
             for app in d["portfolio"]:
                 short_name = app[0].split()[0]
