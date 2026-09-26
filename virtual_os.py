@@ -12,10 +12,7 @@ def get_system_data():
         c = conn.cursor()
         c.execute("SELECT cpu, ram, disk, os_info FROM host_metrics LIMIT 1")
         row = c.fetchone()
-        if row:
-            data["host"] = row
-        else:
-            data["host"] = (12.5, 72.0, 15.2, "Linux Mint (Bare-Metal)")
+        data["host"] = row if row else (12.5, 72.0, 15.2, "Linux Mint (Bare-Metal)")
         conn.close()
     except:
         data["host"] = (12.5, 72.0, 15.2, "Linux Mint (Bare-Metal)")
@@ -55,7 +52,7 @@ def main_loop(stdscr):
     
     selection = 0
     menu = [
-        "1. Command Center & Nominal Status", 
+        "1. Command Center & Gigabyte Telemetry", 
         "2. Network & Zero-Tolerance Security", 
         "3. Emulated Wallet & DEX Matrix (FOX/PARROT-BTC)", 
         "4. Innovation Copyright & Royalties", 
@@ -69,7 +66,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.98.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.00.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -102,18 +99,18 @@ def main_loop(stdscr):
         now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         if selection == 0:
-            draw(0, f"| COMMAND CENTER & NOMINAL STATUS | {now_str} |", True, 4)
+            draw(0, f"| COMMAND CENTER & GIGABYTE TELEMETRY | {now_str} |", True, 4)
             draw(1, "[v] STATUS: ALL SYSTEMS NOMINAL - NO ACTIVE FAULTS", bold=True, color=3)
-            draw(2, "=== EARNINGS PORTFOLIO (6 APPS + NODE) ===", bold=True)
+            draw(2, "=== EARNINGS & GIGABYTE BANDWIDTH PORTFOLIO ===", bold=True)
             y_off = 3
             for app in d["portfolio"]:
                 short_name = app[0].split()[0]
-                draw(y_off, f"[{short_name}] {app[1]} | ${app[3]:.2f}"[:max_x-4])
+                draw(y_off, f"[{short_name}] {app[1]} | {app[2]} | ${app[3]:.2f}"[:max_x-4])
                 y_off += 1
         elif selection == 1:
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
-            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)[span_0](start_span)[span_0](end_span)")
+            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
             draw(4, "Content Filter  : Active (Illicit Media / CSAM Blocked)")
             draw(5, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
@@ -139,14 +136,13 @@ def main_loop(stdscr):
             draw(0, "[README & SYSTEM MANUAL - GITHUB REPO]", True)
             draw(2, "GitHub Repo: github.com/luthermarcus/sovereign-core-ecosystem")
             draw(3, "Self-Custody: Local HD keys derived in wallet.db (m/44'/0'/0'/0/0)")
-            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)[span_1](start_span)[span_1](end_span)")
+            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)")
             draw(5, "Operation  : Use arrow keys to navigate, Enter to select/exit.")
         elif selection == 6:
             draw(0, "[SQLITE FTS5 KNOWLEDGE VAULT]", True)
             draw(2, "Status: Synchronized with FTS5 Full-Text Search Engine.")
             draw(3, "Integrity: Cryptographically Signed via SHA-256 Vault Signer.")
             
-        # Persistent Hardware Sandbox Status Bar (Linux Mint Host Telemetry)
         if d["host"] and max_y > 5:
             bar_y = max_y - 3
             stdscr.addstr(bar_y - 1, 2, ("=" * (max_x - 4))[:max_x-4])
