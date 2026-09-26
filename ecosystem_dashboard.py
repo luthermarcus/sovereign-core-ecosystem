@@ -11,7 +11,7 @@ def render_cli():
         conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/discipline_ledger.db")
         c = conn.cursor()
         c.execute("SELECT timestamp, event_type, description FROM discipline_log ORDER BY id DESC LIMIT 3")
-        print("=== AUTONOMOUS TEST & DISCIPLINE FLAGS ===")
+        print("=== AUTONOMOUS SELF-HEALING & DISCIPLINE FLAGS ===")
         for row in c.fetchall():
             print(f" [{row[0]}] {row[1]} : {row[2]}")
         conn.close()
