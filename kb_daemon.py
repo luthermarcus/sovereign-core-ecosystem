@@ -7,7 +7,25 @@ VAULT_DIR = "/home/luther/sovereign-core-ecosystem/knowledge_vault"
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
-    conn.execute("Create table if not exists entries (id text primary key, path text, content text, updated_at timestamp DEFAULT CURRENT_TIMESTAMP)")
+    conn.execute("PRAGMA journal_mode=WAL")
+    # Create standard entry table
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS entries (
+            id TEXT PRIMARY KEY,
+            path TEXT,
+            content TEXT,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    # Create FTS5 virtual table for full-text search
+    conn.execute("""
+        CREATE VIRTUAL TABLE IF NOT EXISTS entries_fts USING fts5(
+            path,
+            content,
+            content='entries',
+            content_rowid='rowid'
+        )
+    """)
     conn.commit()
     return conn
 
@@ -20,10 +38,18 @@ def ingest_vault():
                 with open(full_path, "r", encoding="utf-8") as file:
                     content = file.read()
                 file_id = hashlib.md5(full_path.encode()).hexdigest()
-                conn.execute("REPLACE INTO entries (id, path, content) VALUES (?, ?, ?)", (file_id, full_path, content))
+                
+                # Insert or replace in base table
+                conn.execute(
+                    "REPLACE INTO entries (id, path, content) VALUES (?, ?, ?)",
+                    (file_id, full_path, content)
+                )
+    
+    # Synchronize FTS index
+    conn.execute("INSERT INTO entries_fts(entries_fts) VALUES('rebuild')")
     conn.commit()
     conn.close()
-    print("[+] Knowledge Vault synchronized with SQLite cache.")
+    print("[+] Knowledge Vault successfully indexed with SQLite FTS5.")
 
 if __name__ == "__main__":
     ingest_vault()
