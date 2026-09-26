@@ -3,7 +3,7 @@ import platform
 
 class OSCompatibilityLayer:
     @staticmethod
-    get_system_info():
+    def get_system_info():
         return {
             "system": platform.system(),
             "release": platform.release(),

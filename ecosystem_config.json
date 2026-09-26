@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.3.0-beta",
+  "version": "v6.4.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Multi-OS L1/L2 Sidechain with BIP 300 Pegs",
