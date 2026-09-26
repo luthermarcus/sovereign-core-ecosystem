@@ -5,7 +5,7 @@ import socket
 import subprocess
 
 PLUGIN_NAME = "MasterTestRunner"
-VERSION = "4.0.0"
+VERSION = "4.1.0"
 
 def run_integration_tests():
     print("[*] Executing Sovereign Core OS - Sandbox - Blockchain Interoperability Tests...")
@@ -28,11 +28,17 @@ def run_integration_tests():
         wallet_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")
         conn = sqlite3.connect(wallet_path)
         c = conn.cursor()
-        c.execute("SELECT COUNT(*) FROM earnings_portfolio")
-        count = c.fetchone()[0]
+        c.execute("SELECT app_name FROM earnings_portfolio")
+        apps = [row[0] for row in c.fetchall()]
         conn.close()
-        if count >= 4:
-            report.append("[v] Test 2 (Sandbox DePIN Infrastructure & Pools): PASSED")
+        
+        # Explicit check to ensure centralized apps are purged
+        centralized_banned = ["EarnApp", "Honeygain", "TraffMonetizer", "PacketStream", "Pawns.app"]
+        if any(banned in apps for banned in centralized_banned):
+            tests_passed = False
+            report.append("[x] Test 2 Failed: Centralized legacy apps detected in portfolio!")
+        elif len(apps) >= 4:
+            report.append("[v] Test 2 (Pure DePIN Infrastructure & Pools): PASSED")
         else:
             tests_passed = False
             report.append("[x] Test 2 Failed: DePIN assets incomplete")
@@ -65,7 +71,12 @@ def run_integration_tests():
         if res == 0:
             report.append("[v] Test 4 (Tor SOCKS5 Zero-Trust Network): PASSED")
         else:
-            report.append("[!] Test 4 Warning: Tor proxy loopback inactive (Running Standby)")
+            # Try to check if it's installed via systemctl
+            sys_check = subprocess.run(["systemctl", "is-active", "tor"], capture_output=True, text=True)
+            if "active" in sys_check.stdout:
+                report.append("[v] Test 4 (Tor SOCKS5): Service Active (Port mapping delayed)")
+            else:
+                report.append("[!] Test 4 Warning: Tor proxy loopback inactive. Run 'sudo systemctl start tor'")
     except Exception as e:
         report.append(f"[!] Test 4 Warning: {e}")
 

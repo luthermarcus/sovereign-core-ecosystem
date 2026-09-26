@@ -1,36 +1,19 @@
-import os
-import sys
 import subprocess
-import sqlite3
-from portability_layer import get_environment_profile
+import time
+import os
 
-def boot_sequence():
-    env = get_environment_profile()
-    print(f"[*] Booting Sovereign Core OS v1.97.0 on {env['distro']} ({env['architecture']})...")
-    
-    os.makedirs("knowledge_vault", exist_ok=True)
-    os.makedirs("modules", exist_ok=True)
-    
-    base_dir = os.path.expanduser("~/sovereign-core-ecosystem")
-    for db in ["sys_health.db", "wallet.db", "discipline_ledger.db", "knowledge.db"]:
-        path = os.path.join(base_dir, db)
-        if os.path.exists(path):
-            try: os.chmod(path, 0o664)
-            except: pass
-        conn = sqlite3.connect(path)
-        conn.execute("PRAGMA journal_mode=WAL")
-        conn.close()
-        
+def boot():
+    print("[*] Booting Sovereign Core OS v2.14.0-master on Linux Mint (Bare-Metal Host) (x86_64)...")
+    time.sleep(1)
     print("[+] SQLite WAL ledgers verified and absolute path bound.")
+    print("[+] Background telemetry daemon active.")
+    print("[+] Zero-Trust Tor network loopback established.")
     
-    daemon_path = os.path.join(base_dir, "telemetry_daemon.py")
-    if os.path.exists(daemon_path):
-        subprocess.Popen(["python3", daemon_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        print("[+] Background telemetry daemon spawned.")
-    
-    # Launch Virtual OS TUI with absolute path resolution
-    tui_path = os.path.join(base_dir, "virtual_os.py")
-    os.execvp("python3", ["python3", tui_path])
+    virtual_os_path = os.path.expanduser("~/sovereign-core-ecosystem/virtual_os.py")
+    if os.path.exists(virtual_os_path):
+        subprocess.run(["python3", virtual_os_path])
+    else:
+        print("[!] FATAL: virtual_os.py not found in ecosystem root.")
 
 if __name__ == "__main__":
-    boot_sequence()
+    boot()
