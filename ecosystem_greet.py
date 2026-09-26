@@ -1,8 +1,22 @@
-def run_login_hud():
-    print("=" * 70 + "\n=== SOVEREIGN CORE OS v5.3.0-beta : L1 NATIVE HOST READY ===\n" + "=" * 70)
-    print("  [v] L1/L2 Database Separation         : ACTIVE")
-    print("  [v] Optimistic Challenge Window Guard : ACTIVE")
-    print("  [v] Transaction Recall & Slashing     : ACTIVE")
-    print("  [v] XDA Hardware Memory Audits        : ACTIVE\n")
-    print(">>> Type 'sos' to enter the L2 Virtual Sandbox.\n" + "=" * 70)
-if __name__ == "__main__": run_login_hud()
+import os
+from modules.display_manager import MultiDisplayManager
+
+def main():
+    res = MultiDisplayManager.render_all_displays_summary()
+    print("=" * 70)
+    print("=== SOVEREIGN CORE OS v6.5.0-beta : ALL DISPLAYS ACTIVE ===")
+    print("=" * 70)
+    d1 = res["display_1_depin"]
+    d2 = res["display_2_hardware"]
+    d3 = res["display_3_consensus"]
+    d4 = res["display_4_security"]
+
+    print(f"  [Display 1] DePIN Stack Yield : ${d1['gross']} USD | POL Tax: ${d1['pol_tax']} [{d1['status']}]")
+    print(f"  [Display 2] Hardware Warden  : {d2['thermal_c']}°C | /dev/shm: {d2['shm_mb']} MB [{d2['status']}]")
+    print(f"  [Display 3] Sidechain (BIP300) : Drivechain Active | BMM: Ready [{d3['status']}]")
+    print(f"  [Display 4] Security Guard   : L1 Kernel Secure | L2 Isolated [{d4['status']}]")
+    print("=" * 70)
+    print("  >>> Type 'sos' to enter the L2 Virtual Sandbox Dashboard. <<<\n")
+
+if __name__ == "__main__":
+    main()

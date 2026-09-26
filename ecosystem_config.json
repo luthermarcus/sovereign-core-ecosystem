@@ -1,15 +1,14 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.4.0-beta",
+  "version": "v6.5.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
-  "architecture": "Multi-OS L1/L2 Sidechain with BIP 300 Pegs",
-  "modules": [
-    "os_compat.py",
-    "cross_chain_peg.py",
-    "depin_sidechain.py",
-    "xda_air.py",
-    "transaction_guard.py"
+  "architecture": "Multi-Display L1/L2 Sidechain Architecture",
+  "displays": [
+    "Display 1: DePIN Passive Income & POL Capital Routing",
+    "Display 2: L1 Hardware Warden & XDA Active Cooling",
+    "Display 3: Bitcoin BIP 300/301 Sidechain Consensus",
+    "Display 4: System L1/L2 Security & Dual-Path Guard"
   ],
   "depin_stack": {
     "mysterium": 14.25,
