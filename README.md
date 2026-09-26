@@ -1,11 +1,12 @@
-# Sovereign Core OS (`v5.7.0-beta`)
-*XDA Automated Incident Response (AIR), Flash-Loan AMM Immunity & Dual-Path Security*
+# Sovereign Core OS (`v5.8.0-beta`)
+*Decoupled JSON Configuration Ledger, L1 Hardware Warden & Dual-Path Transaction Guard*
 
-## 1. XDA Automated Incident Response (AIR)
-To eliminate manual intervention during bare-metal stress:
-- **Proactive Self-Healing:** The AIR daemon monitors thermals, CPU load, and SQLite WAL sizes in real time.
-- **Automated Mitigation:** Automatically triggers fan overrides at 60°C and checkpoints database journals when file sizes exceed 2MB.
+## 1. Ledger-Driven State Management
+To eradicate mobile SSH paste truncation and shell syntax errors:
+- **`ecosystem_config.json`:** Acts as the single immutable source of truth for all system aliases, routing paths, and environment settings.
+- **Dynamic Python Parser:** Automatically reconstructs `~/.bashrc` on login without relying on fragile multi-line heredoc scripts.
 
-## 2. Flash-Loan & Liquidity Pool Defense
-- **Time-Weighted Average Liquidity (TWAL):** Prevents single-block flash-loan exploits by enforcing liquidity verification across multiple L2 state blocks.
-- **Protocol-Owned Liquidity (POL):** 5% AMM fees permanently deepen community reserves, locking capital against mercenary extraction.
+## 2. Core Security & Hardware Safeguards
+- **L1/L2 Database Separation:** `l1_warden.db` manages thermals and basechain hashes; `l2_rollup.db` processes high-frequency AMM swaps and DePIN telemetry in RAM (`/dev/shm`).
+- **XDA Automated Incident Response (AIR):** Actively forces Dell fan overrides via `i8kutils` at 60°C and checkpoints SQLite journals when file sizes exceed 2MB.
+- **Dual-Path Transaction Guard:** Intercepts external endpoint connections and runs RAM emulations to block wallet drainers and phishing signatures before official settlement.

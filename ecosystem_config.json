@@ -1,0 +1,14 @@
+{
+  "ecosystem": "Sovereign Core OS",
+  "version": "v5.8.0-beta",
+  "host": "luther-Inspiron-1525",
+  "user": "luther",
+  "storage_tier": "RAM (/dev/shm) + SQLite WAL",
+  "aliases": {
+    "sos": "python3 ~/sovereign-core-ecosystem/virtual_os.py",
+    "dash1": "python3 ~/sovereign-core-ecosystem/ecosystem_dashboard.py",
+    "dash2": "python3 ~/sovereign-core-ecosystem/ecosystem_earnings.py",
+    "dash4": "python3 ~/sovereign-core-ecosystem/ecosystem_flags.py",
+    "greet": "python3 ~/sovereign-core-ecosystem/ecosystem_greet.py"
+  }
+}
