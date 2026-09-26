@@ -9,8 +9,8 @@ def query_knowledge_base():
         row = c.fetchone()
         conn.close()
         if row:
-            title = row[0].split('/')[-1]
-            snippet = row[1].split('\n')[0]
+            title = row[0].split("/")[-1]
+            snippet = row[1].split("\n")[0]
             return f"[{title}] {snippet}"
         return "No indexed documents found."
     except Exception:
@@ -34,7 +34,7 @@ def main_loop(stdscr):
     curses.init_pair(1, curses.COLOR_CYAN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLACK, curses.COLOR_WHITE)
     selection = 0
-    menu = ["Telemetry Matrix", "DEX & Wallet", "Media Bridge", "Knowledge Vault", "Exit System"]
+    menu = ["Telemetry Matrix", "Bitcoin/Tor & DEX", "Media Bridge", "Knowledge Vault", "Exit System"]
     
     while True:
         stdscr.clear()
@@ -75,9 +75,10 @@ def main_loop(stdscr):
             else:
                 draw(2, "Awaiting Telemetry Daemon Sync...")
         elif selection == 1:
-            draw(0, "[FINANCIAL MATRIX]", True)
-            draw(2, "Bitcoin Daemon: TOR ONLY - NO OPEN PORTS")
-            draw(3, "RPC Query: Local Only (Zero Telemetry)")
+            draw(0, "[BITCOIN & TOR SECURITY MATRIX]", True)
+            draw(2, "Tor Proxy: 127.0.0.1:9050 (-onlynet=onion)")
+            draw(3, "Inbound Ports: CLOSED (Zero Clearnet Exposure)")
+            draw(4, "RPC Validator: Local Loopback Only")
         elif selection == 2:
             draw(0, "[MEDIA BRIDGE]", True)
             draw(2, "Headless Audio/Video Daemon: Standby")
