@@ -3,12 +3,19 @@ import sqlite3
 import os
 import datetime
 import subprocess
+import sys
+
+sys.path.append(os.path.expanduser("~/sovereign-core-ecosystem/modules"))
+try:
+    import royalty_distributor
+except:
+    royalty_distributor = None
 from portability_layer import get_environment_profile
 
 def get_system_data():
     data = {}
     try:
-        conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/sys_health.db")
+        conn = sqlite3.connect(os.path.expanduser("~/sovereign-core-ecosystem/sys_health.db"))
         c = conn.cursor()
         c.execute("SELECT cpu, ram, disk, os_info FROM host_metrics LIMIT 1")
         row = c.fetchone()
@@ -18,22 +25,24 @@ def get_system_data():
         data["host"] = (12.5, 72.0, 15.2, "Linux Mint (Bare-Metal)")
 
     try:
-        conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/wallet.db")
+        conn = sqlite3.connect(os.path.expanduser("~/sovereign-core-ecosystem/wallet.db"))
         c = conn.cursor()
         c.execute("SELECT app_name, status, traffic_or_tier, earnings_usd FROM earnings_portfolio")
         data["portfolio"] = c.fetchall()
-        c.execute("SELECT token_pair, exchange_rate FROM dex_reserves")
-        data["dex"] = c.fetchall()
         c.execute("SELECT public_address, derivation_path FROM wallet_keys LIMIT 1")
         data["wallet_key"] = c.fetchone()
+        c.execute("SELECT token_pair, exchange_rate FROM dex_reserves")
+        data["dex"] = c.fetchall()
         conn.close()
     except:
         data["portfolio"] = []
-        data["dex"] = []
         data["wallet_key"] = None
+        data["dex"] = []
 
-    daemon_check = subprocess.run(["pgrep", "-f", "telemetry_daemon.py"], capture_output=True, text=True)
-    data["daemon_active"] = daemon_check.returncode == 0
+    if royalty_distributor:
+        data["consensus"] = royalty_distributor.calculate_consensus_yields()
+    else:
+        data["consensus"] = {"gross_yield": 0.0, "net_node_yield": 0.0, "ecosystem_tax_5pct": 0.0, "miner_rewards_0_05pct": 0.0}
 
     try:
         sc = subprocess.run(["git", "status", "-uno"], capture_output=True, text=True, timeout=2)
@@ -46,7 +55,7 @@ def get_system_data():
     return data
 
 def get_loaded_modules():
-    mod_dir = "/home/luther/sovereign-core-ecosystem/modules"
+    mod_dir = os.path.expanduser("~/sovereign-core-ecosystem/modules")
     if os.path.exists(mod_dir):
         return [f for f in os.listdir(mod_dir) if f.endswith(".py")]
     return []
@@ -62,8 +71,8 @@ def main_loop(stdscr):
     menu = [
         "1. OS-Sandbox-Blockchain Command Center", 
         "2. Network & Zero-Tolerance Security (Tor)", 
-        "3. Emulated BIP44 Wallet & DEX Matrix (FOX/PARROT-BTC)", 
-        "4. Innovation Copyright & Royalties", 
+        "3. Emulated BIP44 Wallet & DEX Matrix", 
+        "4. Sovereign Consensus & 5% Royalty Matrix", 
         "5. XDA Developer Modules & Test Runner", 
         "6. README & System Manual (GitHub Linked)", 
         "7. SQLite FTS5 Knowledge Vault", 
@@ -74,7 +83,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.13.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.15.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -113,42 +122,43 @@ def main_loop(stdscr):
             draw(3, "=== DEPIN INFRASTRUCTURE & DEX LIQUIDITY POOLS ===", bold=True)
             y_off = 4
             for app in d["portfolio"]:
-                short_name = app[0].split()[0]
-                draw(y_off, f"[{short_name}] {app[1]} | {app[2]} | Yield: ${app[3]:.2f}"[:max_x-4])
+                draw(y_off, f"[{app[0][:18]}] {app[1]} | {app[2][:16]} | Yield: ${app[3]:.2f}"[:max_x-4])
                 y_off += 1
         elif selection == 1:
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
-            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)[span_1](start_span)[span_1](end_span)")
-            draw(4, "Content Filter  : Active (Illicit Media / CSAM Blocked)")
+            draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
+            draw(4, "Content Filter  : Active (Zero-Tolerance Network Policy)")
             draw(5, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:
-            draw(0, "[EMULATED BIP44 WALLET & DEX MATRIX (FOX/PARROT-BTC)]", True)
+            draw(0, "[EMULATED BIP44 WALLET & DEX MATRIX]", True)
             if d["wallet_key"]:
                 draw(2, f"Master Address  : {d['wallet_key'][0]}")
                 draw(3, f"Derivation Path : {d['wallet_key'][1]} (BIP44 Standard)")
             draw(4, "Base Currency   : Bitcoin Core (BTC Anchored)")
-            y_d = 5
-            for dex in d["dex"]:
-                draw(y_d, f" DEX Liquidity  : {dex[0]} | Rate: {dex[1]} (Off-Chain)")
-                y_d += 1
+            draw(5, "DEX Liquidity   : FOX/BTC | PARROT/BTC (Off-Chain SQLite)")
         elif selection == 3:
-            draw(0, "[INNOVATION COPYRIGHT & 5% SMART ROYALTIES]", True)
-            draw(2, "Sovereign Core Microkernel: +12.45 Credits (5% Attribution)")
+            draw(0, "[SOVEREIGN CONSENSUS & ROYALTY MATRIX]", True)
+            draw(2, "SC-GPL Protocol: 5% Treasury Tax & 0.05% DEX Miner Fee", bold=True, color=3)
+            con = d.get("consensus", {})
+            draw(4, f"Node Gross DePIN Yield          : ${con.get('gross_yield', 0.0):.2f}")
+            draw(5, f"Net Node Operator Retained (95%): ${con.get('net_node_yield', 0.0):.2f}")
+            draw(6, f"Liquidity Pool Treasury (5%)   : ${con.get('ecosystem_tax_5pct', 0.0):.2f}")
+            draw(7, f"Miner Reward Pool (0.05% DEX)   : ${con.get('miner_rewards_0_05pct', 0.0):.2f}")
         elif selection == 4:
             mods = get_loaded_modules()
             draw(0, "[XDA DEVELOPER MODULES & TEST RUNNER]", True)
             draw(2, f"Active Update Watcher Flag: {d['git_sync']}")
             y_m = 3
-            for m in mods[:7]:
+            for m in mods[:6]:
                 draw(y_m, f" [x] {m}"[:max_x-4])
                 y_m += 1
         elif selection == 5:
             draw(0, "[README & SYSTEM MANUAL - GITHUB REPO]", True)
             draw(2, "GitHub Repo: github.com/luthermarcus/sovereign-core-ecosystem")
             draw(3, "Self-Custody: Local HD keys derived in wallet.db (m/44'/0'/0'/0/0)")
-            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)[span_2](start_span)[span_2](end_span)")
-            draw(5, "Operation  : Use arrow keys to navigate, Enter to select/exit.")
+            draw(4, "Security   : Tor SOCKS5 Loopback (-proxy=127.0.0.1:9050)")
+            draw(5, "Consensus  : SC-GPL 5% Liquidity Treasury & 0.05% Miner Fee")
         elif selection == 6:
             draw(0, "[SQLITE FTS5 KNOWLEDGE VAULT]", True)
             draw(2, "Status: Synchronized with FTS5 Full-Text Search Engine.")

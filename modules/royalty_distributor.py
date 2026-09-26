@@ -1,24 +1,48 @@
-# Sovereign Core Beta Plugin: Smart-Contract Innovation Royalty Auto-Distributor
+# Sovereign Core Production Plugin: Consensus Math & Royalty Distributor
 import sqlite3
 import os
 
-PLUGIN_NAME = "RoyaltyDistributor"
-VERSION = "1.3.0"
+PLUGIN_NAME = "RoyaltyConsensus"
+VERSION = "1.0.0"
 
-def execute_audit():
+def calculate_consensus_yields():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")
-    if os.path.exists(db_path):
-        try:
-            conn = sqlite3.connect(db_path)
-            c = conn.cursor()
-            # Simulate micro-royalty accrual (5% attribution)
-            c.execute("UPDATE innovations SET earnings = earnings + 0.05 WHERE id = 'inv_001'")
-            c.execute("SELECT earnings FROM innovations WHERE id = 'inv_001'")
-            res = c.fetchone()
-            conn.commit()
-            conn.close()
-            if res:
-                return f"Status: Active (Module Royalty Pool: {res[0]:.2f} Credits)"
-        except:
-            pass
-    return "Status: Royalty Ledger Standby"
+    try:
+        conn = sqlite3.connect(db_path)
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS ecosystem_treasury (
+                treasury_id TEXT PRIMARY KEY,
+                liquidity_pool_allocation REAL,
+                miner_reward_pool REAL
+            )
+        """)
+        conn.execute("INSERT OR IGNORE INTO ecosystem_treasury (treasury_id, liquidity_pool_allocation, miner_reward_pool) VALUES ('global_v1', 0.0, 0.0)")
+        
+        c = conn.cursor()
+        c.execute("SELECT SUM(earnings_usd) FROM earnings_portfolio")
+        total_raw = c.fetchone()[0] or 0.0
+        
+        # 5% to Global Liquidity Treasury, 95% to Node Operator
+        ecosystem_tax = round(total_raw * 0.05, 4)
+        net_yield = round(total_raw * 0.95, 4)
+        
+        # Emulated DEX Volume ($10,000 baseline) -> 0.05% Miner Reward Fee
+        emulated_dex_volume = 10000.00
+        miner_fee = round(emulated_dex_volume * 0.0005, 4)
+        
+        conn.execute("UPDATE ecosystem_treasury SET liquidity_pool_allocation = ?, miner_reward_pool = ? WHERE treasury_id = 'global_v1'", (ecosystem_tax, miner_fee))
+        conn.commit()
+        conn.close()
+        
+        return {
+            "gross_yield": total_raw,
+            "net_node_yield": net_yield,
+            "ecosystem_tax_5pct": ecosystem_tax,
+            "miner_rewards_0_05pct": miner_fee
+        }
+    except Exception as e:
+        return {"gross_yield": 0.0, "net_node_yield": 0.0, "ecosystem_tax_5pct": 0.0, "miner_rewards_0_05pct": 0.0, "error": str(e)}
+
+if __name__ == "__main__":
+    print(calculate_consensus_yields())
