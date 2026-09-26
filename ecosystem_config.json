@@ -1,17 +1,17 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.0.0-beta",
+  "version": "v6.1.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
-  "active_role": "L2_SANDBOX_TESTER",
-  "depin_node_stack": [
-    "Mysterium Node",
-    "EarnApp",
-    "TraffMonetizer",
-    "PacketStream",
-    "Pawns.app",
-    "Honeygain"
-  ],
+  "architecture": "L1/L2 Sidechain (Bitcoin BIP 300/301 Model)",
+  "depin_stack": {
+    "mysterium": 14.25,
+    "earnapp": 8.50,
+    "traffmonetizer": 5.10,
+    "packetstream": 3.20,
+    "pawns": 6.75,
+    "honeygain": 11.40
+  },
   "aliases": {
     "sos": "python3 ~/sovereign-core-ecosystem/virtual_os.py",
     "dash1": "python3 ~/sovereign-core-ecosystem/ecosystem_dashboard.py",
