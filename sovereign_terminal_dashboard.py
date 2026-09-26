@@ -24,31 +24,36 @@ def get_kb_data():
     c = conn.cursor()
     bals = fetch_table(c, "SELECT token, balance, price_usd FROM global_assets_v7 WHERE balance > 0 ORDER BY balance * price_usd DESC LIMIT 8")
     pairs = fetch_table(c, "SELECT pair_symbol, liquidity_usd, apy_range FROM liquidity_pairs LIMIT 4")
-    paym = fetch_table(c, "SELECT paymaster_address, gas_balance_usd, status FROM eip4337_paymaster_v14", fetch_one=True)
     nets = fetch_table(c, "SELECT network, fee_metric, current_fee FROM network_mempool_v14")
     settings = dict(fetch_table(c, "SELECT setting_key, setting_value FROM user_settings_v14") or {})
     sips = fetch_table(c, "SELECT sip_id, title, network_signal_percent FROM sip_knowledge_base_v10")
-    flags = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags ORDER BY detected_at DESC LIMIT 1") # Condensed summary
+    
+    # Check if any RED anomaly flags exist to auto-elevate them to the main screen
+    anomaly_flags = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags WHERE status='RED'")
+    nominal_flag = fetch_table(c, "SELECT flag_id, status, description FROM scraper_flags WHERE flag_id='FLAG_SYSTEM_NOMINAL'", fetch_one=True)
+    
     devs = fetch_table(c, "SELECT dev_name, app_name, royalty_share, total_earned FROM dev_registry_v13")
     nodes = fetch_table(c, "SELECT node_type, status, block_height, peer_count FROM node_status_v13")
     ai_kb = fetch_table(c, "SELECT doc_id, title, summary FROM ai_knowledge_base_v13")
     conn.close()
-    return bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb
+    return bals, pairs, nets, settings, sips, anomaly_flags, nominal_flag, devs, nodes, ai_kb
 
 def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
     titles = {1: "CORE WALLET & STATUS", 2: "DECENTRALIZED LIQUIDITY", 3: "DEV ROYALTIES & PYTHON KB", 4: "HARDWARE NODES & DePIN", 5: "SECURITY SENTINEL & AUDIT"}
-    print(f"   Sovereign Core OS v1.29.0-beta [PAGE {page}/5 - {titles[page]}]")
+    print(f"   Sovereign Core OS v1.30.0-beta [PAGE {page}/5 - {titles[page]}]")
     print("=" * 80)
     
-    bals, pairs, paym, nets, settings, sips, flags, devs, nodes, ai_kb = get_kb_data()
+    bals, pairs, nets, settings, sips, anomaly_flags, nominal_flag, devs, nodes, ai_kb = get_kb_data()
     
-    # Clean Condensed Telemetry Ticker
+    # ANOMALY AUTO-ELEVATION TICKET
     print("\n--- 🛡️ System Health Telemetry ---")
-    if flags:
-        f = flags[0]
-        print(f" [{f[1]}] {f[0]} : {f[2]}")
+    if anomaly_flags:
+        for af in anomaly_flags:
+            print(f" 🚨 [RED ANOMALY] {af[0]} : {af[2]}")
+    elif nominal_flag:
+        print(f" [{nominal_flag[1]}] {nominal_flag[0]} : {nominal_flag[2]}")
 
     if page == 1:
         print("\n--- 🪙 Active Financial Portfolio ---")
