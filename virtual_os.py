@@ -1,6 +1,21 @@
 import curses
 import sqlite3
 
+def query_knowledge_base():
+    try:
+        conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/knowledge.db")
+        c = conn.cursor()
+        c.execute("SELECT path, content FROM entries LIMIT 1")
+        row = c.fetchone()
+        conn.close()
+        if row:
+            title = row[0].split('/')[-1]
+            snippet = row[1].split('\n')[0]
+            return f"[{title}] {snippet}"
+        return "No indexed documents found."
+    except Exception:
+        return "Knowledge DB offline."
+
 def get_live_telemetry():
     try:
         conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/sys_health.db")
@@ -62,13 +77,14 @@ def main_loop(stdscr):
         elif selection == 1:
             draw(0, "[FINANCIAL MATRIX]", True)
             draw(2, "Bitcoin Daemon: TOR ONLY - NO OPEN PORTS")
-            draw(3, "RPC Query: Local Only")
+            draw(3, "RPC Query: Local Only (Zero Telemetry)")
         elif selection == 2:
             draw(0, "[MEDIA BRIDGE]", True)
             draw(2, "Headless Audio/Video Daemon: Standby")
         elif selection == 3:
-            draw(0, "[KNOWLEDGE VAULT]", True)
-            draw(2, "1 Active Document(s) Indexed in knowledge.db")
+            draw(0, "[KNOWLEDGE VAULT - FTS5]", True)
+            kb_preview = query_knowledge_base()
+            draw(2, kb_preview)
             
         stdscr.refresh()
         key = stdscr.getch()
