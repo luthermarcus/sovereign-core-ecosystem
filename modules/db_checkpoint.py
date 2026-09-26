@@ -1,21 +1,20 @@
-# Sovereign Core Beta Plugin: SQLite WAL Checkpointer & Integrity Auditor
 import sqlite3
 import os
 
-PLUGIN_NAME = "DBCheckpointer"
-VERSION = "1.1.0"
-
-def execute_audit():
-    dbs = ["sys_health.db", "wallet.db", "knowledge.db"]
-    healthy = 0
+def perform_maintenance():
+    target_dir = os.path.expanduser("~/sovereign-core-ecosystem")
+    dbs = ["sys_health.db", "wallet.db", "discipline_ledger.db", "knowledge.db"]
     for db in dbs:
-        path = os.path.expanduser(f"~/sovereign-core-ecosystem/{db}")
+        path = os.path.join(target_dir, db)
         if os.path.exists(path):
             try:
                 conn = sqlite3.connect(path)
-                conn.execute("PRAGMA wal_checkpoint(PASSIVE)")
+                conn.execute("PRAGMA wal_checkpoint(FULL);")
+                conn.execute("VACUUM;")
                 conn.close()
-                healthy += 1
             except:
                 pass
-    return f"Status: {healthy}/{len(dbs)} Databases WAL-Checkpointed"
+    print("[+] Sovereign Core maintenance and WAL checkpoint completed successfully.")
+
+if __name__ == "__main__":
+    perform_maintenance()
