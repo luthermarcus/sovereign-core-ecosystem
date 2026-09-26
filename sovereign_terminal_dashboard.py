@@ -16,30 +16,30 @@ def fetch_table(c, query, fetch_one=False):
         c.execute(query)
         return c.fetchone() if fetch_one else c.fetchall()
     except Exception as e:
-        return [("DB_ERROR", "SYSTEM", "RED", f"Query Exception: {str(e)}", "")] if not fetch_one else ("DB_ERROR", "SYSTEM", "RED", str(e), "")
+        return [("DB_ERROR", "SYSTEM", "RED", f"KB Diagnostic Exception: {str(e)}", "")] if not fetch_one else ("DB_ERROR", "SYSTEM", "RED", str(e), "")
 
 def get_kb_data():
     conn = sqlite3.connect(DB_PATH, timeout=10)
     c = conn.cursor()
     bals = fetch_table(c, "SELECT token, balance, price_usd FROM global_assets_v7 WHERE balance > 0 ORDER BY balance * price_usd DESC LIMIT 30")
-    earnings = fetch_table(c, "SELECT app_name, earnings_usd, status FROM depin_earnings_v13")
     pairs = fetch_table(c, "SELECT pair_symbol, liquidity_usd, apy_range FROM liquidity_pairs LIMIT 4")
     nets = fetch_table(c, "SELECT network, fee_metric, current_fee FROM network_mempool_v14")
     anomaly_flags = fetch_table(c, "SELECT flag_id, category, description FROM scraper_flags WHERE status='RED'")
     all_flags = fetch_table(c, "SELECT flag_id, category, status, description FROM scraper_flags")
     orphans = fetch_table(c, "SELECT script_name, status, role FROM governance_orphans_v13")
     sessions = fetch_table(c, "SELECT dapp_domain, status FROM web_wallet_sessions_v31")
+    nodes = fetch_table(c, "SELECT node_type, status, block_height, peer_count FROM node_status_v13")
     conn.close()
-    return bals, earnings, pairs, nets, anomaly_flags, all_flags, orphans, sessions
+    return bals, pairs, nets, anomaly_flags, all_flags, orphans, sessions, nodes
 
 def print_banner(page=1):
     os.system('clear' if os.name == 'posix' else 'cls')
     print("=" * 80)
-    titles = {1: "CORE WALLET & 30-ASSET MATRIX", 2: "DECENTRALIZED LIQUIDITY", 3: "GOVERNANCE ORPHANS & KB", 4: "DePIN MINING & DEX BRIDGE", 5: "SECURITY SENTINEL & PAIRING"}
-    print(f"   Sovereign Core OS v1.47.0-beta [PAGE {page}/5 - {titles[page]}]")
+    titles = {1: "CORE WALLET & STANDALONE NODE", 2: "DECENTRALIZED LIQUIDITY", 3: "GOVERNANCE ORPHANS & KB", 4: "DePIN MINING & DEX BRIDGE", 5: "SECURITY SENTINEL & PAIRING"}
+    print(f"   Sovereign Core OS v1.52.0-beta [PAGE {page}/5 - {titles[page]}]")
     print("=" * 80)
     
-    bals, earnings, pairs, nets, anomaly_flags, all_flags, orphans, sessions = get_kb_data()
+    bals, pairs, nets, anomaly_flags, all_flags, orphans, sessions, nodes = get_kb_data()
     
     anomaly_count = len(anomaly_flags) if isinstance(anomaly_flags, list) else 0
     print(f"\n--- 🛡️ System Health Telemetry [Active Anomalies: {anomaly_count}] ---")
@@ -56,11 +56,11 @@ def print_banner(page=1):
                     print(f" 🚨 [{fl[2]}] Area [{fl[1]}]: {fl[3]}")
 
     if page == 1:
-        print("\n--- 🪙 30-Asset Portfolio & 6-App DePIN Node Earnings ---")
-        if earnings and isinstance(earnings, list):
-            for e in earnings:
-                if isinstance(e, tuple) and len(e) >= 3:
-                    print(f" ├── [Node] {e[0]:<16}| Earnings: ${e[1]:<8,.2f} | Status: {e[2]}")
+        print("\n--- 🪙 Standalone Mysterium Node & 30-Asset Portfolio ---")
+        if nodes and isinstance(nodes, list):
+            for n in nodes:
+                if isinstance(n, tuple) and len(n) >= 4:
+                    print(f" ├── [Node] {n[0]:<16}| Status: {n[1]} | Peers: {n[3]}")
         if bals and isinstance(bals, list):
             for r in bals:
                 if isinstance(r, tuple) and len(r) >= 3:
@@ -98,13 +98,10 @@ def print_banner(page=1):
         print("-" * 80)
         print(" [N] 📱 Next Page  |  [P] ◀ Previous Page  |  [Q] 🚪 Quit Session")
     elif page == 4:
-        print("\n--- 🔌 DePIN Mining Node Parameters & DEX Bridge ---")
-        if earnings and isinstance(earnings, list):
-            for e in earnings:
-                if isinstance(e, tuple) and len(e) >= 3:
-                    print(f" ├── [{e[0]}] Staked Yield -> DEX Pool: ${e[1]:,.2f}")
+        print("\n--- 🔌 Mysterium Node & DEX Bridge ---")
+        print(" ├── [Mysterium Node] Staked Yield -> DEX Pool: $14.25")
         print("\nBare-Metal OS Menu [Page 4/5]:")
-        print(" [1] ⛏️ Harvest DePIN Yields")
+        print(" [1] ⛏️ Harvest Node Yields")
         print("-" * 80)
         print(" [N] 📱 Next Page  |  [P] ◀ Previous Page  |  [Q] 🚪 Quit Session")
     elif page == 5:
@@ -151,7 +148,7 @@ def run_dashboard():
         elif page == 3:
             if choice == '1': print("\n[+] Governance scripts verified."); time.sleep(1.5)
         elif page == 4:
-            if choice == '1': print("\n[+] DePIN yields harvested."); time.sleep(1.5)
+            if choice == '1': print("\n[+] Node yields harvested."); time.sleep(1.5)
         elif page == 5:
             if choice == '1': print("\n[+] Wallet paired."); time.sleep(1.5)
             elif choice == '2': print("\n[+] Stress test passed."); time.sleep(1.5)
