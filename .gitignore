@@ -1,4 +1,5 @@
 sovereign_metrics.db
 *.pid
 *.sock
+.venv/
 __pycache__/
