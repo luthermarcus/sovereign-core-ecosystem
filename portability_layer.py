@@ -1,13 +1,13 @@
 import platform
 import os
+import shutil
 
 def get_environment_profile():
-    sys_type = platform.system()
-    arch = platform.machine()
-    base_dir = os.path.expanduser("~/sovereign-core-ecosystem")
-    return {
-        "os": sys_type,
-        "architecture": arch,
-        "root_dir": base_dir,
-        "sqlite_mode": "WAL"
+    profile = {
+        "os": platform.system(),
+        "release": platform.release(),
+        "architecture": platform.machine(),
+        "node": platform.node(),
+        "distro": "Linux Mint (Bare-Metal Host)" if os.path.exists("/etc/linuxmint/info") else platform.system()
     }
+    return profile
