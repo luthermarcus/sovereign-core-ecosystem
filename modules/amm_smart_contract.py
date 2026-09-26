@@ -3,7 +3,7 @@ import sqlite3
 import os
 
 PLUGIN_NAME = "AMMSmartContract"
-VERSION = "1.4.0"
+VERSION = "1.6.0"
 
 def execute_amm_compounding():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")
@@ -18,8 +18,8 @@ def execute_amm_compounding():
                 exchange_rate REAL
             )
         """)
-        conn.execute("INSERT OR IGNORE INTO dex_reserves (token_pair, base_reserve, virtual_reserve, exchange_rate) VALUES ('FOX/BTC', 1124.50, 50000.0, 0.022490)")
-        conn.execute("INSERT OR IGNORE INTO dex_reserves (token_pair, base_reserve, virtual_reserve, exchange_rate) VALUES ('PARROT/BTC', 1124.50, 100000.0, 0.022490)")
+        conn.execute("INSERT OR IGNORE INTO dex_reserves (token_pair, base_reserve, virtual_reserve, exchange_rate) VALUES ('FOX/BTC', 1185.20, 50000.0, 0.023704)")
+        conn.execute("INSERT OR IGNORE INTO dex_reserves (token_pair, base_reserve, virtual_reserve, exchange_rate) VALUES ('PARROT/BTC', 1185.20, 100000.0, 0.023704)")
         conn.commit()
         conn.close()
         return "Status: Active (AMM Auto-Compounded Yield into DEX Pools)"

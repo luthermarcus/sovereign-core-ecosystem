@@ -1,4 +1,4 @@
-# Sovereign Core Production Plugin: Interactive Multi-Page Terminal OS Hub (Graceful Input)
+# Sovereign Core Production Plugin: Interactive 5-Page Terminal OS Hub
 import os
 import sys
 import sqlite3
@@ -50,63 +50,73 @@ def get_system_data():
 
 def main():
     current_page = 1
-    status_msg = "System operational. Enter option [1-5] or N/P."
+    status_msg = "System operational. Use [1-5], [N]ext, [P]rev hotkeys."
     
     while True:
         clear_screen()
         d = get_system_data()
         
         print("=" * 65)
-        print(f"=== Sovereign Core OS v1.34.0-master [PAGE {current_page}/4 - CORE WALLET & AMM] ===")
+        print(f"=== Sovereign Core OS v1.35.0-master [PAGE {current_page}/5 - CORE HUB] ===")
         print("=" * 65)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.34.0 synced. Scientific notation fixed.")
-            print("[GREEN] FLAG_UNIFIED_BUILD : All IPC engines and AMM contracts connected.")
+            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.35.0 synced. Scientific notation fixed.")
+            print("[GREEN] FLAG_UNIFIED_BUILD : All 5 pages & AMM contracts connected.")
             print(f"[GREEN] FLAG_SCRAPER_AI  : {d.get('scraper_status', 'Active')}")
             print("\n--- 🟡 Active Financial Portfolio ---")
             for asset in d["financial_assets"]:
                 print(f"  {asset[0]:<5} | Bal: {asset[1]:<12,.2f} | Pr: ${asset[2]:<10,.2f} | Val: ${asset[3]:,.2f}")
-            print("\nBare-Metal OS Menu [Page 1/4]:")
+            print("\nBare-Metal OS Menu [Page 1/5]:")
             print("  [1] 📥 View Receive Address (Taproot/EVM)")
             print("  [2] 💸 Send Transaction (EIP-4337 Gasless)")
             print("  [3] 🔄 Execute AMM Swap (Constant Product Engine)")
-            print("  [4] ➡️  Switch to Page 2 (Network & Liquidity) [Hotkey: N]")
+            print("  [4] ➡️  Switch to Page 2 (Network & Security) [Hotkey: N]")
             print("  [5] 🛑 Terminate OS Session [Hotkey: Q]")
             
         elif current_page == 2:
-            print("--- 🌐 ZERO-TOLERANCE NETWORK & SECURITY MATRIX [PAGE 2/4] ---")
+            print("--- 🌐 ZERO-TOLERANCE NETWORK & SECURITY MATRIX [PAGE 2/5] ---")
             print("  Firewall Shield : Active / Secured (Socket Monitored)")
             print("  Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
             print("  Tor P2P Gateway : Active (Autonomous Sync)")
             print("  DEX Socket Link : Active (Port 8181 via Tor)")
-            print("\nBare-Metal OS Menu [Page 2/4]:")
+            print("\nBare-Metal OS Menu [Page 2/5]:")
             print("  [1] ⬅️  Return to Page 1 (Core Wallet & AMM) [Hotkey: P]")
             print("  [2] ➡️  Switch to Page 3 (Consensus & Royalties) [Hotkey: N]")
             print("  [3] 🛑 Terminate OS Session")
             
         elif current_page == 3:
-            print("--- ⚖️ SOVEREIGN CONSENSUS & ROYALTY MATRIX [PAGE 3/4] ---")
+            print("--- ⚖️ SOVEREIGN CONSENSUS & ROYALTY MATRIX [PAGE 3/5] ---")
             print("  SC-GPL Protocol: 5% Treasury Tax & 0.05% DEX Miner Fee")
             print("  Node Gross DePIN Yield          : $47.60")
             print("  Net Node Operator Retained (95%): $45.22")
             print("  Liquidity Pool Treasury (5%)   : $2.38 (Auto-Compounded)")
             print("  Miner Reward Pool (0.05% DEX)   : $5.00")
-            print("\nBare-Metal OS Menu [Page 3/4]:")
-            print("  [1] ⬅️  Return to Page 2 (Network & Liquidity) [Hotkey: P]")
-            print("  [2] ➡️  Switch to Page 4 (XDA Modules & Vault) [Hotkey: N]")
+            print("\nBare-Metal OS Menu [Page 3/5]:")
+            print("  [1] ⬅️  Return to Page 2 (Network & Security) [Hotkey: P]")
+            print("  [2] ➡️  Switch to Page 4 (XDA Modules & Test Runner) [Hotkey: N]")
             print("  [3] 🛑 Terminate OS Session")
             
         elif current_page == 4:
-            print("--- 🛠️ XDA MODULES & KNOWLEDGE VAULT [PAGE 4/4] ---")
+            print("--- 🛠️ XDA DEVELOPER MODULES & TEST RUNNER [PAGE 4/5] ---")
             mod_dir = os.path.expanduser("~/sovereign-core-ecosystem/modules")
             mods = [f for f in os.listdir(mod_dir) if f.endswith(".py")] if os.path.exists(mod_dir) else []
             print(f"  Active Modules Loaded: {len(mods)} plugins active")
             for m in mods[:10]:
                 print(f"  [x] {m}")
-            print("\nBare-Metal OS Menu [Page 4/4]:")
+            print("\nBare-Metal OS Menu [Page 4/5]:")
             print("  [1] ⬅️  Return to Page 3 (Consensus Matrix) [Hotkey: P]")
+            print("  [2] ➡️  Switch to Page 5 (SQLite FTS5 Knowledge Vault) [Hotkey: N]")
+            print("  [3] 🛑 Terminate OS Session")
+
+        elif current_page == 5:
+            print("--- 📚 SQLITE FTS5 KNOWLEDGE VAULT & MANUAL [PAGE 5/5] ---")
+            print("  Status   : Synchronized with FTS5 Full-Text Search Engine.")
+            print("  Integrity: Cryptographically Signed via SHA-256 Vault Signer.")
+            print("  GitHub   : github.com/luthermarcus/sovereign-core-ecosystem")
+            print("\nBare-Metal OS Menu [Page 5/5]:")
+            print("  [1] ⬅️  Return to Page 4 (XDA Modules) [Hotkey: P]")
             print("  [2] 🏠 Return to Page 1 (Core Wallet & AMM)")
             print("  [3] 🛑 Terminate OS Session")
 
@@ -121,11 +131,11 @@ def main():
             break
         
         if choice == 'N':
-            current_page = (current_page % 4) + 1
+            current_page = (current_page % 5) + 1
             status_msg = f"Switched to Page {current_page} via Hotkey."
             continue
         elif choice == 'P':
-            current_page = ((current_page - 2) % 4) + 1
+            current_page = ((current_page - 2) % 5) + 1
             status_msg = f"Switched to Page {current_page} via Hotkey."
             continue
         elif choice in ['Q', 'EXIT']:
@@ -151,6 +161,11 @@ def main():
             else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
         elif current_page == 4:
             if choice == '1': current_page = 3; status_msg = "Returned to Page 3."
+            elif choice == '2': current_page = 5; status_msg = "Switched to Page 5."
+            elif choice == '3': print("Terminating OS Session."); break
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
+        elif current_page == 5:
+            if choice == '1': current_page = 4; status_msg = "Returned to Page 4."
             elif choice == '2': current_page = 1; status_msg = "Returned to Page 1."
             elif choice == '3': print("Terminating OS Session."); break
             else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."

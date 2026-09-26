@@ -3,7 +3,7 @@ import platform
 import subprocess
 
 PLUGIN_NAME = "PortabilityLayer"
-VERSION = "1.1.0"
+VERSION = "1.3.0"
 
 def get_environment_profile():
     profile = {
