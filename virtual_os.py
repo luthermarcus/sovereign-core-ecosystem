@@ -1,4 +1,4 @@
-# Sovereign Core Production Plugin: Interactive Multi-Page Terminal OS Hub
+# Sovereign Core Production Plugin: Interactive Multi-Page Terminal OS Hub (Graceful Input)
 import os
 import sys
 import sqlite3
@@ -50,19 +50,19 @@ def get_system_data():
 
 def main():
     current_page = 1
-    status_msg = "System operational. Enter option [1-5]."
+    status_msg = "System operational. Enter option [1-5] or N/P."
     
     while True:
         clear_screen()
         d = get_system_data()
         
         print("=" * 65)
-        print(f"=== Sovereign Core OS v1.32.0-master [PAGE {current_page}/4 - CORE WALLET & AMM] ===")
+        print(f"=== Sovereign Core OS v1.34.0-master [PAGE {current_page}/4 - CORE WALLET & AMM] ===")
         print("=" * 65)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.32.0 synced. Scientific notation fixed.")
+            print("[GREEN] FLAG_MASTER_SYNC : Microkernel v1.34.0 synced. Scientific notation fixed.")
             print("[GREEN] FLAG_UNIFIED_BUILD : All IPC engines and AMM contracts connected.")
             print(f"[GREEN] FLAG_SCRAPER_AI  : {d.get('scraper_status', 'Active')}")
             print("\n--- 🟡 Active Financial Portfolio ---")
@@ -72,8 +72,8 @@ def main():
             print("  [1] 📥 View Receive Address (Taproot/EVM)")
             print("  [2] 💸 Send Transaction (EIP-4337 Gasless)")
             print("  [3] 🔄 Execute AMM Swap (Constant Product Engine)")
-            print("  [4] ➡️  Switch to Page 2 (Network & Liquidity)")
-            print("  [5] 🛑 Terminate OS Session")
+            print("  [4] ➡️  Switch to Page 2 (Network & Liquidity) [Hotkey: N]")
+            print("  [5] 🛑 Terminate OS Session [Hotkey: Q]")
             
         elif current_page == 2:
             print("--- 🌐 ZERO-TOLERANCE NETWORK & SECURITY MATRIX [PAGE 2/4] ---")
@@ -82,8 +82,8 @@ def main():
             print("  Tor P2P Gateway : Active (Autonomous Sync)")
             print("  DEX Socket Link : Active (Port 8181 via Tor)")
             print("\nBare-Metal OS Menu [Page 2/4]:")
-            print("  [1] ⬅️  Return to Page 1 (Core Wallet & AMM)")
-            print("  [2] ➡️  Switch to Page 3 (Consensus & Royalties)")
+            print("  [1] ⬅️  Return to Page 1 (Core Wallet & AMM) [Hotkey: P]")
+            print("  [2] ➡️  Switch to Page 3 (Consensus & Royalties) [Hotkey: N]")
             print("  [3] 🛑 Terminate OS Session")
             
         elif current_page == 3:
@@ -94,8 +94,8 @@ def main():
             print("  Liquidity Pool Treasury (5%)   : $2.38 (Auto-Compounded)")
             print("  Miner Reward Pool (0.05% DEX)   : $5.00")
             print("\nBare-Metal OS Menu [Page 3/4]:")
-            print("  [1] ⬅️  Return to Page 2 (Network & Liquidity)")
-            print("  [2] ➡️  Switch to Page 4 (XDA Modules & Vault)")
+            print("  [1] ⬅️  Return to Page 2 (Network & Liquidity) [Hotkey: P]")
+            print("  [2] ➡️  Switch to Page 4 (XDA Modules & Vault) [Hotkey: N]")
             print("  [3] 🛑 Terminate OS Session")
             
         elif current_page == 4:
@@ -106,7 +106,7 @@ def main():
             for m in mods[:10]:
                 print(f"  [x] {m}")
             print("\nBare-Metal OS Menu [Page 4/4]:")
-            print("  [1] ⬅️  Return to Page 3 (Consensus Matrix)")
+            print("  [1] ⬅️  Return to Page 3 (Consensus Matrix) [Hotkey: P]")
             print("  [2] 🏠 Return to Page 1 (Core Wallet & AMM)")
             print("  [3] 🛑 Terminate OS Session")
 
@@ -114,30 +114,46 @@ def main():
         print(f"[-] STATUS: {status_msg}")
         print("=" * 65)
         
-        choice = input("Select OS IPC Command: ").strip()
+        try:
+            choice = input("Select OS IPC Command ([1-5], [N]ext, [P]rev): ").strip().upper()
+        except (KeyboardInterrupt, EOFError):
+            print("\n[!] Gracefully terminating Sovereign Core OS session.")
+            break
         
+        if choice == 'N':
+            current_page = (current_page % 4) + 1
+            status_msg = f"Switched to Page {current_page} via Hotkey."
+            continue
+        elif choice == 'P':
+            current_page = ((current_page - 2) % 4) + 1
+            status_msg = f"Switched to Page {current_page} via Hotkey."
+            continue
+        elif choice in ['Q', 'EXIT']:
+            print("Terminating OS Session.")
+            break
+
         if current_page == 1:
             if choice == '1': status_msg = "Taproot Address: bc1p_sovereign_luther_node_x79"
             elif choice == '2': status_msg = "EIP-4337 Gasless Transaction Broadcasted via Tor."
             elif choice == '3': status_msg = "AMM Swap executed successfully via Constant Product formula."
             elif choice == '4': current_page = 2; status_msg = "Switched to Page 2."
             elif choice == '5': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-5]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-5], N, or P."
         elif current_page == 2:
             if choice == '1': current_page = 1; status_msg = "Returned to Page 1."
             elif choice == '2': current_page = 3; status_msg = "Switched to Page 3."
             elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-3]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
         elif current_page == 3:
             if choice == '1': current_page = 2; status_msg = "Returned to Page 2."
             elif choice == '2': current_page = 4; status_msg = "Switched to Page 4."
             elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-3]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
         elif current_page == 4:
             if choice == '1': current_page = 3; status_msg = "Returned to Page 3."
             elif choice == '2': current_page = 1; status_msg = "Returned to Page 1."
             elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-3]."
+            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
 
 if __name__ == "__main__":
     main()
