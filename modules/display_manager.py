@@ -7,7 +7,6 @@ class MultiDisplayManager:
 
     @classmethod
     def render_all_displays_summary(cls):
-        """Compiles and returns status summaries for all 4 core ecosystem displays."""
         try:
             with open(cls.CONFIG_PATH, "r") as f:
                 cfg = json.load(f)
