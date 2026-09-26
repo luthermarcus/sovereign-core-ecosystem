@@ -1,0 +1,1430 @@
+[2026-09-26 09:38:34] Sovereign Core Tor v3 DEX Daemon initialized in background persistent mode.
+[2026-09-26 09:38:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:38:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:39:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:39:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:39:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:39:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:39:43] Sovereign Core Tor v3 DEX Daemon initialized in background persistent mode.
+[2026-09-26 09:39:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:39:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:40:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:40:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:40:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:40:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:41:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:41:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:41:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:41:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:42:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:42:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:42:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:42:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:43:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:43:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:43:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:43:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:44:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:44:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:44:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:44:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:45:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:45:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:45:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:45:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:46:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:46:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:46:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:46:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:47:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:47:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:47:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:47:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:48:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:48:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:48:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:48:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:49:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:49:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:49:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:49:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:50:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:50:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:50:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:50:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:51:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:51:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:51:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:51:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:52:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:52:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:52:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:52:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:53:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:53:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:53:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:53:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:54:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:54:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:54:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:54:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:55:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:55:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:55:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:55:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:56:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:56:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:56:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:56:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:57:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:57:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:57:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:57:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:58:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:58:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:58:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:58:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:59:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:59:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 09:59:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 09:59:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:00:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:00:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:00:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:00:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:01:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:01:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:01:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:01:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:02:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:02:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:02:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:02:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:03:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:03:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:03:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:03:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:04:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:04:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:04:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:04:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:05:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:05:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:05:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:05:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:06:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:06:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:06:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:06:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:07:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:07:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:07:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:07:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:08:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:08:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:08:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:08:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:09:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:09:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:09:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:09:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:10:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:10:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:10:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:10:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:11:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:11:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:11:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:11:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:12:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:12:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:12:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:12:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:13:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:13:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:13:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:13:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:14:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:14:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:14:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:14:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:15:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:15:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:15:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:15:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:16:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:16:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:16:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:16:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:17:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:17:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:17:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:17:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:18:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:18:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:18:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:18:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:19:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:19:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:19:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:19:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:20:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:20:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:20:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:20:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:21:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:21:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:21:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:21:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:22:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:22:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:22:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:22:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:23:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:23:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:23:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:23:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:24:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:24:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:24:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:24:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:25:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:25:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:25:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:25:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:26:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:26:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:26:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:26:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:27:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:27:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:27:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:27:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:28:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:28:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:28:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:28:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:29:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:29:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:29:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:29:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:30:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:30:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:30:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:30:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:31:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:31:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:32:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:32:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:32:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:32:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:33:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:33:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:33:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:33:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:34:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:34:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:34:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:34:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:35:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:35:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:35:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:35:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:36:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:36:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:36:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:36:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:37:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:37:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:37:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:37:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:38:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:38:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:38:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:38:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:39:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:39:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:39:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:39:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:40:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:40:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:40:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:40:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:41:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:41:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:41:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:41:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:42:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:42:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:42:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:42:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:43:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:43:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:43:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:43:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:44:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:44:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:44:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:44:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:45:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:45:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:45:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:45:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:46:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:46:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:46:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:46:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:47:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:47:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:47:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:47:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:48:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:48:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:48:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:48:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:49:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:49:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:49:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:49:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:50:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:50:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:50:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:50:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:51:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:51:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:51:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:51:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:52:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:52:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:52:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:52:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:53:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:53:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:53:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:53:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:54:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:54:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:54:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:54:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:55:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:55:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:55:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:55:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:56:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:56:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:56:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:56:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:57:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:57:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:57:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:57:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:58:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:58:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:58:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:58:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:59:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:59:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 10:59:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 10:59:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:00:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:00:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:00:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:00:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:01:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:01:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:01:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:01:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:02:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:02:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:02:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:02:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:03:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:03:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:03:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:03:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:04:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:04:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:04:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:04:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:05:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:05:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:05:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:05:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:06:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:06:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:06:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:06:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:07:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:07:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:07:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:07:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:08:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:08:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:08:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:08:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:09:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:09:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:09:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:09:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:10:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:10:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:10:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:10:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:11:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:11:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:11:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:11:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:12:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:12:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:12:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:12:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:13:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:13:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:13:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:13:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:14:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:14:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:14:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:14:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:15:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:15:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:15:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:15:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:16:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:16:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:16:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:16:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:17:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:17:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:17:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:17:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:18:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:18:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:18:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:18:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:19:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:19:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:19:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:19:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:20:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:20:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:20:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:20:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:21:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:21:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:21:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:21:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:22:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:22:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:22:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:22:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:23:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:23:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:23:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:23:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:24:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:24:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:24:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:24:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:25:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:25:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:25:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:25:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:26:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:26:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:26:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:26:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:27:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:27:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:27:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:27:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:28:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:28:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:28:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:28:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:29:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:29:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:29:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:29:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:30:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:30:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:30:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:30:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:31:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:31:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:31:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:31:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:32:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:32:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:32:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:32:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:33:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:33:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:33:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:33:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:34:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:34:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:34:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:34:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:35:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:35:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:35:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:35:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:36:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:36:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:36:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:36:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:37:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:37:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:37:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:37:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:38:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:38:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:38:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:38:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:39:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:39:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:39:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:39:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:40:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:40:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:40:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:40:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:41:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:41:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:41:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:41:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:42:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:42:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:42:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:42:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:43:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:43:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:43:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:43:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:44:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:44:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:44:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:44:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:45:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:45:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:45:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:45:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:46:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:46:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:46:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:46:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:47:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:47:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:47:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:47:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:48:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:48:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:48:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:48:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:49:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:49:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:49:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:49:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:50:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:50:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:50:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:50:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:51:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:51:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:51:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:51:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:52:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:52:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:52:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:52:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:53:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:53:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:53:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:53:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:54:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:54:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:54:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:54:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:55:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:55:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:55:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:55:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:56:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:56:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:56:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:56:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:57:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:57:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:57:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:57:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:58:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:58:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:58:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:58:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:59:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:59:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 11:59:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 11:59:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:00:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:00:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:00:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:00:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:01:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:01:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:01:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:01:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:02:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:02:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:03:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:03:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:03:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:03:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:04:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:04:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:04:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:04:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:05:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:05:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:05:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:05:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:06:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:06:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:06:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:06:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:07:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:07:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:07:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:07:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:08:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:08:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:08:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:08:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:09:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:09:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:09:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:09:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:10:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:10:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:10:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:10:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:11:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:11:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:11:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:11:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:12:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:12:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:12:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:12:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:13:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:13:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:13:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:13:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:14:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:14:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:14:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:14:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:15:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:15:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:15:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:15:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:16:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:16:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:16:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:16:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:17:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:17:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:17:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:17:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:18:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:18:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:18:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:18:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:19:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:19:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:19:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:19:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:20:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:20:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:20:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:20:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:21:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:21:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:21:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:21:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:22:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:22:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:22:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:22:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:23:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:23:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:23:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:23:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:24:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:24:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:24:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:24:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:25:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:25:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:25:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:25:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:26:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:26:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:26:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:26:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:27:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:27:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:27:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:27:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:28:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:28:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:28:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:28:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:29:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:29:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:29:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:29:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:30:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:30:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:30:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:30:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:31:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:31:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:31:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:31:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:32:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:32:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:32:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:32:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:33:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:33:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:33:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:33:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:34:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:34:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:34:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:34:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:35:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:35:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:35:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:35:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:36:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:36:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:36:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:36:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:37:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:37:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:37:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:37:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:38:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:38:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:38:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:38:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:39:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:39:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:39:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:39:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:40:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:40:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:40:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:40:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:41:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:41:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:41:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:41:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:42:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:42:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:42:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:42:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:43:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:43:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:43:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:43:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:44:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:44:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:44:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:44:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:45:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:45:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:45:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:45:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:46:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:46:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:46:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:46:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:47:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:47:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:47:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:47:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:48:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:48:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:48:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:48:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:49:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:49:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:49:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:49:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:50:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:50:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:50:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:50:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:51:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:51:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:51:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:51:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:52:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:52:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:52:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:52:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:53:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:53:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:53:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:53:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:54:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:54:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:54:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:54:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:55:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:55:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:55:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:55:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:56:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:56:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:56:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:56:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:57:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:57:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:57:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:57:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:58:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:58:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:58:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:58:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:59:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:59:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 12:59:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 12:59:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:00:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:00:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:00:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:00:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:01:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:01:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:01:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:01:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:02:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:02:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:02:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:02:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:03:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:03:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:03:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:03:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:04:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:04:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:04:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:04:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:05:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:05:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:05:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:05:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:06:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:06:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:06:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:06:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:07:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:07:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:07:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:07:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:08:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:08:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:08:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:08:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:09:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:09:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:09:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:09:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:10:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:10:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:10:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:10:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:11:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:11:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:11:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:11:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:12:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:12:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:12:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:12:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:13:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:13:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:13:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:13:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:14:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:14:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:14:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:14:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:15:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:15:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:15:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:15:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:16:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:16:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:16:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:16:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:17:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:17:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:17:54] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:17:54] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:18:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:18:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:18:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:18:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:19:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:19:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:19:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:19:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:20:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:20:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:20:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:20:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:21:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:21:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:21:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:21:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:22:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:22:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:22:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:22:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:23:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:23:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:23:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:23:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:24:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:24:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:24:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:24:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:25:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:25:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:25:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:25:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:26:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:26:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:26:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:26:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:27:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:27:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:27:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:27:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:28:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:28:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:28:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:28:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:29:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:29:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:29:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:29:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:30:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:30:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:30:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:30:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:31:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:31:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:31:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:31:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:32:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:32:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:32:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:32:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:33:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:33:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:33:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:33:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:34:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:34:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:35:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:35:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:35:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:35:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:36:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:36:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:36:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:36:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:37:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:37:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:37:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:37:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:38:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:38:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:38:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:38:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:39:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:39:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:39:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:39:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:40:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:40:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:40:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:40:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:41:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:41:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:41:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:41:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:42:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:42:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:42:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:42:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:43:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:43:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:43:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:43:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:44:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:44:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:44:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:44:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:45:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:45:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:45:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:45:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:46:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:46:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:46:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:46:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:47:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:47:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:47:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:47:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:48:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:48:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:48:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:48:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:49:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:49:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:49:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:49:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:50:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:50:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:50:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:50:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:51:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:51:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:51:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:51:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:52:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:52:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:52:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:52:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:53:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:53:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:53:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:53:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:54:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:54:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:54:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:54:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:55:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:55:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:55:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:55:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:56:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:56:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:56:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:56:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:57:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:57:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:57:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:57:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:58:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:58:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:58:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:58:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:59:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:59:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 13:59:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 13:59:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:00:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:00:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:00:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:00:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:01:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:01:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:01:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:01:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:02:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:02:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:02:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:02:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:03:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:03:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:03:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:03:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:04:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:04:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:04:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:04:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:05:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:05:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:05:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:05:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:06:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:06:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:06:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:06:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:07:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:07:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:07:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:07:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:08:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:08:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:08:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:08:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:09:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:09:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:09:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:09:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:10:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:10:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:10:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:10:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:11:11] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:11:11] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:11:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:11:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:12:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:12:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:12:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:12:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:13:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:13:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:13:42] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:13:42] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:14:12] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:14:12] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:14:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:14:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:15:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:15:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:15:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:15:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:16:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:16:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:16:43] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:16:43] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:17:13] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:17:13] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:17:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:17:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:18:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:18:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:18:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:18:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:19:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:19:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:19:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:19:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:20:14] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:20:14] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:20:44] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:20:44] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:21:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:21:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:21:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:21:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:22:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:22:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:22:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:22:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:23:15] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:23:15] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:23:45] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:23:45] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:24:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:24:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:24:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:24:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:25:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:25:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:25:46] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:25:46] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:26:16] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:26:16] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:26:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:26:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:27:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:27:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:27:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:27:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:28:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:28:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:28:47] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:28:47] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:29:17] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:29:17] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:29:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:29:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:30:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:30:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:30:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:30:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:31:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:31:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:31:48] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:31:48] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:32:18] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:32:18] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:32:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:32:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:33:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:33:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:33:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:33:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:34:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:34:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:34:49] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:34:49] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:35:19] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:35:19] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:35:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:35:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:36:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:36:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:36:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:36:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:37:20] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:37:20] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:37:50] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:37:50] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:38:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:38:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:38:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:38:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:39:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:39:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:39:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:39:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:40:21] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:40:21] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:40:51] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:40:51] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:41:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:41:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:41:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:41:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:42:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:42:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:42:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:42:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:43:22] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:43:22] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:43:52] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:43:52] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:44:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:44:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:44:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:44:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:45:23] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:45:23] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:45:53] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:45:53] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:46:24] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:46:24] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:46:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:46:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:47:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:47:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:47:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:47:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:48:25] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:48:25] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:48:55] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:48:55] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:49:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:49:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:49:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:49:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:50:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:50:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:50:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:50:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:51:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:51:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:51:56] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:51:56] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:52:26] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:52:26] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:52:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:52:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:53:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:53:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:53:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:53:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:54:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:54:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:54:57] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:54:57] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:55:27] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:55:27] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:55:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:55:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:56:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:56:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:56:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:56:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:57:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:57:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:57:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:57:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:58:28] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:58:28] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:58:58] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:58:58] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:59:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:59:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 14:59:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 14:59:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:00:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:00:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:00:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:00:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:01:29] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:01:29] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:01:59] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:01:59] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:02:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:02:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:03:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:03:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:03:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:03:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:04:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:04:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:04:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:04:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:05:00] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:05:00] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:05:30] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:05:30] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:06:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:06:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:06:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:06:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:07:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:07:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:07:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:07:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:08:01] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:08:01] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:08:31] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:08:31] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:09:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:09:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:09:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:09:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:10:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:10:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:10:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:10:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:11:02] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:11:02] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:11:32] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:11:32] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:12:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:12:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:12:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:12:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:13:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:13:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:13:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:13:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:14:03] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:14:03] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:14:33] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:14:33] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:15:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:15:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:15:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:15:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:16:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:16:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:16:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:16:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:17:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:17:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:17:34] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:17:34] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:18:04] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:18:04] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:18:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:18:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:19:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:19:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:19:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:19:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:20:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:20:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:20:35] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:20:35] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:21:05] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:21:05] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:21:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:21:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:22:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:22:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:22:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:22:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:23:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:23:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:23:36] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:23:36] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:24:06] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:24:06] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:24:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:24:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:25:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:25:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:25:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:25:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:26:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:26:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:26:37] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:26:37] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:27:07] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:27:07] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:27:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:27:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:28:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:28:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:28:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:28:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:29:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:29:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:29:38] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:29:38] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:30:08] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:30:08] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:30:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:30:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:31:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:31:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:31:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:31:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:32:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:32:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:32:39] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:32:39] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:33:09] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:33:09] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:33:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:33:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:34:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:34:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:34:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:34:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:35:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:35:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:35:40] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:35:40] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:36:10] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:36:10] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
+[2026-09-26 15:36:41] WAL Ledger updated: AMM liquidity reserve incremented.
+[2026-09-26 15:36:41] Tor SOCKS5 loopback heartbeat verified (127.0.0.1:9050).
