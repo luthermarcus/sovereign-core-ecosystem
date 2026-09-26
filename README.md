@@ -8,3 +8,8 @@
 - **Tor v3 P2P Gossip & SOCKS5 Routing:** Zero-trust network isolation via local loopbacks (`127.0.0.1:9050`) coupled with an autonomous background `.onion` sync daemon (`dex_daemon.py`).
 - **Atomic Ledger Snapshots (`backup_audit.py`):** Pre-execution environment automatically isolates timestamped copies of SQLite ledgers into `backups/` to prevent corruption.
 - **BIP44 HD Self-Custody:** Key derivation strictly bound to path `m/44'/0'/0'/0/0` within local encrypted vaults.
+
+## Community Attribution & Open-Source Acknowledgments
+- **Bitcointalk.org:** Credited for zero-trust network consensus, onion routing specifications, and privacy-first threat models.
+- **XDA Developers:** Credited for modular plugin design patterns (`modules/`), terminal UI optimization, and bare-metal resource management.
+- **GitHub Open-Source Ecosystem:** Credited for decentralized routing protocols (Mysterium Network) and robust SQLite WAL database engineering standards.
