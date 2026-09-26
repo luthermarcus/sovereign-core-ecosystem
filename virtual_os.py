@@ -34,7 +34,7 @@ def get_system_data():
     try:
         conn = sqlite3.connect("/home/luther/sovereign-core-ecosystem/discipline_ledger.db")
         c = conn.cursor()
-        c.execute("SELECT event_type, description FROM discipline_ledger ORDER BY id DESC LIMIT 2")
+        c.execute("SELECT event_type, description FROM discipline_ledger ORDER BY id DESC LIMIT 3")
         data["discipline"] = c.fetchall()
         conn.close()
     except:
@@ -57,11 +57,11 @@ def main_loop(stdscr):
     
     selection = 0
     menu = [
-        "1. Ecosystem Command Center (Dashboard B Bridge)", 
+        "1. Ecosystem Command Center & Auto-Test Flags", 
         "2. Network & Zero-Tolerance Security", 
         "3. Emulated Wallet & DEX Matrix (FOX/PARROT-BTC)", 
         "4. Innovation Copyright & Royalties", 
-        "5. XDA Developer Modules & Smart Contract Bridge", 
+        "5. XDA Developer Modules & Test Runner", 
         "6. SQLite FTS5 Knowledge Vault", 
         "7. Exit System"
     ]
@@ -70,7 +70,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.87.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v1.89.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -103,8 +103,8 @@ def main_loop(stdscr):
         now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
 
         if selection == 0:
-            draw(0, f"| COMMAND CENTER | {now_str} |", True, 4)
-            draw(1, "=== SYSTEM & DISCIPLINE FLAGS ===", bold=True)
+            draw(0, f"| COMMAND CENTER & AUTO-TEST FLAGS | {now_str} |", True, 4)
+            draw(1, "=== AUTONOMOUS TEST & DISCIPLINE FLAGS ===", bold=True)
             y_f = 2
             for disc in d["discipline"]:
                 draw(y_f, f"[{disc[0]}] {disc[1]}"[:max_x-4], color=3)
@@ -134,9 +134,9 @@ def main_loop(stdscr):
             draw(2, "Sovereign Core Microkernel: +12.45 Credits (5% Attribution)")
         elif selection == 4:
             mods = get_loaded_modules()
-            draw(0, "[XDA DEVELOPER MODULES & SMART CONTRACT BRIDGE]", True)
+            draw(0, "[XDA DEVELOPER MODULES & AUTO-TEST RUNNER]", True)
             y_m = 2
-            for m in mods[:8]: # Compact render for small terminals
+            for m in mods[:8]:
                 draw(y_m, f" [x] {m}"[:max_x-4])
                 y_m += 1
         elif selection == 5:
