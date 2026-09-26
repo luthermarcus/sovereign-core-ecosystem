@@ -6,6 +6,7 @@ import sqlite3
 import time
 from modules.chain_interop import SovereignChainEngine
 from modules.anomaly_engine import AnomalyPredictor
+from modules.cross_os_bridge import CrossOSBridge
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
@@ -80,22 +81,23 @@ def subview_amm_multi_pool():
     print("\nPress any key to return to Sovereign Core OS Hub...")
     get_single_keypress()
 
-def subview_anomaly_diagnostics():
+def subview_cross_os_diagnostics():
     clear_screen()
-    anomalies = AnomalyPredictor.audit_system_anomalies()
+    payload = CrossOSBridge.sync_cross_os_flags()
+    host = payload["host_os"]
+    mk = payload["microkernel_os"]
     print("=" * 70)
-    print("=== PREDICTIVE ANOMALY DIAGNOSTICS & SYSTEM TELEMETRY ===")
+    print("=== LIVE CROSS-OS BIDIRECTIONAL IPC TELEMETRY ===")
     print("=" * 70)
-    if not anomalies:
-        print("  [v] No anomalies detected. System operating at 100% efficiency.")
-        print("  [v] Memory buffers (/dev/shm) healthy.")
-        print("  [v] SQLite WAL journals bounded under 1MB limits.")
-        print("  [v] Constant Product Invariant verification: Zero Drift.")
-    else:
-        for code, details, sev in anomalies:
-            print(f"  [!] {code} ({sev} SEVERITY)")
-            print(f"      Details: {details}")
-            print("      Action : Autonomous healer dispatched background checkpoint.")
+    print("--- 🐧 Native Linux Mint Host Vitals ---")
+    print(f"  Host Kernel   : {host['kernel']}")
+    print(f"  Host Load     : {host['load_avg']} (1-min) | Thermals: {host['thermal_celsius']}")
+    print(f"  RAM Buffer    : {host['ram_shm_mb']} MB in /dev/shm")
+    print("\n--- 🛡️ Sovereign Core Microkernel Vitals ---")
+    print(f"  Live Version  : {mk['version']}")
+    print(f"  Tor Daemon    : {mk['tor_status']}")
+    print(f"  Active Pools  : {mk['amm_pools_active']} AMM Pairs")
+    print(f"  Bridge IPC    : {payload['bridge_status']} [Active]")
     print("=" * 70)
     print("\nPress any key to return to Sovereign Core OS Hub...")
     get_single_keypress()
@@ -114,18 +116,18 @@ def fetch_depin_kb():
 
 def main():
     current_page = 1
-    status_msg = "Sovereign Core OS v2.8.0-beta. Predictive Anomaly Engine Active."
+    status_msg = "Sovereign Core OS v2.9.0-beta. Cross-OS Bidirectional Bridge Active."
     
     while True:
         clear_screen()
         print("=" * 70)
-        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.8.0-beta [PAGE {current_page}/5] ===")
+        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.9.0-beta [PAGE {current_page}/5] ===")
         print("=" * 70)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC       : Microkernel v2.8.0-beta synced.")
-            print("[GREEN] FLAG_ANOMALY_PREDICTOR : Active (Continuous Telemetry Monitoring)")
+            print("[GREEN] FLAG_MASTER_SYNC       : Microkernel v2.9.0-beta synced.")
+            print("[GREEN] FLAG_CROSS_OS_BRIDGE   : Active (/dev/shm Bidirectional IPC)")
             print("[GREEN] FLAG_INTEROP_ENGINE    : Multi-Chain (BTC, ETH, BNB, TRX) Active")
             print("[GREEN] FLAG_CAPITAL_RAISE     : 5% SC-GPL Treasury Diversion Active")
             print("\n--- 🟡 Financial Vault Balance Matrix ---")
@@ -138,7 +140,7 @@ def main():
             print("\nBare-Metal OS Menu [Page 1/5]:")
             print("  [1] 📥 Inspect Multi-Chain BIP44 Addresses (BTC/ETH/BNB/TRX)")
             print("  [2] 🔄 Execute Multi-Pool AMM Swap & 5% Dev Capital Raise")
-            print("  [3] 🔍 Run Autonomous Anomaly & Self-Healing Diagnostics")
+            print("  [3] 🌉 Inspect Cross-OS Bidirectional Telemetry Bridge")
             print("  [4] ⛏️  Simulate DePIN Node Consensus Validation")
             print("  [5] 🛑 Exit to Native Dell Shell [Hotkey: Q]")
             
@@ -146,7 +148,7 @@ def main():
             print("--- 🌐 ZERO-TOLERANCE NETWORK & SECURITY MATRIX [PAGE 2/5] ---")
             print("  Firewall Shield : Active (Port 22 SSH Whitelist Only)")
             print("  Tor SOCKS5 Loop : 127.0.0.1:9050 Active")
-            print("  Onion Service   : sovereign_dex_p2p (Port 8181 Hidden Service)")
+            print("  Cross-OS IPC    : /dev/shm/sovereign_ipc.json Active")
             print("  Inbound Ports   : 0 Clearnet Open Ports (Absolute Privacy)")
             print("\nBare-Metal OS Menu [Page 2/5]:")
             print("  [1] ⬅️  Return to Page 1 [Hotkey: P]")
@@ -221,8 +223,8 @@ def main():
                 subview_amm_multi_pool()
                 status_msg = "Simulated Multi-Pool Constant Product AMM Swap."
             elif choice == '3': 
-                subview_anomaly_diagnostics()
-                status_msg = "Evaluated Predictive Anomaly Engine."
+                subview_cross_os_diagnostics()
+                status_msg = "Queried Bidirectional Cross-OS Bridge."
             elif choice == '4': 
                 clear_screen()
                 print("=== VIRTUAL SANDBOX: DEPIN NODE MINING ===")
