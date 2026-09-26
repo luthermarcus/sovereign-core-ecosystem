@@ -1,10 +1,4 @@
 # Sovereign Core Automated Background Jobs
-
-# Synchronize DePIN node telemetry and network bridge status every 5 minutes
 */5 * * * * /usr/bin/python3 /home/luther/sovereign-core-ecosystem/node_manager.py --sync > /dev/null 2>&1
-
-# Execute dashboard state-change deduplication and log rotation hourly
 0 * * * * /usr/bin/python3 /home/luther/sovereign-core-ecosystem/dashboard.py --rotate-logs > /dev/null 2>&1
-
-# Run daily SQLite WAL checkpoints to flush RAM caches and optimize databases
 0 0 * * * /usr/bin/sqlite3 /home/luther/sovereign-core-ecosystem/ecosystem_metrics.db "PRAGMA wal_checkpoint(TRUNCATE);" > /dev/null 2>&1
