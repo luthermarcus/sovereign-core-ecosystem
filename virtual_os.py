@@ -20,7 +20,6 @@ except ImportError:
 def get_system_data():
     data = {}
     
-    # Run the Smart Contract Auto-Compounder automatically on data fetch
     if amm_smart_contract:
         data["amm_status"] = amm_smart_contract.execute_amm_compounding()
     else:
