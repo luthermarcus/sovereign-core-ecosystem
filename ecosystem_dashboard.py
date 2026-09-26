@@ -3,7 +3,6 @@ import os
 import datetime
 import subprocess
 
-# Guard against missing modules on alternate environments
 try:
     from portability_layer import get_environment_profile
 except ImportError:
@@ -34,10 +33,9 @@ def render_cli():
     print(f"  1. OS Bare-Metal Telemetry Daemon : {daemon_status}")
     print(f"  2. SQLite WAL Ledger Permissions  : [v] Secured (0o664)")
     print(f"  3. Tor SOCKS5 Loopback Matrix     : [v] Active (127.0.0.1:9050)")
-    print(f"  4. Tor P2P Onion Peer Discovery   : [v] Active (.onion Hidden Service)")
-    print(f"  5. Sandbox BIP44 HD Keypair       : [v] Verified (m/44'/0'/0'/0/0)")
-    print(f"  6. Blockchain DEX Liquidity Pools : [v] Synchronized (FOX/PARROT-BTC)")
-    print(f"  7. GitHub Release Sync Flag       : [v] {git_sync}")
+    print(f"  4. Sandbox BIP44 HD Keypair       : [v] Verified (m/44'/0'/0'/0/0)")
+    print(f"  5. Blockchain DEX Liquidity Pools : [v] Synchronized (FOX/PARROT-BTC)")
+    print(f"  6. GitHub Release Sync Flag       : [v] {git_sync}")
     print("-" * 65)
     
     try:

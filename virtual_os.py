@@ -8,14 +8,10 @@ import sys
 sys.path.append(os.path.expanduser("~/sovereign-core-ecosystem/modules"))
 try:
     import royalty_distributor
+    import peer_discovery
 except ImportError:
     royalty_distributor = None
-
-try:
-    from portability_layer import get_environment_profile
-except ImportError:
-    def get_environment_profile():
-        return {"distro": "Linux Mint (Bare-Metal)", "release": "7.0.0"}
+    peer_discovery = None
 
 def get_system_data():
     data = {}
@@ -48,6 +44,11 @@ def get_system_data():
         data["consensus"] = royalty_distributor.calculate_consensus_yields()
     else:
         data["consensus"] = {"gross_yield": 0.0, "net_node_yield": 0.0, "ecosystem_tax_5pct": 0.0, "miner_rewards_0_05pct": 0.0}
+
+    if peer_discovery:
+        data["p2p_status"] = peer_discovery.execute_audit()
+    else:
+        data["p2p_status"] = "Status: Native P2P Discovery Standby"
 
     try:
         sc = subprocess.run(["git", "status", "-uno"], capture_output=True, text=True, timeout=2)
@@ -87,8 +88,7 @@ def main_loop(stdscr):
     while True:
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
-        
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.17.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.18.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))
@@ -127,13 +127,13 @@ def main_loop(stdscr):
             draw(3, "=== DEPIN INFRASTRUCTURE & DEX LIQUIDITY POOLS ===", bold=True)
             y_off = 4
             for app in d["portfolio"]:
-                draw(y_off, f"[{app[0][:18]}] {app[1]} | {app[2][:16]} | Yield: "[:max_x-4])
+                draw(y_off, f"[{app[0][:18]}] {app[1]} | {app[2][:16]} | Yield: ${app[3]:.2f}"[:max_x-4])
                 y_off += 1
         elif selection == 1:
             draw(0, "[ZERO-TOLERANCE NETWORK & SECURITY MATRIX]", True)
             draw(2, "Firewall Shield : Active / Secured (Socket Monitored)")
             draw(3, "Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion)")
-            draw(4, f"Tor P2P Gateway : Active (pending_generation.onion)")
+            draw(4, f"Tor P2P Gateway : {d.get('p2p_status', 'Standby')}")
             draw(5, "Content Filter  : Active (Zero-Tolerance Network Policy)")
             draw(6, "Bitcoin Protocol: -proxy=127.0.0.1:9050 (-onlynet=onion)")
         elif selection == 2:

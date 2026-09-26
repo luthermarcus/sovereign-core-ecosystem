@@ -1,22 +1,23 @@
-# Sovereign Core Production Plugin: Native Tor Onion P2P Peer Discovery
 import sqlite3
 import os
 import subprocess
 
 PLUGIN_NAME = "TorPeerDiscovery"
-VERSION = "2.0.0"
+VERSION = "2.1.0"
 
 def execute_audit():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/knowledge.db")
-    onion_address = "pending_generation.onion"
     status = "Active"
+    onion_address = "Pending Tor v3 Generation"
     
     try:
-        sys_check = subprocess.run(["systemctl", "is-active", "tor"], capture_output=True, text=True)
-        if "active" not in sys_check.stdout:
-            status = "Standby (Tor Service Inactive)"
-    except:
-        status = "Standby (Systemctl Unreachable)"
+        if os.path.exists("/var/lib/tor/sovereign_dex_p2p/hostname"):
+            with open("/var/lib/tor/sovereign_dex_p2p/hostname", "r") as f:
+                onion_address = f.read().strip()
+        else:
+            status = "Standby (Awaiting Tor configuration)"
+    except PermissionError:
+        status = "Restricted (Requires sudo verification)"
 
     try:
         conn = sqlite3.connect(db_path)
@@ -29,6 +30,3 @@ def execute_audit():
         pass
         
     return f"Status: Native P2P Discovery {status} ({onion_address})"
-
-if __name__ == "__main__":
-    print(execute_audit())

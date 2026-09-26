@@ -1,9 +1,8 @@
-# Sovereign Core Production Plugin: Consensus Math & Royalty Distributor
 import sqlite3
 import os
 
 PLUGIN_NAME = "RoyaltyConsensus"
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 def calculate_consensus_yields():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")
@@ -23,11 +22,9 @@ def calculate_consensus_yields():
         c.execute("SELECT SUM(earnings_usd) FROM earnings_portfolio")
         total_raw = c.fetchone()[0] or 0.0
         
-        # 5% to Global Liquidity Treasury, 95% to Node Operator
         ecosystem_tax = round(total_raw * 0.05, 4)
         net_yield = round(total_raw * 0.95, 4)
         
-        # Emulated DEX Volume ($10,000 baseline) -> 0.05% Miner Reward Fee
         emulated_dex_volume = 10000.00
         miner_fee = round(emulated_dex_volume * 0.0005, 4)
         
@@ -43,6 +40,3 @@ def calculate_consensus_yields():
         }
     except Exception as e:
         return {"gross_yield": 0.0, "net_node_yield": 0.0, "ecosystem_tax_5pct": 0.0, "miner_rewards_0_05pct": 0.0, "error": str(e)}
-
-if __name__ == "__main__":
-    print(calculate_consensus_yields())
