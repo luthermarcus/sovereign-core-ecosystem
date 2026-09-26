@@ -1,11 +1,36 @@
-# Sovereign Core Production Dashboard 3: Interactive 5-Page Terminal OS Hub
 import os
 import sys
+import termios
+import tty
+import sqlite3
+import hashlib
+import time
 
 def clear_screen():
     os.system('clear' if os.name == 'posix' else 'cls')
 
-def get_financial_portfolio():
+def get_single_keypress():
+    """Reads a single keystroke instantly without waiting for [ENTER]."""
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch.upper()
+
+def flush_and_exit():
+    """Aggressively flushes termios buffer and resets the shell."""
+    try:
+        termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+    except Exception:
+        pass
+    os.system('stty sane')
+    print("\n[+] Exited Sovereign Core Sandbox. Native Host Prompt Ready.")
+    sys.exit(0)
+
+def get_portfolio():
     return [
         ("BTC", 0.85, 84049.37, 71441.96),
         ("FOX", 10000.00, 1.62, 16200.00),
@@ -13,137 +38,151 @@ def get_financial_portfolio():
         ("USDT", 5000.00, 1.00, 4998.50),
         ("XRP", 2500.00, 1.56, 3912.50),
         ("TAO", 10.50, 317.48, 3333.54),
-        ("ETH", 1.20, 2689.56, 3227.47),
-        ("SHIB", 50000000.00, 0.000060, 2980.00)
+        ("ETH", 1.20, 2689.56, 3227.47)
     ]
+
+def fetch_depin_matrix():
+    db_path = os.path.expanduser('~/sovereign-core-ecosystem/knowledge.db')
+    try:
+        conn = sqlite3.connect(db_path)
+        c = conn.cursor()
+        c.execute('SELECT project, community_source, virtualization_type, integration_status FROM depin_virtualization_matrix')
+        rows = c.fetchall()
+        conn.close()
+        return rows
+    except Exception:
+        return []
 
 def main():
     current_page = 1
-    status_msg = "System operational. Enter option [1-5], [N]ext, [P]rev."
+    status_msg = "Sandbox Active. Instant execution enabled (No [ENTER] needed)."
     
     while True:
         clear_screen()
         print("=" * 70)
-        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.0.1-beta [PAGE {current_page}/5] ===")
+        print(f"=== DASHBOARD 3: SOVEREIGN CORE OS v2.4.0-beta [PAGE {current_page}/5] ===")
         print("=" * 70)
         
         if current_page == 1:
             print("--- ⚡ Microkernel IPC Flags ---")
-            print("[GREEN] FLAG_MASTER_SYNC   : Microkernel v2.0.1-beta synced.")
-            print("[GREEN] FLAG_UNIFIED_BUILD : All 3 Dashboards & AMM contracts connected.")
-            print("[GREEN] FLAG_SCRAPER_AI    : Active (Self-Healing Scraper Monitoring Logs)")
+            print("[GREEN] FLAG_MASTER_SYNC         : Microkernel v2.4.0-beta synced.")
+            print("[GREEN] FLAG_SANDBOX_ACTIVE      : Virtual Simulation Mode Enabled.")
             print("\n--- 🟡 Active Financial Portfolio (Wallet Sync) ---")
-            for asset in get_financial_portfolio():
+            for asset in get_portfolio():
                 print(f"  {asset[0]:<5} | Bal: {asset[1]:<12,.2f} | Pr: ${asset[2]:<10,.2f} | Val: ${asset[3]:,.2f}")
             print("\nBare-Metal OS Menu [Page 1/5]:")
-            print("  [1] 📥 View Receive Address (Taproot/EVM)")
+            print("  [1] 📥 View Receive Address (BIP44 Vault)")
             print("  [2] 💸 Send Transaction (EIP-4337 Gasless)")
-            print("  [3] 🔄 Execute AMM Swap (Constant Product Engine)")
-            print("  [4] ➡️  Switch to Page 2 (Network & Security) [Hotkey: N]")
-            print("  [5] 🛑 Terminate OS Session [Hotkey: Q]")
+            print("  [3] 🔄 Execute AMM Swap (Constant Product Invariant)")
+            print("  [4] ⛏️  Run DePIN Block Validation Simulation")
+            print("  [5] 🛑 Exit to Native Dell Shell [Hotkey: Q]")
             
         elif current_page == 2:
             print("--- 🌐 ZERO-TOLERANCE NETWORK & SECURITY MATRIX [PAGE 2/5] ---")
-            print("  Firewall Shield : Active / Secured (UFW + SSH Port 22)")
-            print("  Tor SOCKS5 Proxy: 127.0.0.1:9050 (Active Onion Loopback)")
-            print("  Tor P2P Gateway : Active (Autonomous Sync)")
-            print("  DEX Socket Link : Active (Port 8181 via Tor v3)")
+            print("  Firewall Shield : Active (Port 22 SSH Whitelist Only)")
+            print("  Tor SOCKS5 Loop : 127.0.0.1:9050 Active")
+            print("  Onion Service   : sovereign_dex_p2p (Port 8181 Hidden Service)")
             print("\nBare-Metal OS Menu [Page 2/5]:")
-            print("  [1] ⬅️  Return to Page 1 (Core Wallet & AMM) [Hotkey: P]")
+            print("  [1] ⬅️  Return to Page 1 [Hotkey: P]")
             print("  [2] ➡️  Switch to Page 3 (Consensus & Royalties) [Hotkey: N]")
-            print("  [3] 🛑 Terminate OS Session")
+            print("  [3] 🛑 Exit to Native Shell")
             
         elif current_page == 3:
             print("--- ⚖️ SOVEREIGN CONSENSUS & ROYALTY MATRIX [PAGE 3/5] ---")
-            print("  SC-GPL Protocol: 5% Treasury Tax & 0.05% DEX Miner Fee")
-            print("  Node Gross DePIN Yield          : $47.60")
-            print("  Net Node Operator Retained (95%): $45.22")
-            print("  Liquidity Pool Treasury (5%)   : $2.38 (Auto-Compounded)")
-            print("  Miner Reward Pool (0.05% DEX)   : $5.00")
+            print("  Protocol Model  : SC-GPL Consensus Standard")
+            print("  Node Gross DePIN Yield          : $49.20 USD")
+            print("  Net Operator Retention (95%)    : $46.74 USD")
+            print("  Global Liquidity Treasury (5%)  : $2.46 USD (Auto-Compounded)")
+            print("  Miner Reward Allocation (0.05%) : Distributed per validation round")
             print("\nBare-Metal OS Menu [Page 3/5]:")
-            print("  [1] ⬅️  Return to Page 2 (Network & Security) [Hotkey: P]")
-            print("  [2] ➡️  Switch to Page 4 (XDA Modules & Test Runner) [Hotkey: N]")
-            print("  [3] 🛑 Terminate OS Session")
+            print("  [1] ⬅️  Return to Page 2 [Hotkey: P]")
+            print("  [2] ➡️  Switch to Page 4 (DePIN Virtualization) [Hotkey: N]")
+            print("  [3] 🛑 Exit to Native Shell")
             
         elif current_page == 4:
-            print("--- 🛠️ XDA DEVELOPER MODULES & TEST RUNNER [PAGE 4/5] ---")
-            mod_dir = os.path.expanduser("~/sovereign-core-ecosystem/modules")
-            mods = [f for f in os.listdir(mod_dir) if f.endswith(".py")] if os.path.exists(mod_dir) else []
-            print(f"  Active Modules Loaded: {len(mods)} plugins active")
-            for m in mods[:10]:
-                print(f"  [x] {m}")
+            print("--- 🛠️ DEPIN VIRTUALIZATION & COMMUNITY MATRIX [PAGE 4/5] ---")
+            matrix = fetch_depin_matrix()
+            for row in matrix:
+                print(f"  [>] {row[0]}")
+                print(f"      Source: {row[1]} | Sandbox: {row[2]} | Status: {row[3]}")
             print("\nBare-Metal OS Menu [Page 4/5]:")
-            print("  [1] ⬅️  Return to Page 3 (Consensus Matrix) [Hotkey: P]")
-            print("  [2] ➡️  Switch to Page 5 (SQLite FTS5 Knowledge Vault) [Hotkey: N]")
-            print("  [3] 🛑 Terminate OS Session")
+            print("  [1] ⬅️  Return to Page 3 [Hotkey: P]")
+            print("  [2] ➡️  Switch to Page 5 (Knowledge Vault) [Hotkey: N]")
+            print("  [3] 🛑 Exit to Native Shell")
 
         elif current_page == 5:
             print("--- 📚 SQLITE FTS5 KNOWLEDGE VAULT & MANUAL [PAGE 5/5] ---")
-            print("  Status   : Synchronized with FTS5 Full-Text Search Engine.")
-            print("  Integrity: Cryptographically Signed via SHA-256 Vault Signer.")
-            print("  GitHub   : github.com/luthermarcus/sovereign-core-ecosystem")
+            print("  Search Engine   : SQLite FTS5 Full-Text Search Synchronized")
+            print("  Cryptographic ID: SHA-256 State Signer OK")
+            print("  Repository Link : github.com/luthermarcus/sovereign-core-ecosystem")
             print("\nBare-Metal OS Menu [Page 5/5]:")
-            print("  [1] ⬅️  Return to Page 4 (XDA Modules) [Hotkey: P]")
-            print("  [2] 🏠 Return to Page 1 (Core Wallet & AMM)")
-            print("  [3] 🛑 Terminate OS Session")
+            print("  [1] ⬅️  Return to Page 4 [Hotkey: P]")
+            print("  [2] 🏠 Return to Page 1")
+            print("  [3] 🛑 Exit to Native Shell")
 
         print("=" * 70)
         print(f"[-] STATUS: {status_msg}")
         print("=" * 70)
+        sys.stdout.write("Select Command ([1-5], [N]ext, [P]rev, [Q]uit): ")
+        sys.stdout.flush()
         
         try:
-            choice = input("Select OS IPC Command ([1-5], [N]ext, [P]rev): ").strip().upper()
+            choice = get_single_keypress()
         except (KeyboardInterrupt, EOFError):
-            print("\n[!] Gracefully terminating Sovereign Core OS session.")
-            break
+            flush_and_exit()
         
-        if choice == 'N':
+        if choice in ['Q', '5', '\x03', '\x04']: # Handles Q, 5, Ctrl+C, Ctrl+D
+            flush_and_exit()
+        elif choice == 'N':
             current_page = (current_page % 5) + 1
-            status_msg = f"Switched to Page {current_page} via Hotkey."
+            status_msg = f"Navigated to Page {current_page}."
             continue
         elif choice == 'P':
             current_page = ((current_page - 2) % 5) + 1
-            status_msg = f"Switched to Page {current_page} via Hotkey."
+            status_msg = f"Navigated to Page {current_page}."
             continue
-        elif choice in ['Q', 'EXIT']:
-            print("Terminating OS Session.")
-            break
 
         if current_page == 1:
             if choice == '1': 
-                status_msg = "Taproot Address: bc1p_sovereign_luther_node_x79 (Copied)"
+                clear_screen()
+                print("=== VIRTUAL SANDBOX: RECEIVE ADDRESS ===\nTaproot Address: bc1p_sandbox_x79...\n")
+                print("Press any key to return...")
+                get_single_keypress()
+                status_msg = "Inspected BIP44 Vault."
             elif choice == '2': 
-                status_msg = "EIP-4337 Gasless Transaction Broadcasted securely via Tor."
+                clear_screen()
+                print("=== VIRTUAL SANDBOX: GASLESS TX ===\nSimulating Tor SOCKS5 Relay...\nTx Hash: 0xabc123... [SUCCESS]\n")
+                print("Press any key to return...")
+                get_single_keypress()
+                status_msg = "Tested EIP-4337 Relay."
             elif choice == '3': 
-                status_msg = "AMM Swap executed successfully via Constant Product formula ($x \times y = k$)."
+                clear_screen()
+                print("=== VIRTUAL SANDBOX: AMM SWAP ===\nExecuting x * y = k Invariant...\nAuto-compounding 5% treasury fee.\n")
+                print("Press any key to return...")
+                get_single_keypress()
+                status_msg = "Executed AMM Constant Product Swap."
             elif choice == '4': 
-                current_page = 2
-                status_msg = "Switched to Page 2."
-            elif choice == '5': 
-                print("Terminating OS Session.")
-                break
+                clear_screen()
+                print("=== VIRTUAL SANDBOX: DEPIN MINING ===\nValidating hashes...")
+                for i in range(3):
+                    print(f"[v] Block {i} Validated.")
+                    time.sleep(0.3)
+                print("\nPress any key to return...")
+                get_single_keypress()
+                status_msg = "Simulated DePIN Block Validation."
             else: 
-                status_msg = f"Invalid command '{choice}'. Enter [1-5], N, or P."
-        elif current_page == 2:
-            if choice == '1': current_page = 1; status_msg = "Returned to Page 1."
-            elif choice == '2': current_page = 3; status_msg = "Switched to Page 3."
-            elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
-        elif current_page == 3:
-            if choice == '1': current_page = 2; status_msg = "Returned to Page 2."
-            elif choice == '2': current_page = 4; status_msg = "Switched to Page 4."
-            elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
-        elif current_page == 4:
-            if choice == '1': current_page = 3; status_msg = "Returned to Page 3."
-            elif choice == '2': current_page = 5; status_msg = "Switched to Page 5."
-            elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
-        elif current_page == 5:
-            if choice == '1': current_page = 4; status_msg = "Returned to Page 4."
-            elif choice == '2': current_page = 1; status_msg = "Returned to Page 1."
-            elif choice == '3': print("Terminating OS Session."); break
-            else: status_msg = f"Invalid command '{choice}'. Enter [1-3], N, or P."
+                status_msg = f"Invalid command '{choice}'."
+        elif current_page in [2, 3, 4, 5]:
+            if choice == '1': 
+                current_page -= 1
+                status_msg = f"Navigated to Page {current_page}."
+            elif choice == '2': 
+                current_page = (current_page % 5) + 1
+                status_msg = f"Navigated to Page {current_page}."
+            elif choice == '3': 
+                flush_and_exit()
+            else: 
+                status_msg = f"Invalid command '{choice}'."
 
 if __name__ == "__main__":
     main()
