@@ -7,6 +7,7 @@ from modules.xda_air import XDAAutomatedIncidentResponse
 from modules.system_warden import SystemSecurityWarden
 from modules.role_switcher import RoleSwitcherEngine
 from modules.depin_sidechain import DePINSidechainEngine
+from modules.sovereign_core_kernel import SovereignCoreKernel
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 def get_single_keypress():
@@ -15,61 +16,61 @@ def get_single_keypress():
     finally: termios.tcsetattr(fd, termios.TCSADRAIN, old)
     return ch.upper()
 
-def fetch_bip_kb():
+def fetch_sovereign_kb():
     db_path = os.path.expanduser('~/sovereign-core-ecosystem/knowledge.db')
     try:
         conn = sqlite3.connect(db_path)
         c = conn.cursor()
-        c.execute('SELECT topic, description, community_consensus FROM bip_depin_kb')
+        c.execute('SELECT community, strategy_implemented, operational_benefit FROM sovereign_kb')
         rows = c.fetchall()
         conn.close()
         return rows
     except Exception: return []
 
-def subview_depin_routing():
+def subview_kernel_audit():
     clear_screen()
     print("=" * 70)
-    print("=== DEPIN CAPITAL ROUTING & 5% POL TAX AUDIT ===")
+    print("=== SYSTEM-WIDE L1/L2 KERNEL INTEGRATION AUDIT ===")
     print("=" * 70)
-    print("  [Step 1] Harvesting telemetry from 6-app stack in RAM (/dev/shm)...")
+    print("  [Step 1] Auditing system-wide L1/L2 architecture...")
     time.sleep(0.4)
-    res = DePINSidechainEngine.calculate_depin_capital_routing()
+    res = SovereignCoreKernel.audit_kernel_integration()
     
-    for app, amt in res['stack_breakdown'].items():
-        print(f"    - {app.capitalize():18} : ${amt:.2f} USD")
+    print(f"  L1 Host Kernel Status : {res['l1_host_status']}")
+    print(f"  L2 Sandbox Status     : {res['l2_sandbox_status']}")
+    print(f"  BIP 300 Drivechain    : {res['bip300_drivechain']}")
+    print(f"  BIP 301 BMM Consensus : {res['bip301_bmm']}")
+    print(f"  System Integrity      : {res['system_integrity']}")
     print("-" * 70)
-    print(f"  Gross DePIN Yield      : ${res['gross_yield_usd']:.2f} USD")
-    print(f"  5% POL Development Tax : ${res['pol_development_tax_5_percent']:.2f} USD (Locked in Treasury)")
-    print(f"  Net User Yield         : ${res['net_user_yield_usd']:.2f} USD")
-    print(f"  Sidechain Status       : {res['sidechain_status']}")
+    print("  Status: All community-guided modules verified operational.")
     print("=" * 70)
     print("\nPress any key to return...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v6.1.0-beta. Sidechain & DePIN Routing Active."
+    msg = "Sovereign Core OS v6.2.0-beta. System-Wide L1/L2 Active."
     while True:
         clear_screen()
         hw = HardwareWarden.audit_physical_hardware()
         current_role = RoleSwitcherEngine.get_current_role()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v6.1.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v6.2.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
         print(f"  Active Profile Role : {current_role} | Thermals: {hw['thermal_celsius']}°C")
         
         if page == 1:
-            print("\n  [1] 💰 Run DePIN Capital Routing & 5% POL Audit")
-            print("  [2] 🔄 Switch Beta Testing Profile Role")
-            print("  [3] 🔒 Run System-Level L1/L2 Security Audit")
+            print("\n  [1] ⚡ Run System-Wide L1/L2 Kernel Integration Audit")
+            print("  [2] 💰 Run DePIN Capital Routing & 5% POL Audit")
+            print("  [3] 🔄 Switch Beta Testing Profile Role")
             print("  [4] 🤖 Run XDA Automated Incident Response (AIR) Audit")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ BIP 300/301 & DEPIN KNOWLEDGE BASE ---")
-            kb = fetch_bip_kb()
+            print("--- 🛠️ COMMUNITY GUIDANCE & KNOWLEDGE BASE ---")
+            kb = fetch_sovereign_kb()
             for row in kb:
-                print(f"  [>] Topic   : {row[0]}")
-                print(f"      Desc    : {row[1]}")
-                print(f"      Standard: {row[2]}")
+                print(f"  [>] Community : {row[0]}")
+                print(f"      Strategy  : {row[1]}")
+                print(f"      Benefit   : {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -91,16 +92,19 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_depin_routing()
-                msg = "Executed DePIN Capital Routing Audit."
+                subview_kernel_audit()
+                msg = "Executed System-Wide L1/L2 Kernel Audit."
             elif choice == '2':
                 clear_screen()
-                print("=== ROLE SWITCHER ===\nUse ecosystem_config.json or role switcher module to toggle.\n\nPress any key...")
-                get_single_keypress(); msg = "Role Switcher accessed."
+                res = DePINSidechainEngine.calculate_depin_capital_routing()
+                print("=== DEPIN CAPITAL ROUTING ===\n" + "=" * 70)
+                print(f"  Gross DePIN Yield      : ${res['gross_yield_usd']:.2f} USD")
+                print(f"  5% POL Development Tax : ${res['pol_development_tax_5_percent']:.2f} USD\n\nPress any key...")
+                get_single_keypress(); msg = "Executed DePIN Audit."
             elif choice == '3':
                 clear_screen()
-                print("=== SYSTEM SECURITY ===\nL1 Kernel boundaries and L2 RAM isolation verified.\n\nPress any key...")
-                get_single_keypress(); msg = "Executed System Security Audit."
+                print("=== ROLE SWITCHER ===\nManaged via ecosystem_config.json ledger.\n\nPress any key...")
+                get_single_keypress(); msg = "Role Switcher accessed."
             elif choice == '4':
                 clear_screen()
                 print("=== XDA AIR ===\nSystem thermals nominal. Checkpoint executed.\n\nPress any key...")

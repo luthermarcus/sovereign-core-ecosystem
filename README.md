@@ -1,10 +1,11 @@
-# Sovereign Core OS (`v6.1.0-beta`)
-*L1/L2 Sidechain Architecture (BIP 300/301), DePIN Capital Routing & 5% POL Tax*
+# Sovereign Core OS (`v6.2.0-beta`)
+*System-Wide L1/L2 Architecture, BIP 300/301 Sidechain Consensus & Community Standards*
 
-## 1. Sidechain Consensus & BIP Integration
-- **BIP 300 Drivechains:** Two-way peg mechanics isolate application execution on the L2 sidechain while anchoring state roots to the L1 host.
-- **BIP 301 Blind Merged Mining:** L1 host miners secure sidechain state transitions with zero additional CPU overhead.
+## 1. System-Wide L1/L2 Integration
+- **Layer 1 Host Kernel:** Governs bare-metal security, UFW firewalls, AppArmor, thermal warden, and `l1_warden.db`.
+- **Layer 2 Sandbox:** Encapsulates DePIN telemetry, AMM liquidity routing, and interactive TUI menus in RAM (`/dev/shm`).
 
-## 2. DePIN Telemetry & Capital Routing
-- **6-App Earnings Integration:** Tracks Mysterium, EarnApp, TraffMonetizer, PacketStream, Pawns.app, and Honeygain yields[span_5](start_span)[span_5](end_span).
-- **Protocol-Owned Liquidity (POL):** Automatically allocates 5% of aggregated DePIN yields to community reserves for continuous network development.
+## 2. Community-Driven Development
+- **XDA Hardware Optimization:** Active cooling and flash wear protection.
+- **Bitcointalk BIP Scaling:** Two-way peg drivechains and blind merged mining.
+- **GitHub Ledger State:** Atomic dynamic configuration loading.
