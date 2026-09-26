@@ -1,5 +1,19 @@
-sovereign_metrics.db
-*.pid
-*.sock
-.venv/
+# Python & Environment
 __pycache__/
+*.py[cod]
+.env
+venv/
+
+# Sovereign Core Telemetry & SQLite WAL Databases
+sys_health.db
+node_history.db
+myst_metrics.db
+ecosystem_metrics.db
+*.sqlite3
+*.db-wal
+*.db-shm
+
+# AppArmor, UFW & Node Ledgers
+/home/luther/node-stack/ledgers/
+~/.bashrc_backups/
+dashboard_error_logs/
