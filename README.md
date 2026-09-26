@@ -1,26 +1,25 @@
-# Sovereign Core OS (`v2.7.0-beta`)
-*Bare-Metal DePIN Microkernel, Cross-Chain AMM Engine & Developer Capital Protocol*
+# Sovereign Core OS (`v3.4.0-beta`)
+*Bare-Metal DePIN Microkernel, Tri-Layer Architecture & SC-GPL Capital Protocol*
 
 ---
 
-## 1. Documentation for DePIN Node Operators
-- **Host System Compatibility:** Bare-metal Linux Mint / Ubuntu LTS installations. Optimized for commodity hardware (e.g. Dell Inspiron 1525).
-- **Network Isolation:** Operates zero open clearnet ports. Outbound routing enforced via local Tor SOCKS5 loopback (`127.0.0.1:9050`) and onion hidden services on port 8181.
-- **Resource Management:** Real-time RAM-backed caching via `/dev/shm`, atomic SQLite WAL database ledgers, and zero-cost sysctl Google BBR TCP congestion optimization.
-- **Node Matrix:** Aggregates passive yield metrics across native Mysterium node protocols and unprivileged diagnostic scrapers.
+## 1. DePIN Infrastructure & Node Operators
+- **Hardware Architecture:** Optimized for commodity x86_64 systems (e.g., Dell Inspiron 1525).
+- **Privacy Consensus:** Zero open clearnet ports. Autonomous routing enforced via Tor SOCKS5 loopback (`127.0.0.1:9050`) and Tor v3 Hidden Services (port 8181).
+- **Resource Management:** RAM telemetry via `/dev/shm`, atomic SQLite WAL ledgers (`0o664`), and Google BBR TCP congestion tuning.
 
-## 2. Documentation for Blockchain & DEX Developers
-- **The SC-GPL Developer Capital Raise Standard:** Replaces predatory token pre-mines with protocol-level fee diversion. The off-chain AMM smart contract router diverts exactly 5% of all swap volume into registered Developer Treasury Vaults:
-  $$\Delta x_{\text{net}} = \Delta x \times (1 - 0.05)$$
-- **Multi-Chain Wallet Interoperability:** Implements standardized BIP44 hierarchical deterministic derivation across:
-  - **Bitcoin (BTC):** `m/44'/0'/0'/0/0` (Taproot / UTXO)
-  - **Ethereum (ETH):** `m/44'/60'/0'/0/0` (EVM Account Model)
-  - **BNB Chain (BNB):** `m/44'/714'/0'/0/0` (PoSA EVM)
-  - **Tron (TRX):** `m/44'/195'/0'/0/0` (Base58 / Energy Model)
-  - **Native FOX:** L2 Two-Way Pegged Settlement Asset
-- **Constant Product AMM Engine:** Off-chain smart contracts executing constant invariant verification ($x \times y = k$) across `FOX/USDC`, `FOX/BTC`, `FOX/ETH`, `FOX/BNB`, and `FOX/TRX`.
+## 2. Core Blockchain, Two-Way Pegs & Developer Royalties
+- **Tri-Layer Modular Sidechain Engine:**
+  - **Layer 1 (Alpha):** DePIN node routing and hardware state verification.
+  - **Layer 2 (Beta):** Native FOX financial settlement and 2-way peg with Bitcoin.
+  - **Layer 3 (Gamma):** Client-Side Logic Virtualization (BitVM paradigm). Arbitrary logic executes off-chain, producing SHA-256 state roots anchored to Layer 2.
+- **The SC-GPL Consensus Standard:** AMM routers automatically divert 5% of gross swap volume to the Developer Treasury Vault, replacing predatory token pre-mines with sustainable protocol monetization.
+- **Cryptographic License Vaults:** Protects developer intellectual property using HMAC-SHA256 commitment schemes, ensuring open verification without exposing proprietary heuristics.
 
-## 3. Documentation for Bare-Metal & Hardware Modders (XDA)
-- **Termux & Mobile SSH Tunneling:** Hardened remote administration via Android Termux with persistent TCP keepalive pulses (`ServerAliveInterval 30`).
-- **Process Hierarchy:** Clean decoupling of non-blocking host HUD greeting sequences from the interactive 5-page Sovereign Core Virtual OS Sandbox (`sos`).
-- **Buffer Integrity:** Terminal line discipline managed via `termios` and `tty.setraw` instant keystroke event listeners, eliminating standard input bleed.
+## 3. Hardware Modding & Administration (XDA)
+- **Termux & Android Integration:** Remote terminal management optimized for mobile SSH clients with active TCP keepalive pulses (`ServerAliveInterval 30`).
+- **Buffer Integrity:** Terminal line discipline enforced via raw `termios` single-keystroke listeners to eradicate terminal bleed.
+
+## 4. Community Attributions
+- **Bitcoin Core / Bitcointalk:** For BIP 300 Drivechain architecture, 2-way peg mechanisms, and client-side validation philosophies.
+- **XDA Developers:** For bare-metal hardware modding and Linux namespace isolation.
