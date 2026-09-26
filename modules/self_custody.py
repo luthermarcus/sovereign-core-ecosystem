@@ -1,9 +1,9 @@
-# Sovereign Core Beta Plugin: BIP44 HD Key & Liquidity Pool Interoperability
+# Sovereign Core Production Plugin: BIP44 HD Key & Liquidity Pool Interoperability
 import sqlite3
 import os
 
 PLUGIN_NAME = "SelfCustodyEngine"
-VERSION = "3.0.0"
+VERSION = "3.2.0"
 
 def execute_audit():
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/wallet.db")
@@ -21,7 +21,7 @@ def execute_audit():
         """)
         conn.execute("""
             INSERT OR IGNORE INTO wallet_keys (key_id, public_address, encrypted_privkey_hash, derivation_path, status)
-            VALUES ('master_x79', 'sovereign1luther_master_node_x79', 'sha256_secured_vault', 'm/44\'/0\'/0\'/0/0', 'Verified (BIP44)')
+            VALUES ('master_x79', 'sovereign1luther_master_node_x79', 'sha256_secured_vault', 'm/44''/0''/0''/0/0', 'Verified (BIP44)')
         """)
         conn.commit()
         conn.close()

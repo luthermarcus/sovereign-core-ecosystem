@@ -74,7 +74,7 @@ def main_loop(stdscr):
         stdscr.clear()
         max_y, max_x = stdscr.getmaxyx()
         
-        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.07.0 MASTER] ---"
+        header = "--- SOVEREIGN CORE VIRTUAL OS [v2.09.0 MASTER] ---"
         stdscr.attron(curses.color_pair(1))
         stdscr.addstr(1, max(1, (max_x - len(header)) // 2), header[:max_x-2])
         stdscr.attroff(curses.color_pair(1))

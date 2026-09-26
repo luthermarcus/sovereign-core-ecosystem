@@ -1,4 +1,4 @@
-# Sovereign Core OS Ecosystem (v2.07.0-master)
+# Sovereign Core OS Ecosystem (v2.09.0-master)
 
 ## Master Architecture & BIP-Compliant Interoperability
 - **Repository:** [GitHub - luthermarcus/sovereign-core-ecosystem](https://github.com/luthermarcus/sovereign-core-ecosystem)
