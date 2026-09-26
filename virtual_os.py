@@ -1,5 +1,4 @@
 import os, sys, termios, tty, sqlite3, time
-from modules.chain_interop import SovereignChainEngine
 from modules.l2_state_rollup import OSStateRollup
 from modules.hardware_warden import HardwareWarden
 
@@ -26,56 +25,54 @@ def fetch_kb(table):
         return rows
     except Exception: return []
 
-def subview_pouw_mining():
+def subview_l1_l2_compression():
     clear_screen()
-    hw = HardwareWarden.audit_physical_hardware()
-    throttle_warn = "[!] WARNING: THERMAL THROTTLING ACTIVE" if hw["thermal_throttling"] else "[v] Thermal Envelopes Nominal"
-    
     print("=" * 70)
-    print("=== L2 PROOF OF USEFUL WORK (PoUW) DEPIN MINER ===")
+    print("=== L1 / L2 PAIRING & UNIFIED ROLLUP COMPRESSION ===")
     print("=" * 70)
-    print(f"  L1 Hardware Warden : {hw['thermal_celsius']}°C | {throttle_warn}")
-    print(f"  SSD Flash Wear     : {hw['ssd_wear_protection']}")
-    print(f"  L2 PoUW Pacing     : {hw['l2_workload_multiplier']}x Speed (Dynamically governed by L1)\n")
-    
-    print("  [Step 1] L2 Sandbox executing useful DePIN telemetry...")
-    blocks_to_mine = int(3 * hw['l2_workload_multiplier']) or 1
-    
-    for i in range(1, blocks_to_mine + 1):
-        print(f"  [v] Validated DePIN Telemetry Block #{i} in RAM.")
-        time.sleep(0.3)
-        
-    print("\n  [Step 2] Executing L2-to-L1 State Rollup Commit...")
+    print("  [Step 1] Polling fragmented sidechain states (DePIN, AMM, License)...")
     time.sleep(0.4)
-    res = OSStateRollup.execute_rollup_to_l1({"pouw_blocks_mined": blocks_to_mine})
     
-    print(f"  [>] L2 State Root Anchored: 0x{res['state_root'][:40]}...")
+    mock_depin = {"nodes_active": 6, "total_gross": 49.20, "network": "Mysterium/EarnApp/Honeygain"}
+    mock_amm = {"pair": "FOX/USDC", "invariant_k": 500000000.0, "sc_gpl_tax": 50.0}
+    mock_license = {"module": "sc_gpl_amm_router", "commit_hash": "a8f3b9c2d1e...99x"}
+    
+    print("  [Step 2] Executing Unified Sequencer Compression & L1 Anchoring...")
+    time.sleep(0.6)
+    res = OSStateRollup.execute_compressed_rollup(mock_depin, mock_amm, mock_license)
+    
+    print("-" * 70)
+    print(f"  Legacy Sidechain Bloat : {res['legacy_bytes']} bytes")
+    print(f"  Unified L2 Payload     : {res['compressed_bytes']} bytes")
+    print(f"  Efficiency Gain        : {res['efficiency_gain_pct']}% Size Reduction")
+    print(f"  L1 Thermal Warden      : {res['thermal_health']} (Safe)")
+    print(f"  Anchored State Root    : 0x{res['state_root'][:40]}...")
     print("=" * 70)
     print("\nPress any key to return to Sovereign Core OS Hub...")
     get_single_keypress()
 
 def main():
     page = 1
-    msg = "Sovereign Core OS v3.8.0-beta. PoUW & Hardware Warden Active."
+    msg = "Sovereign Core OS v3.9.0-beta. Unified L2 Sequencer Active."
     while True:
         clear_screen()
         hw = HardwareWarden.audit_physical_hardware()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v3.8.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v3.9.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
         
         if page == 1:
-            print("--- ⚡ L1/L2 Hardware & Mining Operations ---")
-            print(f"  L1 Thermal Warden: {hw['thermal_celsius']}°C | L2 Execution Multiplier: {hw['l2_workload_multiplier']}x")
-            print("\n  [1] ⛏️  Execute Hardware-Aware Proof of Useful Work (PoUW) Mining")
+            print("--- ⚡ L1/L2 Pairing & Efficiency Operations ---")
+            print(f"  L1 Thermal Warden: {hw['thermal_celsius']}°C | Architecture: Unified L2 State Channel")
+            print("\n  [1] 🗜️  Execute Unified L1/L2 State Compression & Rollup")
             print("  [2] 🌉 Execute SC-GPL Capital Raise AMM Swap (FOX/USDC)")
             print("  [3] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
-            print("--- 🛠️ XDA & BITCOINTALK HARDWARE CONSENSUS MATRIX ---")
-            kb = fetch_kb("hardware_consensus_matrix")
+            print("--- 🛠️ BITCOINTALK / XDA UNIFIED ROLLUP CONSENSUS ---")
+            kb = fetch_kb("unified_rollup_consensus")
             for row in kb:
                 print(f"  [>] {row[0]}")
-                print(f"      Critique  : {row[1]}")
-                print(f"      Sovereign : {row[2]}")
+                print(f"      Critique : {row[1]}")
+                print(f"      Solution : {row[2]}")
                 print("-" * 65)
             
         elif page == 3:
@@ -97,11 +94,11 @@ def main():
         
         elif page == 1:
             if choice == '1':
-                subview_pouw_mining(); msg = "Executed L2 PoUW Mining with L1 Hardware Protection."
+                subview_l1_l2_compression(); msg = "Executed Unified State Compression."
             elif choice == '2':
                 clear_screen()
-                print("=== AMM SWAP ===\nDev Royalty Deducted.\nPress any key to return...")
-                get_single_keypress(); msg = "Executed AMM Swap."
+                print("=== AMM SWAP ===\nDev Royalty Deducted via L2 Sequencer.\nPress any key to return...")
+                get_single_keypress(); msg = "Executed AMM Swap in Unified Rollup."
             elif choice == '3':
                 break
 
