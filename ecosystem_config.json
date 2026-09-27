@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v7.07.0-stable",
+  "version": "v7.08.0-stable",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -101,5 +101,5 @@
   "snapshot_restoration": "AUTOMATED_WAL_BACKUPS_ACTIVE",
   "telemetry_status": "ORIGINAL_PORTFOLIO_RESTORED",
   "baseline_status": "PERMANENTLY_LOCKED",
-  "portal_status": "FULL_BOX_SUITE_TOP_30_COINS_RESTORED"
+  "portal_status": "INTEROPERABLE_BOX_SUITE_ACTIVE"
 }
