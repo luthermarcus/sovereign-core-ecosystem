@@ -1,10 +1,8 @@
-import time
-import hashlib
+import time, hashlib
 
 class CrossChainPegModule:
     @staticmethod
     def initiate_two_way_peg(amount_btc, destination_sidechain):
-        """Simulates BIP 300 Drivechain Two-Way Peg locking and minting."""
         tx_hash = hashlib.sha256(f"{amount_btc}:{destination_sidechain}:{time.time()}".encode()).hexdigest()
         return {
             "peg_txid": f"0x{tx_hash}",

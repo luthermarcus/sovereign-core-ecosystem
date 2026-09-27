@@ -1,5 +1,4 @@
-import os
-import platform
+import os, platform
 
 class OSCompatibilityLayer:
     @staticmethod
@@ -13,11 +12,7 @@ class OSCompatibilityLayer:
 
     @staticmethod
     def get_thermal_sensors():
-        paths = [
-            "/sys/class/thermal/thermal_zone0/temp",
-            "/sys/class/hwmon/hwmon0/temp1_input",
-            "/sys/class/hwmon/hwmon1/temp1_input"
-        ]
+        paths = ["/sys/class/thermal/thermal_zone0/temp", "/sys/class/hwmon/hwmon0/temp1_input"]
         for p in paths:
             if os.path.exists(p):
                 try:

@@ -10,3 +10,4 @@ __pycache__/
 .*_notes.md
 backups/
 dex_daemon.log
+wallet.db
