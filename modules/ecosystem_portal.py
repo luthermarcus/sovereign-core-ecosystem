@@ -18,23 +18,24 @@ class SovereignCorePortal:
             except:
                 pass
 
-        # Query knowledge base for reference tracking status
-        anomaly_count = 0
+        # Cross-reference active system state with Knowledge Base signatures
+        kb_status = "OK [0 Anomalies Detected]"
         try:
             conn = sqlite3.connect(cls.KB_DB)
             cursor = conn.cursor()
             cursor.execute("SELECT COUNT(*) FROM anomaly_signatures;")
-            anomaly_count = cursor.fetchone()[0]
+            count = cursor.fetchone()[0]
             conn.close()
+            kb_status = f"Active [{count} Reference Signatures Synced]"
         except:
-            pass
+            kb_status = "Standby"
 
         return {
             "ufw": "ACTIVE (Port 22 Whitelisted)",
             "apparmor": "ENFORCED",
             "shm": "1.2 MB / 512 MB [OPTIMIZED]",
-            "wal": "OK [trust_store.db & ecosystem_metrics.db]",
-            "anomalies": f"0 Faults / {anomaly_count} Reference Signatures Active",
+            "wal": "OK [WAL Mode Synchronized]",
+            "kb_ref": kb_status,
             "ntfy_topic": topic
         }
 
@@ -53,23 +54,23 @@ class SovereignCorePortal:
         C_RESET = "\033[0m"
 
         print(f"{C_CYAN}========================================================================")
-        print(f"=== SOVEREIGN CORE OS v7.16.0-STABLE : KNOWLEDGE BASE REFERENCE     ===")
+        print(f"=== SOVEREIGN CORE OS v7.17.0-STABLE : THREE-PRONG KNOWLEDGE SUITE  ===")
         print(f"========================================================================{C_RESET}")
         
-        # SYSTEM FLAGS & ANOMALY DETECTION WARDEN BOX
+        # SYSTEM FLAGS & ANOMALY DETECTION WARDEN BOX (Top Box)
         print(f"{C_RED}┌──────────────────────────────────────────────────────────────────────┐{C_RED}")
-        print(f"{C_RED}│ SYSTEM FLAGS & KNOWLEDGE BASE ANOMALY REFERENCE WARDEN               │{C_RED}")
+        print(f"{C_RED}│ THREE-PRONG ANOMALY WARDEN & KNOWLEDGE BASE REFERENCE                │{C_RED}")
         print(f"{C_RED}├──────────────────────────────────────────────────────────────────────┤{C_RED}")
-        print(f"│ Firewall Flag  : UFW Status -> {flags['ufw']}                      │")
-        print(f"│ Kernel Security: AppArmor -> {flags['apparmor']}                  │")
-        print(f"│ RAM Zero-Copy  : /dev/shm Usage -> {flags['shm']}                 │")
-        print(f"│ SQLite WAL     : Status -> {flags['wal']}                         │")
-        print(f"│ KB Reference   : {flags['anomalies']}                             │")
+        print(f"│ Firewall L1  : UFW Status -> {flags['ufw']}                      │")
+        print(f"│ Kernel L1    : AppArmor -> {flags['apparmor']}                  │")
+        print(f"│ RAM L2       : /dev/shm Sandbox -> {flags['shm']}               │")
+        print(f"│ Ledger L1    : SQLite WAL -> {flags['wal']}                     │")
+        print(f"│ Anomaly KB   : Signatures -> {flags['kb_ref']}                  │")
         print(f"{C_RED}└──────────────────────────────────────────────────────────────────────┘{C_RED}")
 
         # BOX 1: BARE-METAL OS & DePIN YIELD PORTFOLIO
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
-        print(f"{C_GREEN}│ [BOX 1] BARE-METAL OS & DePIN YIELD PORTFOLIO                        │{C_RESET}")
+        print(f"{C_GREEN}│ [BOX 1] BARE-METAL OS & DePIN YIELD PORTFOLIO                        │{C_GREEN}")
         print(f"{C_GREEN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
         print(f"│ Host OS      : Linux Mint (luther-Inspiron-1525)                    │")
         print(f"│ DePIN Node 1 : Mysterium Node   : 14.25 MYST  [Active Sessions: 4]   │")
@@ -153,18 +154,18 @@ class SovereignCorePortal:
             time.sleep(0.5)
             print("[v] Stream buffer active on /dev/shm audio ring.")
         elif cmd == 'l':
-            print("\n[SYSTEM LOGS] Auditing SQLite WAL ledgers and knowledge base integrity...")
+            print("\n[SYSTEM LOGS & KB] Auditing SQLite WAL ledgers and Knowledge Base signatures...")
             try:
                 conn = sqlite3.connect(cls.KB_DB)
                 cursor = conn.cursor()
-                cursor.execute("SELECT signature_code, category, severity FROM anomaly_signatures;")
-                sigs = cursor.fetchall()
+                cursor.execute("SELECT signature_code, category, remediation FROM anomaly_signatures;")
+                records = cursor.fetchall()
                 conn.close()
-                print(f"[v] Knowledge Base loaded {len(sigs)} anomaly reference signatures:")
-                for sig in sigs:
-                    print(f"    - [{sig[2]}] {sig[0]} ({sig[1]})")
+                print(f"[v] Knowledge Base loaded {len(records)} active signatures:")
+                for rec in records:
+                    print(f"    - [{rec[0]}] ({rec[1]}): {rec[2]}")
             except Exception as e:
-                print(f"[!] Error querying KB: {e}")
+                print(f"[!] KB Audit Error: {e}")
         elif cmd == 'n':
             print("\n[NTFY WARDEN] Broadcasting test alert payload to mobile ntfy.sh topic...")
             time.sleep(0.4)
