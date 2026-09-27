@@ -1,16 +1,20 @@
 import os, sys, argparse, time
-from modules.hardware_warden import HardwareWarden
-from modules.role_switcher import RoleSwitcherEngine
+from modules.display_manager import MultiDisplayManager
 from modules.depin_sidechain import DePINSidechainEngine
 from modules.sovereign_core_kernel import SovereignCoreKernel
 from modules.cross_chain_peg import CrossChainPegModule
+from modules.hardware_warden import HardwareWarden
+from modules.role_switcher import RoleSwitcherEngine
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 
 def cli_depin_audit():
     clear_screen()
     res = DePINSidechainEngine.calculate_depin_capital_routing()
-    print("=== DEPIN CAPITAL ROUTING (CLI DIRECT) ===\n" + "=" * 70)
+    print("=== DEPIN CAPITAL ROUTING (MASTER AUDIT) ===\n" + "=" * 70)
+    for app, amt in res['stack_breakdown'].items():
+        print(f"  - {app.capitalize():<15}: ${amt:.2f} USD [ACTIVE]")
+    print("-" * 70)
     print(f"  Gross DePIN Yield      : ${res['gross_yield_usd']:.2f} USD")
     print(f"  5% POL Development Tax : ${res['pol_development_tax_5_percent']:.2f} USD")
     print(f"  Net User Yield         : ${res['net_user_yield_usd']:.2f} USD")
@@ -19,23 +23,24 @@ def cli_depin_audit():
 def cli_kernel_audit():
     clear_screen()
     res = SovereignCoreKernel.audit_kernel_integration()
-    print("=== KERNEL INTEGRATION AUDIT (CLI DIRECT) ===\n" + "=" * 70)
+    print("=== KERNEL & HARDWARE INTEGRATION AUDIT ===\n" + "=" * 70)
     print(f"  L1 Host Status : {res['l1_host_status']}")
     print(f"  L2 Sandbox     : {res['l2_sandbox_status']}")
     print(f"  BIP 300 Status : {res['bip300_drivechain']}")
+    print(f"  BIP 301 BMM    : {res['bip301_bmm']}")
     print("=" * 70)
 
 def cli_peg_simulator():
     clear_screen()
     res = CrossChainPegModule.initiate_two_way_peg(0.5, "Sovereign_Core_L2_Sidechain")
-    print("=== BIP 300 TWO-WAY PEG (CLI DIRECT) ===\n" + "=" * 70)
+    print("=== BIP 300 TWO-WAY PEG SIMULATOR ===\n" + "=" * 70)
     print(f"  TxID           : {res['peg_txid']}")
     print(f"  Amount Locked  : {res['amount']} BTC")
     print(f"  Status         : {res['status']}")
     print("=" * 70)
 
 def main():
-    parser = argparse.ArgumentParser(description="Sovereign Core OS Virtual Sandbox CLI")
+    parser = argparse.ArgumentParser(description="Sovereign Core OS Master Sandbox CLI")
     parser.add_argument("--depin", action="store_true", help="Run DePIN capital routing audit")
     parser.add_argument("--kernel", action="store_true", help="Run L1/L2 kernel integration audit")
     parser.add_argument("--peg", action="store_true", help="Run BIP 300 Two-Way Peg simulator")
@@ -53,28 +58,43 @@ def main():
         return
 
     page = 1
-    msg = "Sovereign Core OS v6.12.0-beta. Direct CLI & TUI Active."
+    msg = "Sovereign Core OS v6.17.0-beta. Master Dashboard Active."
     while True:
         clear_screen()
+        summary = MultiDisplayManager.render_all_displays_summary()
         hw = HardwareWarden.audit_physical_hardware()
         current_role = RoleSwitcherEngine.get_current_role()
-        print("=" * 70 + f"\n=== DASHBOARD 3: SOVEREIGN CORE OS v6.12.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
-        print(f"  Active Profile Role : {current_role} | Thermals: {hw['thermal_celsius']}°C")
+        
+        print("=" * 70 + f"\n=== MASTER DASHBOARD: SOVEREIGN CORE OS v6.17.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print(f"  Active Profile Role : {current_role} | Host Thermal: {hw['thermal_celsius']}°C")
         
         if page == 1:
-            print("\n  [1] ⚡ Run System-Wide L1/L2 Kernel Integration Audit [--kernel]")
-            print("  [2] 💰 Run DePIN Capital Routing & 5% POL Audit [--depin]")
-            print("  [3] 🌉 Run BIP 300 Two-Way Peg Simulator [--peg]")
+            d1 = summary["display_1_depin"]
+            print(f"\n  [Display 1] DePIN Portfolio   : ${d1['gross']} USD (POL Tax: ${d1['pol_tax']} USD)")
+            print("  ------------------------------------------------------------------")
+            print("  [1] 💰 Run DePIN Capital Routing & 6-App Yield Audit [--depin]")
+            print("  [2] 🌉 Run BIP 300 Two-Way Peg Simulator [--peg]")
+            print("  [3] ⚡ Run System-Wide L1/L2 Kernel Integration Audit [--kernel]")
             print("  [4] 🤖 Run XDA Automated Incident Response (AIR) Audit [--air]")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
+            
         elif page == 2:
-            print("--- 🛠️ SYSTEM ARCHITECTURE & COMMUNITY STANDARDS ---")
-            print("  [>] XDA Hardware Optimization & Active Cooling")
-            print("  [>] Bitcointalk BIP 300/301 Drivechain Consensus")
-            print("  [>] GitHub Decoupled Ledger State Management")
+            d2 = summary["display_2_hardware"]
+            d3 = summary["display_3_consensus"]
+            print(f"\n  [Display 2] Hardware Warden   : {d2['thermal_c']}°C | shm: {d2['shm_mb']} MB")
+            print(f"  [Display 3] Sidechain Status  : BIP300: {d3['bip300']} | BMM: {d3['bip301']}")
+            print("  ------------------------------------------------------------------")
+            print("  [1] View Full Hardware Telemetry")
+            print("  [2] Audit BIP 300/301 Consensus Ledgers")
+            print("  [3] Refresh RAM Buffers (/dev/shm)")
+            
         elif page == 3:
-            print("--- 📚 SYSTEM ARCHITECTURE MANUAL ---")
-            print("  See github.com/luthermarcus/sovereign-core-ecosystem for details.")
+            d5 = summary["display_5_governance"]
+            print(f"\n  [Display 5] Governance Module : {len(d5['orphans'])} Orphans Tracked [{d5['status']}]")
+            print("  Orphaned Scripts: " + ", ".join(d5['orphans']))
+            print("  ------------------------------------------------------------------")
+            print("  [1] Reconcile Governance Ledger")
+            print("  [2] Run Ecosystem Diagnostic Sync")
             
         print("\nNavigation: [N]ext Page | [P]rev Page | [Q]uit to L1 Host")
         print("=" * 70 + f"\n[-] STATUS: {msg}\n" + "=" * 70)
@@ -90,18 +110,18 @@ def main():
             choice = input().strip().upper()[:1]
         
         if choice in ['Q', 'q', '\x03', '\x04']: break
-        elif choice in ['N', 'n']: page = (page % 3) + 1; msg = f"Navigated to Page {page}"
-        elif choice in ['P', 'p']: page = ((page - 2) % 3) + 1; msg = f"Navigated to Page {page}"
-        elif choice == '1':
-            cli_kernel_audit()
-            input("\nPress Enter to return...")
-        elif choice == '2':
+        elif choice in ['N', 'n']: page = (page % 3) + 1; msg = f"Navigated to Master Page {page}"
+        elif choice in ['P', 'p']: page = ((page - 2) % 3) + 1; msg = f"Navigated to Master Page {page}"
+        elif choice == '1' and page == 1:
             cli_depin_audit()
             input("\nPress Enter to return...")
-        elif choice == '3':
+        elif choice == '2' and page == 1:
             cli_peg_simulator()
             input("\nPress Enter to return...")
-        elif choice == '5': break
+        elif choice == '3' and page == 1:
+            cli_kernel_audit()
+            input("\nPress Enter to return...")
+        elif choice == '5' and page == 1: break
 
     os.system('clear'); os.system('stty sane')
 

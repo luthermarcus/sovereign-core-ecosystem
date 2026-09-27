@@ -13,11 +13,13 @@ class MultiDisplayManager:
 
         gross = sum(stack.values())
         pol = gross * 0.05
+        net = gross - pol
 
         return {
             "timestamp": time.time(),
-            "display_1_depin": {"gross": round(gross, 2), "pol_tax": round(pol, 2), "status": "ACTIVE"},
+            "display_1_depin": {"stack": stack, "gross": round(gross, 2), "pol_tax": round(pol, 2), "net": round(net, 2), "status": "ACTIVE"},
             "display_2_hardware": {"thermal_c": 45.0, "fan_state": "MAX_RPM_60C", "shm_mb": 1477.03, "status": "ACTIVE"},
             "display_3_consensus": {"bip300": "ANCHORED", "bip301": "OPERATIONAL", "status": "ACTIVE"},
-            "display_4_security": {"l1_kernel": "SECURE", "l2_sandbox": "ISOLATED", "status": "ACTIVE"}
+            "display_4_security": {"l1_kernel": "SECURE", "l2_sandbox": "ISOLATED", "status": "ACTIVE"},
+            "display_5_governance": {"orphans": ["objects.py", "app.py", "tray.py", "config.py"], "status": "RECONCILED"}
         }

@@ -1,16 +1,9 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.12.0-beta",
+  "version": "v6.17.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
-  "architecture": "Automated L1/L2 Multi-Display Sidechain Architecture with Direct CLI Routing",
-  "modules": [
-    "display_manager.py",
-    "os_compat.py",
-    "cross_chain_peg.py",
-    "depin_sidechain.py",
-    "ecosystem_daemon.py"
-  ],
+  "architecture": "Unified Master Dashboard & Multi-Page TUI Integration",
   "depin_stack": {
     "mysterium": 14.25,
     "earnapp": 8.50,
