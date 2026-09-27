@@ -18,7 +18,6 @@ class SovereignCorePortal:
             except:
                 pass
 
-        # Cross-reference active system state with Knowledge Base signatures
         kb_status = "OK [0 Anomalies Detected]"
         try:
             conn = sqlite3.connect(cls.KB_DB)
@@ -54,10 +53,9 @@ class SovereignCorePortal:
         C_RESET = "\033[0m"
 
         print(f"{C_CYAN}========================================================================")
-        print(f"=== SOVEREIGN CORE OS v7.17.0-STABLE : THREE-PRONG KNOWLEDGE SUITE  ===")
+        print(f"=== SOVEREIGN CORE OS v7.18.0-STABLE : PAUSE-HOLD EXECUTION SUITE   ===")
         print(f"========================================================================{C_RESET}")
         
-        # SYSTEM FLAGS & ANOMALY DETECTION WARDEN BOX (Top Box)
         print(f"{C_RED}┌──────────────────────────────────────────────────────────────────────┐{C_RED}")
         print(f"{C_RED}│ THREE-PRONG ANOMALY WARDEN & KNOWLEDGE BASE REFERENCE                │{C_RED}")
         print(f"{C_RED}├──────────────────────────────────────────────────────────────────────┤{C_RED}")
@@ -68,7 +66,6 @@ class SovereignCorePortal:
         print(f"│ Anomaly KB   : Signatures -> {flags['kb_ref']}                  │")
         print(f"{C_RED}└──────────────────────────────────────────────────────────────────────┘{C_RED}")
 
-        # BOX 1: BARE-METAL OS & DePIN YIELD PORTFOLIO
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_GREEN}│ [BOX 1] BARE-METAL OS & DePIN YIELD PORTFOLIO                        │{C_GREEN}")
         print(f"{C_GREEN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -80,7 +77,6 @@ class SovereignCorePortal:
         print(f"│ DePIN Node 5 : Pawns.app & Gain : $6.75 / $11.40 [Compounded Yield]  │")
         print(f"{C_GREEN}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
-        # BOX 2: TOP CRYPTOCURRENCY FEED (TOP 30 MARKET CAP)
         print(f"{C_YELLOW}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_YELLOW}│ [BOX 2] TOP CRYPTOCURRENCY FEED (MARKET CAP RANKINGS)                │{C_YELLOW}")
         print(f"{C_YELLOW}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -91,7 +87,6 @@ class SovereignCorePortal:
         print(f"│ [13] XMR: $558.12 (-0.9%) | [14] ADA: $0.257 (+3.8%) | [15] LEO: $8.94 │")
         print(f"{C_YELLOW}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
-        # BOX 3: TOP DEX EXPANDED LIQUIDITY POOLS & SWAP PAIRS
         print(f"{C_MAGENTA}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_MAGENTA}│ [BOX 3] TOP DEX EXPANDED LIQUIDITY POOLS & SWAP PAIRS                │{C_MAGENTA}")
         print(f"{C_MAGENTA}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -104,7 +99,6 @@ class SovereignCorePortal:
         print(f"│ Swap Router        : Active (Slippage Tolerance: 0.5% | MEV Guard)  │")
         print(f"{C_MAGENTA}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
-        # BOX 4: WALLET MANAGEMENT & RESERVES
         print(f"{C_BLUE}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_BLUE}│ [BOX 4] WALLET MANAGEMENT & FIPS 203 PQC VAULTS                      │{C_BLUE}")
         print(f"{C_BLUE}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -113,7 +107,6 @@ class SovereignCorePortal:
         print(f"│ Token Reserves: DR Credits ($13.0 USD) | POL Reserves ($249.58 USD)   │")
         print(f"{C_BLUE}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
-        # BOX 5: GOVERNANCE, MEDIA & FILE SHARING VAULTS
         print(f"{C_CYAN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_CYAN}│ [BOX 5] GOVERNANCE, MEDIA STREAM & FILE SHARING VAULTS               │{C_CYAN}")
         print(f"{C_CYAN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -122,7 +115,6 @@ class SovereignCorePortal:
         print(f"│ SQLite Vaults : trust_store.db & ecosystem_metrics.db [WAL Mode Active]│")
         print(f"{C_CYAN}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
-        # BOX 6: NTFY MOBILE TELEMETRY & NOTIFICATION WARDEN
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_GREEN}│ [BOX 6] NTFY MOBILE TELEMETRY & NOTIFICATION WARDEN                  │{C_GREEN}")
         print(f"{C_GREEN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -135,7 +127,7 @@ class SovereignCorePortal:
     def execute_action(cls, cmd):
         cmd = cmd.strip().lower()
         if cmd in ['q', 'exit']:
-            print("[*] Exiting Sovereign Core Portal...")
+            print("\n[*] Exiting Sovereign Core Portal...")
             sys.exit(0)
         elif cmd == 's':
             print("\n[WALLET SEND] Initializing BIP 330 Erlay broadcast transaction...")
@@ -171,9 +163,12 @@ class SovereignCorePortal:
             time.sleep(0.4)
             print("[v] Mobile alert dispatched successfully.")
         else:
-            print(f"{C_RED}[!] Unknown command '{cmd}'.{C_RESET}")
+            print(f"\033[1;31m[!] Unknown command '{cmd}'.\033[0m")
             print("Available Letter Commands: [s] Send | [r] Receive | [w] Swap | [m] Media | [l] Logs & KB | [n] Notify | [q] Quit")
-        input("\nPress Enter to return to Master Portal...")
+        
+        # Explicit Pause-Hold to keep output visible before refreshing
+        print("\n" + "="*70)
+        input(">>> [PAUSE] Execution complete. Press [Enter] to return to Master Portal...")
 
     @classmethod
     def interactive_loop(cls):
