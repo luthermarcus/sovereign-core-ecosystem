@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.74.0-beta",
+  "version": "v6.75.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -76,5 +76,6 @@
   "system_link_encryption": "HARDENED_PQC_MMAP_ACTIVE",
   "vector_acceleration": "MMAP_ZERO_COPY_ACTIVE",
   "adaptive_latency": "REINFORCEMENT_OPTIMIZATION_ACTIVE",
-  "link_security_warden": "ACTIVE_SYMLINK_PROTECTION"
+  "link_security_warden": "ACTIVE_SYMLINK_PROTECTION",
+  "snapshot_restore_warden": "ACTIVE_AUTOMATED_BACKUPS"
 }
