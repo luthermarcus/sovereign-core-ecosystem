@@ -34,3 +34,7 @@ The foundational concepts within Sovereign Core OS draw heavily from the open-so
 
 ### Personalized Kudos & Acknowledgements
 *This ecosystem is dedicated to the independent node operators, the privacy advocates, and the open-source Linux OS communities. To those running lightweight nodes on consumer hardware, securing their own data, and advocating for absolute free speech—thank you for decentralizing everything.*
+
+## Phase 5: Zero-Trust Virtualized Mediator (v6.36.0-beta)
+- Implemented a simulated pre-flight sandbox for all incoming cross-chain and DePIN connections.
+- Malicious payloads are proactively dropped in transient memory (/dev/shm) before reaching the L1/L2 execution pipelines.
