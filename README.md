@@ -100,3 +100,8 @@ Synthesizing insights from Bitcoin Core contributors (BIP 330 Erlay protocol), X
 - **XDA-Inspired RAM Pressure Management:** Optimizes transient /dev/shm ring buffers and swap tuning to eliminate thrashing during high-frequency telemetry logging.
 - **Bitcointalk BIP 330 Erlay Integration:** Deploys minisketch set reconciliation across memory-mapped P2P channels for bandwidth-efficient transaction relay.
 - **Cryptographic Vault Hardening:** Enforces FIPS 203 ML-KEM-1024 encryption across all active system link vectors.
+
+## Phase 21: BIP 330 Minisketch Set Reconciliation & Miniscript Vaults (v6.89.0-beta)
+- **BIP 330 Minisketch Engine:** Optimizes P2P transaction relay through compact BCH-based set sketches in transient RAM buffers.
+- **Miniscript Policy Verification:** Integrates automated policy analysis into SQLite WAL vaults to secure advanced spending conditions.
+- **Hardware-Locked Telemetry:** Enforces monotonic micro-timer synchronization across all 6 Master TUI panels.
