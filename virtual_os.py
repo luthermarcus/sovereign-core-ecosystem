@@ -5,6 +5,7 @@ from modules.sovereign_core_kernel import SovereignCoreKernel
 from modules.cross_chain_peg import CrossChainPegModule
 from modules.hardware_warden import HardwareWarden
 from modules.role_switcher import RoleSwitcherEngine
+from modules.beefy_vault import BeefyVaultIntegration
 
 def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 
@@ -22,9 +23,10 @@ def cli_depin_audit():
 
 def cli_wallet_audit():
     clear_screen()
-    print("=== WALLET, RESERVES & LIQUIDITY AUDIT ===\n" + "=" * 70)
+    vault_res = BeefyVaultIntegration.execute_auto_compound()
+    print("=== WALLET, RESERVES & BEEFY AUTO-COMPOUND AUDIT ===\n" + "=" * 70)
     print("  L1 Parent Reserve Balance : 1.25 BTC [SECURE ESCROW]")
-    print("  Protocol-Owned Liquidity  : $246.50 USD [AMM POOL]")
+    print(f"  Protocol-Owned Liquidity  : ${vault_res['updated_pol_pool_usd']} USD [BEEFY AUTO-COMPOUNDED]")
     print("  BIP 300 Sidechain Locked  : 0.50 BTC [ANCHORED SLOT 1]")
     print("  Wallet DB Status          : WAL Synchronized [wallet.db]")
     print("=" * 70)
@@ -70,14 +72,14 @@ def main():
         return
 
     page = 1
-    msg = "Sovereign Core OS v6.19.0-beta. Master TUI Active."
+    msg = "Sovereign Core OS v6.25.0-beta. Three-Pronged Master TUI Active."
     while True:
         clear_screen()
         summary = MultiDisplayManager.render_all_displays_summary()
         hw = HardwareWarden.audit_physical_hardware()
         current_role = RoleSwitcherEngine.get_current_role()
         
-        print("=" * 70 + f"\n=== MASTER DASHBOARD: SOVEREIGN CORE OS v6.19.0-beta [PAGE {page}/4] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== MASTER DASHBOARD: SOVEREIGN CORE OS v6.25.0-beta [PAGE {page}/4] ===\n" + "=" * 70)
         print(f"  Active Profile Role : {current_role} | Host Thermal: {hw['thermal_celsius']}°C")
         
         if page == 1:
@@ -106,14 +108,14 @@ def main():
             print("  ------------------------------------------------------------------")
             print("  [1] Execute On-Chain Deposit (M5)")
             print("  [2] Execute Withdrawal Bundle (M6)")
-            print("  [3] Rebalance POL Liquidity Pool")
+            print("  [3] Rebalance POL Liquidity Pool & Beefy Compound")
             
         elif page == 4:
             d6 = summary["display_6_governance"]
             print(f"\n  [Display 4] About & Governance: {len(d6['orphans'])} Orphans Tracked [{d6['status']}]")
             print("  Orphaned Scripts: " + ", ".join(d6['orphans']))
             print("  ------------------------------------------------------------------")
-            print("  [1] View System Architecture Manual")
+            print("  [1] View Three-Pronged Architecture Manual")
             print("  [2] Run Ecosystem Diagnostic Sync")
             
         print("\nNavigation: [N]ext Page | [P]rev Page | [Q]uit to L1 Host")

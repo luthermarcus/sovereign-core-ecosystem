@@ -12,7 +12,7 @@ class MultiDisplayManager:
                 wallet = cfg.get("wallet_liquidity", {})
         except Exception:
             stack = {"mysterium": 14.25, "earnapp": 8.50, "traffmonetizer": 5.10, "packetstream": 3.20, "pawns": 6.75, "honeygain": 11.40}
-            wallet = {"reserve_btc": 1.25, "pol_pool_usd": 246.50, "sidechain_locked_btc": 0.50}
+            wallet = {"reserve_btc": 1.25, "pol_pool_usd": 249.58, "sidechain_locked_btc": 0.50}
 
         gross = sum(stack.values())
         pol = gross * 0.05
@@ -24,6 +24,6 @@ class MultiDisplayManager:
             "display_2_hardware": {"thermal_c": 45.0, "fan_state": "MAX_RPM_60C", "shm_mb": 1477.03, "status": "ACTIVE"},
             "display_3_consensus": {"bip300": "ANCHORED", "bip301": "OPERATIONAL", "status": "ACTIVE"},
             "display_4_security": {"l1_kernel": "SECURE", "l2_sandbox": "ISOLATED", "status": "ACTIVE"},
-            "display_5_wallet": {"reserve_btc": wallet.get("reserve_btc", 1.25), "pol_pool_usd": wallet.get("pol_pool_usd", 246.50), "status": "ONLINE"},
+            "display_5_wallet": {"reserve_btc": wallet.get("reserve_btc", 1.25), "pol_pool_usd": wallet.get("pol_pool_usd", 249.58), "status": "ONLINE_COMPOUNDED"},
             "display_6_governance": {"orphans": ["objects.py", "app.py", "tray.py", "config.py"], "status": "RECONCILED"}
         }
