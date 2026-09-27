@@ -53,7 +53,7 @@ class SovereignCorePortal:
         C_RESET = "\033[0m"
 
         print(f"{C_CYAN}========================================================================")
-        print(f"=== SOVEREIGN CORE OS v7.18.0-STABLE : PAUSE-HOLD EXECUTION SUITE   ===")
+        print(f"=== SOVEREIGN CORE OS v7.22.0-STABLE : HELP & SUGGESTIONS SUITE    ===")
         print(f"========================================================================{C_RESET}")
         
         print(f"{C_RED}┌──────────────────────────────────────────────────────────────────────┐{C_RED}")
@@ -127,7 +127,7 @@ class SovereignCorePortal:
     def execute_action(cls, cmd):
         cmd = cmd.strip().lower()
         if cmd in ['q', 'exit']:
-            print("\n[*] Exiting Sovereign Core Portal...")
+            print("[*] Exiting Sovereign Core Portal...")
             sys.exit(0)
         elif cmd == 's':
             print("\n[WALLET SEND] Initializing BIP 330 Erlay broadcast transaction...")
@@ -162,11 +162,24 @@ class SovereignCorePortal:
             print("\n[NTFY WARDEN] Broadcasting test alert payload to mobile ntfy.sh topic...")
             time.sleep(0.4)
             print("[v] Mobile alert dispatched successfully.")
+        elif cmd == 'h':
+            print("\n======================================================================")
+            print("=== SOVEREIGN CORE OS : RELEVANT COMMAND HELP & SUGGESTIONS        ===")
+            print("======================================================================")
+            print(" [s] Send      : Broadcast wallet tx via BIP 330 Erlay Minisketch.")
+            print(" [r] Receive   : Display FIPS 203 ML-KEM-1024 cryptographic address.")
+            print(" [w] Swap      : Route DEX trades across Uniswap, Jupiter, PancakeSwap.")
+            print(" [m] Media     : Stream Sovereign Lofi Core audio buffer from /dev/shm.")
+            print(" [l] Logs & KB : Audit SQLite WAL ledgers and knowledge base signatures.")
+            print(" [n] Notify    : Dispatch telemetry push alerts to your ntfy.sh topic.")
+            print(" [h] Help      : Display this contextual command reference menu.")
+            print(" [q] Quit      : Terminate portal session and return to native prompt.")
+            print("======================================================================")
+            print("[*] Suggestion: Run 'l' regularly to verify WAL integrity and anomaly status.")
         else:
             print(f"\033[1;31m[!] Unknown command '{cmd}'.\033[0m")
-            print("Available Letter Commands: [s] Send | [r] Receive | [w] Swap | [m] Media | [l] Logs & KB | [n] Notify | [q] Quit")
+            print("Type [h] for help suggestions and available letter commands.")
         
-        # Explicit Pause-Hold to keep output visible before refreshing
         print("\n" + "="*70)
         input(">>> [PAUSE] Execution complete. Press [Enter] to return to Master Portal...")
 
@@ -182,7 +195,8 @@ class SovereignCorePortal:
             print("\n Interoperable Commands Hub:")
             print(" [s] Send Wallet Transaction   [r] Receive Address Vault")
             print(" [w] DEX Swap & Pools         [m] Media Stream Deck")
-            print(" [l] System Logs & KB Signatures [n] Push Mobile Alert   [q] Quit")
+            print(" [l] System Logs & KB Signatures [n] Push Mobile Alert")
+            print(" [h] Help & Relevant Hints    [q] Quit")
             try:
                 choice = input("\n sovereign-core@portal >>> ").strip()
                 if choice:
@@ -193,7 +207,8 @@ class SovereignCorePortal:
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         arg = sys.argv[1]
-        if arg in ['s', 'r', 'w', 'm', 'l', 'n']:
+        if arg in ['s', 'r', 'w', 'm', 'l', 'n', 'h']:
+            SovereCorePortal = SovereignCorePortal() # instance check
             SovereignCorePortal.execute_action(arg)
         else:
             SovereignCorePortal.render_portal()
