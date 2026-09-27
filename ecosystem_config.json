@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.70.0-beta",
+  "version": "v6.71.0-stable",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -72,5 +72,6 @@
   "quantum_threat_detector": "ENTANGLEMENT_BREAKING_ACTIVE",
   "bot_mitigation": "SELECTIVE_ENTANGLEMENT_ACTIVE",
   "quantum_telemetry": "ACTIVE_DASHBOARD_SYNC",
-  "white_paper_synthesis": "SATOSHI_LATTICE_ENTANGLEMENT_ACTIVE"
+  "white_paper_synthesis": "SATOSHI_LATTICE_ENTANGLEMENT_ACTIVE",
+  "system_link_encryption": "HARDENED_PQC_MMAP_ACTIVE"
 }
