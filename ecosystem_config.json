@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.60.0-beta",
+  "version": "v6.61.0-stable",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -63,5 +63,5 @@
   "encryption_cipher": "ML_KEM_1024_AES_256_GCM_HYBRID",
   "mathematical_framework": "MODULE_LWE_SHANNON_ENTROPY_SVP_ACTIVE",
   "symbolic_introspection": "ACTIVE_SELF_LEARNING",
-  "system_links": "QUANTUM_FEEDBACK_MMAP_ACTIVE"
+  "system_links": "SECURE_CANONICAL_MMAP_ACTIVE"
 }
