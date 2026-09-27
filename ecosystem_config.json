@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.92.0-stable",
+  "version": "v6.93.0-stable",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -95,5 +95,6 @@
   "minisketch_reconciliation": "BIP330_MINISCRIPT_ACTIVE",
   "stream_sanitizer": "ACTIVE_BUFFER_PURGE",
   "master_verification": "ALL_BUILDS_ACTIVE",
-  "tui_status": "STABLE_RENDER_FIXED"
+  "tui_status": "STABLE_RENDER_FIXED",
+  "state_regulation": "ENTROPY_BOUNDED_ACTIVE"
 }
