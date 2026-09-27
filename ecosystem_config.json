@@ -45,7 +45,10 @@
   },
   "status": "STABLE_PRODUCTION_MILESTONE",
   "security_shield": {
-    "blacklisted_peers": 3
+    "blacklisted_peers": 2
   },
-  "security_pipeline": "ACTIVE_REGRESSION_TESTING"
+  "security_pipeline": "ACTIVE_REGRESSION_TESTING",
+  "blacklisted_peer_list": [
+    "192.168.1.99"
+  ]
 }
