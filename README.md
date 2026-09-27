@@ -54,3 +54,10 @@ The foundational concepts within Sovereign Core OS draw heavily from the open-so
 ## Phase 8: Universal Self-Healing OS & Zero-Data Probing (v6.40.0-stable)
 - Implemented XDA-style PyCompile virtual sandboxing to detect OS syntax anomalies before execution.
 - Implemented BIP-330 Erlay-inspired cryptographic header probing to verify node peers in /dev/shm without exposing actual telemetry data.
+
+## Phase 9: Inter-OS Trustless Proxies & Dry-Run Sandboxing (v6.41.0-beta)
+- Clarified Architecture: L1 Anchor OS (Bare-metal host) vs. L2 Sandbox OS (Ephemeral DePIN environments).
+- Implemented Bitcoin Core testmempoolaccept dry-run logic for strict inter-OS parameter coordination.
+
+### Contributor Acknowledgements
+This architecture incorporates vital concepts from Bitcoin Core contributors, XDA framework devs, and the broader Bitcointalk open-source community (incorporating methodologies from both elite protocol devs and non-elite edge-node operators).
