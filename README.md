@@ -61,3 +61,10 @@ The foundational concepts within Sovereign Core OS draw heavily from the open-so
 
 ### Contributor Acknowledgements
 This architecture incorporates vital concepts from Bitcoin Core contributors, XDA framework devs, and the broader Bitcointalk open-source community (incorporating methodologies from both elite protocol devs and non-elite edge-node operators).
+
+
+## Ecosystem Trust Store & Developer Credits
+
+| Contributor | Contributions | Trust Tier |
+| :--- | :---: | :--- |
+| Bare Metal Node <marioskiba@gmail.com> | 178 | Core Maintainer |
