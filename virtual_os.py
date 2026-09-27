@@ -70,14 +70,14 @@ def main():
         return
 
     page = 1
-    msg = "Sovereign Core OS v6.18.0-beta. Master TUI Active."
+    msg = "Sovereign Core OS v6.19.0-beta. Master TUI Active."
     while True:
         clear_screen()
         summary = MultiDisplayManager.render_all_displays_summary()
         hw = HardwareWarden.audit_physical_hardware()
         current_role = RoleSwitcherEngine.get_current_role()
         
-        print("=" * 70 + f"\n=== MASTER DASHBOARD: SOVEREIGN CORE OS v6.18.0-beta [PAGE {page}/4] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== MASTER DASHBOARD: SOVEREIGN CORE OS v6.19.0-beta [PAGE {page}/4] ===\n" + "=" * 70)
         print(f"  Active Profile Role : {current_role} | Host Thermal: {hw['thermal_celsius']}°C")
         
         if page == 1:
