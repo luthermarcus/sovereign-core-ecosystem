@@ -80,3 +80,8 @@ This architecture incorporates vital concepts from Bitcoin Core contributors, XD
 
 ### Open-Source & Community Cross-References
 Synthesizing insights from Bitcoin Core contributors (BIP 330 Erlay protocol), XDA bare-metal kernel optimization teams, and NIST post-quantum standardization bodies (FIPS 203/204 ML-KEM/ML-DSA).
+
+## Phase 17: Selective Bot Mitigation & Quantum Entanglement Defense (v6.68.0-beta)
+- **Differential Bot Profiling:** Separates predatory front-running/sandwich bots from beneficial arbitrage and liquidation agents using entropy baselines.
+- **Entanglement Breaking Telemetry:** Monitors multi-qubit correlation matrices in RAM (/dev/shm) to detect anomalous mempool probing.
+- **Probationary Rectification:** Implements automated escrow checks for flagged automation to ensure zero disruption for valid network participants.
