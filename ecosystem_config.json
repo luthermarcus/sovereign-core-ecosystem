@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.82.0-beta",
+  "version": "v6.83.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -85,5 +85,6 @@
   "unified_synthesis": "TOP_DOWN_OPTIMIZATION_ACTIVE",
   "display_viewport_warden": "ACTIVE_CURSOR_LOCK",
   "tui_sync": "UNIFIED_CONFIG_MMAP_ACTIVE",
-  "ecosystem_pipeline": "RAM_MMAP_CONFIG_ACTIVE"
+  "ecosystem_pipeline": "RAM_MMAP_CONFIG_ACTIVE",
+  "display_sanitizer": "ACTIVE_BUFFER_PURGE"
 }
