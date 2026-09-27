@@ -45,7 +45,7 @@
   },
   "status": "STABLE_PRODUCTION_MILESTONE",
   "security_shield": {
-    "blacklisted_peers": 2
+    "blacklisted_peers": 3
   },
   "security_pipeline": "ACTIVE_REGRESSION_TESTING",
   "blacklisted_peer_list": [
