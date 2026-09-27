@@ -19,22 +19,24 @@ class TransactionAuditor:
         cursor = conn.cursor()
         
         try:
-            # 1. Open Mathematical State
+            # 1. Open Financial State
             conn.execute("BEGIN TRANSACTION")
-            
-            # 2. Attempt Deduction
             cursor.execute("UPDATE balances SET amount = amount - ? WHERE account = 'L1_MAIN'", (amount,))
             
-            # 3. Security Warden Check
+            # 2. Security Warden Check
             if flag_for_audit:
-                # Log to the audit ledger for review
-                cursor.execute("INSERT INTO audit_ledger (tx_id, amount, reason, timestamp) VALUES (?, ?, ?, ?)", 
-                               (tx_id, amount, "FAILED_SECURITY_SIGNATURE", time.time()))
-                # Trigger Mathematical Rollback
+                # FIRST: Trigger Mathematical Rollback to secure funds
                 conn.execute("ROLLBACK")
                 print(f"[!] Warden Alert: TX {tx_id} flagged. State ROLLED BACK. Funds secured.")
+                
+                # SECOND: Open a new, isolated transaction to commit the forensic evidence
+                conn.execute("BEGIN TRANSACTION")
+                cursor.execute("INSERT INTO audit_ledger (tx_id, amount, reason, timestamp) VALUES (?, ?, ?, ?)", 
+                               (tx_id, amount, "FAILED_SECURITY_SIGNATURE", time.time()))
+                conn.commit()
+                print(f"[v] Forensic evidence permanently written to audit_ledger.")
             else:
-                conn.execute("COMMIT")
+                conn.commit()
                 print(f"[v] TX {tx_id} cleared and committed.")
                 
         except Exception as e:
@@ -45,5 +47,4 @@ class TransactionAuditor:
 
 if __name__ == "__main__":
     TransactionAuditor.setup_ledgers()
-    print("=== INITIATING SAFEGUARDED TRANSACTION ===")
-    TransactionAuditor.execute_safeguarded_transaction("TX_9988_SUSPICIOUS", 0.15, flag_for_audit=True)
+    TransactionAuditor.execute_safeguarded_transaction("TX_5555_MALICIOUS", 0.50, flag_for_audit=True)
