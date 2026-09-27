@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.55.0-beta",
+  "version": "v6.57.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -59,5 +59,6 @@
   "scraper_shield": "ACTIVE_ZERO_TRUST_QUARANTINE",
   "autonomous_expansion": "RECURSIVE_SELF_OPTIMIZING_ACTIVE",
   "redress_engine": "ACTIVE_PROBATIONARY_RECOVERY",
-  "wal_maintenance": "ACTIVE_AUTOMATED_CHECKPOINT"
+  "wal_maintenance": "ACTIVE_AUTOMATED_CHECKPOINT",
+  "encryption_cipher": "ML_KEM_1024_AES_256_GCM_HYBRID"
 }
