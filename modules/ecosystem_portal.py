@@ -1,4 +1,4 @@
-import os, sys, time, json, sqlite3, subprocess
+import os, sys, time, json, sqlite3, signal
 
 sys.path.insert(0, os.path.expanduser("~/sovereign-core-ecosystem"))
 
@@ -29,7 +29,7 @@ class SovereignCorePortal:
         C_RESET = "\033[0m"
 
         print(f"{C_CYAN}========================================================================")
-        print(f"=== SOVEREIGN CORE OS v7.10.0-STABLE : PRODUCTION MASTER SUITE      ===")
+        print(f"=== SOVEREIGN CORE OS v7.11.0-STABLE : PRODUCTION MASTER SUITE      ===")
         print(f"========================================================================{C_RESET}")
         
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
@@ -44,7 +44,7 @@ class SovereignCorePortal:
         print(f"{C_GREEN}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
         print(f"{C_YELLOW}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
-        print(f"{C_YELLOW}│ [BOX 2] TOP CRYPTOCURRENCY FEED (MARKET CAP RANKINGS)                │{C_RESET}")
+        print(f"{C_YELLOW}│ [BOX 2] TOP CRYPTOCURRENCY FEED (MARKET CAP RANKINGS)                │{C_YELLOW}")
         print(f"{C_YELLOW}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
         print(f"│ [01] BTC: $83,916 (+0.8%) | [02] ETH: $2,688 (+0.4%) | [03] USDT: $1.00│")
         print(f"│ [04] BNB: $774.46 (-0.1%) | [05] XRP: $1.56 (+1.9%)  | [06] USDC: $1.00│")
@@ -54,7 +54,7 @@ class SovereignCorePortal:
         print(f"{C_YELLOW}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
         print(f"{C_MAGENTA}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
-        print(f"{C_MAGENTA}│ [BOX 3] LIQUIDITY POOLS & DEX SWAP ENGINE                            │{C_RESET}")
+        print(f"{C_MAGENTA}│ [BOX 3] LIQUIDITY POOLS & DEX SWAP ENGINE                            │{C_MAGENTA}")
         print(f"{C_MAGENTA}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
         print(f"│ SOL/USDC Pool : $184.50 USD | Liquidity: $4.2M   | Fee Tier: 0.3%    │")
         print(f"│ ETH/USDC Pool : $3,120.00   | Liquidity: $18.9M  | Fee Tier: 0.05%   │")
@@ -114,12 +114,21 @@ class SovereignCorePortal:
 
     @classmethod
     def interactive_loop(cls):
+        # Graceful handling of Ctrl+C interruption
+        def signal_handler(sig, frame):
+            print("\n[*] Session terminated gracefully by user. Returning to shell prompt.")
+            sys.exit(0)
+        signal.signal(signal.SIGINT, signal_handler)
+
         while True:
             cls.render_portal()
             print("\n Interoperable Commands: [send] [receive] [swap] [media] [logs] [q]")
-            choice = input(" sovereign-core@portal >>> ").strip()
-            if choice:
-                cls.execute_action(choice)
+            try:
+                choice = input(" sovereign-core@portal >>> ").strip()
+                if choice:
+                    cls.execute_action(choice)
+            except EOFError:
+                break
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
