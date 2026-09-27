@@ -9,3 +9,4 @@ __pycache__/
 .env
 .*_notes.md
 backups/
+dex_daemon.log
