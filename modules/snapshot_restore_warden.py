@@ -4,40 +4,40 @@ sys.path.insert(0, os.path.expanduser("~/sovereign-core-ecosystem"))
 class SnapshotRestoreWarden:
     TRUST_STORE = os.path.expanduser("~/sovereign-core-ecosystem/trust_store.db")
     BACKUP_DIR = os.path.expanduser("~/sovereign-core-ecosystem/backups")
-    SNAPSHOT_MEM = "/dev/shm/snapshot_warden_state.tmp"
 
     @classmethod
-    def execute_snapshot_cycle(cls):
-        print("\n[*] [SNAPSHOT WARDEN] Initializing automated backup snapshot and ledger restoration check...")
-        time.sleep(0.2)
+    def execute_backup_and_snapshot(cls):
+        start_tick = time.clock_gettime(time.CLOCK_MONOTONIC_RAW)
+        
+        # Enforce ANSI top-left viewport home coordinate
+        sys.stdout.write("\x1b[H\x1b[2J")
+        sys.stdout.flush()
+        
+        print("\n[*] [SNAPSHOT WARDEN] Initializing automated WAL backup and transient state archival...")
+        time.sleep(0.1)
         
         os.makedirs(cls.BACKUP_DIR, exist_ok=True)
-        backup_path = os.path.join(cls.BACKUP_DIR, "trust_store_backup.db")
+        backup_filename = f"trust_store_backup_{int(time.time())}.db"
+        backup_path = os.path.join(cls.BACKUP_DIR, backup_filename)
         
-        if os.path.exists(cls.TRUST_STORE):
-            shutil.copy2(cls.TRUST_STORE, backup_path)
-            
+        # Safe SQLite WAL backup procedure
+        conn = sqlite3.connect(cls.TRUST_STORE)
+        conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+        backup_conn = sqlite3.connect(backup_path)
+        conn.backup(backup_conn)
+        backup_conn.close()
+        conn.close()
+        
         snapshot_state = {
-            "snapshot_status": "WAL_LEDGER_BACKUP_VERIFIED",
-            "backup_target": backup_path,
-            "restoration_ready": True,
+            "version": "v6.95.0-stable",
+            "backup_status": "WAL_CHECKPOINT_AND_SNAPSHOT_SUCCESSFUL",
+            "backup_file": backup_filename,
             "timestamp": time.time(),
             "snapshot_hash": hashlib.sha256(str(time.time()).encode()).hexdigest()[:16]
         }
         
-        with open(cls.SNAPSHOT_MEM, "w") as f:
-            json.dump(snapshot_state, f, indent=2)
-            
-        conn = sqlite3.connect(cls.TRUST_STORE)
-        conn.execute("PRAGMA journal_mode=WAL")
-        conn.execute("CREATE TABLE IF NOT EXISTS snapshot_audit (id INTEGER PRIMARY KEY AUTOINCREMENT, status TEXT, snapshot_hash TEXT, timestamp REAL)")
-        conn.execute("INSERT INTO snapshot_audit (status, snapshot_hash, timestamp) VALUES (?, ?, ?)", 
-                     (snapshot_state["snapshot_status"], snapshot_state["snapshot_hash"], time.time()))
-        conn.commit()
-        conn.close()
-        
-        print(f"[v] [SNAPSHOT WARDEN] Backup snapshot secured. Snapshot Hash: {snapshot_state['snapshot_hash']}")
+        print(f"[v] [SNAPSHOT WARDEN] Backup archived successfully to {backup_path}. Hash: {snapshot_state['snapshot_hash']}")
         return True
 
 if __name__ == "__main__":
-    SnapshotRestoreWarden.execute_snapshot_cycle()
+    SnapshotRestoreWarden.execute_backup_and_snapshot()

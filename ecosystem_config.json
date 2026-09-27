@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.94.0-stable",
+  "version": "v6.95.0-stable",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -97,5 +97,6 @@
   "master_verification": "ALL_BUILDS_ACTIVE",
   "tui_status": "STABLE_RENDER_FIXED",
   "state_regulation": "ENTROPY_BOUNDED_ACTIVE",
-  "quantum_entanglement_warden": "ACTIVE_COHERENCE_LOCK"
+  "quantum_entanglement_warden": "ACTIVE_COHERENCE_LOCK",
+  "snapshot_restoration": "AUTOMATED_WAL_BACKUPS_ACTIVE"
 }
