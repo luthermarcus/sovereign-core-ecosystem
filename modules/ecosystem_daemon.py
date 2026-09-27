@@ -1,4 +1,5 @@
 import os, json, sqlite3
+from modules.power_warden import PowerFailoverWarden
 from modules.predictive_warden import PredictiveThermalWarden
 
 class EcosystemDaemon:
