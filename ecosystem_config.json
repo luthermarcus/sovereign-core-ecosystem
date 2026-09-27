@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.86.0-beta",
+  "version": "v6.87.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -89,5 +89,6 @@
   "display_sanitizer": "ACTIVE_BUFFER_PURGE",
   "anomaly_tracker": "ACTIVE_ERROR_ISOLATION",
   "wal_self_healing": "ACTIVE_ERROR_ISOLATION",
-  "frame_synchronization": "ATOMIC_RENDER_ACTIVE"
+  "frame_synchronization": "ATOMIC_RENDER_ACTIVE",
+  "vector_qcell": "ACTIVE_ZERO_COPY_MMAP"
 }
