@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.31.0-beta",
+  "version": "v6.32.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -33,8 +33,14 @@
   "hardware_warden": {
     "current_temp_c": 40.0,
     "thermal_velocity": -0.0018,
-    "predictive_throttle_multiplier": 1.0,
+    "predictive_throttle_multiplier": 0.1,
     "status": "OPTIMAL",
     "power_status": "AC_ONLINE"
+  },
+  "vpp_grid": {
+    "dr_capacity_credits_usd": 12.5,
+    "dr_performance_credits_usd": 0.5,
+    "grid_frequency_hz": 59.923,
+    "openadr_status": "VEN_CURTAIL_RRS"
   }
 }

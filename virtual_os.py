@@ -50,11 +50,27 @@ def cli_peg_simulator():
     print(f"  Status         : {res['status']}")
     print("=" * 70)
 
+
+def cli_grid_audit():
+    clear_screen()
+    from modules.display_manager import MultiDisplayManager
+    res = MultiDisplayManager.render_all_displays_summary()
+    vpp = res['vpp_raw']
+    print("=== VIRTUAL POWER PLANT & DEMAND RESPONSE AUDIT ===
+" + "=" * 70)
+    print(f"  Local Grid Frequency  : {vpp['grid_frequency_hz']} Hz")
+    print(f"  OpenADR 2.0b Status   : {vpp['openadr_status']}")
+    print("-" * 70)
+    print(f"  DR Capacity Payments  : ${vpp['dr_capacity_credits_usd']:.2f} USD [STANDBY ESCROW]")
+    print(f"  DR Performance Yield  : ${vpp['dr_performance_credits_usd']:.2f} USD [CURTAILMENT EARNED]")
+    print("=" * 70)
+
 def main():
     parser = argparse.ArgumentParser(description="Sovereign Core OS Master Sandbox CLI")
     parser.add_argument("--depin", action="store_true", help="Run DePIN capital routing audit")
     parser.add_argument("--kernel", action="store_true", help="Run L1/L2 kernel integration audit")
     parser.add_argument("--peg", action="store_true", help="Run BIP 300 Two-Way Peg simulator")
+    parser.add_argument("--grid", action="store_true", help="Run VPP grid & demand response audit")
     parser.add_argument("--wallet", action="store_true", help="Run wallet & liquidity audit")
     args, unknown = parser.parse_known_args()
 
@@ -66,6 +82,9 @@ def main():
         return
     elif args.peg:
         cli_peg_simulator()
+        return
+    elif args.grid:
+        cli_grid_audit()
         return
     elif args.wallet:
         cli_wallet_audit()
