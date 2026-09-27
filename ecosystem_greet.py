@@ -10,7 +10,7 @@ def main():
     print(f"  [Display 3] VPP Grid (ADR)   : {d3['freq']}Hz | Signal: {d3['adr']} [{d3['status']}]")
     print(f"  [Display 4] Security Guard   : {d4['blacklisted']} Peers Blacklisted | 2-Way Mediator [{d4['status']}]")
     print(f"  [Display 5] Wallet & Reserves: DR Credits: ${d5['dr_yield']} | POL: ${d5['pol_pool_usd']} [{d5['status']}]")
-    print(f"  [Display 6] Governance & Node: Orphans Tracked ({d6['orphans']}) [{d6['status']}]\n" + "=" * 75)
+    print(f"  [Display 6] Diagnostic Warden: {d6['healthy_modules']} Core Modules Verified [{d6['status']}]\n" + "=" * 75)
     print("  >>> Type 'sos' for Master TUI or 'sos --grid' for VPP audit. <<<")
 
 if __name__ == "__main__":
