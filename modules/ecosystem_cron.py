@@ -1,4 +1,5 @@
-import os, time, sqlite3, json
+import os, sys, time, sqlite3, json
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from modules.display_manager import MultiDisplayManager
 
 class EcosystemTelemetryCron:
@@ -36,7 +37,7 @@ class EcosystemTelemetryCron:
         )
         conn.commit()
         conn.close()
-        print(f"[v] Telemetry snapshot logged at {time.strftime('%Y-%m-%d %H:%M:%S')}")
+        print(f"[v] Telemetry snapshot successfully logged at {time.strftime('%Y-%m-%d %H:%M:%S')}")
 
 if __name__ == "__main__":
     EcosystemTelemetryCron.record_snapshot()
