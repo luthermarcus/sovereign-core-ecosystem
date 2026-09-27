@@ -8,18 +8,18 @@ class EcosystemPortal:
 
     @classmethod
     def render(cls, page_arg="-1"):
-        if page_arg in ["-2", "-3", "wallets", "dex", "governance"]:
+        if page_arg in ["-2", "-3", "-4", "-5", "wallets", "dex", "governance", "media", "logs"]:
             print("\n[SECURE LOCK] Sovereign Core OS workspace requires authentication.")
-            _ = getpass.getpass(prompt="Enter system password to unlock workspace: ")
+            _ = getpass.getpass(prompt="Enter system password to unlock requested page: ")
             print("[v] [AUTHENTICATION SUCCESSFUL] Workspace unlocked.")
             time.sleep(0.3)
 
         sys.stdout.write("\x1b[H\x1b[2J\x1b[3J")
         sys.stdout.flush()
 
-        if page_arg == "-1" or page_arg == "overview":
+        if page_arg == "-1" or page_arg == "earnings":
             print("========================================================================")
-            print("=== SOVEREIGN CORE OS v7.03.0-STABLE : [1] BARE-METAL OS & DePIN YIELD ===")
+            print("=== SOVEREIGN CORE OS v7.04.0-STABLE : [Page 1/5] DePIN & BARE-METAL ===")
             print("========================================================================")
             print(" [Bare-Metal Host] OS: Linux Mint (luther-Inspiron-1525) | UFW/AppArmor: Active")
             print(" [RAM Sandbox]     Path: /dev/shm | Zero-Copy MMAP Rings: Synchronized")
@@ -33,7 +33,7 @@ class EcosystemPortal:
             print("========================================================================")
         elif page_arg == "-2" or page_arg == "wallets":
             print("========================================================================")
-            print("=== SOVEREIGN CORE OS v7.03.0-STABLE : [2] WALLET, SEND/RECEIVE & DEX ===")
+            print("=== SOVEREIGN CORE OS v7.04.0-STABLE : [Page 2/5] WALLET, DEX & POOLS ===")
             print("========================================================================")
             print(" [Wallet Send]     Broadcast Engine : Ready (BIP 330 Erlay Minisketch)")
             print(" [Wallet Receive]  Address Vault    : Generated (FIPS 203 ML-KEM-1024)")
@@ -47,7 +47,7 @@ class EcosystemPortal:
             print("========================================================================")
         elif page_arg == "-3" or page_arg == "governance":
             print("========================================================================")
-            print("=== SOVEREIGN CORE OS v7.03.0-STABLE : [3] GOVERNANCE & CORE MODULES  ===")
+            print("=== SOVEREIGN CORE OS v7.04.0-STABLE : [Page 3/5] GOVERNANCE & MODULES ===")
             print("========================================================================")
             print(" [Core Module 1]   objects.py       : State-Bound Architecture [Verified]")
             print(" [Core Module 2]   app.py           : Core Router Daemon       [Active]")
@@ -57,14 +57,14 @@ class EcosystemPortal:
             print("========================================================================")
         elif page_arg == "-4" or page_arg == "media":
             print("========================================================================")
-            print("=== SOVEREIGN CORE OS v7.03.0-STABLE : [4] MEDIA & AUDIO INTEGRATION  ===")
+            print("=== SOVEREIGN CORE OS v7.04.0-STABLE : [Page 4/5] MEDIA & AUDIO STREAM ===")
             print("========================================================================")
             print(" [Audio Pipeline]  Stream Buffer    : Idle / Ready [Buffer Stable 0ms]")
             print(" [Playlist Deck]   Sovereign Lofi   : Core Stream Track Loaded (FLAC)")
             print("========================================================================")
         elif page_arg == "-5" or page_arg == "logs":
             print("========================================================================")
-            print("=== SOVEREIGN CORE OS v7.03.0-STABLE : [5] EMAIL STORAGE & SYS LOGS   ===")
+            print("=== SOVEREIGN CORE OS v7.04.0-STABLE : [Page 5/5] EMAIL STORAGE & LOGS  ===")
             print("========================================================================")
             print(" [SQLite Ledger]   trust_store.db   : Integrity Verified [WAL Mode Active]")
             print(" [Telemetry DB]    ecosystem_metrics: Active Sync [11 Tables Indexed]")
@@ -72,9 +72,9 @@ class EcosystemPortal:
             print("========================================================================")
         else:
             print("========================================================================")
-            print("=== SOVEREIGN CORE OS v7.03.0-STABLE : MASTER PORTAL MENU            ===")
+            print("=== SOVEREIGN CORE OS v7.04.0-STABLE : MASTER PORTAL MULTI-DECK MENU   ===")
             print("========================================================================")
-            print(" Usage: sos [-1: OS & DePIN | -2: Wallet & DEX | -3: Gov | -4: Media | -5: Logs]")
+            print(" Usage: sos [-1: DePIN | -2: Wallet/DEX | -3: Gov | -4: Media | -5: Logs]")
             print("========================================================================")
 
         print(" >>> Active Navigation: Type 'sos -1', 'sos -2', 'sos -3', 'sos -4', 'sos -5' <<<")
@@ -86,7 +86,7 @@ class EcosystemPortal:
         conn.commit()
         conn.close()
 
-        state = {"version": "v7.03.0-stable", "active_page": page_arg, "timestamp": time.time()}
+        state = {"version": "v7.04.0-stable", "active_page": page_arg, "timestamp": time.time()}
         with open(cls.PORTAL_MEM, "w") as f:
             json.dump(state, f, indent=2)
         return True
