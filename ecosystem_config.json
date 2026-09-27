@@ -1,21 +1,21 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.19.0-beta",
+  "version": "v6.20.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Unified Master Telemetry & Automated L1/L2 Lifecycle",
   "depin_stack": {
     "mysterium": 14.25,
-    "earnapp": 8.50,
-    "traffmonetizer": 5.10,
-    "packetstream": 3.20,
+    "earnapp": 8.5,
+    "traffmonetizer": 5.1,
+    "packetstream": 3.2,
     "pawns": 6.75,
-    "honeygain": 11.40
+    "honeygain": 11.4
   },
   "wallet_liquidity": {
     "reserve_btc": 1.25,
-    "pol_pool_usd": 246.50,
-    "sidechain_locked_btc": 0.50
+    "pol_pool_usd": 246.5,
+    "sidechain_locked_btc": 0.5
   },
   "aliases": {
     "sos": "python3 ~/sovereign-core-ecosystem/virtual_os.py",
