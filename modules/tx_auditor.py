@@ -1,4 +1,8 @@
-import sqlite3, os, time
+import sqlite3, os, sys, time
+
+# [HOTFIX] Ensure Python can map the 'modules' directory from the root path
+sys.path.insert(0, os.path.expanduser("~/sovereign-core-ecosystem"))
+
 from modules.zero_trust_mediator import ZeroTrustMediator
 
 class TransactionAuditor:
@@ -18,7 +22,7 @@ class TransactionAuditor:
     def execute_safeguarded_transaction(cls, tx_id, amount, flag_for_audit=False):
         # PROACTIVE SECURITY: Route through the Zero-Trust Mediator FIRST
         if not ZeroTrustMediator.simulate_connection(tx_id, amount):
-            # The mediator killed the connection before it ever reached the database.
+            # The mediator proactively dropped the connection. Database remains entirely untouched.
             return
 
         print("\n[*] [L1/L2 PIPELINE] Processing verified transaction...")
@@ -31,7 +35,7 @@ class TransactionAuditor:
             
             if flag_for_audit:
                 conn.execute("ROLLBACK")
-                print(f"[!] [AUDITOR] Llate-stage anomaly detected. State ROLLED BACK. Funds secured.")
+                print(f"[!] [AUDITOR] Late-stage anomaly detected. State ROLLED BACK. Funds secured.")
                 conn.execute("BEGIN TRANSACTION")
                 cursor.execute("INSERT INTO audit_ledger (tx_id, amount, reason, timestamp) VALUES (?, ?, ?, ?)", 
                                (tx_id, amount, "FAILED_LATE_STAGE_SIGNATURE", time.time()))
@@ -50,8 +54,8 @@ if __name__ == "__main__":
     TransactionAuditor.setup_ledgers()
     print("=== INITIATING ZERO-TRUST MEDIATOR TESTS ===")
     
-    # Test 1: Malicious Connection (Should be dropped proactively by the Mediator)
+    # Test 1: Malicious Connection (Should be dropped proactively by the Mediator in /dev/shm)
     TransactionAuditor.execute_safeguarded_transaction("TX_8888_MALICIOUS", 0.75)
     
-    # Test 2: Clean Connection (Should pass Mediator and be processed by the Auditor)
+    # Test 2: Clean Connection (Should pass Mediator and be processed by the L1/L2 Pipeline)
     TransactionAuditor.execute_safeguarded_transaction("TX_9999_CLEAN_DEPIN_YIELD", 0.15)

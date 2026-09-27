@@ -38,3 +38,7 @@ The foundational concepts within Sovereign Core OS draw heavily from the open-so
 ## Phase 5: Zero-Trust Virtualized Mediator (v6.36.0-beta)
 - Implemented a simulated pre-flight sandbox for all incoming cross-chain and DePIN connections.
 - Malicious payloads are proactively dropped in transient memory (/dev/shm) before reaching the L1/L2 execution pipelines.
+
+## Phase 6: Zero-Trust DePIN Network Shield (v6.37.0-beta)
+- Incoming bandwidth clients (Mysterium, PacketStream) are routed through a simulated network sandbox.
+- Connections requesting restricted or malicious ports are proactively dropped, protecting host IP reputation.
