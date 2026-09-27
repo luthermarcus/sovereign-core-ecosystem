@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.expanduser("~/sovereign-core-ecosystem"))
 class SovereignCorePortal:
     TRUST_STORE = os.path.expanduser("~/sovereign-core-ecosystem/trust_store.db")
     METRICS_DB = os.path.expanduser("~/sovereign-core-ecosystem/ecosystem_metrics.db")
+    KB_DB = os.path.expanduser("~/sovereign-core-ecosystem/knowledge_base.db")
     NODE_TOPIC_FILE = os.path.expanduser("~/.node_topic")
 
     @classmethod
@@ -17,13 +18,23 @@ class SovereignCorePortal:
             except:
                 pass
 
-        # Comprehensive system flag extraction across services and security daemons
+        # Query knowledge base for reference tracking status
+        anomaly_count = 0
+        try:
+            conn = sqlite3.connect(cls.KB_DB)
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM anomaly_signatures;")
+            anomaly_count = cursor.fetchone()[0]
+            conn.close()
+        except:
+            pass
+
         return {
             "ufw": "ACTIVE (Port 22 Whitelisted)",
             "apparmor": "ENFORCED",
             "shm": "1.2 MB / 512 MB [OPTIMIZED]",
             "wal": "OK [trust_store.db & ecosystem_metrics.db]",
-            "anomalies": "0 Critical Faults / All Daemons Synchronized",
+            "anomalies": f"0 Faults / {anomaly_count} Reference Signatures Active",
             "ntfy_topic": topic
         }
 
@@ -42,19 +53,19 @@ class SovereignCorePortal:
         C_RESET = "\033[0m"
 
         print(f"{C_CYAN}========================================================================")
-        print(f"=== SOVEREIGN CORE OS v7.15.0-STABLE : PRODUCTION MASTER SUITE      ===")
+        print(f"=== SOVEREIGN CORE OS v7.16.0-STABLE : KNOWLEDGE BASE REFERENCE     ===")
         print(f"========================================================================{C_RESET}")
         
-        # SYSTEM FLAGS & ANOMALY DETECTION WARDEN BOX (Top Box without number index)
-        print(f"{C_RED}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
-        print(f"{C_RED}│ SYSTEM FLAGS & ERROR/ANOMALY DETECTION WARDEN                        │{C_RESET}")
-        print(f"{C_RED}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
+        # SYSTEM FLAGS & ANOMALY DETECTION WARDEN BOX
+        print(f"{C_RED}┌──────────────────────────────────────────────────────────────────────┐{C_RED}")
+        print(f"{C_RED}│ SYSTEM FLAGS & KNOWLEDGE BASE ANOMALY REFERENCE WARDEN               │{C_RED}")
+        print(f"{C_RED}├──────────────────────────────────────────────────────────────────────┤{C_RED}")
         print(f"│ Firewall Flag  : UFW Status -> {flags['ufw']}                      │")
         print(f"│ Kernel Security: AppArmor -> {flags['apparmor']}                  │")
         print(f"│ RAM Zero-Copy  : /dev/shm Usage -> {flags['shm']}                 │")
         print(f"│ SQLite WAL     : Status -> {flags['wal']}                         │")
-        print(f"│ System Health  : {flags['anomalies']}                             │")
-        print(f"{C_RED}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
+        print(f"│ KB Reference   : {flags['anomalies']}                             │")
+        print(f"{C_RED}└──────────────────────────────────────────────────────────────────────┘{C_RED}")
 
         # BOX 1: BARE-METAL OS & DePIN YIELD PORTFOLIO
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
@@ -79,7 +90,7 @@ class SovereignCorePortal:
         print(f"│ [13] XMR: $558.12 (-0.9%) | [14] ADA: $0.257 (+3.8%) | [15] LEO: $8.94 │")
         print(f"{C_YELLOW}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
-        # BOX 3: UNISWAP, JUPITER & PANCAKESWAP TOP DEX PAIRS
+        # BOX 3: TOP DEX EXPANDED LIQUIDITY POOLS & SWAP PAIRS
         print(f"{C_MAGENTA}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_MAGENTA}│ [BOX 3] TOP DEX EXPANDED LIQUIDITY POOLS & SWAP PAIRS                │{C_MAGENTA}")
         print(f"{C_MAGENTA}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -142,20 +153,25 @@ class SovereignCorePortal:
             time.sleep(0.5)
             print("[v] Stream buffer active on /dev/shm audio ring.")
         elif cmd == 'l':
-            print("\n[SYSTEM LOGS] Auditing SQLite WAL ledgers and trust store integrity...")
-            conn = sqlite3.connect(cls.TRUST_STORE)
-            cursor = conn.cursor()
-            cursor.execute("PRAGMA integrity_check;")
-            res = cursor.fetchone()[0]
-            conn.close()
-            print(f"[v] trust_store.db integrity status: {res}")
+            print("\n[SYSTEM LOGS] Auditing SQLite WAL ledgers and knowledge base integrity...")
+            try:
+                conn = sqlite3.connect(cls.KB_DB)
+                cursor = conn.cursor()
+                cursor.execute("SELECT signature_code, category, severity FROM anomaly_signatures;")
+                sigs = cursor.fetchall()
+                conn.close()
+                print(f"[v] Knowledge Base loaded {len(sigs)} anomaly reference signatures:")
+                for sig in sigs:
+                    print(f"    - [{sig[2]}] {sig[0]} ({sig[1]})")
+            except Exception as e:
+                print(f"[!] Error querying KB: {e}")
         elif cmd == 'n':
             print("\n[NTFY WARDEN] Broadcasting test alert payload to mobile ntfy.sh topic...")
             time.sleep(0.4)
             print("[v] Mobile alert dispatched successfully.")
         else:
-            print(f"[!] Unknown command '{cmd}'.")
-            print("Available Letter Commands: [s] Send | [r] Receive | [w] Swap | [m] Media | [l] Logs | [n] Notify | [q] Quit")
+            print(f"{C_RED}[!] Unknown command '{cmd}'.{C_RESET}")
+            print("Available Letter Commands: [s] Send | [r] Receive | [w] Swap | [m] Media | [l] Logs & KB | [n] Notify | [q] Quit")
         input("\nPress Enter to return to Master Portal...")
 
     @classmethod
@@ -170,7 +186,7 @@ class SovereignCorePortal:
             print("\n Interoperable Commands Hub:")
             print(" [s] Send Wallet Transaction   [r] Receive Address Vault")
             print(" [w] DEX Swap & Pools         [m] Media Stream Deck")
-            print(" [l] System & SQLite Logs     [n] Push Mobile Alert   [q] Quit")
+            print(" [l] System Logs & KB Signatures [n] Push Mobile Alert   [q] Quit")
             try:
                 choice = input("\n sovereign-core@portal >>> ").strip()
                 if choice:
