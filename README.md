@@ -1,4 +1,4 @@
-# Sovereign Core OS (`v6.12.0-beta`)
+# Sovereign Core OS (`v6.13.0-beta`)
 *Enterprise-Grade Bare-Metal DePIN Microkernel & Cross-Chain Sidechain Ecosystem*
 
 ## 1. System Architecture: Layer 1 & Layer 2 Partitioning
