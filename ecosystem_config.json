@@ -1,9 +1,16 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.17.0-beta",
+  "version": "v6.18.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
-  "architecture": "Unified Master Dashboard & Multi-Page TUI Integration",
+  "architecture": "Comprehensive Multi-Display Telemetry & Master TUI",
+  "modules": [
+    "display_manager.py",
+    "os_compat.py",
+    "cross_chain_peg.py",
+    "depin_sidechain.py",
+    "ecosystem_daemon.py"
+  ],
   "depin_stack": {
     "mysterium": 14.25,
     "earnapp": 8.50,
@@ -12,11 +19,13 @@
     "pawns": 6.75,
     "honeygain": 11.40
   },
+  "wallet_liquidity": {
+    "reserve_btc": 1.25,
+    "pol_pool_usd": 246.50,
+    "sidechain_locked_btc": 0.50
+  },
   "aliases": {
     "sos": "python3 ~/sovereign-core-ecosystem/virtual_os.py",
-    "dash1": "python3 ~/sovereign-core-ecosystem/ecosystem_dashboard.py",
-    "dash2": "python3 ~/sovereign-core-ecosystem/ecosystem_earnings.py",
-    "dash4": "python3 ~/sovereign-core-ecosystem/ecosystem_flags.py",
     "greet": "python3 ~/sovereign-core-ecosystem/ecosystem_greet.py"
   }
 }

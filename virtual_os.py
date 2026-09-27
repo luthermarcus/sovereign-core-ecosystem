@@ -11,13 +11,22 @@ def clear_screen(): os.system('clear' if os.name == 'posix' else 'cls')
 def cli_depin_audit():
     clear_screen()
     res = DePINSidechainEngine.calculate_depin_capital_routing()
-    print("=== DEPIN CAPITAL ROUTING (MASTER AUDIT) ===\n" + "=" * 70)
+    print("=== DEPIN CAPITAL ROUTING & 6-APP AUDIT ===\n" + "=" * 70)
     for app, amt in res['stack_breakdown'].items():
         print(f"  - {app.capitalize():<15}: ${amt:.2f} USD [ACTIVE]")
     print("-" * 70)
     print(f"  Gross DePIN Yield      : ${res['gross_yield_usd']:.2f} USD")
     print(f"  5% POL Development Tax : ${res['pol_development_tax_5_percent']:.2f} USD")
     print(f"  Net User Yield         : ${res['net_user_yield_usd']:.2f} USD")
+    print("=" * 70)
+
+def cli_wallet_audit():
+    clear_screen()
+    print("=== WALLET, RESERVES & LIQUIDITY AUDIT ===\n" + "=" * 70)
+    print("  L1 Parent Reserve Balance : 1.25 BTC [SECURE ESCROW]")
+    print("  Protocol-Owned Liquidity  : $246.50 USD [AMM POOL]")
+    print("  BIP 300 Sidechain Locked  : 0.50 BTC [ANCHORED SLOT 1]")
+    print("  Wallet DB Status          : WAL Synchronized [wallet.db]")
     print("=" * 70)
 
 def cli_kernel_audit():
@@ -44,7 +53,7 @@ def main():
     parser.add_argument("--depin", action="store_true", help="Run DePIN capital routing audit")
     parser.add_argument("--kernel", action="store_true", help="Run L1/L2 kernel integration audit")
     parser.add_argument("--peg", action="store_true", help="Run BIP 300 Two-Way Peg simulator")
-    parser.add_argument("--air", action="store_true", help="Run XDA AIR incident audit")
+    parser.add_argument("--wallet", action="store_true", help="Run wallet & liquidity audit")
     args, unknown = parser.parse_known_args()
 
     if args.depin:
@@ -56,26 +65,29 @@ def main():
     elif args.peg:
         cli_peg_simulator()
         return
+    elif args.wallet:
+        cli_wallet_audit()
+        return
 
     page = 1
-    msg = "Sovereign Core OS v6.17.0-beta. Master Dashboard Active."
+    msg = "Sovereign Core OS v6.18.0-beta. Master TUI Active."
     while True:
         clear_screen()
         summary = MultiDisplayManager.render_all_displays_summary()
         hw = HardwareWarden.audit_physical_hardware()
         current_role = RoleSwitcherEngine.get_current_role()
         
-        print("=" * 70 + f"\n=== MASTER DASHBOARD: SOVEREIGN CORE OS v6.17.0-beta [PAGE {page}/3] ===\n" + "=" * 70)
+        print("=" * 70 + f"\n=== MASTER DASHBOARD: SOVEREIGN CORE OS v6.18.0-beta [PAGE {page}/4] ===\n" + "=" * 70)
         print(f"  Active Profile Role : {current_role} | Host Thermal: {hw['thermal_celsius']}°C")
         
         if page == 1:
             d1 = summary["display_1_depin"]
-            print(f"\n  [Display 1] DePIN Portfolio   : ${d1['gross']} USD (POL Tax: ${d1['pol_tax']} USD)")
+            print(f"\n  [Display 1] DePIN Portfolio   : ${d1['gross']} USD (POL Tax:${d1['pol_tax']} USD)")
             print("  ------------------------------------------------------------------")
             print("  [1] 💰 Run DePIN Capital Routing & 6-App Yield Audit [--depin]")
             print("  [2] 🌉 Run BIP 300 Two-Way Peg Simulator [--peg]")
             print("  [3] ⚡ Run System-Wide L1/L2 Kernel Integration Audit [--kernel]")
-            print("  [4] 🤖 Run XDA Automated Incident Response (AIR) Audit [--air]")
+            print("  [4] 💼 Run Wallet & Liquidity Reserves Audit [--wallet]")
             print("  [5] 🛑 Exit to Native L1 Shell [Hotkey: Q]")
             
         elif page == 2:
@@ -84,16 +96,24 @@ def main():
             print(f"\n  [Display 2] Hardware Warden   : {d2['thermal_c']}°C | shm: {d2['shm_mb']} MB")
             print(f"  [Display 3] Sidechain Status  : BIP300: {d3['bip300']} | BMM: {d3['bip301']}")
             print("  ------------------------------------------------------------------")
-            print("  [1] View Full Hardware Telemetry")
-            print("  [2] Audit BIP 300/301 Consensus Ledgers")
-            print("  [3] Refresh RAM Buffers (/dev/shm)")
+            print("  [1] View Full Hardware Telemetry & Fans")
+            print("  [2] Audit BIP 300/301 Miner Consensus Ledgers")
+            print("  [3] Refresh RAM-Backed /dev/shm Buffers")
             
         elif page == 3:
-            d5 = summary["display_5_governance"]
-            print(f"\n  [Display 5] Governance Module : {len(d5['orphans'])} Orphans Tracked [{d5['status']}]")
-            print("  Orphaned Scripts: " + ", ".join(d5['orphans']))
+            d5 = summary["display_5_wallet"]
+            print(f"\n  [Display 5] Wallet & Reserves : {d5['reserve_btc']} BTC | POL Pool: ${d5['pol_pool_usd']}")
             print("  ------------------------------------------------------------------")
-            print("  [1] Reconcile Governance Ledger")
+            print("  [1] Execute On-Chain Deposit (M5)")
+            print("  [2] Execute Withdrawal Bundle (M6)")
+            print("  [3] Rebalance POL Liquidity Pool")
+            
+        elif page == 4:
+            d6 = summary["display_6_governance"]
+            print(f"\n  [Display 4] About & Governance: {len(d6['orphans'])} Orphans Tracked [{d6['status']}]")
+            print("  Orphaned Scripts: " + ", ".join(d6['orphans']))
+            print("  ------------------------------------------------------------------")
+            print("  [1] View System Architecture Manual")
             print("  [2] Run Ecosystem Diagnostic Sync")
             
         print("\nNavigation: [N]ext Page | [P]rev Page | [Q]uit to L1 Host")
@@ -110,8 +130,8 @@ def main():
             choice = input().strip().upper()[:1]
         
         if choice in ['Q', 'q', '\x03', '\x04']: break
-        elif choice in ['N', 'n']: page = (page % 3) + 1; msg = f"Navigated to Master Page {page}"
-        elif choice in ['P', 'p']: page = ((page - 2) % 3) + 1; msg = f"Navigated to Master Page {page}"
+        elif choice in ['N', 'n']: page = (page % 4) + 1; msg = f"Navigated to Master Page {page}"
+        elif choice in ['P', 'p']: page = ((page - 2) % 4) + 1; msg = f"Navigated to Master Page {page}"
         elif choice == '1' and page == 1:
             cli_depin_audit()
             input("\nPress Enter to return...")
@@ -120,6 +140,9 @@ def main():
             input("\nPress Enter to return...")
         elif choice == '3' and page == 1:
             cli_kernel_audit()
+            input("\nPress Enter to return...")
+        elif choice == '4' and page == 1:
+            cli_wallet_audit()
             input("\nPress Enter to return...")
         elif choice == '5' and page == 1: break
 

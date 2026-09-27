@@ -1,22 +1,22 @@
-# Sovereign Core OS (`v6.14.0-beta`)
+# Sovereign Core OS (`v6.18.0-beta`)
 *Enterprise-Grade Bare-Metal DePIN Microkernel & Cross-Chain Sidechain Ecosystem*
 
-## 1. System Architecture: Layer 1 & Layer 2 Partitioning
+## 1. Architecture & Telemetry Partitions
 - **Layer 1 Basechain / Host:** Native Linux Mint host (`luther-Inspiron-1525`) anchoring UFW firewalls, AppArmor, hardware thermals (`i8kutils`), and `l1_warden.db`.
-- **Layer 2 Rollup / Sandbox:** Sovereign Core virtual environment executing RAM-backed `/dev/shm` buffers, DePIN telemetry, and constant product AMMs.
+- **Layer 2 Rollup / Sandbox:** Sovereign Core virtual environment executing RAM-backed `/dev/shm` buffers, DePIN telemetry, and constant-product AMM liquidity pools.
 
-## 3. Key Innovations & Modules
-- **Multi-Display Startup Engine (`greet`):** Instantly renders real-time status summaries across all 4 core ecosystem displays simultaneously upon login.
-- **Direct CLI Argument Routing (`sos --[flag]`):** Bypass interactive TUI menus for instantaneous execution:
-  - `sos --depin`: Runs DePIN capital routing audit.
-  - `sos --kernel`: Runs L1/L2 kernel integration audit.
-  - `sos --peg`: Runs BIP 300 Two-Way Peg simulator.
-  - `sos --air`: Runs XDA AIR thermal audit.
-- **Bitcoin BIP 300 & 301 Sidechains:** Trustless Two-Way Peg escrow and Blind Merged Mining state root verification.
-- **6-App DePIN Passive Income Stack:** Harvests earnings across Mysterium, EarnApp, TraffMonetizer, PacketStream, Pawns.app, and Honeygain with an automated 5% Protocol-Owned Liquidity (POL) tax.
-- **Automated Lifecycle Daemon:** Self-healing SQLite WAL synchronization and runtime file hygiene.
+## 2. Core Displays & Modules
+- **Display 1 (DePIN Portfolio):** Yield harvesting across Mysterium, EarnApp, TraffMonetizer, PacketStream, Pawns.app, and Honeygain with a 5% Protocol-Owned Liquidity (POL) tax[span_3](start_span)[span_3](end_span).
+- **Display 2 (Hardware Warden):** Thermal monitoring (`45.0°C`), active fan control, and `/dev/shm` RAM allocation[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span).
+- **Display 3 (Sidechain & Miner Consensus):** BIP 300 Drivechain Two-Way Peg escrow and BIP 301 Blind Merged Mining (BMM) status.
+- **Display 4 (Security & Kernel Guard):** L1 host hardening and L2 sandbox isolation[span_6](start_span)[span_6](end_span).
+- **Display 5 (Wallet & Liquidity):** BTC reserves, POL pool valuation, and sidechain locked balances.
+- **Display 6 (Developer Governance & About):** Orphan script tracking (`objects.py`, `app.py`, `tray.py`, `config.py`) and system manifests.
 
-## 4. Community Guidance & References
-- **XDA Developers:** Bare-metal hardware optimization and active thermal overrides.
-- **Bitcointalk:** BIP 300 Drivechain consensus standards.
-- **GitHub:** Decoupled JSON state management (`ecosystem_config.json`) preventing mobile SSH paste truncation.
+## 3. Direct CLI Routing & Interactive TUI
+- `greet`: Renders all 6 core displays simultaneously upon login[span_7](start_span)[span_7](end_span).
+- `sos`: Opens the multi-page interactive master dashboard TUI.
+- `sos --depin`: Instant DePIN earnings & POL audit[span_8](start_span)[span_8](end_span).
+- `sos --kernel`: L1/L2 kernel integration audit[span_9](start_span)[span_9](end_span).
+- `sos --peg`: BIP 300 Two-Way Peg simulator.
+- `sos --wallet`: Wallet reserves & liquidity breakdown.
