@@ -1,18 +1,24 @@
-# Sovereign Core OS Ecosystem
+# 🦊 Sovereign Core OS: The 3-Pronged DePIN & Bitcoin L2 Environment
 
-## Overview
-Sovereign Core OS is a unified, multi-layer infrastructure integrating DePIN orchestration, DEX routing, and autonomous security protocols on a lightweight Linux Mint environment.
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) ![Bitcoin: L1 HTLC](https://img.shields.io/badge/Bitcoin-L1_HTLC-orange.svg) ![L2: /dev/shm](https://img.shields.io/badge/L2-RAM_Backed-blue.svg)
 
-## Community Acknowledgments & Security Posture
-The architectural foundation and terminal efficiency of this ecosystem heavily rely on the extensive research, open-source documentation, and best practices pioneered by several communities:
-- **Bitcointalk.org Community**: For rigorous historical discourse on `OP_CHECKLOCKTIMEVERIFY`, absolute timelocks, and native Bitcoin script mechanics (BIP 65).
-- **XDA Developers Community**: For invaluable guidance on Linux Mint terminal optimization, bash scripting efficiency, and Android Termux SSH bridging.
-- **GitHub Open-Source Community**: For the continued evolution of SQLite WAL implementations and intent-based routing architectures.
+**Sovereign Core OS** is a unified, multi-layer infrastructure that bridges local passive-income bandwidth directly to native Bitcoin self-custody. By bypassing centralized exchanges and vulnerable cross-chain bridges, it transforms a lightweight Linux environment into an autonomous, self-defending financial router.
 
-**⚠️ SECURITY NOTICE (CLASSIFIED ARCHITECTURE):** 
-To prevent adversarial analysis and protect active local operations, the precise implementation of the Sovereign Core OS is heavily compartmentalized. The exact proprietary integration of our mathematical security models (Null-State arithmetic, Fischer Random entropy, 3D spatial scaling) and the localized `core_router.py` fallback execution paths used to freeze native assets have been deliberately omitted from this public repository. The active mathematical frameworks and node-locking mechanics remain strictly classified.
+## 🚀 The Innovation: Autonomous Yield Protection
+Traditional cross-chain swaps rely on centralized custodians or speculative token emissions. Sovereign Core OS introduces **Intrinsic Throughput Valuation**: generating value strictly from local physical infrastructure (Mysterium, EarnApp, TraffMonetizer) while securing routing capital using decade-old, battle-tested Bitcoin cryptography.
 
-## Architecture: The Three-Pronged Approach
-1. **L1 Base Layer (Security)**: Autonomous fallback protocol freezing via native Bitcoin timelock script architectures (Self-Custody).
-2. **L2 Sidechain (Utility)**: Off-chain, RAM-backed (`/dev/shm`) high-frequency DEX and intent-based routing executed in local memory.
-3. **Unified Valuation Model**: Dynamic asset valuation driven strictly by combined ecosystem throughput rather than arbitrary, rigid inflationary percentage splits.
+## 🏗️ The 3-Pronged Architecture
+1. **L1 Base Layer (Security):** BIP 199 Hash Time-Locked Contracts (HTLCs). If a local route drops, the protocol autonomously triggers an `OP_ELSE` time-locked boomerang, guaranteeing zero-risk self-custody.
+2. **L2 Sidechain (Utility):** Off-chain, zero-latency DEX intent routing executed entirely in bare-metal RAM (`/dev/shm`).
+3. **Unified Valuation (DePIN):** Real-time SQLite WAL ledgers aggregating physical node bandwidth to drive ecosystem valuation.
+
+## ⚠️ SECURITY NOTICE (CLASSIFIED ARCHITECTURE)
+To protect active node operations and prevent adversarial analysis, the proprietary mathematical engines (Null-State arithmetic, Fischer Random entropy, 3D spatial scaling) and the exact localized `core_router.py` fallback execution triggers are **strictly classified** and omitted from this public repository. The underlying public vault is Bitcoin; the proprietary valuation machine remains air-gapped.
+
+## 🤝 Call for Contributors (Join the Ecosystem)
+While the core execution mathematics remain closed-source, we are opening the auxiliary integration layers to the developer community! We are actively seeking pull requests for:
+- **UI / Terminal Dashboards:** Enhancing the CLI output for the SQLite WAL ledgers.
+- **DePIN Proxy Integrations:** Adding new bandwidth monitors (Honeygain, PacketStream, Pawns.app).
+- **Security & Networking:** Enhancing our UFW, Fail2Ban, and AppArmor profiles.
+
+Check our `Issues` tab for `#GoodFirstIssue` tags to start building "money legos" for decentralized physical infrastructure!
