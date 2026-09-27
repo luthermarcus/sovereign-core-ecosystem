@@ -20,4 +20,4 @@ class BeefyVaultIntegration:
         }
 if __name__ == "__main__":
     res = BeefyVaultIntegration.execute_auto_compound()
-    print(f"[v] Beefy Vault Compound Executed: New POL Pool = \$\{res['updated_pol_pool_usd']} USD")
+    print(f"[v] Beefy Vault Compound Executed: New POL Pool = ${res['updated_pol_pool_usd']} USD")
