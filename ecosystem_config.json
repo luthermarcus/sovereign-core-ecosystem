@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.66.0-beta",
+  "version": "v6.67.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -68,5 +68,6 @@
   "math_entropy_guard": "ACTIVE_SHANNON_LWE_VALIDATION",
   "unified_bridge": "MMAP_ENTROPY_LATTICE_ACTIVE",
   "mesh_router": "QUANTUM_ERLAY_RECONCILIATION_ACTIVE",
-  "liquidity_yield_engine": "MMAP_YIELD_OPTIMIZATION_ACTIVE"
+  "liquidity_yield_engine": "MMAP_YIELD_OPTIMIZATION_ACTIVE",
+  "quantum_threat_detector": "ENTANGLEMENT_BREAKING_ACTIVE"
 }
