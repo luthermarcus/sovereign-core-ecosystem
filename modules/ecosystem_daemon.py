@@ -1,4 +1,5 @@
 import os, json, sqlite3
+from modules.predictive_warden import PredictiveThermalWarden
 
 class EcosystemDaemon:
     CONFIG_PATH = os.path.expanduser("~/sovereign-core-ecosystem/ecosystem_config.json")
