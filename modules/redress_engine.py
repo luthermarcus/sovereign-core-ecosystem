@@ -5,7 +5,7 @@ class WalletRedressEngine:
     DB_PATH = os.path.expanduser("~/sovereign-core-ecosystem/trust_store.db")
 
     @classmethod
-    vdef setup_redress_tables(cls):
+    def setup_redress_tables(cls):
         conn = sqlite3.connect(cls.DB_PATH)
         conn.execute("PRAGMA journal_mode=WAL")
         conn.execute("""
@@ -51,7 +51,6 @@ class WalletRedressEngine:
             conn.close()
             return False
 
-        # Clear probation and reset risk score upon rectification
         cursor.execute("""
             UPDATE wallet_reputation 
             SET reputation_status = 'REHABILITATED', risk_score = 10.0, escrow_balance = 0.0, updated_at = ?
