@@ -1,23 +1,37 @@
-# Sovereign Core OS (`v6.25.0-beta`)
-*Enterprise-Grade Bare-Metal DePIN Microkernel & Cross-Chain Sidechain Ecosystem*
+# Sovereign Core OS (`v6.27.0-beta`)
+*Modular Edge-Node Telemetry, Resource Management & Sandbox Ecosystem*
 
-## 1. Three-Pronged L1/L2 Symmetry Architecture
-- **Prong 1 (System & Base Host Anchor / Yin):** Native Linux Mint host (`luther-Inspiron-1525`) managing UFW firewalls, AppArmor, `i8kutils` thermal controls, and persistent SQLite storage (`l1_warden.db`, `wallet.db`).
-- **Prong 2 (Virtual OS Execution Rotor / Yang):** Layer 2 sandbox running RAM-backed `/dev/shm` transient buffers, the 6-app DePIN passive income stack, and the interactive master TUI (`sos`).
-- **Prong 3 (Intelligence & Automated Field / Entanglement):** Automated background telemetry cron (`ecosystem_cron.py`), SQLite WAL metric logging (`ecosystem_metrics.db`), and Beefy Vault auto-compounding liquidity optimization.
+---
 
-## 2. Core Displays & Telemetry Modules (`greet`)
-- **Display 1 (DePIN Portfolio):** Yield harvesting across Mysterium, EarnApp, TraffMonetizer, PacketStream, Pawns.app, and Honeygain with an automated 5% Protocol-Owned Liquidity (POL) tax.
-- **Display 2 (Hardware Warden):** Thermal monitoring (`45.0°C`), active fan control, and `/dev/shm` RAM allocation.
-- **Display 3 (Sidechain & Miner Consensus):** BIP 300 Drivechain Two-Way Peg escrow and BIP 301 Blind Merged Mining (BMM) state verification.
-- **Display 4 (Security & Kernel Guard):** L1 host hardening and L2 sandbox isolation.
-- **Display 5 (Wallet & Liquidity):** BTC reserves, Beefy Vault auto-compounded POL pool valuation, and sidechain locked balances.
-- **Display 6 (Developer Governance & About):** Orphan script tracking (`objects.py`, `app.py`, `tray.py`, `config.py`) and system manifests.
+## 1. Project Overview & Architectural Scope
+Sovereign Core OS is an independent, modular research and resource-management environment engineered for Linux-based host systems (`luther-Inspiron-1525`). 
 
-## 3. Direct CLI Routing & Interactive TUI
-- `greet`: Renders all 6 core displays simultaneously upon login.
-- `sos`: Opens the 4-page interactive master dashboard TUI.
-- `sos --depin`: Instant DePIN earnings & POL audit.
-- `sos --wallet`: Wallet reserves & Beefy Vault liquidity breakdown.
-- `sos --kernel`: L1/L2 kernel integration audit.
-- `sos --peg`: BIP 300 Two-Way Peg simulator.
+> **Community Alignment & Scope Note:** 
+> This project operates strictly as an out-of-process, modular execution layer and local telemetry dashboard. It does not propose, modify, or enforce base-layer consensus rules, protocol changes, or mainnet soft forks. All experimental cross-chain telemetry, yield indexing, and resource management modules are decoupled and executed entirely within local sandboxed partitions (`/dev/shm`) to maintain absolute separation from base-layer network mechanics.
+
+---
+
+## 2. Development Roadmap & Milestones
+
+*   **Phase 1: Foundation & Telemetry Core (Completed)**
+    *   Establishment of Layer 1 host security hardening (UFW, AppArmor, hardware thermals via `i8kutils`)[span_1](start_span)[span_1](end_span).
+    *   Deployment of SQLite Write-Ahead Logging (WAL) for persistent metrics (`l1_warden.db`, `ecosystem_metrics.db`).
+*   **Phase 2: Modular Multi-Display & TUI Interface (Completed)**
+    *   Implementation of the 6-display startup greeting engine (`greet`).
+    *   Development of the 4-page interactive master TUI (`sos`) with single-digit numeric routing.
+*   **Phase 3: Automated Lifecycle & Yield Optimization (Active - `v6.27.0-beta` Fault-Tolerant Release)**
+    *   Integration of automated background telemetry crons (`ecosystem_cron.py`).
+    *   Simulation of modular auto-compounding yield mechanisms within local AMM liquidity partitions.
+*   **Phase 4: Advanced Sandboxing & Diagnostic Auditing (Planned)**
+    *   Expansion of Automated Incident Response (AIR) diagnostic triggers.
+    *   Refinement of decoupled JSON ledger routing (`ecosystem_config.json`) to ensure zero mobile SSH paste friction.
+
+---
+
+## 3. Core Modules & Usage
+- **`greet`**: Instant multi-display status rendering.
+- **`sos`**: Interactive multi-page master dashboard TUI.
+- **Direct CLI Flags**: 
+  - `sos --depin`: DePIN portfolio and yield metrics audit[span_2](start_span)[span_2](end_span).
+  - `sos --wallet`: Local liquidity and reserve tracking.
+  - `sos --kernel`: Host and sandbox integration audit[span_3](start_span)[span_3](end_span).
