@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.79.0-beta",
+  "version": "v6.80.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -82,5 +82,6 @@
   "pqc_encryption": "NIST_FIPS_203_ACTIVE",
   "fips203_vault": "ACTIVE_FIPS_203_SEAL",
   "fox3_lattice_bridge": "ACTIVE_FOX3_FIPS203",
-  "unified_synthesis": "TOP_DOWN_OPTIMIZATION_ACTIVE"
+  "unified_synthesis": "TOP_DOWN_OPTIMIZATION_ACTIVE",
+  "display_viewport_warden": "ACTIVE_CURSOR_LOCK"
 }
