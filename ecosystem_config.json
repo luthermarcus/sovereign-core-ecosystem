@@ -1,6 +1,6 @@
 {
   "ecosystem": "Sovereign Core OS",
-  "version": "v6.89.0-beta",
+  "version": "v6.90.0-beta",
   "host": "luther-Inspiron-1525",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
@@ -92,5 +92,6 @@
   "frame_synchronization": "ATOMIC_RENDER_ACTIVE",
   "vector_qcell": "ACTIVE_ZERO_COPY_MMAP",
   "community_synthesis": "XDA_BITCOINTALK_ACTIVE",
-  "minisketch_reconciliation": "BIP330_MINISCRIPT_ACTIVE"
+  "minisketch_reconciliation": "BIP330_MINISCRIPT_ACTIVE",
+  "stream_sanitizer": "ACTIVE_BUFFER_PURGE"
 }
