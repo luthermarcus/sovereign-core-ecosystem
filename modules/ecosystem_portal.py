@@ -39,7 +39,7 @@ class SovereignCorePortal:
         C_RESET = "\033[0m"
 
         print(f"{C_CYAN}========================================================================")
-        print(f"=== SOVEREIGN CORE OS v7.13.0-STABLE : EXPANDED MULTI-PAIR MASTER =====")
+        print(f"=== SOVEREIGN CORE OS v7.14.0-STABLE : TOP DEX EXPANDED MASTER SUITE ===")
         print(f"========================================================================{C_RESET}")
         
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
@@ -64,14 +64,15 @@ class SovereignCorePortal:
         print(f"{C_YELLOW}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
         print(f"{C_MAGENTA}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
-        print(f"{C_MAGENTA}│ [BOX 3] EXPANDED LIQUIDITY POOLS & DEX SWAP PAIRS                    │{C_MAGENTA}")
+        print(f"{C_MAGENTA}│ [BOX 3] UNISWAP & JUPITER TOP DEX EXPANDED PAIRS                     │{C_MAGENTA}")
         print(f"{C_MAGENTA}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
-        print(f"│ SOL/USDC Pool : $184.50 USD | Liquidity: $4.2M   | Fee Tier: 0.3%    │")
-        print(f"│ ETH/USDC Pool : $3,120.00   | Liquidity: $18.9M  | Fee Tier: 0.05%   │")
-        print(f"│ BTC/USDT Pool : $83,916.00  | Liquidity: $42.5M  | Fee Tier: 0.05%   │")
-        print(f"│ AVAX/USDC Pool: $10.69 USD  | Liquidity: $1.8M   | Fee Tier: 0.3%    │")
-        print(f"│ SUI/USDT Pool : $1.16 USD   | Liquidity: $2.4M   | Fee Tier: 0.3%    │")
-        print(f"│ Swap Router   : Active (Slippage Tolerance: 0.5% | MEV Guard Enabled)│")
+        print(f"│ SOL/USDC (Jupiter) : $184.50 USD | Liq: $4.2M   | Fee Tier: 0.3%    │")
+        print(f"│ ETH/USDC (Uniswap) : $3,120.00   | Liq: $18.9M  | Fee Tier: 0.05%   │")
+        print(f"│ BTC/USDT (Uniswap) : $83,916.00  | Liq: $42.5M  | Fee Tier: 0.05%   │")
+        print(f"│ LINK/USDC (Uniswap): $13.90 USD  | Liq: $3.1M   | Fee Tier: 0.3%    │")
+        print(f"│ DOGE/USDT (Pancake): $0.098 USD  | Liq: $5.4M   | Fee Tier: 0.25%   │")
+        print(f"│ ADA/USDT (Pancake) : $0.257 USD  | Liq: $2.1M   | Fee Tier: 0.25%   │")
+        print(f"│ Swap Router        : Active (Slippage Tolerance: 0.5% | MEV Guard)  │")
         print(f"{C_MAGENTA}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
         print(f"{C_BLUE}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
@@ -113,8 +114,8 @@ class SovereignCorePortal:
             print("\n[WALLET RECEIVE] Active FIPS 203 ML-KEM-1024 Address:")
             print("sovereign1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
         elif cmd == 'swap':
-            print("\n[DEX SWAP] Executing swap through expanded Sovereign Liquidity Pools...")
-            pair = input("Enter pair (e.g. SOL/USDC, BTC/USDT, AVAX/USDC, SUI/USDT): ")
+            print("\n[DEX SWAP] Executing swap through Top DEX Liquidity Pools (Uniswap, Jupiter, PancakeSwap)...")
+            pair = input("Enter pair (e.g. SOL/USDC, ETH/USDC, BTC/USDT, LINK/USDC, DOGE/USDT, ADA/USDT): ")
             print(f"[v] Swap route verified for {pair}. Slippage tolerance 0.5% enforced.")
         elif cmd == 'media':
             print("\n[MEDIA STREAM] Launching Sovereign Lofi Core FLAC stream pipeline...")
