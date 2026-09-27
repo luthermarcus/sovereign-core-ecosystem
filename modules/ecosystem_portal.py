@@ -18,14 +18,14 @@ class SovereignCorePortal:
             except:
                 pass
 
-        kb_status = "OK [0 Anomalies Detected]"
+        kb_status = "OK [0 Anomalies]"
         try:
             conn = sqlite3.connect(cls.KB_DB)
             cursor = conn.cursor()
             cursor.execute("SELECT COUNT(*) FROM anomaly_signatures;")
             count = cursor.fetchone()[0]
             conn.close()
-            kb_status = f"Active [{count} Reference Signatures Synced]"
+            kb_status = f"Active [{count} Signatures Synced]"
         except:
             kb_status = "Standby"
 
@@ -35,7 +35,9 @@ class SovereignCorePortal:
             "shm": "1.2 MB / 512 MB [OPTIMIZED]",
             "wal": "OK [WAL Mode Synchronized]",
             "kb_ref": kb_status,
-            "ntfy_topic": topic
+            "ntfy_topic": topic,
+            "user_role": "Luther (Main Owner / Primary Vault)",
+            "beta_mode": "Disabled (Main Node Authority Active)"
         }
 
     @classmethod
@@ -53,19 +55,21 @@ class SovereignCorePortal:
         C_RESET = "\033[0m"
 
         print(f"{C_CYAN}========================================================================")
-        print(f"=== SOVEREIGN CORE OS v7.22.0-STABLE : HELP & SUGGESTIONS SUITE    ===")
+        print(f"=== SOVEREIGN CORE OS v7.23.0-STABLE : ORGANIZED COMMAND SUITE      ===")
         print(f"========================================================================{C_RESET}")
         
+        # SYSTEM STATS & WARDEN BOX
         print(f"{C_RED}┌──────────────────────────────────────────────────────────────────────┐{C_RED}")
-        print(f"{C_RED}│ THREE-PRONG ANOMALY WARDEN & KNOWLEDGE BASE REFERENCE                │{C_RED}")
+        print(f"{C_RED}│ SYSTEM STATS & KNOWLEDGE BASE ANOMALY WARDEN                         │{C_RED}")
         print(f"{C_RED}├──────────────────────────────────────────────────────────────────────┤{C_RED}")
-        print(f"│ Firewall L1  : UFW Status -> {flags['ufw']}                      │")
-        print(f"│ Kernel L1    : AppArmor -> {flags['apparmor']}                  │")
-        print(f"│ RAM L2       : /dev/shm Sandbox -> {flags['shm']}               │")
-        print(f"│ Ledger L1    : SQLite WAL -> {flags['wal']}                     │")
-        print(f"│ Anomaly KB   : Signatures -> {flags['kb_ref']}                  │")
+        print(f"│ User Identity : {flags['user_role']:<52} │")
+        print(f"│ Firewall (L1) : {flags['ufw']:<52} │")
+        print(f"│ Security (L1) : AppArmor -> {flags['apparmor']:<38} │")
+        print(f"│ RAM Zero-Copy : /dev/shm -> {flags['shm']:<38} │")
+        print(f"│ Anomaly KB    : {flags['kb_ref']:<52} │")
         print(f"{C_RED}└──────────────────────────────────────────────────────────────────────┘{C_RED}")
 
+        # BOX 1: BARE-METAL OS & DePIN YIELD PORTFOLIO
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_GREEN}│ [BOX 1] BARE-METAL OS & DePIN YIELD PORTFOLIO                        │{C_GREEN}")
         print(f"{C_GREEN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -77,6 +81,7 @@ class SovereignCorePortal:
         print(f"│ DePIN Node 5 : Pawns.app & Gain : $6.75 / $11.40 [Compounded Yield]  │")
         print(f"{C_GREEN}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
+        # BOX 2: TOP CRYPTOCURRENCY FEED (TOP 30 MARKET CAP)
         print(f"{C_YELLOW}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_YELLOW}│ [BOX 2] TOP CRYPTOCURRENCY FEED (MARKET CAP RANKINGS)                │{C_YELLOW}")
         print(f"{C_YELLOW}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -87,6 +92,7 @@ class SovereignCorePortal:
         print(f"│ [13] XMR: $558.12 (-0.9%) | [14] ADA: $0.257 (+3.8%) | [15] LEO: $8.94 │")
         print(f"{C_YELLOW}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
+        # BOX 3: TOP DEX EXPANDED LIQUIDITY POOLS & SWAP PAIRS
         print(f"{C_MAGENTA}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_MAGENTA}│ [BOX 3] TOP DEX EXPANDED LIQUIDITY POOLS & SWAP PAIRS                │{C_MAGENTA}")
         print(f"{C_MAGENTA}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -99,14 +105,17 @@ class SovereignCorePortal:
         print(f"│ Swap Router        : Active (Slippage Tolerance: 0.5% | MEV Guard)  │")
         print(f"{C_MAGENTA}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
+        # BOX 4: WALLET MANAGEMENT & RESERVES (Main Wallet & Beta Simulator View)
         print(f"{C_BLUE}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_BLUE}│ [BOX 4] WALLET MANAGEMENT & FIPS 203 PQC VAULTS                      │{C_BLUE}")
         print(f"{C_BLUE}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
-        print(f"│ Wallet Send   : BIP 330 Erlay Minisketch Broadcast Engine [Ready]    │")
-        print(f"│ Wallet Receive: FIPS 203 ML-KEM-1024 Address Vault [Active]        │")
+        print(f"│ Primary Vault : sovereign1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh      │")
+        print(f"│ Vault Status  : Main Owner Vault [Full Authority & Reserves Active]  │")
+        print(f"│ Beta Sandbox  : Simulated Beta Mode Available (Isolated Test State)  │")
         print(f"│ Token Reserves: DR Credits ($13.0 USD) | POL Reserves ($249.58 USD)   │")
         print(f"{C_BLUE}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
+        # BOX 5: GOVERNANCE, MEDIA & FILE SHARING VAULTS
         print(f"{C_CYAN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_CYAN}│ [BOX 5] GOVERNANCE, MEDIA STREAM & FILE SHARING VAULTS               │{C_CYAN}")
         print(f"{C_CYAN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -115,6 +124,7 @@ class SovereignCorePortal:
         print(f"│ SQLite Vaults : trust_store.db & ecosystem_metrics.db [WAL Mode Active]│")
         print(f"{C_CYAN}└──────────────────────────────────────────────────────────────────────┘{C_RESET}")
 
+        # BOX 6: NTFY MOBILE TELEMETRY & NOTIFICATION WARDEN
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_GREEN}│ [BOX 6] NTFY MOBILE TELEMETRY & NOTIFICATION WARDEN                  │{C_GREEN}")
         print(f"{C_GREEN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
@@ -135,11 +145,11 @@ class SovereignCorePortal:
             amount = input("Enter amount to send: ")
             print(f"[v] Successfully broadcasted {amount} to {recipient} with FIPS 203 PQC seal.")
         elif cmd == 'r':
-            print("\n[WALLET RECEIVE] Active FIPS 203 ML-KEM-1024 Address:")
+            print("\n[WALLET RECEIVE] Active Main Owner FIPS 203 ML-KEM-1024 Address:")
             print("sovereign1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
         elif cmd == 'w':
             print("\n[DEX SWAP] Executing swap through Top DEX Liquidity Pools (Uniswap, Jupiter, PancakeSwap)...")
-            pair = input("Enter pair (e.g. SOL/USDC, ETH/USDC, BTC/USDT, LINK/USDC, DOGE/USDT, ADA/USDT): ")
+            pair = input("Enter pair (e.g. SOL/USDC, ETH/USDC, BTC/USDT, LINK/USDT, DOGE/USDT, ADA/USDT): ")
             print(f"[v] Swap route verified for {pair}. Slippage tolerance 0.5% enforced.")
         elif cmd == 'm':
             print("\n[MEDIA STREAM] Launching Sovereign Lofi Core FLAC stream pipeline...")
@@ -164,21 +174,21 @@ class SovereignCorePortal:
             print("[v] Mobile alert dispatched successfully.")
         elif cmd == 'h':
             print("\n======================================================================")
-            print("=== SOVEREIGN CORE OS : RELEVANT COMMAND HELP & SUGGESTIONS        ===")
+            print("=== SOVEREIGN CORE OS : ORGANIZED COMMAND REFERENCE & HINTS          ===")
             print("======================================================================")
-            print(" [s] Send      : Broadcast wallet tx via BIP 330 Erlay Minisketch.")
-            print(" [r] Receive   : Display FIPS 203 ML-KEM-1024 cryptographic address.")
-            print(" [w] Swap      : Route DEX trades across Uniswap, Jupiter, PancakeSwap.")
-            print(" [m] Media     : Stream Sovereign Lofi Core audio buffer from /dev/shm.")
-            print(" [l] Logs & KB : Audit SQLite WAL ledgers and knowledge base signatures.")
-            print(" [n] Notify    : Dispatch telemetry push alerts to your ntfy.sh topic.")
-            print(" [h] Help      : Display this contextual command reference menu.")
-            print(" [q] Quit      : Terminate portal session and return to native prompt.")
+            print(" [s] Send Transaction    : Broadcast via BIP 330 Erlay Minisketch.")
+            print(" [r] Receive Address     : Display main FIPS 203 ML-KEM-1024 vault.")
+            print(" [w] DEX Swaps & Pools   : Route trades on Uniswap, Jupiter, PancakeSwap.")
+            print(" [m] Media Stream Deck   : Stream Sovereign Lofi Core audio from /dev/shm.")
+            print(" [l] System Logs & KB    : Audit SQLite WAL ledgers and anomaly rules.")
+            print(" [n] Mobile Notification : Dispatch telemetry push alerts to ntfy.sh.")
+            print(" [h] Contextual Help     : Display this organized reference menu.")
+            print(" [q] Quit Portal         : Exit and return to native OS shell prompt.")
             print("======================================================================")
-            print("[*] Suggestion: Run 'l' regularly to verify WAL integrity and anomaly status.")
+            print("[*] Tip: Use 'l' to verify ledger health or 'w' to check liquidity tiers.")
         else:
             print(f"\033[1;31m[!] Unknown command '{cmd}'.\033[0m")
-            print("Type [h] for help suggestions and available letter commands.")
+            print("Type [h] to open the organized command reference menu.")
         
         print("\n" + "="*70)
         input(">>> [PAUSE] Execution complete. Press [Enter] to return to Master Portal...")
@@ -192,11 +202,11 @@ class SovereignCorePortal:
 
         while True:
             cls.render_portal()
-            print("\n Interoperable Commands Hub:")
-            print(" [s] Send Wallet Transaction   [r] Receive Address Vault")
-            print(" [w] DEX Swap & Pools         [m] Media Stream Deck")
-            print(" [l] System Logs & KB Signatures [n] Push Mobile Alert")
-            print(" [h] Help & Relevant Hints    [q] Quit")
+            print("\n Organized Interoperable Command Hub:")
+            print(" ┌──────────────────────────────────────────────────────────────┐")
+            print(" │ [s] Send Tx     [r] Receive Vault  [w] DEX Swaps   [m] Media   │")
+            print(" │ [l] Logs & KB   [n] Notify         [h] Help Menu   [q] Quit    │")
+            print(" └──────────────────────────────────────────────────────────────┘")
             try:
                 choice = input("\n sovereign-core@portal >>> ").strip()
                 if choice:
@@ -208,7 +218,6 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         arg = sys.argv[1]
         if arg in ['s', 'r', 'w', 'm', 'l', 'n', 'h']:
-            SovereCorePortal = SovereignCorePortal() # instance check
             SovereignCorePortal.execute_action(arg)
         else:
             SovereignCorePortal.render_portal()
