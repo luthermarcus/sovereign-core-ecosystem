@@ -1,7 +1,10 @@
-import os, sqlite3
+import os, sqlite3, time
 
 def enforce_cltv_freeze(locktime_hex, pubkey_hex):
-    return f"{locktime_hex} b1 75 {pubkey_hex} ac"
+    return f"04 {locktime_hex} b1 75 21 {pubkey_hex} ac"
+
+def enforce_htlc_swap(hash_hex, receiver_pubkey, locktime_hex, sender_pubkey):
+    return f"63 a8 {hash_hex} 88 {receiver_pubkey} ac 67 {locktime_hex} b1 75 {sender_pubkey} ac 68"
 
 def execute_dex_intent_in_ram(intent_data):
     shm_path = "/dev/shm/dex_intent_ring.tmp"
