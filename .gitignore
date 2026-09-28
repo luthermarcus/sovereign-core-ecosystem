@@ -11,3 +11,6 @@ __pycache__/
 backups/
 dex_daemon.log
 wallet.db
+
+*.log
+*.tmp

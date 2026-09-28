@@ -1,12 +1,17 @@
 import os, sqlite3, time
 
-def enforce_cltv_freeze(locktime_hex, pubkey_hex):
-    return f"04 {locktime_hex} b1 75 21 {pubkey_hex} ac"
+def int_to_little_endian_4bytes(val: int) -> str:
+    return val.to_bytes(4, byteorder="little", signed=False).hex()
 
-def enforce_htlc_swap(hash_hex, receiver_pubkey, locktime_hex, sender_pubkey):
-    return f"63 a8 {hash_hex} 88 {receiver_pubkey} ac 67 {locktime_hex} b1 75 {sender_pubkey} ac 68"
+def enforce_cltv_freeze(locktime_blocks: int, pubkey_hex: str):
+    lock_le = int_to_little_endian_4bytes(locktime_blocks)
+    return f"04 {lock_le} b1 75 21 {pubkey_hex} ac"
 
-def execute_dex_intent_in_ram(intent_data):
+def enforce_htlc_swap(hash_hex: str, receiver_pubkey: str, locktime_blocks: int, sender_pubkey: str):
+    lock_le = int_to_little_endian_4bytes(locktime_blocks)
+    return f"63 a8 20 {hash_hex} 88 21 {receiver_pubkey} ac 67 04 {lock_le} b1 75 21 {sender_pubkey} ac 68"
+
+def execute_dex_intent_in_ram(intent_data: str):
     shm_path = "/dev/shm/dex_intent_ring.tmp"
     with open(shm_path, "a") as f:
         f.write(intent_data + chr(10))
