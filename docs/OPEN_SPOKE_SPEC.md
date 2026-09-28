@@ -1,22 +1,28 @@
-# 🦊 Sovereign Core OS: Open Spoke Interoperability Standard (OSIS)
+# 🦊 Open Spoke Interoperability Standard (OSIS)
+## Specification Version: 2.1.0
 
-## 1. The Hub-and-Spoke Architecture
-Sovereign Core OS operates as a localized, self-custodial settlement hub (The Hub). External blockchain communities (The Spokes) are encouraged to build native smart contract vaults to interoperate with this router.
+## 1. Architectural Model
+Sovereign Core OS operates as a trustless Settlement Hub. External blockchains operate as Independent Spokes. Spoke communities manage their own collateral pools and user interfaces, eliminating centralized honeypots.
 
-**Crucial Distinction:** The Hub will *never* hold your native tokens or host your liquidity. All cross-chain interactions are executed via peer-to-peer Hash Time-Locked Contracts (HTLCs).
+## 2. Cryptographic Intent Parameters
+External spoke vaults must construct cross-chain swap intents meeting the following criteria:
 
-## 2. The Cross-Chain Intent Specification
-To interoperate with the Sovereign Core OS `/dev/shm` intent ring, external vaults must conform to the following cryptographic intent structure:
+### A. Hashlock Clause (Payment Path)
+* **Algorithm:** Raw SHA-256 (`OP_SHA256`).
+* **Preimage Length:** Exactly 32 bytes (256 bits).
+* **Verification:** The preimage must be exposed on-chain by the claiming party to claim the funds.
 
-### A. The Cryptographic Handshake (Hash Lock)
-* **Algorithm:** SHA-256
-* **Mechanism:** The external smart contract must lock the user intent behind a SHA-256 hash. The Sovereign Core daemon will passively monitor your mempool. If the swap metrics align with the Hub’s internal DePIN valuation, the Hub will execute the corresponding Bitcoin L1 transaction, revealing the preimage (the secret) on-chain to simultaneously unlock your sidechain vault.
+### B. Timelock Clause (Safety Boomerang)
+* **Opcode:** `OP_CHECKLOCKTIMEVERIFY` (CLTV).
+* **Threshold Format:** Absolute Block Height (integers $< 500,000,000$). UNIX timestamps are prohibited to prevent Median-Past-Time (MPT) drift attacks.
+* **Asymmetric Safety Delta:** Hub locktime ($T_{hub}$) must satisfy:
+  $$T_{hub} \ge 2 	imes T_{spoke}$$
+  This provides the Hub sufficient block confirmation margin to extract the preimage from the Spoke contract before any refund boomerang can trigger.
 
-### B. The Zero-Risk Failsafe (Time Lock)
-* **Mechanism:** All external spoke contracts MUST include an autonomous refund condition.
-* **Timeout Duration:** If the Hub drops the connection or rejects the valuation, the external contract must allow the original user to reclaim their funds after a predefined threshold (e.g., 24 hours).
+### C. Fee Protection
+* **Signaling:** All on-chain broadcasts must signal BIP 125 Replace-By-Fee (RBF) to permit dynamic fee escalation during mempool congestion.
 
-## 3. Building Your Native Vault
-External developers do not need access to the classified Sovereign Core `core_router.py` to build compatible infrastructure. You only need to implement standard atomic swap smart contracts on your native chain (EVM, Solana, etc.) that broadcast intents with the above hash-lock and time-lock parameters.
-
-For EVM-compatible chains, this mirrors the intent-based structures seen in emerging standards like ERC-7683, but anchored to physical DePIN throughput rather than centralized oracles.
+## 3. Intrinsic Valuation Calculation
+The Hub calculates exchange rates via physical throughput rather than external oracles:
+$$V_{rate} = \frac{\sum (\text{Bandwidth}_{GB} \times \text{Yield}_{USD})}{\text{Active Nodes}}$$
+External spokes can query this live intrinsic metric via the Hub’s loopback API at `/api/depin/valuation`.
