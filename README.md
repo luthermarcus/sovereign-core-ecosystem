@@ -5,7 +5,6 @@
 Sovereign Core OS is an autonomous settlement hub bridging physical DePIN node bandwidth directly to Bitcoin self-custody.
 
 ## 🛡️ Anti-Trapping Liquidity & DAO Governance
-To eliminate the risk of trapped funds or governance manipulation:
-1. **Deterministic HTLC Time-Outs:** All cross-chain swaps use strict time-bound intents. If a solver fails to execute, funds automatically boomerang back to the user via the `OP_ELSE` CLTV path.
-2. **Hybrid Sovereign DAO:** Protocol upgrades and fee distributions (1% total fee split across Treasury, DePIN nodes, and Developer Grants) are governed by token-weighted voting protected by mandatory 48-hour time-locks.
-3. **Trusted Developer Registry:** Verified contributors and safe spoked contracts are tracked transparently, while the automated Watchdog flags bad-actor solvers in real-time.
+1. **Deterministic HTLC Time-Outs:** All cross-chain swaps use strict time-bound intents with automatic `OP_ELSE` CLTV boomerang refunds.
+2. **Hybrid Sovereign DAO:** 1% protocol fee split across Treasury, DePIN nodes, and Developer Grants, governed by token-weighted voting with 48-hour time-locks.
+3. **Trusted Developer Registry:** Verified contributors are tracked transparently, and the automated Watchdog blacklists bad-actor solvers in real-time.
