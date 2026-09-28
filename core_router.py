@@ -19,7 +19,7 @@ def execute_5pct_split_tx(gross_btc, txid, htlc_hex):
     rpc = HubRPC()
     fee, net = round(gross_btc * 0.05, 8), round(gross_btc * 0.95, 8)
     # Autonomously split outputs: 5% to Treasury Vault, 95% to HTLC Spoke Contract
-    outs = [{"bc1qsovereign_treasury_vault": fee}, {"data": htlc_hex}]
+    outs = [{"bc1qlgvgkrx758hq0n2uc60jtvfl7sgnwrc9nrp983": fee}, {"data": htlc_hex}]
     return rpc.call("createrawtransaction", [[{"txid": txid, "vout": 0}], outs])
 
 def log_treasury(chain, token, gross):
