@@ -1,29 +1,14 @@
-# 🦊 Open Spoke Interoperability Standard (OSIS)
-## Specification Version: 2.3.0
+# 🦊 OSIS v3.0: ERC-7683 Liquidity Pool Integration
 
-## 1. Architectural Model
-Sovereign Core OS operates as a trustless Settlement Hub. External blockchains operate as Independent Spokes. Spoke communities manage their own collateral pools and user interfaces, eliminating centralized honeypots.
+## 1. Global Interoperability
+Sovereign Core OS natively supports **ERC-7683 Cross-Chain Intents** (co-authored by Uniswap Labs & Across Protocol). Developers on ANY EVM blockchain can connect liquidity pools directly to our Hub.
 
-## 2. Cryptographic Intent Parameters
-External spoke vaults must construct cross-chain swap intents meeting the following criteria:
+## 2. Connecting Your Liquidity Pool
+1. **User signs ERC-7683 Intent:** The user requests a cross-chain swap.
+2. **Spoke Contract Broadcast:** Your smart contract locks funds with a SHA-256 Hashlock and CLTV Timelock.
+3. **Hub Settlement:** Our `/dev/shm` RAM router reads the ERC-7683 intent, validates the intrinsic physical exchange rate from DePIN nodes, and executes the HTLC atomic swap.
 
-### A. Hashlock Clause (Payment Path)
-* **Algorithm:** Raw SHA-256 (`OP_SHA256`).
-* **Push Prefix:** Standard `0x20` (32 bytes).
-* **Preimage Length:** Exactly 32 bytes (256 bits).
-* **Verification:** The preimage must be exposed on-chain by the claiming party to claim the funds.
-
-### B. Timelock Clause (Safety Boomerang)
-* **Opcode:** `OP_CHECKLOCKTIMEVERIFY` (CLTV).
-* **Push Prefix:** `0x04` (4 bytes Little-Endian integer).
-* **Threshold Format:** Absolute Block Height (integers < 500,000,000). UNIX timestamps are strictly prohibited to eliminate Median-Past-Time (MPT) drift.
-* **Asymmetric Safety Delta:** Hub locktime ($T_{hub}$) must satisfy:
-  $$T_{hub} \ge 2 \times T_{spoke}$$
-
-### C. Fee Protection
-* **Signaling:** All on-chain broadcasts must signal BIP 125 Replace-By-Fee (RBF) to permit dynamic fee escalation.
-
-## 3. Verifiable Intrinsic Valuation Calculation
-The Hub calculates exchange rates via physical QoS-weighted throughput:
-$$V_{QoS} = \sum \left( \text{Yield}_i \times \frac{\text{Uptime}_i}{100} \times \left(1 - \frac{\text{Latency}_i}{1000}\right) \right)$$
-Spokes can audit the verifiable proof-of-yield hash chain at `/api/depin/valuation`.
+## 3. Cryptographic Parameters
+* Hashlock: 32-byte `OP_SHA256` (Pushdata `0x20`)
+* Timelock: `OP_CHECKLOCKTIMEVERIFY` (4-byte Little-Endian, Pushdata `0x04`)
+* Safety Delta: $T_{hub} \ge 2 \times T_{spoke}$
