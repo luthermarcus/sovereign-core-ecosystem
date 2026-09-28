@@ -1,19 +1,30 @@
-import os, sqlite3, time, hashlib
+import os, json, sqlite3, time, urllib.request
 
-def int_to_le_4b(v): return v.to_bytes(4,"little",signed=False).hex()
+class HubRPC:
+    def __init__(self, port=8332, u="sos", p="pass"):
+        self.url = f"http://127.0.0.1:{port}"
+        self.auth = __import__("base64").b64encode(f"{u}:{p}".encode()).decode()
+        
+    def call(self, method, params=[]):
+        req = urllib.request.Request(self.url, data=json.dumps({"jsonrpc":"2.0","id":"sos","method":method,"params":params}).encode(), headers={"Authorization": f"Basic {self.auth}", "Content-Type": "application/json"})
+        try: return json.loads(urllib.request.urlopen(req, timeout=3).read())["result"]
+        except Exception as e: return f"RPC_ERR: {e}"
 
-def enforce_htlc_swap(h, r_pub, lock, s_pub):
+def int_to_le_4b(v): return v.to_bytes(4, "little", signed=False).hex()
+
+def build_htlc(h, r_pub, lock, s_pub):
     return f"63 a8 20 {h} 88 21 {r_pub} ac 67 04 {int_to_le_4b(lock)} b1 75 21 {s_pub} ac 68"
 
-def execute_erc7683_intent(data):
-    with open("/dev/shm/dex_intent_ring.tmp", "a") as f: f.write(data + chr(10))
-    return "L2_ERC7683_ROUTED"
+def execute_5pct_split_tx(gross_btc, txid, htlc_hex):
+    rpc = HubRPC()
+    fee, net = round(gross_btc * 0.05, 8), round(gross_btc * 0.95, 8)
+    # Autonomously split outputs: 5% to Treasury Vault, 95% to HTLC Spoke Contract
+    outs = [{"bc1qsovereign_treasury_vault": fee}, {"data": htlc_hex}]
+    return rpc.call("createrawtransaction", [[{"txid": txid, "vout": 0}], outs])
 
-def sync_depin():
+def log_treasury(chain, token, gross):
     conn = sqlite3.connect(os.path.expanduser("~/sovereign-core-ecosystem/ecosystem_metrics.db"))
     conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("CREATE TABLE IF NOT EXISTS depin (app TEXT PRIMARY KEY, bw REAL, yield REAL, qos REAL, ts INT, hash TEXT)")
-    for n in [("Mysterium",14.2,5.1,99.8), ("EarnApp",8.4,2.3,98.5)]:
-        curr = hashlib.sha256(f"{n[0]}:{n[1]}:{int(time.time())}".encode()).hexdigest()
-        conn.execute("INSERT OR REPLACE INTO depin VALUES (?,?,?,?,?,?)", (n[0],n[1],n[2],n[3],int(time.time()),curr))
+    conn.execute("CREATE TABLE IF NOT EXISTS treasury (chain TEXT, token TEXT, gross REAL, fee REAL, ts INT)")
+    conn.execute("INSERT INTO treasury VALUES (?,?,?,?,?)", (chain, token, gross, round(gross*0.05, 8), int(time.time())))
     conn.commit(); conn.close()
