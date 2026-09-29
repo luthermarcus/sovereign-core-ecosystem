@@ -42,3 +42,8 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 - **Automated Health-Check Watchdog:** Continuously monitors SQLite WAL ledger integrity and daemon liveness, executing autonomous restarts on state failures.
 - **Hardware-Agnostic Node Profiles:** Decouples consensus execution parameters from specific host architectures.
 - **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for anomaly remediation.
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.10)
+- **Zero-External-Dependency Policy:** Explicitly excludes third-party client-side translation scripts and external DOM-scraping modules to eliminate supply chain and data exfiltration vectors.
+- **Strict Content Security Policy (CSP):** Enforces rigid script-src directives to block unauthorized remote script execution and maintain airtight data privacy.
+- **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
