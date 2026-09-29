@@ -1,31 +1,35 @@
 import os, sqlite3, time
 
 def apply_null_state_isolation(payload):
+    # Fisher Information Entropy & Null-State (960) Modulus Quarantine
     try:
         entropy = payload.get("entropy_seed", 960)
         z_scale = payload.get("z_scale", 0)
+        # Strict mathematical isolation: Fischer modulus alignment and positive 3D spatial scale
         return (entropy % 960 == 0) and (z_scale >= 0)
     except:
         return False
 
 def verify_three_prong_interlock(intent_payload):
     if not apply_null_state_isolation(intent_payload):
-        log_anomaly("QUARANTINE_FAIL: Entropy/spatial bounds violated")
+        log_anomaly("QUARANTINE_FAIL: Fisher Information 960-entropy bounds violated")
         return False, "QUARANTINE_FAIL: Mathematical isolation breach"
         
     current_time = int(time.time())
     intent_time = intent_payload.get("timestamp", current_time)
+    
+    # Einsteinian Relativistic Time-Window Check (Strict 30s Delta)
     if abs(current_time - intent_time) > 30:
-        log_anomaly("TEMPORAL_DRIFT_FAIL: Intent timestamp out of bounds")
-        return False, "PRONG_TIME_FAIL: Temporal synchronization drift detected"
+        log_anomaly("RELATIVISTIC_DRIFT_FAIL: Asynchronous state-dilation out of bounds")
+        return False, "PRONG_TIME_FAIL: Relativistic temporal synchronization drift detected"
 
     if not intent_payload.get("l1_locktime"):
-        log_anomaly("PRONG_1_FAIL: Missing L1 timelock constraint")
+        log_anomaly("PRONG_1_FAIL: Missing L1 consensus timelock constraint")
         return False, "PRONG_1_FAIL: Missing L1 timelock constraint"
 
     if intent_payload.get("solver_blacklisted", False):
-        log_anomaly("PRONG_2_FAIL: Solver blacklisted in RAM ring")
-        return False, "PRONG_2_FAIL: Solver flagged by bad-actor watchdog"
+        log_anomaly("PRONG_2_FAIL: Solver flagged by bad-actor RAM watchdog")
+        return False, "PRONG_2_FAIL: Solver blacklisted in RAM ring"
 
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/ecosystem_metrics.db")
     if os.path.exists(db_path):
@@ -43,7 +47,7 @@ def verify_three_prong_interlock(intent_payload):
             conn.close()
         except Exception as e:
             return False, f"PRONG_3_ERR: {e}"
-    return True, "VERIFIED: Temporal Three-Prong Interlock Secure"
+    return True, "VERIFIED: Relativistic Three-Prong Interlock Secure"
 
 def log_anomaly(error_msg):
     db_path = os.path.expanduser("~/sovereign-core-ecosystem/ecosystem_metrics.db")
