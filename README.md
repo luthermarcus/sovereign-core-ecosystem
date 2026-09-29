@@ -18,3 +18,7 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 ## 🔬 Advanced Cryptographic Security Appendix (v7.71.3)
 - **Relativistic Light-Cone Query Indexing:** Normalizes SQLite WAL anomaly lookups into strict causal temporal windows ($\Delta t$), eliminating cross-chain state synchronization drift.
 - **Deterministic Autonomous Remediation:** Automatically isolates chaotic vectors and executes self-healing ledger adjustments without manual intervention.
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.4)
+- **Rootless Container Isolation:** Integrates PRoot-distro and secure SSH tunneling standards for cross-device Sovereign Core OS management without compromising host device integrity.
+- **Relativistic Light-Cone Query Indexing:** Normalizes SQLite WAL anomaly lookups into strict causal temporal windows ($\Delta t$).
