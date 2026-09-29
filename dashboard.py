@@ -28,20 +28,17 @@ def get_wallet_vault():
 
 def send_transaction(recipient, amount):
     try:
-        addr, priv = get_wallet_vault()
+        addr, _ = get_wallet_vault()
         if addr == "0xFOX_NOT_INITIALIZED":
-            return "[ERR] Wallet Vault Not Found. Run wallet_engine.py"
-        
+            return "[ERR] Wallet Vault Not Found."
         conn = sqlite3.connect('/dev/shm/trust_store.db')
         conn.execute("PRAGMA journal_mode=WAL;")
         conn.execute("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, sender TEXT, recipient TEXT, amount REAL, timestamp REAL, status TEXT)")
-        
-        # Log signed intent into RAM WAL ledger
         conn.execute("INSERT INTO transactions (sender, recipient, amount, timestamp, status) VALUES (?, ?, ?, ?, ?)", 
                      (addr, recipient, float(amount), time.time(), "BROADCASTED_BOOMERANG_ESCROW"))
         conn.commit()
         conn.close()
-        return f"[TX SUCCESS] Sent {amount} POL to {recipient[:10]}... [Δt Causal Window Armed]"
+        return f"[TX SUCCESS] Sent {amount} POL to {recipient[:10]}... [Δt Escrow Armed]"
     except Exception as e:
         return f"[ERR] Transaction Failed: {str(e)}"
 
@@ -53,8 +50,6 @@ def prompt_user_input(stdscr, prompt_str):
     win.box()
     win.addstr(1, 2, prompt_str)
     win.refresh()
-    
-    # Read input string
     str_val = win.getstr(1, len(prompt_str) + 3, 40).decode('utf-8')
     curses.noecho()
     stdscr.nodelay(1)
@@ -87,7 +82,6 @@ def draw(stdscr):
         stdscr.erase()
         h, w = stdscr.getmaxyx()
 
-        # Top Header
         stdscr.addstr(0, 0, " 🦊 SOVEREIGN CORE OS - MASTER CONTROL CENTER ".center(w), curses.A_REVERSE | curses.color_pair(1))
         stdscr.addstr(1, 0, "[1] Wallet [2] Host [3] DAO [4] Sec [5] Svcs [6] AI [h] Hints [q] Quit", curses.A_BOLD)
         stdscr.addstr(2, 0, "-" * w)
@@ -122,7 +116,7 @@ def draw(stdscr):
             stdscr.addstr(9, 4, "Cryptographic State:      Quantum-Resistant Lattice Security [ACTIVE]")
 
         elif t == 3:
-            stdscr.addstr(3, 2, "🏛️️ GOVERNANCE, ORPHANS & TRUST SCORING", curses.color_pair(2) | curses.A_BOLD)
+            stdscr.addstr(3, 2, "🏛️ GOVERNANCE, ORPHANS & TRUST SCORING", curses.color_pair(2) | curses.A_BOLD)
             stdscr.addstr(5, 4, "Orphan Logic Modules:  objects.py, app.py, config.py, tray.py")
             stdscr.addstr(6, 4, "Governance Framework:  Pool-Weighted Network Staking")
             stdscr.addstr(7, 4, "Ledgers:               discipline_ledger.db & trust_store [VERIFIED]")
@@ -148,7 +142,6 @@ def draw(stdscr):
             stdscr.addstr(6, 4, "Mobile Termux Link:    Shizuku Client Shell Bypass        [AUTHED]")
             stdscr.addstr(7, 4, "MAC Resolv Pipeline:   Static Whitelist Applied           [STABLE]")
 
-        # Bottom Status Bar
         stdscr.addstr(h - 3, 2, f"Status: {action_status}", curses.color_pair(3) | curses.A_BOLD)
         if hnt: stdscr.addstr(h - 2, 0, hints.get(t, "").center(w), curses.A_BOLD | curses.color_pair(3))
 
@@ -168,21 +161,20 @@ def draw(stdscr):
         elif c == ord('h'):
             hnt = not hnt
         elif c == ord('s') and t == 1:
-            # Interactive Transaction Prompt flow
             recipient = prompt_user_input(stdscr, "Recipient Address (0x...): ")
             if recipient:
                 amount_str = prompt_user_input(stdscr, "Amount in USD/POL: ")
                 if amount_str:
                     action_status = send_transaction(recipient, amount_str)
                 else:
-                    action_status = "[ABORTED] Transaction cancelled (Missing amount)."
+                    action_status = "[ABORTED] Transaction cancelled."
             else:
-                action_status = "[ABORTED] Transaction cancelled (Missing recipient)."
+                action_status = "[ABORTED] Transaction cancelled."
         elif c == ord('m'):
             mining_active = not mining_active
             action_status = f"[AUXPOW] Mining {'Resumed' if mining_active else 'Throttled'}"
         elif c == ord('c'):
-            action_status = "[SWEEP] Yields Consolidated into Protocol-Owned Liquidity Reserve"
+            action_status = "[SWEEP] Yields Consolidated into POL Reserve"
 
         time.sleep(0.1)
 
