@@ -1,6 +1,6 @@
 import sqlite3, time
 print("[*] Initiating SQLite WAL Memory Stress Test...")
-conn = sqlite3.connect('/dev/shm/ecosystem_metrics.db')
+conn = sqlite3.connect("/dev/shm/ecosystem_metrics.db")
 conn.execute("PRAGMA journal_mode=WAL;")
 conn.execute("PRAGMA synchronous=NORMAL;")
 conn.execute("CREATE TABLE IF NOT EXISTS stress_test (id INTEGER PRIMARY KEY, ts REAL)")
