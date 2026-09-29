@@ -57,3 +57,9 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 - **Quantum-Resistant Lattice Standards:** Implements post-quantum state hashing and entropic seed mixing to protect L1/L2 consensus streams against quantum decryption vectors.
 - **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) and null-state arithmetic for fault-tolerant SQLite WAL anomaly remediation.
 - **Unified L1/L2 Three-Prong Architecture:** Harmonizes Bitcointalk node efficiency, XDA rootless isolation, and Sovereign Core autonomous watchdog daemons under a zero-external-dependency policy.
+
+## 🦊 FOX Tokenomics, AuxPoW & Bitcointalk Alignment (v7.71.19-beta)
+- **Bitcoin-Pegged AuxPoW (Merged Mining):** Replaces inflationary minting with deterministic auxiliary proof-of-work. Nodes inherit L1 security via coinbase commitments without extra energy expenditure.
+- **Pool-Weighted Minting & Dual-Valuation:** Token emission is strictly tied to DePIN resource output (Mysterium, EarnApp, TraffMonetizer, PacketStream, Pawns.app, Honeygain) and active liquidity pool depth.
+- **Bitcointalk-Standard Emission Transparency:** Enforces hardcoded, decaying treasury schedules. Zero hidden developer pre-mints.
+- **Zero-External-Dependency Ledger Integration:** Auxiliary mining shares are tracked locally via RAM-backed SQLite WAL ledgers (`ecosystem_metrics.db`), eliminating reliance on external APIs.
