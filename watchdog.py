@@ -1,7 +1,7 @@
 import os, time, json
 from three_prong_shield import verify_three_prong_interlock
 def run_watchdog():
-    print("[*] Sovereign Core OS Watchdog v7.67.0-beta online. Monitoring /dev/shm intent ring...")
+    print("[*] Sovereign Core OS Watchdog v7.71.0-beta online. Monitoring /dev/shm intent ring...")
     os.makedirs("/dev/shm", exist_ok=True)
     while True:
         ring_path = "/dev/shm/dex_intent_ring.tmp"

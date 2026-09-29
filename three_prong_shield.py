@@ -1,23 +1,20 @@
 import os, sqlite3, time
 
 def apply_null_state_isolation(payload):
-    # Proprietary Mathematics of Zero & Fischer Random (960) Sandbox
     try:
         entropy = payload.get("entropy_seed", 960)
         z_scale = payload.get("z_scale", 0)
-        # Strict quarantine: Enforce 960 modulus and positive 3D spatial scaling bounds [0, 0, ∞]
         return (entropy % 960 == 0) and (z_scale >= 0)
     except:
         return False
 
 def verify_three_prong_interlock(intent_payload):
     if not apply_null_state_isolation(intent_payload):
-        log_anomaly("QUARANTINE_FAIL: Null-State/Fischer Random (960) entropy bounds violated")
+        log_anomaly("QUARANTINE_FAIL: Entropy/spatial bounds violated")
         return False, "QUARANTINE_FAIL: Mathematical isolation breach"
         
     current_time = int(time.time())
     intent_time = intent_payload.get("timestamp", current_time)
-    
     if abs(current_time - intent_time) > 30:
         log_anomaly("TEMPORAL_DRIFT_FAIL: Intent timestamp out of bounds")
         return False, "PRONG_TIME_FAIL: Temporal synchronization drift detected"
@@ -46,7 +43,6 @@ def verify_three_prong_interlock(intent_payload):
             conn.close()
         except Exception as e:
             return False, f"PRONG_3_ERR: {e}"
-            
     return True, "VERIFIED: Temporal Three-Prong Interlock Secure"
 
 def log_anomaly(error_msg):
