@@ -22,3 +22,13 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 ## 🔬 Advanced Cryptographic Security Appendix (v7.71.4)
 - **Rootless Container Isolation:** Integrates PRoot-distro and secure SSH tunneling standards for cross-device Sovereign Core OS management without compromising host device integrity.
 - **Relativistic Light-Cone Query Indexing:** Normalizes SQLite WAL anomaly lookups into strict causal temporal windows ($\Delta t$).
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.5)
+- **Bitcointalk L1 Resource Optimization:** Standardizes memory allocation models (`dbcache=50`, `blocksonly=1`, `prune=1000`) to maximize IBD throughput on legacy storage tiers without triggering kernel panics.
+- **XDA Termux PRoot Isolation:** Enforces clean namespace bindings and unlinked execution hooks (`unset LD_PRELOAD`) for stable cross-device rootless client management.
+- **Relativistic Light-Cone Query Indexing:** Normalizes SQLite WAL anomaly lookups into strict causal temporal windows ($\Delta t$).
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.6)
+- **Consensus-Grade State Verification:** Integrates strict mempool filtering and unspent transaction output (UTXO) integrity checks derived from Bitcointalk infrastructure optimization standards.
+- **Rootless Container Isolation:** Adheres to XDA rootless PRoot guidelines, maintaining unlinked userland namespaces (`unset LD_PRELOAD`) to preserve host device security integrity.
+- **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
