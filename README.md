@@ -47,3 +47,8 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 - **Zero-External-Dependency Policy:** Explicitly excludes third-party client-side translation scripts and external DOM-scraping modules to eliminate supply chain and data exfiltration vectors.
 - **Strict Content Security Policy (CSP):** Enforces rigid script-src directives to block unauthorized remote script execution and maintain airtight data privacy.
 - **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.11)
+- **Git Metadata Sanitization:** Enforces global anonymous no-reply email configurations (`users.noreply.github.com`) to permanently block automated scraper bots from harvesting maintainer credentials.
+- **Firewall & Port Isolation:** Enforces strict UFW firewall policies, whitelisting only authorized SSH management ports and isolating loopback telemetry daemons.
+- **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
