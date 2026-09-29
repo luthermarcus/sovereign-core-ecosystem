@@ -52,3 +52,8 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 - **Git Metadata Sanitization:** Enforces global anonymous no-reply email configurations (`users.noreply.github.com`) to permanently block automated scraper bots from harvesting maintainer credentials.
 - **Firewall & Port Isolation:** Enforces strict UFW firewall policies, whitelisting only authorized SSH management ports and isolating loopback telemetry daemons.
 - **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.15)
+- **Quantum-Resistant Lattice Standards:** Implements post-quantum state hashing and entropic seed mixing to protect L1/L2 consensus streams against quantum decryption vectors.
+- **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) and null-state arithmetic for fault-tolerant SQLite WAL anomaly remediation.
+- **Unified L1/L2 Three-Prong Architecture:** Harmonizes Bitcointalk node efficiency, XDA rootless isolation, and Sovereign Core autonomous watchdog daemons under a zero-external-dependency policy.
