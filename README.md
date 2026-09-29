@@ -32,3 +32,8 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 - **Consensus-Grade State Verification:** Integrates strict mempool filtering and unspent transaction output (UTXO) integrity checks derived from Bitcointalk infrastructure optimization standards.
 - **Rootless Container Isolation:** Adheres to XDA rootless PRoot guidelines, maintaining unlinked userland namespaces (`unset LD_PRELOAD`) to preserve host device security integrity.
 - **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.8)
+- **Hardware-Agnostic Node Profiles:** Decouples consensus execution parameters from specific host architectures, enabling seamless deployment across bare-metal servers, cloud VPS instances, and containerized environments.
+- **Universal Rootless Client Isolation:** Standardizes cross-platform userland execution and secure tunneling for diverse mobile and desktop operating systems.
+- **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
