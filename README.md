@@ -37,3 +37,8 @@ The Sovereign Core OS relies on strict mathematical boundaries to govern cross-c
 - **Hardware-Agnostic Node Profiles:** Decouples consensus execution parameters from specific host architectures, enabling seamless deployment across bare-metal servers, cloud VPS instances, and containerized environments.
 - **Universal Rootless Client Isolation:** Standardizes cross-platform userland execution and secure tunneling for diverse mobile and desktop operating systems.
 - **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for autonomous SQLite WAL anomaly remediation.
+
+## 🔬 Advanced Cryptographic Security Appendix (v7.71.9)
+- **Automated Health-Check Watchdog:** Continuously monitors SQLite WAL ledger integrity and daemon liveness, executing autonomous restarts on state failures.
+- **Hardware-Agnostic Node Profiles:** Decouples consensus execution parameters from specific host architectures.
+- **Relativistic Light-Cone Indexing:** Enforces causal temporal windows ($\Delta t$) for anomaly remediation.
