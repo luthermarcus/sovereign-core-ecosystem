@@ -52,3 +52,14 @@ Built for the decentralization community. Adheres strictly to elite Bitcointalk.
 * **Worker-First Validation:** Staking derived from active liquidity depth.
 
 **Lead Architect:** luthermarcus | Built for true decentralization.
+## 🦊 Sovereign Core OS (OSIS) Master Architecture & Roadmap (v7.71.37-beta)
+**I. Foundation & Cryptography**
+*   **Zero-External-Dependency Execution:** Autonomous daemons operating purely on native Python/BusyBox.
+*   **L1/L2 Consensus:** Bitcoin-pegged Merged Mining (AuxPoW) protected by Quantum-Resistant Lattice Standards.
+*   **Universal RAM Ledgers:** Memory-backed SQLite WAL ledgers (`trust_store.db`, `discipline_ledger.db`).
+**II. Protocol-Owned Liquidity (POL) & Wallet**
+*   **7-App DePIN Aggregator:** Harmonizes bandwidth sharing via `fq_codel` and `bbr` kernel queuing.
+*   **Boomerang Escrow Mechanism:** Cross-chain routing protected by relativistic causal time windows ($\Delta t$).
+**III. Security & Client Pipelines**
+*   **OS-Agnostic Dashboard:** Dynamic resource scaling for Windows/macOS/Linux.
+*   **Client Autonomy:** Shizuku Termux bypassing MAC randomization, synced with `~/.ai_expert.py` diagnostics.
