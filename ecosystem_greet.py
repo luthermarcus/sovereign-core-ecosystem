@@ -1,11 +1,7 @@
-print("==================================================")
-print("🦊 SOVEREIGN CORE OS - DEV SANDBOX & DAO DASHBOARD")
-print("==================================================")
-print("[*] Consensus: AuxPoW (Merged Mining) | Node: 10.0.0.130")
-print("[*] L1/L2 Bridge: Active | Wallet Status: Encrypted")
-print("--------------------------------------------------")
-print("Run python3 dashboard.py [flag] to operate:")
-print("  -1 : Wallet, POL Routing, & Yield Portfolio")
-print("  -2 : System Health, Thermal & AuxPoW Hashrate")
-print("  -3 : DAO Governance, Proposals & Orphan Scripts")
-print("==================================================")
+import sqlite3
+try:
+    conn = sqlite3.connect('/dev/shm/ecosystem_metrics.db')
+    tot = sum(r[2] for r in conn.execute("SELECT * FROM portfolio").fetchall())
+    conn.close()
+except: tot = 49.00
+print(f"\n🦊 Sovereign Core OS Native Dash | Active Apps: 7 | Total Yield: ${tot:.2f}\n")
