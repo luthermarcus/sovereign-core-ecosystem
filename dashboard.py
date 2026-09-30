@@ -34,10 +34,13 @@ def get_unified_modules():
         return mods
     except: return [("Scanning...", "PENDING")]
 
+def read_escrow_log():
+    try: return open('/dev/shm/bridge_sim.log').read().splitlines()[-4:]
+    except: return ["No recent cross-chain simulations executed."]
+
 def send_transaction(recipient, amount):
     try:
         addr, _ = get_wallet_vault()
-        if addr == "0xFOX_NOT_INITIALIZED": return "[ERR] Vault Not Initialized."
         conn = sqlite3.connect('/dev/shm/trust_store.db', timeout=0.5)
         conn.execute("PRAGMA journal_mode=WAL;")
         conn.execute("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, sender TEXT, recipient TEXT, amount REAL, timestamp REAL, status TEXT)")
@@ -51,7 +54,6 @@ def prompt_user_input(stdscr, prompt_str):
     curses.echo()
     stdscr.nodelay(0)
     h, w = stdscr.getmaxyx()
-    # The "Box Ideology": Rendering a clean popup box for user input
     win = curses.newwin(5, w - 20, h // 2 - 2, 10)
     win.box()
     win.addstr(2, 2, prompt_str, curses.A_BOLD)
@@ -70,7 +72,7 @@ def draw(stdscr):
     curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
     curses.init_pair(4, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     t, hnt = 1, False
-    action_status = "IDLE | Wallet Vault Ready"
+    action_status = "IDLE | System Nominal"
     mining_active = True
 
     while True:
@@ -83,7 +85,7 @@ def draw(stdscr):
 
         if t == 1:
             stdscr.addstr(3, 2, "🦊 PROTOCOL-OWNED LIQUIDITY (POL) & NATIVE WALLET", curses.color_pair(2) | curses.A_BOLD)
-            stdscr.addstr(4, 4, f"Vault Address: {addr} (RAM-Backed | Encrypted)")
+            stdscr.addstr(4, 4, f"Vault Address: {addr} (RAM-Backed)")
             stdscr.addstr(5, 4, f"AuxPoW Mining State: {'[MINING ACTIVE - L1 MERGED]' if mining_active else '[THROTTLED / PAUSED]'}", curses.color_pair(1) if mining_active else curses.color_pair(3))
             items = get_db_yields()
             row = 7
@@ -91,8 +93,6 @@ def draw(stdscr):
                 stdscr.addstr(row, 6, f"- {app:<18} [{status}] : ${yld:>6.2f} USD")
                 row += 1
             stdscr.addstr(row + 1, 4, f"Total RAM-Backed POL Value: ${sum(i[2] for i in items):.4f} USD", curses.A_BOLD | curses.color_pair(1))
-            
-            # Restored Interactive Wallet Controls
             stdscr.addstr(row + 3, 2, "Interactive Controls: [s] Send Tx  [m] Toggle Mining  [c] Sweep Yields", curses.color_pair(4) | curses.A_BOLD)
 
         elif t == 2:
@@ -100,7 +100,6 @@ def draw(stdscr):
             stdscr.addstr(5, 4, f"CPU Thermal Load:         {get_thermal()}")
             stdscr.addstr(6, 4, "L1 Consensus:             Bitcoin-Pegged AuxPoW [SYNCED]")
             stdscr.addstr(7, 4, "Marker Signature:         0xfa 0xbe 0x6d 0x6d (44-byte ScriptSig)")
-            stdscr.addstr(8, 4, "Cryptographic State:      Quantum-Resistant Lattice [ACTIVE]")
 
         elif t == 3:
             stdscr.addstr(3, 2, "🏛️ UNIFIED MODULE WARDEN (GitHub Sync)", curses.color_pair(2) | curses.A_BOLD)
@@ -113,25 +112,25 @@ def draw(stdscr):
                 row += 1
 
         elif t == 4:
-            stdscr.addstr(3, 2, "🛡️️ HOST-AWARE SECURITY PROTOCOL", curses.color_pair(3) | curses.A_BOLD)
+            stdscr.addstr(3, 2, "🛡️ HOST-AWARE SECURITY PROTOCOL", curses.color_pair(3) | curses.A_BOLD)
             stdscr.addstr(5, 4, "Confinement Sandbox:   L2 Rootless Virtualization Active")
             stdscr.addstr(6, 4, "Firewall Protection:   UFW Static Port 22 Whitelisted [SECURE]")
-            stdscr.addstr(7, 4, "Entropy Matrix:        Null-state (0), Fischer (960)  [SECURE]")
 
         elif t == 5:
             stdscr.addstr(3, 2, "🖥️ VIRTUALIZATION SERVICES & DAEMONS", curses.color_pair(2) | curses.A_BOLD)
             stdscr.addstr(5, 4, "Background Routing:    node_manager.py (Yield Sync)   [RUNNING]")
             stdscr.addstr(6, 4, "Host Watchdog:         core_router.py (Thermal Guard) [RUNNING]")
-            stdscr.addstr(7, 4, "Cron Maintenance:      State-Change Deduplication     [ACTIVE]")
 
         elif t == 6:
             stdscr.addstr(3, 2, "🤖 MOBILE EDGE & CLIENT PIPELINE", curses.color_pair(2) | curses.A_BOLD)
             stdscr.addstr(5, 4, "Mobile Termux Link:    Shizuku Client Shell Bypass    [AUTHED]")
-            stdscr.addstr(6, 4, "Escrow Simulator:      sovereign_bridge_test.py       [READY]")
+            stdscr.addstr(6, 4, "Escrow Simulator:      sovereign_bridge_test.py       [Press 'e' to Run]")
+            stdscr.addstr(8, 2, "Live L1/L2 Settlement Logs:", curses.A_UNDERLINE)
+            log_lines = read_escrow_log()
+            for i, line in enumerate(log_lines):
+                stdscr.addstr(10 + i, 4, line)
 
-        # Restored Dynamic Action Status Footer
         stdscr.addstr(h - 3, 2, f"System Event Log: {action_status}", curses.color_pair(3) | curses.A_BOLD)
-        
         try:
             stdscr.addstr(h - 1, 0, f" System Time: {time.strftime('%H:%M:%S')} | [q] Quit ".ljust(w - 1), curses.A_REVERSE)
         except: pass
@@ -141,7 +140,6 @@ def draw(stdscr):
         if c == ord('q'): break
         elif c in [49, 50, 51, 52, 53, 54]: t = c - 48
         
-        # Restored Interactive Hotkey Logic (The "Box Ideology")
         elif c == ord('s') and t == 1:
             rec = prompt_user_input(stdscr, "Enter Recipient Address (0x...): ")
             if rec:
@@ -153,6 +151,9 @@ def draw(stdscr):
             action_status = f"[AUXPOW] Merged Mining {'Resumed' if mining_active else 'Throttled'}"
         elif c == ord('c') and t == 1: 
             action_status = "[SWEEP] Yields Consolidated into POL Cryptographic Vault"
+        elif c == ord('e') and t == 6:
+            action_status = "[DEV TEST] Executing Boomerang Escrow Simulator..."
+            os.system("python3 sovereign_bridge_test.py > /dev/shm/bridge_sim.log 2>&1")
             
         time.sleep(0.1)
 
