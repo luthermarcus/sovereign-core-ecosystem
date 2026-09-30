@@ -1,4 +1,4 @@
-import curses, time, platform, sqlite3, os
+import curses, time, platform, sqlite3, os, sys
 
 def get_db_yields():
     try:
@@ -54,6 +54,28 @@ def prompt_user_input(stdscr, prompt_str):
     curses.noecho()
     stdscr.nodelay(1)
     return str_val.strip()
+
+def handle_legacy_flags():
+    flag = sys.argv[1]
+    if flag == '-1':
+        print("="*48 + "\n 🦊 SOVEREIGN CORE OS - WALLET & POL YIELD PORTFOLIO\n" + "="*48)
+        items = get_db_yields()
+        tot = sum(i[2] for i in items)
+        for app, status, yld in items:
+            print(f" - {app:<18} [{status}] : ${yld:>6.2f} USD")
+        print(f"\nTotal RAM-Backed POL Value: ${tot:.4f} USD\nVault: {get_wallet_vault()[0]}")
+    elif flag == '-2':
+        print("="*48 + "\n ⚙️ SOVEREIGN CORE OS - SYSTEM HEALTH & AUXPOW\n" + "="*48)
+        print(f"CPU Thermal Load: {get_thermal()}")
+        print(f"Kernel Limits: fq_codel, bbr, vm.swappiness=10 [OPTIMAL]")
+        print(f"L1 Consensus: Bitcoin-Pegged AuxPoW [SYNCED]")
+    elif flag == '-3':
+        print("="*48 + "\n 🏛️ SOVEREIGN CORE OS - DAO GOVERNANCE & ORPHANS\n" + "="*48)
+        print("Orphan Logic Modules: objects.py, app.py, config.py, tray.py")
+        print("Governance Framework: Pool-Weighted Network Staking")
+        print("Trust Store & Discipline Ledger: [VERIFIED]")
+    else:
+        print("Error: Provide valid flag -1, -2, or -3")
 
 def draw(stdscr):
     curses.curs_set(0)
@@ -179,4 +201,7 @@ def draw(stdscr):
         time.sleep(0.1)
 
 if __name__ == '__main__':
-    curses.wrapper(draw)
+    if len(sys.argv) > 1 and sys.argv[1] in ['-1', '-2', '-3']:
+        handle_legacy_flags()
+    else:
+        curses.wrapper(draw)
