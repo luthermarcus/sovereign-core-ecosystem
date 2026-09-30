@@ -1,12 +1,7 @@
 import time, sqlite3, platform, os
-def check_thermals():
-    if platform.system() == "Linux":
-        try:
-            return int(open('/sys/class/thermal/thermal_zone0/temp').read().strip()) / 1000
-        except: return 38.0
-    return 38.0
 def enforce_security():
-    temp = check_thermals()
+    try: temp = int(open('/sys/class/thermal/thermal_zone0/temp').read().strip()) / 1000
+    except: temp = 38.0
     conn = sqlite3.connect('/dev/shm/sys_health.db')
     conn.execute("PRAGMA journal_mode=WAL;")
     conn.execute("CREATE TABLE IF NOT EXISTS thermal (status TEXT)")

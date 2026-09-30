@@ -17,20 +17,16 @@ def get_myst_balance():
     return 14.25
 def run_telemetry():
     apps = [
-        ('Docker Mysterium', 1.50),
-        ('EarnApp', 8.50),
-        ('TraffMonetizer', 5.10),
-        ('PacketStream', 3.20),
-        ('Pawns.app', 6.75),
-        ('Honeygain', 11.40)
+        ('Docker Mysterium', 1.50), ('EarnApp', 8.50),
+        ('TraffMonetizer', 5.10), ('PacketStream', 3.20),
+        ('Pawns.app', 6.75), ('Honeygain', 11.40)
     ]
     init_ledgers()
     while True:
         try:
             conn = sqlite3.connect('/dev/shm/ecosystem_metrics.db')
             conn.execute("DELETE FROM portfolio")
-            myst = get_myst_balance()
-            conn.execute("INSERT INTO portfolio (app, status, yield) VALUES (?, ?, ?)", ("Mysterium Node", "ACTIVE", myst))
+            conn.execute("INSERT INTO portfolio (app, status, yield) VALUES (?, ?, ?)", ("Mysterium Node", "ACTIVE", get_myst_balance()))
             for app, yld in apps:
                 conn.execute("INSERT INTO portfolio (app, status, yield) VALUES (?, ?, ?)", (app, "ACTIVE", yld))
             conn.commit(); conn.close()
