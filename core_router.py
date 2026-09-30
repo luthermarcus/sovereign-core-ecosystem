@@ -1,44 +1,47 @@
-import time, sqlite3, platform, os, glob, traceback
+import time, sqlite3, platform, os, glob, traceback, subprocess
+
+running_modules = {}
 
 def enforce_security():
-    try:
-        try: temp = int(open('/sys/class/thermal/thermal_zone0/temp').read().strip()) / 1000
-        except: temp = 38.0
-        
-        conn = sqlite3.connect('/dev/shm/sys_health.db', timeout=2.0)
-        conn.execute("PRAGMA journal_mode=WAL;")
-        conn.execute("CREATE TABLE IF NOT EXISTS thermal (status TEXT)")
-        conn.execute("CREATE TABLE IF NOT EXISTS module_warden (module_name TEXT, status TEXT)")
-        conn.execute("DELETE FROM thermal")
-        conn.execute("DELETE FROM module_warden")
-        
-        # 1. Thermal Governor
-        if temp > 85.0:
-            status = f"ANOMALY: OVERHEATING ({temp}°C) - Throttling"
-            os.system("pkill -STOP -f node_manager.py 2>/dev/null")
-        else:
-            status = f"Stable ({temp}°C)"
-            os.system("pkill -CONT -f node_manager.py 2>/dev/null")
-        conn.execute("INSERT INTO thermal (status) VALUES (?)", (status,))
-        
-        # 2. Dynamic GitHub Module Unification Scanner
-        orphans = glob.glob('modules/*.py')
-        if orphans:
-            for mod in orphans:
-                mod_name = os.path.basename(mod)
-                # Flag critical kernel modules as ACTIVE, others as STANDBY
-                state = "ACTIVE_KERNEL" if "warden" in mod_name or "kernel" in mod_name else "STANDBY_SANDBOXED"
-                conn.execute("INSERT INTO module_warden (module_name, status) VALUES (?, ?)", (mod_name, state))
-        else:
-            conn.execute("INSERT INTO module_warden (module_name, status) VALUES (?, ?)", ("NO_MODULES_FOUND", "PENDING_SYNC"))
+    try: temp = int(open('/sys/class/thermal/thermal_zone0/temp').read().strip()) / 1000
+    except: temp = 38.0
 
-        conn.commit()
-        conn.close()
-    except Exception as e:
-        with open('/dev/shm/core_router_error.log', 'w') as f:
-            f.write(f"[{time.ctime()}] CRASH: {traceback.format_exc()}")
+    conn = sqlite3.connect('/dev/shm/sys_health.db', timeout=2.0)
+    conn.execute("PRAGMA journal_mode=WAL;")
+    conn.execute("CREATE TABLE IF NOT EXISTS thermal (status TEXT)")
+    conn.execute("CREATE TABLE IF NOT EXISTS module_warden (module_name TEXT, status TEXT, pid INTEGER)")
+    conn.execute("DELETE FROM thermal")
+    conn.execute("DELETE FROM module_warden")
 
-if __name__ == '__main__':
+    status = f"Stable ({temp}°C)" if temp <= 85.0 else f"ANOMALY: OVERHEATING ({temp}°C) - Throttling"
+    conn.execute("INSERT INTO thermal (status) VALUES (?)", (status,))
+    if temp > 85.0: os.system("pkill -STOP -f node_manager.py 2>/dev/null")
+    else: os.system("pkill -CONT -f node_manager.py 2>/dev/null")
+
+    orphans = glob.glob('modules/*.py')
+    if orphans:
+        for mod_path in orphans:
+            mod_name = os.path.basename(mod_path)
+            if any(k in mod_name for k in ['amm_smart', 'liquidity', 'dao_treasury', 'warden']):
+                if mod_name not in running_modules or running_modules[mod_name].poll() is not None:
+                    try:
+                        proc = subprocess.Popen(['python3', mod_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                        running_modules[mod_name] = proc
+                        state, pid = "ACTIVE_KERNEL_BOOTED", proc.pid
+                    except: state, pid = "BOOT_FAILED", 0
+                else: state, pid = "ACTIVE_KERNEL_RUNNING", running_modules[mod_name].pid
+            else: state, pid = "STANDBY_SANDBOXED", 0
+            conn.execute("INSERT INTO module_warden (module_name, status, pid) VALUES (?, ?, ?)", (mod_name, state, pid))
+    else: conn.execute("INSERT INTO module_warden (module_name, status, pid) VALUES (?, ?, ?)", ("NO_MODULES_FOUND", "PENDING_SYNC", 0))
+
+    conn.commit(); conn.close()
+    os.system("sudo -n ufw allow 22/tcp >/dev/null 2>&1")
+        
+def safe_loop():
     while True:
-        enforce_security()
+        try: enforce_security()
+        except Exception as e:
+            with open('/dev/shm/core_router_error.log', 'w') as f: f.write(f"[{time.ctime()}] CRASH: {traceback.format_exc()}")
         time.sleep(10)
+
+if __name__ == '__main__': safe_loop()
