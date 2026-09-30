@@ -118,6 +118,17 @@ def draw(stdscr):
             stdscr.addstr(3, 2, "🏛️ GOVERNANCE, ORPHANS & TRUST SCORING", curses.color_pair(2) | curses.A_BOLD)
             stdscr.addstr(5, 4, "Governance Framework:  Pool-Weighted Network Staking")
             stdscr.addstr(6, 4, "Ledgers:               discipline_ledger.db & trust_store [VERIFIED]")
+            stdscr.addstr(8, 2, "🔍 UNIVERSAL MODULE WARDEN (Auto-Discovery):", curses.A_UNDERLINE)
+            try:
+                conn = sqlite3.connect("/dev/shm/sys_health.db", timeout=0.2)
+                orphans = conn.execute("SELECT module_name, status FROM module_warden LIMIT 5").fetchall()
+                conn.close()
+                row = 10
+                for m_name, m_status in orphans:
+                    stdscr.addstr(row, 4, f" - {m_name:<30} [{m_status}]")
+                    row += 1
+            except:
+                stdscr.addstr(10, 4, " - Scanning modules directory...")
 
         elif t == 4:
             stdscr.addstr(3, 2, "🛡️ HOST-AWARE SECURITY PROTOCOL", curses.color_pair(3) | curses.A_BOLD)
