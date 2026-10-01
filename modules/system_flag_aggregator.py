@@ -53,7 +53,7 @@ class SystemFlagAggregator:
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_GREEN}│ [BOX 1] BARE-METAL OS & LIVE SYSTEM FLAGS                            │{C_RESET}")
         print(f"{C_GREEN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
-        print(f"│ Host OS      : Linux Mint (luther-Inspiron-1525)                    │")
+        print(f"│ Host OS      : Linux Mint (sos-node-host)                    │")
         print(f"│ Firewall Flag: UFW Status -> {flags['ufw']}                          │")
         print(f"│ Kernel Flag  : AppArmor -> {flags['apparmor']}                      │")
         print(f"│ RAM Sandbox  : /dev/shm Usage -> {flags['shm']}                     │")

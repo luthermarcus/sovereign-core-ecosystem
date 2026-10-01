@@ -1,7 +1,7 @@
 {
   "ecosystem": "Sovereign Core OS",
   "version": "v7.23.0-stable",
-  "host": "luther-Inspiron-1525",
+  "host": "sos-node-host",
   "user": "luther",
   "architecture": "Predictive L1/L2 Execution Sandbox",
   "modules": [

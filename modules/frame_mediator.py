@@ -39,6 +39,6 @@ class BidirectionalFrameMediator:
 
 if __name__ == "__main__":
     print("=== INITIATING BIP 324 STYLE BIDIRECTIONAL MEDIATOR TESTS ===")
-    test_data = {"node": "luther-Inspiron-1525", "metric": "yield_sync", "val": 49.20}
+    test_data = {"node": "sos-node-host", "metric": "yield_sync", "val": 49.20}
     env = BidirectionalFrameMediator.process_egress("BIP300_RELAY", test_data)
     BidirectionalFrameMediator.process_ingress("BIP300_RELAY", env)

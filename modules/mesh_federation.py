@@ -10,9 +10,9 @@ class SovereignMeshFederation:
         print("\n[*] [MESH FEDERATION] Initializing Zero-Data Sovereign Mesh Broadcast...")
         time.sleep(0.3)
         
-        node_signature = hashlib.sha256(f"NODE_LUTHER_INSPIRON_{time.time()}".encode()).hexdigest()[:16]
+        node_signature = hashlib.sha256(f"NODE_LUTHER_sos-node-host_{time.time()}".encode()).hexdigest()[:16]
         mesh_packet = {
-            "node_id": "luther-Inspiron-1525",
+            "node_id": "sos-node-host",
             "mesh_signature": node_signature,
             "status": "FEDERATED_ACTIVE",
             "timestamp": time.time()

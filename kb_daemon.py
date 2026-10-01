@@ -2,8 +2,8 @@ import os
 import sqlite3
 import hashlib
 
-DB_PATH = "/home/luther/sovereign-core-ecosystem/knowledge.db"
-VAULT_DIR = "/home/luther/sovereign-core-ecosystem/knowledge_vault"
+DB_PATH = "~/sovereign-core-ecosystem/knowledge.db"
+VAULT_DIR = "~/sovereign-core-ecosystem/knowledge_vault"
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)

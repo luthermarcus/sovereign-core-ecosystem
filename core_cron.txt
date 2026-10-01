@@ -1,4 +1,4 @@
 # Sovereign Core Automated Background Jobs
-*/5 * * * * /usr/bin/python3 /home/luther/sovereign-core-ecosystem/node_manager.py --sync > /dev/null 2>&1
-0 * * * * /usr/bin/python3 /home/luther/sovereign-core-ecosystem/dashboard.py --rotate-logs > /dev/null 2>&1
-0 0 * * * /usr/bin/sqlite3 /home/luther/sovereign-core-ecosystem/ecosystem_metrics.db "PRAGMA wal_checkpoint(TRUNCATE);" > /dev/null 2>&1
+*/5 * * * * /usr/bin/python3 ~/sovereign-core-ecosystem/node_manager.py --sync > /dev/null 2>&1
+0 * * * * /usr/bin/python3 ~/sovereign-core-ecosystem/dashboard.py --rotate-logs > /dev/null 2>&1
+0 0 * * * /usr/bin/sqlite3 ~/sovereign-core-ecosystem/ecosystem_metrics.db "PRAGMA wal_checkpoint(TRUNCATE);" > /dev/null 2>&1

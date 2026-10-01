@@ -1,4 +1,4 @@
 # Unified Ecosystem Dashboard Hook
-if [ -f /home/luther/dashboard.py ]; then
-    python3 /home/luther/dashboard.py
+if [ -f ~/dashboard.py ]; then
+    python3 ~/dashboard.py
 fi

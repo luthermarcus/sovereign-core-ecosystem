@@ -73,7 +73,7 @@ class SovereignCorePortal:
         print(f"{C_GREEN}┌──────────────────────────────────────────────────────────────────────┐{C_RESET}")
         print(f"{C_GREEN}│ [BOX 1] BARE-METAL OS & DePIN YIELD PORTFOLIO                        │{C_GREEN}")
         print(f"{C_GREEN}├──────────────────────────────────────────────────────────────────────┤{C_RESET}")
-        print(f"│ Host OS      : Linux Mint (luther-Inspiron-1525)                    │")
+        print(f"│ Host OS      : Linux Mint (sos-node-host)                    │")
         print(f"│ DePIN Node 1 : Mysterium Node   : 14.25 MYST  [Active Sessions: 4]   │")
         print(f"│ DePIN Node 2 : EarnApp          : $8.50 USD   [Uptime: 99.8%]        │")
         print(f"│ DePIN Node 3 : TraffMonetizer   : $5.10 USD   [Proxy Route: OK]      │")

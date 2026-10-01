@@ -1,7 +1,7 @@
 import sqlite3
 import datetime
 
-DB_PATH = "/home/luther/sovereign-core-ecosystem/wallet.db"
+DB_PATH = "~/sovereign-core-ecosystem/wallet.db"
 
 def init_wallet():
     conn = sqlite3.connect(DB_PATH)

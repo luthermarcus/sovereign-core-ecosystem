@@ -4,7 +4,7 @@ import sqlite3
 import hashlib
 
 def scan_and_index():
-    home_dir = os.path.expanduser("/home/luther")
+    home_dir = os.path.expanduser("~")
     eco_dir = os.path.expanduser("~/sovereign-core-ecosystem")
     db_path = os.path.join(eco_dir, "knowledge.db")
     

@@ -28,9 +28,9 @@ def show_greet():
 +---------------------------------------------------------------------+
 | FOX SOVEREIGN CORE OS - NATIVE HOST TERMINAL & DAO DASHBOARD        |
 +---------------------------------------------------------------------+
-| [*] Consensus: AuxPoW (Merged Mining)  | Node IP: 10.0.0.79         |
+| [*] Consensus: AuxPoW (Merged Mining)  | Node IP: 127.0.0.1         |
 | [*] Thermal Guard: Stable (43.0°C)     | Native OS: Linux           |
-| [*] Active DePIN Apps: {apps}               | POL Yield: \${y:.2f}          |
+| [*] Active DePIN Apps: {apps}               | POL Yield: ${y:.2f}          |
 | [*] L2 Vault Address: 0xFOXe829cf1e4d93f153 | Bridge: Active              |
 +---------------------------------------------------------------------+
 | RUN SHORTCUTS:                                                      |
