@@ -20,3 +20,11 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Community Attributions & Upstream Standards
+Sovereign Core OS (SOS) adheres to foundational open-source and decentralized research standards:
+- **Leslie Lamport (1978):** Distributed event ordering and causal clock synchronization primitives.
+- **Albert Einstein (1905, 1915):** Special & General Relativity math ($Lorentz \gamma$, proper time $\tau$, Minkowski causal cones) governing DePIN telemetry pacing.
+- **topjohnwu & osm0sis (XDA/GitHub):** Magisk systemless interface research, mount namespace boundaries, and Android boot image primitives.
+- **Jason A. Donenfeld (WireGuard):** Next-generation modern kernel and userspace tunneling cryptography.
+- **Bram Cohen & BitTorrent Org:** BEP-52 compact binary bitfield piece negotiation architecture.
+- **Mysterium Network & DePIN Node Ops:** Mobile bandwidth session prioritization and flash storage write conservation.

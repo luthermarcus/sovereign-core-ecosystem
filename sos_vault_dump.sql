@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('dfb3c6ff8be0053cf8dd6a5b22bf2e41','sos://magnet/?xt=urn:sos:dfb3c6ff8be0053cf8dd6a5b22bf2e41&dn=README.md',0,5840,'669bd0abde7b029f7234950e0a54b4b8be3d5a7eba7759727e547b93a16aec34',8500,1500,1790922611);
+INSERT INTO "sos_aead_chunks" VALUES('c73282010cdc02902eba404548c88080','sos://magnet/?xt=urn:sos:c73282010cdc02902eba404548c88080&dn=README.md',0,6719,'456acb856009feefff7d4498a142d12dd703d4ed78422acdfe2fc497706611b2',8500,1500,1790922858);
 CREATE TABLE sos_auxpow_receipts (
     receipt_id TEXT PRIMARY KEY,
     tx_id TEXT NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE sos_magnets (
     created_at INT NOT NULL
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:dfb3c6ff8be0053cf8dd6a5b22bf2e41&dn=README.md','dfb3c6ff8be0053cf8dd6a5b22bf2e41',32768,1500,'pixel-sovereign',1790922611);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:c73282010cdc02902eba404548c88080&dn=README.md','c73282010cdc02902eba404548c88080',32768,1500,'pixel-sovereign',1790922858);
 CREATE TABLE sos_peer_bitfields (
     peer_name TEXT PRIMARY KEY,
     total_pieces INT NOT NULL,

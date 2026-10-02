@@ -44,3 +44,12 @@ SOS integrates bleeding-edge innovations and open-source contributions from:
 - **Master Ledger Verifier (`sos-audit`):** Consolidated health and audit applet inspecting Lorentz metrics, WireGuard peers, AEAD chunk stores, UTXO hops, and offline AuxPoW receipts in a single execution.
 - **Cross-Host Linux Mint Parity:** Full verification of 80-byte serialized headers and offline JSON settlement receipts between mobile Termux nodes and desktop Linux Mint workstations.
 - **True Invariant Idempotence:** Sustained zero-commit equilibrium, damping sensor jitter, eliminating phantom child processes, and ensuring 100% clean Git working trees across consecutive synchronizations.
+
+## Community Attributions & Upstream Standards
+Sovereign Core OS (SOS) adheres to foundational open-source and decentralized research standards:
+- **Leslie Lamport (1978):** Distributed event ordering and causal clock synchronization primitives.
+- **Albert Einstein (1905, 1915):** Special & General Relativity math ($Lorentz \gamma$, proper time $\tau$, Minkowski causal cones) governing DePIN telemetry pacing.
+- **topjohnwu & osm0sis (XDA/GitHub):** Magisk systemless interface research, mount namespace boundaries, and Android boot image primitives.
+- **Jason A. Donenfeld (WireGuard):** Next-generation modern kernel and userspace tunneling cryptography.
+- **Bram Cohen & BitTorrent Org:** BEP-52 compact binary bitfield piece negotiation architecture.
+- **Mysterium Network & DePIN Node Ops:** Mobile bandwidth session prioritization and flash storage write conservation.
