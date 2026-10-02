@@ -5,7 +5,7 @@ Rootless, deterministic Python 3.14 standard-library microkernel ecosystem runni
 ## Constitutional Invariants & Architecture
 - **Privilege Sandbox**: `STRICT_ROOTLESS_PURITY` (`u0_a413`, zero root/su, SELinux user-space isolation)
 - **Toolchain**: Python 3.14 Native Standard Library Only (`sqlite3`, `http.server`, `hashlib`, `ast`)
-- **Verified Microkernel Applets**: 84 Rootless Standard-Library Executables
+- **Verified Microkernel Applets**: 85 Rootless Standard-Library Executables
 - **Anti-Hallucination Guard**: `sos-truth` (Real `ast.parse()` syntax verification + full 64-hex SHA-256 Merkle digest)
 
 ## Master Roadmap Status
@@ -18,7 +18,7 @@ Rootless, deterministic Python 3.14 standard-library microkernel ecosystem runni
 | **Steps 81-95** | WireGuard Mesh Gateway, Onion Routing & DePIN Swarm | `ACTIVE` |
 | **Steps 96-113** | Full 64-Hex SHA-256 Merkle Guard, Joined Ledger & FTS5 API | `ACTIVE` |
 
-## Registered Microkernel Applets (84)
+## Registered Microkernel Applets (85)
 ```text
 01. sos-allocation-guard         -> [VERIFIED_ROOTLESS_STDLIB]
 02. sos-anti-abuse               -> [VERIFIED_ROOTLESS_STDLIB]
@@ -73,37 +73,38 @@ Rootless, deterministic Python 3.14 standard-library microkernel ecosystem runni
 51. sos-ns                       -> [VERIFIED_ROOTLESS_STDLIB]
 52. sos-onion-route              -> [VERIFIED_ROOTLESS_STDLIB]
 53. sos-peer-reputation          -> [VERIFIED_ROOTLESS_STDLIB]
-54. sos-privacy-audit            -> [VERIFIED_ROOTLESS_STDLIB]
-55. sos-profile-audit            -> [VERIFIED_ROOTLESS_STDLIB]
-56. sos-ptlc-engine              -> [VERIFIED_ROOTLESS_STDLIB]
-57. sos-ptlc-verifier            -> [VERIFIED_ROOTLESS_STDLIB]
-58. sos-pulse                    -> [VERIFIED_ROOTLESS_STDLIB]
-59. sos-ratchet-enclave          -> [VERIFIED_ROOTLESS_STDLIB]
-60. sos-risk-sentinel            -> [VERIFIED_ROOTLESS_STDLIB]
-61. sos-roadmap-sync             -> [VERIFIED_ROOTLESS_STDLIB]
-62. sos-rootless-guard           -> [VERIFIED_ROOTLESS_STDLIB]
-63. sos-router                   -> [VERIFIED_ROOTLESS_STDLIB]
-64. sos-savepoint                -> [VERIFIED_ROOTLESS_STDLIB]
-65. sos-sidechain-anchor         -> [VERIFIED_ROOTLESS_STDLIB]
-66. sos-skill-hub                -> [VERIFIED_ROOTLESS_STDLIB]
-67. sos-snapshot-daemon          -> [VERIFIED_ROOTLESS_STDLIB]
-68. sos-state-proofs             -> [VERIFIED_ROOTLESS_STDLIB]
-69. sos-status                   -> [VERIFIED_ROOTLESS_STDLIB]
-70. sos-stress-test              -> [VERIFIED_ROOTLESS_STDLIB]
-71. sos-threat-db                -> [VERIFIED_ROOTLESS_STDLIB]
-72. sos-threat-sentinel          -> [VERIFIED_ROOTLESS_STDLIB]
-73. sos-top                      -> [VERIFIED_ROOTLESS_STDLIB]
-74. sos-truth                    -> [VERIFIED_ROOTLESS_STDLIB]
-75. sos-vault                    -> [VERIFIED_ROOTLESS_STDLIB]
-76. sos-vault-scrub              -> [VERIFIED_ROOTLESS_STDLIB]
-77. sos-wal-sync                 -> [VERIFIED_ROOTLESS_STDLIB]
-78. sos-wallet-guard             -> [VERIFIED_ROOTLESS_STDLIB]
-79. sos-watchdog                 -> [VERIFIED_ROOTLESS_STDLIB]
-80. sos-web-bridge               -> [VERIFIED_ROOTLESS_STDLIB]
-81. sos-wireguard-tunnel         -> [VERIFIED_ROOTLESS_STDLIB]
-82. sos-zk-verify                -> [VERIFIED_ROOTLESS_STDLIB]
-83. ssh-ed25519                  -> [VERIFIED_ROOTLESS_STDLIB]
-84. termux-clipboard-set         -> [VERIFIED_ROOTLESS_STDLIB]
+54. sos-power-watchdog           -> [VERIFIED_ROOTLESS_STDLIB]
+55. sos-privacy-audit            -> [VERIFIED_ROOTLESS_STDLIB]
+56. sos-profile-audit            -> [VERIFIED_ROOTLESS_STDLIB]
+57. sos-ptlc-engine              -> [VERIFIED_ROOTLESS_STDLIB]
+58. sos-ptlc-verifier            -> [VERIFIED_ROOTLESS_STDLIB]
+59. sos-pulse                    -> [VERIFIED_ROOTLESS_STDLIB]
+60. sos-ratchet-enclave          -> [VERIFIED_ROOTLESS_STDLIB]
+61. sos-risk-sentinel            -> [VERIFIED_ROOTLESS_STDLIB]
+62. sos-roadmap-sync             -> [VERIFIED_ROOTLESS_STDLIB]
+63. sos-rootless-guard           -> [VERIFIED_ROOTLESS_STDLIB]
+64. sos-router                   -> [VERIFIED_ROOTLESS_STDLIB]
+65. sos-savepoint                -> [VERIFIED_ROOTLESS_STDLIB]
+66. sos-sidechain-anchor         -> [VERIFIED_ROOTLESS_STDLIB]
+67. sos-skill-hub                -> [VERIFIED_ROOTLESS_STDLIB]
+68. sos-snapshot-daemon          -> [VERIFIED_ROOTLESS_STDLIB]
+69. sos-state-proofs             -> [VERIFIED_ROOTLESS_STDLIB]
+70. sos-status                   -> [VERIFIED_ROOTLESS_STDLIB]
+71. sos-stress-test              -> [VERIFIED_ROOTLESS_STDLIB]
+72. sos-threat-db                -> [VERIFIED_ROOTLESS_STDLIB]
+73. sos-threat-sentinel          -> [VERIFIED_ROOTLESS_STDLIB]
+74. sos-top                      -> [VERIFIED_ROOTLESS_STDLIB]
+75. sos-truth                    -> [VERIFIED_ROOTLESS_STDLIB]
+76. sos-vault                    -> [VERIFIED_ROOTLESS_STDLIB]
+77. sos-vault-scrub              -> [VERIFIED_ROOTLESS_STDLIB]
+78. sos-wal-sync                 -> [VERIFIED_ROOTLESS_STDLIB]
+79. sos-wallet-guard             -> [VERIFIED_ROOTLESS_STDLIB]
+80. sos-watchdog                 -> [VERIFIED_ROOTLESS_STDLIB]
+81. sos-web-bridge               -> [VERIFIED_ROOTLESS_STDLIB]
+82. sos-wireguard-tunnel         -> [VERIFIED_ROOTLESS_STDLIB]
+83. sos-zk-verify                -> [VERIFIED_ROOTLESS_STDLIB]
+84. ssh-ed25519                  -> [VERIFIED_ROOTLESS_STDLIB]
+85. termux-clipboard-set         -> [VERIFIED_ROOTLESS_STDLIB]
 ```
 
 ## Web Telemetry & SQLite Enclave Endpoints (127.0.0.1:8080)
