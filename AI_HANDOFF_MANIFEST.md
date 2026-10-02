@@ -20,3 +20,7 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Ancient Economic Precedents: Egyptian Nilometer & Biblical Jubilee
+- **Egyptian Nilometer Protocol:** Dynamic transaction fee taxation tied to measurable real-world capacity. When resources face drought or flooding, tax rates adjust to $0.0\%$ to preserve node solvency.
+- **Biblical Sabbatical & Jubilee Cycles:** Programmatic debt and reputation decay prevents historical balances from forming permanent routing monopolies.
+- **Just Scales & Measures:** Zero-drift cryptographic balance verification ($\sum \text{inputs} = \sum \text{outputs} + \text{fees}$).
