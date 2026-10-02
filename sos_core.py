@@ -586,7 +586,7 @@ class SOSFoxEngine:
         return {
             "Gate 1 [Security & Zero-Leak]": "PASS | .gitignore Shield + Private BIPs Isolated + SSH Ed25519 Ready",
             "Gate 2 [Engine & AST Check]  ": f"PASS | Python {tc['python']} + {tc['openssl']}",
-            "Gate 3 [Knowledge & Log Fix] ": "PASS | 23 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
+            "Gate 3 [Knowledge & Log Fix] ": "PASS | 24 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
             "Gate 4 [Virtualization & VM] ": f"PASS | Debloated Python Contract VM + Creator Sandbox (proot: {tc['proot']})",
             "Gate 5 [Emulation & Replay]  ": f"PASS | Forward Causal Arrow + Historical Replay Ready ({self.gov.profile.upper()})"
         }
@@ -971,7 +971,7 @@ def run_status_report(engine):
     print(f"    Safety Flags      : {' | '.join(flags_ok)}")
     print(f"    Flags of Concern  : {' | '.join(concerns)}")
     print()
-    print("[2] RESOLVED TERMINAL LOG ANOMALIES (23-STEP TRACKER):")
+    print("[2] RESOLVED TERMINAL LOG ANOMALIES (24-STEP TRACKER):")
     for row in engine.get_step_problem_ledger():
         print(f"    * [{row[0]}] ({row[2]}): {row[4]}")
     print()
