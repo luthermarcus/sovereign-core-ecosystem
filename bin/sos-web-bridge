@@ -4,6 +4,7 @@ import http.server, sqlite3, json, os, time, math, hashlib
 PORT = 8080
 BASE_DIR = os.path.expanduser("~/sos-fox-beta")
 DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
+BACKUP_DIR = os.path.join(BASE_DIR, "vault_backups")
 FRONTEND_DIR = os.path.join(BASE_DIR, "web_frontend")
 BOOT_MONO = time.monotonic()
 BASE_TAU = 955.22
@@ -28,12 +29,44 @@ def compute_relativistic_state():
         load1 = os.getloadavg()[0]
     except (AttributeError, OSError):
         load1 = 0.10
-     cpu_count = os.cpu_count() or 8
+    cpu_count = os.cpu_count() or 8
     beta = min(max(load1 / float(cpu_count), 0.0995), 0.99)
     gamma = round(1.0 / math.sqrt(1.0 - (beta * beta)), 6)
     dt = time.monotonic() - BOOT_MONO
     proper_time = round(BASE_TAU + (dt / gamma), 2)
     return gamma, proper_time
+
+def query_enclave_audit():
+    tables = {}
+    journal_mode = "unknown"
+    integrity = "unverified"
+    if os.path.exists(DB_PATH):
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            cur = conn.cursor()
+            journal_mode = cur.execute("PRAGMA journal_mode").fetchone()[0]
+            integrity = cur.execute("PRAGMA quick_check").fetchone()[0]
+            names = [r[0] for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").fetchall()]
+            for tname in names:
+                if tname.replace("_", "").isalnum():
+                    cnt = cur.execute(f"SELECT COUNT(*) FROM {tname}").fetchone()[0]
+                    tables[tname] = cnt
+            conn.close()
+        except sqlite3.Error as e:
+            integrity = f"error: {e}"
+    snapshots = []
+    if os.path.isdir(BACKUP_DIR):
+        for fname in sorted(os.listdir(BACKUP_DIR)):
+            fpath = os.path.join(BACKUP_DIR, fname)
+            if os.path.isfile(fpath):
+                snapshots.append({"file": fname, "bytes": os.path.getsize(fpath)})
+    return {
+        "db_bytes": os.path.getsize(DB_PATH) if os.path.exists(DB_PATH) else 0,
+        "journal_mode": journal_mode,
+        "integrity": integrity,
+        "tables": tables,
+        "wal_snapshots": snapshots
+    }
 
 class ReusableHTTPServer(http.server.HTTPServer):
     allow_reuse_address = True
@@ -42,8 +75,16 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=FRONTEND_DIR, **kwargs)
 
-    def log_message(self, format, *args):
+    def log_message(self, fmt, *args):
         pass
+
+    def _send_json(self, data):
+        payload = json.dumps(data).encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(payload)
 
     def do_GET(self):
         if self.path.startswith("/api/telemetry"):
@@ -57,21 +98,18 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
                 except sqlite3.Error:
                     gateways = []
             gamma, proper_time = compute_relativistic_state()
-            data = {
+            self._send_json({
                 "node": "pixel-sovereign",
+                "release": "v7.71.87-beta",
                 "gamma": gamma,
                 "proper_time": proper_time,
                 "invariant_seal": "f254ba67a2b370d6e38e9d231dd1e5ae",
                 "workspace_merkle_root": compute_workspace_merkle(),
                 "gateways": gateways,
                 "status": "INVARIANT_ACTIVE"
-            }
-            payload = json.dumps(data).encode("utf-8")
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self.send_header("Cache-Control", "no-store")
-            self.end_headers()
-            self.wfile.write(payload)
+            })
+        elif self.path.startswith("/api/audit"):
+            self._send_json(query_enclave_audit())
         else:
             super().do_GET()
 

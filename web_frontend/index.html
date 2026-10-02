@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sovereign Core OS - Telemetry Workspace</title>
+    <title>Sovereign Core OS - Telemetry & Enclave Workspace</title>
     <style>
         body { background: #0b0f19; color: #38bdf8; font-family: monospace; padding: 20px; }
         .card { border: 1px solid #38bdf8; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #1e293b; }
@@ -13,6 +13,7 @@
     <h1>Sovereign Core OS (pixel-sovereign)</h1>
     <div class="card">
         <h3>Spacetime & Cryptographic State</h3>
+        <p>Release: <span id="release">v7.71.87-beta</span></p>
         <p>Lorentz Gamma (gamma): <span id="gamma">Loading...</span></p>
         <p>Proper Time (tau): <span id="proper-time">Loading...</span>s</p>
         <p>Workspace Merkle Root: <span id="merkle-root">Loading...</span></p>
@@ -22,28 +23,49 @@
         <h3>Active Mesh Gateways</h3>
         <ul id="gateways-list">Loading gateways...</ul>
     </div>
+    <div class="card">
+        <h3>Ledger & Enclave Audit (/api/audit)</h3>
+        <p>Vault Size: <span id="db-bytes">Loading...</span> bytes | Journal: <span id="journal-mode">...</span> | Integrity: <span id="integrity">...</span></p>
+        <ul id="tables-list">Loading SQLite schema...</ul>
+    </div>
 
     <script>
         async function fetchTelemetry() {
             try {
-                const response = await fetch('/api/telemetry');
-                if (!response.ok) throw new Error('HTTP ' + response.status);
-                const data = await response.json();
+                const res = await fetch('/api/telemetry');
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                document.getElementById('release').textContent = data.release ?? 'v7.71.87-beta';
                 document.getElementById('gamma').textContent = data.gamma ?? 'N/A';
                 document.getElementById('proper-time').textContent = data.proper_time ?? 'N/A';
                 document.getElementById('merkle-root').textContent = data.workspace_merkle_root ?? 'N/A';
                 document.getElementById('status').textContent = data.status ?? 'UNKNOWN';
 
-                const gatewayList = document.getElementById('gateways-list');
-                gatewayList.innerHTML = '';
+                const gwList = document.getElementById('gateways-list');
+                gwList.innerHTML = '';
                 if (data.gateways && data.gateways.length > 0) {
                     data.gateways.forEach(gw => {
                         const li = document.createElement('li');
                         li.textContent = `ID: ${gw[0]} | Endpoint: ${gw[1]} | Subnet: ${gw[2]} | State: ${gw[3]}`;
-                        gatewayList.appendChild(li);
+                        gwList.appendChild(li);
                     });
                 } else {
-                    gatewayList.innerHTML = '<li>No active gateways reported.</li>';
+                    gwList.innerHTML = '<li>No active gateways reported.</li>';
+                }
+
+                const auditRes = await fetch('/api/audit');
+                if (auditRes.ok) {
+                    const audit = await auditRes.json();
+                    document.getElementById('db-bytes').textContent = audit.db_bytes ?? 0;
+                    document.getElementById('journal-mode').textContent = audit.journal_mode ?? 'unknown';
+                    document.getElementById('integrity').textContent = audit.integrity ?? 'unknown';
+                    const tList = document.getElementById('tables-list');
+                    tList.innerHTML = '';
+                    Object.entries(audit.tables || {}).forEach(([tbl, cnt]) => {
+                        const li = document.createElement('li');
+                        li.textContent = `${tbl}: ${cnt} row(s)`;
+                        tList.appendChild(li);
+                    });
                 }
             } catch (err) {
                 document.getElementById('status').textContent = 'BRIDGE_DISCONNECTED';
