@@ -6,14 +6,18 @@ os.chdir(repo)
 
 res = subprocess.run(["sos-vault", "--pulse"])
 if res.returncode != 0:
-    print(f"[!] EMERGENCY BRAKE: sos-vault failed with exit code {res.returncode}. Aborting commit pipeline.")
+    print(f"[!] EMERGENCY BRAKE: sos-vault failed with code {res.returncode}. Aborting commit.")
     sys.exit(res.returncode)
 
-status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True).stdout.strip()
-if not status:
+# Filter out ignored/transient files from git status check
+raw_status = subprocess.run(["git", "status", "--porcelain", "-uno"], capture_output=True, text=True).stdout.strip()
+tracked_status = [l for l in raw_status.splitlines() if not any(db_ext in l for db_ext in [".db", ".db-wal", ".db-shm"])]
+
+if not tracked_status:
     print("[=] Invariant Git Gate: Working tree is 100% clean. Zero redundant commits or network pushes.")
 else:
     msg = sys.argv[1] if len(sys.argv) > 1 else "Autonomous Invariant Sync"
-    subprocess.run(["git", "add", "-A"], check=False)
+    subprocess.run(["git", "add", "-u"], check=False)
+    subprocess.run(["git", "add", "sos_vault_dump.sql", ".gitignore"], check=False)
     subprocess.run(["git", "commit", "-m", f"SOS Pulse: {msg}"], check=False)
     subprocess.run(["sos", "--git-push", "https://github.com/luthermarcus/sovereign-core-ecosystem.git"], check=False)

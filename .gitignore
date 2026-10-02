@@ -12,3 +12,4 @@ __pycache__/
 *.db-wal
 *.db-shm
 .git-credentials
+sos_vault.db
