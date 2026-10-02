@@ -73,6 +73,7 @@ CREATE TABLE sos_royalty_settlements (
     recorded_at INT NOT NULL
 );
 INSERT INTO "sos_royalty_settlements" VALUES('5f38e9fd5f426280f8afa1cc79d609be','398ccac7f9bd18e55840afc28eee26a1','peer-mint-bridge-01','fox://l1/creator/vault',4403,'peer-mint-bridge-01',777,'SETTLED_TIMELIKE',1790922028);
+INSERT INTO "sos_royalty_settlements" VALUES('56907c7f0198bd742405097bfca1bdd8','398ccac7f9bd18e55840afc28eee26a1','pixel-sovereign','fox://l1/creator/vault',4404,'pixel-sovereign',777,'SETTLED_TIMELIKE',1790922261);
 CREATE TABLE sos_spacetime_anchors (
     anchor_id TEXT PRIMARY KEY,
     gamma REAL NOT NULL,
@@ -93,6 +94,17 @@ CREATE TABLE sos_utxo_logistics (
     recorded_at INT NOT NULL
 );
 INSERT INTO "sos_utxo_logistics" VALUES('82feb96a484561fd6d7fbff760a4c860','GENESIS_COINBASE_44B','DEPIN_PARCEL_AND_OS_ANCHOR','pixel-sovereign',994.18,'79569afdfbf56944ae735e2e27fd169e',1,1790920230);
-INSERT INTO "sos_utxo_logistics" VALUES('269242089bc6f8c94b5ee8ec7ae95f45','82feb96a484561fd6d7fbff760a4c860','P2P_MESH_STREAM_PAYLOAD','peer-mint-bridge-01',5.06,'79569afdfbf56944ae735e2e27fd169e',0,1790922028);
+INSERT INTO "sos_utxo_logistics" VALUES('269242089bc6f8c94b5ee8ec7ae95f45','82feb96a484561fd6d7fbff760a4c860','P2P_MESH_STREAM_PAYLOAD','peer-mint-bridge-01',5.06,'79569afdfbf56944ae735e2e27fd169e',1,1790922028);
+INSERT INTO "sos_utxo_logistics" VALUES('f434bcca96c16db5bdf212ff017bcedc','269242089bc6f8c94b5ee8ec7ae95f45','P2P_DAEMON_INBOUND','pixel-sovereign',5.06,'79569afdfbf56944ae735e2e27fd169e',0,1790922261);
+CREATE TABLE sos_wireguard_peers (
+    peer_name TEXT PRIMARY KEY,
+    endpoint TEXT NOT NULL,
+    pubkey TEXT NOT NULL,
+    allowed_ips TEXT NOT NULL,
+    psk_hash TEXT NOT NULL,
+    handshake_status TEXT NOT NULL,
+    last_handshake INT NOT NULL
+);
+INSERT INTO "sos_wireguard_peers" VALUES('peer-mint-bridge-01','10.0.0.90:51820','AAAAC3NzaC1lZDI1NTE5AAAAILtQudjePzWEGOc1fLrlagrbthn45sjT0s9IYEeHyghV','10.0.0.0/24','a01823fdd3f94b1f5c4eabdf849fdf9d','VERIFIED_TIMELIKE',1790922261);
 PRAGMA writable_schema=OFF;
 COMMIT;
