@@ -20,3 +20,7 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Step 50 Golden Milestone Architecture Ledger
+- **Binary Detachment & Git Purity:** Permanently untracked binary `sos_vault.db` from Git index while preserving local database operations, committing exclusively to human-readable `sos_vault_dump.sql` to avoid SQLite header change false-positives.
+- **Terminal Operations Dashboard (`sos-top`):** Integrated single-screen real-time terminal UI visualising Lorentz factor $\gamma$, proper time $\tau$, DePIN peer bandwidth, and UTXO chain-of-custody.
+- **True Invariant Equilibrium:** Attained idempotent node synchronization with zero spurious commits when operating under stable state.

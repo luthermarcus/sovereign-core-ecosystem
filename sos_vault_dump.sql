@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('2d8a0bed92db0ad7c443c7ec2e97f5b4','sos://magnet/?xt=urn:sos:2d8a0bed92db0ad7c443c7ec2e97f5b4&dn=README.md',0,4543,'666f220764bf91fcc2e36acdfcd885c12c9cf0cb421caccc8f6c151fcd2c4649',8500,1500,1790921400);
+INSERT INTO "sos_aead_chunks" VALUES('398ccac7f9bd18e55840afc28eee26a1','sos://magnet/?xt=urn:sos:398ccac7f9bd18e55840afc28eee26a1&dn=README.md',0,5181,'36c3e079c09c73caaf4f2f85efd59532eb93b44f5e06917d943d76e73c171b68',8500,1500,1790921560);
 CREATE TABLE sos_depin_peers (
     peer_id TEXT PRIMARY KEY,
     transport TEXT NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE sos_magnets (
     created_at INT NOT NULL
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:2d8a0bed92db0ad7c443c7ec2e97f5b4&dn=README.md','2d8a0bed92db0ad7c443c7ec2e97f5b4',32768,1500,'pixel-sovereign',1790921400);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:398ccac7f9bd18e55840afc28eee26a1&dn=README.md','398ccac7f9bd18e55840afc28eee26a1',32768,1500,'pixel-sovereign',1790921560);
 CREATE TABLE sos_spacetime_anchors (
     anchor_id TEXT PRIMARY KEY,
     gamma REAL NOT NULL,

@@ -34,3 +34,8 @@ SOS integrates bleeding-edge innovations and open-source contributions from:
 ## Step 49 Relativistic Observer Damping & Differential Invariant Gate
 - **Feedback Loop Elimination:** Replaced raw cumulative byte modulo with differential transfer velocity ($\Delta B / \Delta t$) and a 60-second temporal cooldown window, preventing git push network traffic from re-triggering database mutations.
 - **Invariant Ledger Equilibrium:** Gated SQLite WAL commits behind proper-time shifts ($\Delta 	au$), guaranteeing that consecutive `sos-pulse` executions produce exactly `0 DB mutations` and `0 git commits`.
+
+## Step 50 Golden Milestone Architecture Ledger
+- **Binary Detachment & Git Purity:** Permanently untracked binary `sos_vault.db` from Git index while preserving local database operations, committing exclusively to human-readable `sos_vault_dump.sql` to avoid SQLite header change false-positives.
+- **Terminal Operations Dashboard (`sos-top`):** Integrated single-screen real-time terminal UI visualising Lorentz factor $\gamma$, proper time $\tau$, DePIN peer bandwidth, and UTXO chain-of-custody.
+- **True Invariant Equilibrium:** Attained idempotent node synchronization with zero spurious commits when operating under stable state.
