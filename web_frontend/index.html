@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sovereign Core OS - Telemetry & Ledger Workspace</title>
+    <title>Sovereign Core OS - Telemetry, Ledger &amp; Network Workspace</title>
     <style>
         body { background: #0b0f19; color: #38bdf8; font-family: monospace; padding: 20px; }
         .card { border: 1px solid #38bdf8; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #1e293b; }
@@ -18,9 +18,8 @@
     <h1>Sovereign Core OS (pixel-sovereign)</h1>
     <div class="card">
         <h3>Spacetime &amp; Cryptographic State</h3>
-        <p>Release: <span id="release">v7.71.91-beta</span></p>
-        <p>Lorentz Gamma (gamma): <span id="gamma">Loading...</span></p>
-        <p>Proper Time (tau): <span id="proper-time">Loading...</span>s</p>
+        <p>Release: <span id="release">v7.71.92-beta</span> | Mode: <span id="acct-mode">LOCAL_OFFLINE_SIMULATION_ONLY</span></p>
+        <p>Lorentz Gamma (gamma): <span id="gamma">Loading...</span> | Proper Time (tau): <span id="proper-time">Loading...</span>s</p>
         <p>SHA-256 Merkle Root (64-hex): <span id="merkle-root">Loading...</span> (<span id="files-hashed">0</span> files)</p>
         <p>System Status: <span id="status">CONNECTING</span></p>
     </div>
@@ -29,12 +28,12 @@
         <ul id="gateways-list">Loading gateways...</ul>
     </div>
     <section class="card">
-        <h2>Ledger &amp; Knowledge Inspector (/api/ledger)</h2>
+        <h2>Ledger &amp; Knowledge Inspector (/api/ledger &amp; /api/search)</h2>
         <h3>Joined UTXO + Royalty + FTS5 Provenance</h3>
         <table id="joined-table"><thead></thead><tbody></tbody></table>
-        <h3>Unspent UTXOs (Simulation Units)</h3>
+        <h3>Unspent UTXOs (Offline Simulation Units)</h3>
         <table id="utxo-table"><thead></thead><tbody></tbody></table>
-        <h3>Royalty Settlements (Simulation Units)</h3>
+        <h3>Royalty Settlements (Offline Simulation Units)</h3>
         <table id="royalty-table"><thead></thead><tbody></tbody></table>
         <h3>Knowledge Entries (FTS5 Search: /api/search)</h3>
         <div>
@@ -42,6 +41,19 @@
             <button onclick="runFtsSearch()">Search FTS5</button>
         </div>
         <table id="knowledge-table"><thead></thead><tbody></tbody></table>
+    </section>
+    <section class="card">
+        <h2>P2P Network, Atomic Swaps &amp; Mesh Topology (/api/network)</h2>
+        <h3>Atomic Swaps (sos_atomic_swaps)</h3>
+        <table id="swaps-table"><thead></thead><tbody></tbody></table>
+        <h3>Sidechain Routes (sos_sidechain_routes)</h3>
+        <table id="routes-table"><thead></thead><tbody></tbody></table>
+        <h3>WireGuard Peers (sos_wireguard_peers)</h3>
+        <table id="wg-table"><thead></thead><tbody></tbody></table>
+        <h3>Onion Circuits (sos_onion_circuits)</h3>
+        <table id="onion-table"><thead></thead><tbody></tbody></table>
+        <h3>DePIN Peers (sos_depin_peers)</h3>
+        <table id="depin-table"><thead></thead><tbody></tbody></table>
     </section>
     <div class="card">
         <h3>Enclave Schema Audit (/api/audit)</h3>
@@ -56,8 +68,17 @@
             sos_royalty_settlements: 'royalty-table'
         };
 
+        const NETWORK_TARGETS = {
+            sos_atomic_swaps: 'swaps-table',
+            sos_sidechain_routes: 'routes-table',
+            sos_wireguard_peers: 'wg-table',
+            sos_onion_circuits: 'onion-table',
+            sos_depin_peers: 'depin-table'
+        };
+
         function renderTable(elementId, tableData) {
             const table = document.getElementById(elementId);
+            if (!table) return;
             const thead = table.querySelector('thead');
             const tbody = table.querySelector('tbody');
             if (!tableData || tableData.error) {
@@ -91,20 +112,30 @@
             }
         }
 
-        async function fetchLedger() {
+        async function fetchLedgerAndNetwork() {
             try {
-                const res = await fetch('/api/ledger');
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const data = await res.json();
-                for (const [table, elId] of Object.entries(LEDGER_TARGETS)) {
-                    renderTable(elId, data[table]);
+                const [lRes, nRes] = await Promise.all([
+                    fetch('/api/ledger'),
+                    fetch('/api/network')
+                ]);
+                if (lRes.ok) {
+                    const lData = await lRes.json();
+                    for (const [table, elId] of Object.entries(LEDGER_TARGETS)) {
+                        renderTable(elId, lData[table]);
+                    }
+                    const qInput = document.getElementById('fts-query');
+                    if (!qInput.value) {
+                        renderTable('knowledge-table', lData['sos_knowledge_fts']);
+                    }
                 }
-                const qInput = document.getElementById('fts-query');
-                if (!qInput.value) {
-                    renderTable('knowledge-table', data['sos_knowledge_fts']);
+                if (nRes.ok) {
+                    const nData = await nRes.json();
+                    for (const [table, elId] of Object.entries(NETWORK_TARGETS)) {
+                        renderTable(elId, nData[table]);
+                    }
                 }
             } catch (err) {
-                console.error('ledger fetch failed:', err);
+                console.error('ledger/network fetch failed:', err);
             }
         }
 
@@ -113,7 +144,8 @@
                 const res = await fetch('/api/telemetry');
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
-                document.getElementById('release').textContent = data.release || 'v7.71.91-beta';
+                document.getElementById('release').textContent = data.release || 'v7.71.92-beta';
+                document.getElementById('acct-mode').textContent = data.accounting_mode || 'LOCAL_OFFLINE_SIMULATION_ONLY';
                 document.getElementById('gamma').textContent = data.gamma || 'N/A';
                 document.getElementById('proper-time').textContent = data.proper_time || 'N/A';
                 document.getElementById('merkle-root').textContent = data.ground_truth_hash || 'N/A';
@@ -152,9 +184,9 @@
         }
 
         setInterval(fetchTelemetry, 2000);
-        setInterval(fetchLedger, 2000);
+        setInterval(fetchLedgerAndNetwork, 2000);
         fetchTelemetry();
-        fetchLedger();
+        fetchLedgerAndNetwork();
     </script>
 </body>
 </html>

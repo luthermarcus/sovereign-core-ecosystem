@@ -1,4 +1,4 @@
-# Sovereign Core OS (SOS v7.71.91-beta)
+# Sovereign Core OS (SOS v7.71.92-beta)
 
 Rootless, deterministic Python 3.14 standard-library microkernel ecosystem running on Android Termux (pixel-sovereign, aarch64, Android 17 SDK 37) and Linux Mint workstations.
 
@@ -16,7 +16,7 @@ Rootless, deterministic Python 3.14 standard-library microkernel ecosystem runni
 | **Steps 71-78** | Anti-Abuse Sentinel, Nilometer Relief & Jubilee Reset | `ACTIVE` |
 | **Steps 79-80** | Claude Bridge & Cross-Community Skill Hub | `ACTIVE` |
 | **Steps 81-95** | WireGuard Mesh Gateway, Onion Routing & DePIN Swarm | `ACTIVE` |
-| **Steps 96-104** | Full 64-Hex SHA-256 Merkle Guard, Joined Ledger & FTS5 API | `ACTIVE` |
+| **Steps 96-105** | Full 64-Hex SHA-256 Merkle Guard, Joined Ledger & FTS5 API | `ACTIVE` |
 
 ## Registered Microkernel Applets (44)
 ```text

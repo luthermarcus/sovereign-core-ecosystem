@@ -2,7 +2,7 @@
 import os, sys
 
 def generate_grok_prompt():
-    prompt = """# GROK ONBOARDING PROMPT: SOVEREIGN CORE OS (SOS v7.71.91-beta)
+    prompt = """# GROK ONBOARDING PROMPT: SOVEREIGN CORE OS (SOS v7.71.92-beta)
 You are collaborating on Sovereign Core OS (SOS), an invariant rootless microkernel running on Android Termux and Linux Mint.
 
 ## Active State Parameters:
