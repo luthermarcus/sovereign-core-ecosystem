@@ -4,10 +4,12 @@
 *.db-wal
 *.env
 *.key
+*.log
 *.pem
 *.seed
 *.sql
 *.tmp
+*.zip
 .git-credentials
 __pycache__/
 bips_private/

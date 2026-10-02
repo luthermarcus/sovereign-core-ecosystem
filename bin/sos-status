@@ -6,6 +6,7 @@ def show_status():
     subprocess.run(["sos-risk-sentinel"])
     subprocess.run(["sos-military-enclave"])
     subprocess.run(["sos-wallet-guard"])
+    subprocess.run(["sos-ecosystem-sim"])
     subprocess.run(["sos-boomerang-engine"])
     subprocess.run(["sos-legal-sentinel"])
     subprocess.run(["sos-ratchet-enclave"])
