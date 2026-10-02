@@ -12,7 +12,7 @@ def generate_claude_handoff():
     gamma, tau = row if row else (1.005, 955.22)
     conn.close()
     
-    handoff = f"""# CLAUDE ONBOARDING PROMPT: SOVEREIGN CORE OS (SOS v7.71.92-beta)
+    handoff = f"""# CLAUDE ONBOARDING PROMPT: SOVEREIGN CORE OS (SOS v7.71.95-beta)
 You are collaborating on Sovereign Core OS (SOS), an invariant rootless microkernel running on Android Termux and Linux Mint.
 
 ## Active State Parameters:

@@ -12,7 +12,7 @@ conn = sqlite3.connect(db_path)
 cur = conn.cursor()
 
 print("=" * 78)
-print("  SOVEREIGN CORE OS (SOS v7.71.92-beta) - STEP 105 MASTER LEDGER AUDIT")
+print("  SOVEREIGN CORE OS (SOS v7.71.95-beta) - STEP 108 MASTER LEDGER AUDIT")
 print("  Node: pixel-sovereign (aarch64) | OS: Android 17 (SDK 37) | Toolchain: Py3.14")
 print("=" * 78)
 

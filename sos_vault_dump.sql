@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('348ecfd86dd2e479699905d891d191da','sos://magnet/?xt=urn:sos:348ecfd86dd2e479699905d891d191da&dn=README.md',0,4694,'3bac1949f271ab2652327ff4196ce3cd2e756ddf31f7c8894016c45dd5af4053',8500,1500,1790943010);
+INSERT INTO "sos_aead_chunks" VALUES('9fcbfeb20255d7e6b89ad90055e8f515','sos://magnet/?xt=urn:sos:9fcbfeb20255d7e6b89ad90055e8f515&dn=README.md',0,4694,'3d26357c19346b4110957b5d655fd77b1a4f8c44422d94afde32764cfed75102',8500,1500,1790943065);
 CREATE TABLE sos_atomic_swaps (
             swap_id TEXT PRIMARY KEY,
             maker_node TEXT,
@@ -81,8 +81,8 @@ CREATE TABLE sos_magnets (
     seeder_node TEXT NOT NULL,
     created_at INT NOT NULL
 );
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.92-beta','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:348ecfd86dd2e479699905d891d191da&dn=README.md','348ecfd86dd2e479699905d891d191da',32768,1500,'pixel-sovereign',1790943010);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.95-beta','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:9fcbfeb20255d7e6b89ad90055e8f515&dn=README.md','9fcbfeb20255d7e6b89ad90055e8f515',32768,1500,'pixel-sovereign',1790943065);
 CREATE TABLE sos_mesh_gateways (gateway_id TEXT PRIMARY KEY, endpoint_ip TEXT, subnet_mask TEXT, status TEXT, last_seen INTEGER);
 INSERT INTO "sos_mesh_gateways" VALUES('ca9abc624938d4656efe3d6809930250','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930560);
 INSERT INTO "sos_mesh_gateways" VALUES('c4878cf8c4e858d2b1558a2353836410','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930667);

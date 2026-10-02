@@ -4,7 +4,7 @@ import os, sys, sqlite3
 BASE_DIR = os.path.expanduser("~/sos-fox-beta")
 README_PATH = os.path.join(BASE_DIR, "README.md")
 DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
-RELEASE_TAG = "v7.71.92-beta"
+RELEASE_TAG = "v7.71.95-beta"
 BT = chr(96)
 FENCE = BT * 3
 
@@ -14,7 +14,7 @@ PHASES = [
     ("Steps 71-78", "Anti-Abuse Sentinel, Nilometer Relief & Jubilee Reset", "ACTIVE"),
     ("Steps 79-80", "Claude Bridge & Cross-Community Skill Hub", "ACTIVE"),
     ("Steps 81-95", "WireGuard Mesh Gateway, Onion Routing & DePIN Swarm", "ACTIVE"),
-    ("Steps 96-105", "Full 64-Hex SHA-256 Merkle Guard, Joined Ledger & FTS5 API", "ACTIVE"),
+    ("Steps 96-108", "Full 64-Hex SHA-256 Merkle Guard, Joined Ledger & FTS5 API", "ACTIVE"),
 ]
 
 def get_applets():

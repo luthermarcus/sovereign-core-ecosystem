@@ -1,5 +1,5 @@
 # ==============================================================================
-# SOVEREIGN CORE OS (SOS v7.71.92-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET
+# SOVEREIGN CORE OS (SOS v7.71.95-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET
 # ==============================================================================
 - **Active Node:** `pixel-sovereign` (`aarch64`) running `Android 17 (SDK 37)` [`CP41.260831.007`]
 - **Toolchain:** Python `3.14.6` | `git version 2.56.0` | `OpenSSL 3.6.5 29 Sep 2026` | `uv 0.12.21 (aarch64-linux-android)`
