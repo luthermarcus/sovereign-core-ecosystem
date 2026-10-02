@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sovereign Core OS - Telemetry Workspace</title>
+    <style>
+        body { background: #0b0f19; color: #38bdf8; font-family: monospace; padding: 20px; }
+        .card { border: 1px solid #38bdf8; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #1e293b; }
+        ul { padding-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Sovereign Core OS (pixel-sovereign)</h1>
+    <div class="card">
+        <h3>Spacetime Metrics</h3>
+        <p>Lorentz Gamma (gamma): <span id="gamma">Loading...</span></p>
+        <p>Proper Time (tau): <span id="proper-time">Loading...</span>s</p>
+        <p>System Status: <span id="status">CONNECTING</span></p>
+    </div>
+    <div class="card">
+        <h3>Active Mesh Gateways</h3>
+        <ul id="gateways-list">Loading gateways...</ul>
+    </div>
+
+    <script>
+        async function fetchTelemetry() {
+            try {
+                const response = await fetch('/api/telemetry');
+                const data = await response.json();
+                document.getElementById('gamma').innerText = data.gamma;
+                document.getElementById('proper-time').innerText = data.proper_time;
+                document.getElementById('status').innerText = data.status;
+                
+                const gatewayList = document.getElementById('gateways-list');
+                gatewayList.innerHTML = '';
+                if (data.gateways && data.gateways.length > 0) {
+                    data.gateways.forEach(gw => {
+                        const li = document.createElement('li');
+                        li.innerText = `ID: ${gw[0]} | Endpoint: ${gw[1]} | Subnet: ${gw[2]} | State: ${gw[3]}`;
+                        gatewayList.appendChild(li);
+                    });
+                } else {
+                    gatewayList.innerHTML = '<li>No active gateways reported.</li>';
+                }
+            } catch (err) {
+                document.getElementById('status').innerText = 'BRIDGE_DISCONNECTED';
+            }
+        }
+        setInterval(fetchTelemetry, 2000);
+        fetchTelemetry();
+    </script>
+</body>
+</html>
