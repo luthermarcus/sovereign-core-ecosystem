@@ -1,0 +1,12 @@
+# SOS & FOX Zero-Leak Security Shield
+bips_private/
+reports_sanitized/
+exports/
+fox_wallet_meta.json
+*.key
+*.pem
+*.seed
+*.env
+__pycache__/
+*.db-wal
+*.db-shm
