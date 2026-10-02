@@ -2,6 +2,7 @@
 bips_private/
 reports_sanitized/
 exports/
+sandbox/
 fox_wallet_meta.json
 *.key
 *.pem
