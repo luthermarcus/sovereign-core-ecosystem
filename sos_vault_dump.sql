@@ -19,7 +19,7 @@ CREATE TABLE sos_depin_peers (
     priority_tier TEXT NOT NULL,
     updated_at INT NOT NULL
 );
-INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',469.75,0.92,'TIER_1_HIGH_BW',1790920905);
+INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',373.44,0.92,'TIER_1_HIGH_BW',1790920911);
 CREATE TABLE sos_feature_lanes (
     feature_id TEXT PRIMARY KEY,
     prong_role TEXT NOT NULL,
