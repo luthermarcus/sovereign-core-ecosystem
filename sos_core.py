@@ -971,7 +971,7 @@ def run_status_report(engine):
     print(f"    Safety Flags      : {' | '.join(flags_ok)}")
     print(f"    Flags of Concern  : {' | '.join(concerns)}")
     print()
-    print("[2] RESOLVED TERMINAL LOG ANOMALIES (24-STEP TRACKER):")
+    print("[2] RESOLVED TERMINAL LOG ANOMALIES (42-STEP TRACKER):")
     for row in engine.get_step_problem_ledger():
         print(f"    * [{row[0]}] ({row[2]}): {row[4]}")
     print()
@@ -1195,7 +1195,7 @@ def main():
         print(f"[+] Portable Beta Bundle Ready: {path}")
         print(f"[+] SHA256: {sha}")
     elif args[0] == "--git-push":
-        remote_url = args[1] if len(args) > 1 else "git@github.com:luthermarcus/sovereign-core-ecosystem.git"
+        remote_url = args[1] if len(args) > 1 else "https://github.com/luthermarcus/sovereign-core-ecosystem.git"
         engine.stage_git_repository()
         subprocess.run(["git", "remote", "remove", "origin"], cwd=BASE_DIR, stderr=subprocess.DEVNULL)
         subprocess.run(["git", "remote", "add", "origin", remote_url], cwd=BASE_DIR, check=True)
