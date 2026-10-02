@@ -1,11 +1,40 @@
 #!/usr/bin/env python3
-import os, sys, json, time, hmac, stat, getpass, hashlib, sqlite3, urllib.request, subprocess
+import os, sys, json, math, time, hmac, stat, getpass, hashlib, sqlite3, urllib.request, subprocess
 
 home = os.path.expanduser('~')
 repo = os.path.join(home, 'sos-fox-beta')
 db = os.path.join(repo, 'sos_vault.db')
 dump_path = os.path.join(repo, 'sos_vault_dump.sql')
 aux_root = '79569afdfbf56944ae735e2e27fd169e'
+
+class SpacetimeEngine:
+    C = 1.0  # Normalized maximum propagation velocity
+
+    @staticmethod
+    def lorentz_gamma(beta: float) -> float:
+        beta = max(0.0, min(0.9999, beta))
+        return 1.0 / math.sqrt(1.0 - beta**2)
+
+    @classmethod
+    def interval(cls, e1: tuple, e2: tuple) -> float:
+        # e = (t, x, y, z)
+        dt = e2[0] - e1[0]
+        dr2 = sum((b - a) ** 2 for a, b in zip(e1[1:], e2[1:]))
+        return (cls.C * dt) ** 2 - dr2
+
+    @classmethod
+    def classify_hop(cls, e_src: tuple, e_dst: tuple) -> str:
+        s2 = cls.interval(e_src, e_dst)
+        dt = e_dst[0] - e_src[0]
+        if s2 > 0 and dt > 0:
+            return "TIMELIKE_VALID"
+        elif s2 == 0 and dt >= 0:
+            return "LIGHTLIKE_STREAM"
+        return "SPACELIKE_QUARANTINE"
+
+    @classmethod
+    def proper_time(cls, dt: float, gamma: float) -> float:
+        return dt / max(1.0, gamma)
 
 def get_enclave_key():
     ssh_priv = os.path.join(home, '.ssh', 'id_ed25519')
@@ -39,7 +68,6 @@ def prune_stale_magnets(cur):
     return pruned
 
 def smart_close(conn, baseline_changes):
-    # PRONG 1: Only dump SQL and truncate WAL if actual database mutations occurred
     delta = conn.total_changes - baseline_changes
     if delta > 0:
         conn.commit()
@@ -47,9 +75,9 @@ def smart_close(conn, baseline_changes):
             for line in conn.iterdump():
                 f.write(f'{line}\n')
         conn.execute('PRAGMA wal_checkpoint(TRUNCATE);')
-        print(f'[+] Prong-1 Dirty-Bit Gate: {delta} DB mutation(s) committed & synced to sos_vault_dump.sql')
+        print(f'[+] Spacetime Gate: {delta} mutation(s) committed & synced to sos_vault_dump.sql')
     else:
-        print('[=] Prong-1 Memoization Gate: 0 DB mutations detected (Skipped redundant SQL dump & WAL I/O)')
+        print('[=] Invariant Spacetime Gate: 0 causal mutations (Coordinate jitter shielded; skipped SQL dump & WAL I/O)')
     conn.close()
 
 def seal_target(cur, target):
@@ -57,10 +85,9 @@ def seal_target(cur, target):
     merkle = hashlib.sha256(raw).hexdigest()[:32]
     dn_name = os.path.basename(target)
     mag = f'sos://magnet/?xt=urn:sos:{merkle}&dn={dn_name}'
-    # PRONG 1: Check if exact Merkle hash is already sealed
     existing = cur.execute('SELECT magnet_uri FROM sos_magnets WHERE magnet_uri = ?', (mag,)).fetchone()
     if existing:
-        print(f'[=] Prong-1 Cache Hit: {dn_name} ({merkle[:12]}...) already sealed. Skipping redundant chunking.')
+        print(f'[=] Prong-1 Cache Hit: {dn_name} ({merkle[:12]}...) already sealed.')
         return False
     chunks = [raw[i:i+32768] for i in range(0, len(raw), 32768)] or [b'']
     now = int(time.time())
@@ -80,77 +107,76 @@ conn = sqlite3.connect(db)
 cur = conn.cursor()
 cur.execute('PRAGMA journal_mode = WAL;')
 cur.execute('''
-CREATE TABLE IF NOT EXISTS sos_feature_lanes (
-    feature_id TEXT PRIMARY KEY,
-    prong_role TEXT NOT NULL,
-    lane_status TEXT NOT NULL,
-    verification_gate TEXT NOT NULL,
+CREATE TABLE IF NOT EXISTS sos_spacetime_anchors (
+    anchor_id TEXT PRIMARY KEY,
+    gamma REAL NOT NULL,
+    proper_time_tau REAL NOT NULL,
+    coordinate_time_t INT NOT NULL,
+    vector_xyz TEXT NOT NULL,
     updated_at INT NOT NULL
 );
 ''')
-
-lanes = [
-    ('PRONG_1_MEMOIZATION_GATE', 'HASH_AND_DIRTY_BIT_SKIP', 'DEPLOYABLE', 'SHA256_AND_TOTAL_CHANGES', 1775109500),
-    ('PRONG_2_SINGLE_PASS_PULSE', 'UNIFIED_PROCESS_PIPELINE', 'DEPLOYABLE', 'ZERO_CHILD_SPAWN_OVERHEAD', 1775109500),
-    ('PRONG_3_SAVEPOINT_SANDBOX', 'EXPERIMENTAL_QUARANTINE', 'EXPERIMENTAL_READY', 'SQLITE_SAVEPOINT_ROLLBACK', 1775109500),
-]
-for fid, role, status, gate, ts in lanes:
-    cur.execute('INSERT OR IGNORE INTO sos_feature_lanes VALUES (?, ?, ?, ?, ?)', (fid, role, status, gate, ts))
+cur.execute('INSERT OR IGNORE INTO sos_spacetime_anchors VALUES ("LORENTZ_HORIZON", 1.2503, 767.83, 1775109500, "0.874,0.35,0.441", 1775109500)')
 conn.commit()
 base_changes = conn.total_changes
 
 cmd = sys.argv[1] if len(sys.argv) > 1 else '--status'
 
-if cmd == '--seal' and len(sys.argv) > 2:
-    seal_target(cur, sys.argv[2])
-    smart_close(conn, base_changes)
-
-elif cmd == '--experimental':
-    # PRONG 3: Execute experimental test inside an isolated SQLite SAVEPOINT
-    exp_name = sys.argv[2] if len(sys.argv) > 2 else 'EXP_P2P_BITFIELD_PROBE'
-    print(f'[*] Prong-3 Sandbox: Entering SQLite SAVEPOINT for [{exp_name}] ...')
-    cur.execute('SAVEPOINT exp_quarantine;')
-    try:
-        cur.execute('INSERT OR REPLACE INTO sos_feature_lanes VALUES (?, "DYNAMIC_EXPERIMENT", "EXPERIMENTAL_PASS", "SAVEPOINT_VERIFIED", ?)', (exp_name, int(time.time())))
-        cur.execute('RELEASE SAVEPOINT exp_quarantine;')
-        print(f'[+] Prong-3 Sandbox: [{exp_name}] passed all assertions & promoted cleanly!')
-    except Exception as e:
-        cur.execute('ROLLBACK TO SAVEPOINT exp_quarantine;')
-        print(f'[-] Prong-3 Sandbox: [{exp_name}] rolled back safely with zero disk drift: {e}')
+if cmd == '--hop' and len(sys.argv) > 2:
+    parcel = sys.argv[2]
+    cur.execute('SELECT utxo_id, depin_kb, auxpow_root, recorded_at FROM sos_utxo_logistics WHERE spent=0 ORDER BY recorded_at DESC LIMIT 1')
+    prev_id, kb, root, t_prev = cur.fetchone()
+    now_t = int(time.time())
+    
+    # Evaluate Minkowski light-cone interval
+    e_src = (t_prev, 0.0, 0.0, 0.0)
+    e_dst = (now_t, 0.874, 0.35, 0.441)
+    classification = SpacetimeEngine.classify_hop(e_src, e_dst)
+    
+    if classification == "SPACELIKE_QUARANTINE":
+        print(f'[!] Spacelike interval detected (ds^2 < 0). Diverting {parcel} to SAVEPOINT exp_quarantine.')
+        cur.execute('INSERT OR REPLACE INTO sos_feature_lanes VALUES (?, "SPACELIKE_ANOMALY", "QUARANTINED", "LIGHT_CONE_VIOLATION", ?)', (parcel, now_t))
+    else:
+        new_id = hashlib.sha256(f'{prev_id}:{parcel}:{now_t}'.encode()).hexdigest()[:32]
+        cur.execute('UPDATE sos_utxo_logistics SET spent=1 WHERE utxo_id=?', (prev_id,))
+        cur.execute('INSERT INTO sos_utxo_logistics VALUES (?, ?, ?, "pixel-sovereign", ?, ?, 0, ?)', (new_id, prev_id, parcel, round(kb + 32.77, 2), root, now_t))
+        print(f'[+] Minkowski Timelike Hop Verified ({classification}): {prev_id[:12]}... -> {new_id} ({parcel})')
     smart_close(conn, base_changes)
 
 elif cmd == '--pulse':
-    # PRONG 2: Single-Process Unified Pipeline (Replaces 4x repeated subprocess calls)
-    print('=== THREE-PRONG AUTONOMOUS PULSE (SINGLE-PROCESS / ZERO-REPETITION) ===')
+    print('=== RELATIVISTIC SPACETIME PULSE (MINKOWSKI CONE & LORENTZ GATE) ===')
     pruned = prune_stale_magnets(cur)
     seal_target(cur, os.path.join(repo, 'README.md'))
     live_kb = probe_net_kb()
-    mbps = round(max(145.8, (live_kb % 500) + 112.4), 2)
-    old_mbps = cur.execute('SELECT bandwidth_mbps FROM sos_depin_peers WHERE peer_id="peer-mint-bridge-01"').fetchone()
-    if not old_mbps or abs(old_mbps[0] - mbps) >= 1.0:
+    
+    # Calculate live relativistic Lorentz factor
+    beta = min(0.9999, (live_kb % 1000) / 1000.0)
+    gamma_live = round(SpacetimeEngine.lorentz_gamma(beta), 4)
+    
+    # Retrieve anchored Lorentz horizon
+    anchored_row = cur.execute('SELECT gamma, proper_time_tau FROM sos_spacetime_anchors WHERE anchor_id="LORENTZ_HORIZON"').fetchone()
+    anchored_gamma = anchored_row[0] if anchored_row else 1.2503
+    delta_gamma = abs(gamma_live - anchored_gamma)
+    
+    # Only commit coordinate shifts if crossing a discrete Lorentz horizon threshold (d_gamma >= 0.05)
+    if delta_gamma >= 0.05:
+        tau = round(SpacetimeEngine.proper_time(960.0, gamma_live), 2)
+        cur.execute('UPDATE sos_spacetime_anchors SET gamma = ?, proper_time_tau = ?, updated_at = ? WHERE anchor_id = "LORENTZ_HORIZON"', (gamma_live, tau, int(time.time())))
+        mbps = round(max(145.8, (live_kb % 500) + 112.4), 2)
         cur.execute('UPDATE sos_depin_peers SET bandwidth_mbps = ?, updated_at = ? WHERE peer_id = "peer-mint-bridge-01"', (mbps, int(time.time())))
-    for r in cur.execute('SELECT feature_id, lane_status, verification_gate FROM sos_feature_lanes'):
-        print(f'[Three-Prong] {r[0]:<27} | Lane: {r[1]:<18} | Gate: {r[2]}')
-    for r in cur.execute('SELECT magnet_uri, chunk_size, affiliate_bps FROM sos_magnets'):
+        print(f'[+] Lorentz Horizon Shift: gamma {anchored_gamma} -> {gamma_live} (d_gamma: {delta_gamma:.4f} >= 0.05) | Proper Time tau: {tau}s')
+    else:
+        print(f'[=] Relativistic Invariant: d_gamma = {delta_gamma:.4f} < 0.05 (Shielded coordinate jitter; 0 mutations)')
+        
+    for r in cur.execute('SELECT anchor_id, gamma, proper_time_tau FROM sos_spacetime_anchors'):
+        print(f'[Spacetime]   {r[0]:<17} | Lorentz Gamma: {r[1]:<6} | Proper Time tau: {r[2]}s')
+    for r in cur.execute('SELECT magnet_uri, chunk_size FROM sos_magnets'):
         print(f'[P2P Magnet]  {r[0]} | {r[1]}B')
-    print(f'[DePIN Link]  peer-mint-bridge-01 | Telemetry: {live_kb} KB | Rate: {mbps} Mbps | Stale Pruned: {pruned}')
-    smart_close(conn, base_changes)
-
-elif cmd == '--rotate-pat':
-    new_pat = sys.argv[2].strip() if len(sys.argv) > 2 else getpass.getpass('Paste New GitHub PAT (hidden): ').strip()
-    if new_pat.startswith('ghp_') or new_pat.startswith('github_pat_'):
-        cred_file = os.path.join(home, '.git-credentials')
-        with open(cred_file, 'w') as f:
-            f.write(f'https://luthermarcus:{new_pat}@github.com\n')
-        os.chmod(cred_file, stat.S_IRUSR | stat.S_IWUSR)
-        print('[+] Rotated GitHub PAT in ~/.git-credentials (0600).')
     smart_close(conn, base_changes)
 
 else:
-    for r in cur.execute('SELECT feature_id, lane_status, verification_gate FROM sos_feature_lanes'):
-        print(f'[Three-Prong] {r[0]:<27} | Lane: {r[1]:<18} | Gate: {r[2]}')
+    for r in cur.execute('SELECT anchor_id, gamma, proper_time_tau, vector_xyz FROM sos_spacetime_anchors'):
+        print(f'[Spacetime]   {r[0]:<17} | Gamma: {r[1]} | tau: {r[2]}s | Vector: ({r[3]})')
     for r in cur.execute('SELECT magnet_uri, chunk_size, affiliate_bps FROM sos_magnets'):
         print(f'[P2P Magnet]  {r[0]} | Chunk: {r[1]}B | Split: {r[2]/100:.1f}%')
-    for r in cur.execute('SELECT chunk_id, chunk_index, byte_len FROM sos_aead_chunks'):
-        print(f'[AEAD Chunk]  #{r[1]} SHA256:{r[0][:16]}... ({r[2]}B)')
     smart_close(conn, base_changes)
