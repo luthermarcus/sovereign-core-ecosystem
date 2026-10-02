@@ -18,7 +18,7 @@
     <h1>Sovereign Core OS (pixel-sovereign)</h1>
     <div class="card">
         <h3>Spacetime &amp; Cryptographic State</h3>
-        <p>Release: <span id="release">v7.71.97-beta</span> | Mode: <span id="acct-mode">LOCAL_OFFLINE_SIMULATION_ONLY</span></p>
+        <p>Release: <span id="release">v7.71.100-beta</span> | Mode: <span id="acct-mode">LOCAL_OFFLINE_SIMULATION_ONLY</span></p>
         <p>Lorentz Gamma (gamma): <span id="gamma">Loading...</span> | Proper Time (tau): <span id="proper-time">Loading...</span>s</p>
         <p>SHA-256 Merkle Root (64-hex): <span id="merkle-root">Loading...</span> (<span id="files-hashed">0</span> files)</p>
         <p>System Status: <span id="status">CONNECTING</span></p>
@@ -144,7 +144,7 @@
                 const res = await fetch('/api/telemetry');
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
-                document.getElementById('release').textContent = data.release || 'v7.71.97-beta';
+                document.getElementById('release').textContent = data.release || 'v7.71.100-beta';
                 document.getElementById('acct-mode').textContent = data.accounting_mode || 'LOCAL_OFFLINE_SIMULATION_ONLY';
                 document.getElementById('gamma').textContent = data.gamma || 'N/A';
                 document.getElementById('proper-time').textContent = data.proper_time || 'N/A';

@@ -30,7 +30,7 @@ def route_query(prompt_text):
     top2 = [{"expert_id": item[1]["id"], "expert_name": item[1]["name"], "gate_weight": item[0], "domain": item[1]["domain"]} for item in ranked[:2]]
     return {
         "architecture": "Open-Source Grok-1 Compatible 8-Expert Top-2 Sparse MoE Router",
-        "release": "v7.71.97-beta",
+        "release": "v7.71.100-beta",
         "input_prompt": prompt_text,
         "top_k": 2,
         "selected_experts": top2,

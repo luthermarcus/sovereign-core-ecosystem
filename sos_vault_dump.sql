@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('c3f26011516b6d92c2b581ffa8706347','sos://magnet/?xt=urn:sos:c3f26011516b6d92c2b581ffa8706347&dn=README.md',0,4757,'1d8480dd9cfc0073ad652a7ed23fce69b43e48255d5fe0ab3dff170cf188f263',8500,1500,1790943323);
+INSERT INTO "sos_aead_chunks" VALUES('31f35e2a5cbd125914710fa3f89ff2a5','sos://magnet/?xt=urn:sos:31f35e2a5cbd125914710fa3f89ff2a5&dn=README.md',0,4758,'3842810b63cf622ec1924269f5d40e1bc0409a87fca787e2b3706679b7a76386',8500,1500,1790944327);
 CREATE TABLE sos_atomic_swaps (
             swap_id TEXT PRIMARY KEY,
             maker_node TEXT,
@@ -31,6 +31,22 @@ CREATE TABLE sos_auxpow_receipts (
 );
 INSERT INTO "sos_auxpow_receipts" VALUES('b6514e3a5599583d7dd6326e6623d28b','56907c7f0198bd742405097bfca1bdd8','79569afdfbf56944ae735e2e27fd169e','{"auxpow_root": "79569afdfbf56944ae735e2e27fd169e", "settlement_id": "56907c7f0198bd742405097bfca1bdd8", "chunk_id": "398ccac7f9bd18e55840afc28eee26a1", "payer_node": "pixel-sovereign", "creator_sats": 4404, "seeder_sats": 777, "utxo_hop": {"current": "f434bcca96c16db5bdf212ff017bcedc", "prev": "269242089bc6f8c94b5ee8ec7ae95f45"}, "timelike_verified_at": 1790922261, "signature_scheme": "ED25519_ENCLAVE_HMAC_SHA256"}',1790922421);
 CREATE TABLE sos_consensus_proposals (prop_id TEXT PRIMARY KEY, proposer TEXT, title TEXT, yes_weight INTEGER, no_weight INTEGER, status TEXT, created_at INTEGER);
+CREATE TABLE sos_depin_nodes (
+        node_name TEXT PRIMARY KEY,
+        node_type TEXT,
+        status TEXT,
+        uptime_pct REAL,
+        bandwidth_gb REAL,
+        earnings_sats INTEGER,
+        last_sync INTEGER
+    );
+INSERT INTO "sos_depin_nodes" VALUES('Mysterium_Native','P2P_VPN_NODE','ONLINE',99.8,48.5,1250,1790943529);
+INSERT INTO "sos_depin_nodes" VALUES('EarnApp_Container','BANDWIDTH_SHARER','ONLINE',98.5,31.2,840,1790943529);
+INSERT INTO "sos_depin_nodes" VALUES('TraffMonetizer_Container','TRAFFIC_GATEWAY','ONLINE',97.9,19.4,520,1790943529);
+INSERT INTO "sos_depin_nodes" VALUES('PacketStream_Container','CDN_RELAY','ONLINE',99.1,26.8,710,1790943529);
+INSERT INTO "sos_depin_nodes" VALUES('PawnsApp_Container','PROXIED_SURVEY_NODE','ONLINE',96.4,14.1,390,1790943529);
+INSERT INTO "sos_depin_nodes" VALUES('Honeygain_Container','DISTRIBUTED_CACHE','ONLINE',99.5,55.0,1450,1790943529);
+INSERT INTO "sos_depin_nodes" VALUES('Docker_Mysterium','CONTAINER_VPN','ONLINE',99.2,40.1,1100,1790943529);
 CREATE TABLE sos_depin_peers (
     peer_id TEXT PRIMARY KEY,
     transport TEXT NOT NULL,
@@ -82,7 +98,7 @@ CREATE TABLE sos_magnets (
     created_at INT NOT NULL
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.95-beta','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:c3f26011516b6d92c2b581ffa8706347&dn=README.md','c3f26011516b6d92c2b581ffa8706347',32768,1500,'pixel-sovereign',1790943323);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:31f35e2a5cbd125914710fa3f89ff2a5&dn=README.md','31f35e2a5cbd125914710fa3f89ff2a5',32768,1500,'pixel-sovereign',1790944327);
 CREATE TABLE sos_mesh_gateways (gateway_id TEXT PRIMARY KEY, endpoint_ip TEXT, subnet_mask TEXT, status TEXT, last_seen INTEGER);
 INSERT INTO "sos_mesh_gateways" VALUES('ca9abc624938d4656efe3d6809930250','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930560);
 INSERT INTO "sos_mesh_gateways" VALUES('c4878cf8c4e858d2b1558a2353836410','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930667);
