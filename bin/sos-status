@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import subprocess
+
+def show_status():
+    print("=== SOVEREIGN CORE OS: UNIFIED SYSTEM STATUS ===")
+    subprocess.run(["sos-earnings-aggregator"])
+    subprocess.run(["sos-peer-reputation"])
+    subprocess.run(["sos-epoch-claims"])
+    print("===============================================")
+
+if __name__ == "__main__":
+    show_status()
