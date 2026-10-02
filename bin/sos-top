@@ -5,7 +5,7 @@ repo = os.path.expanduser("~/sos-fox-beta")
 db = os.path.join(repo, "sos_vault.db")
 core_file = os.path.join(repo, "sos_core.py")
 
-step_num = "53"
+step_num = "54"
 if os.path.exists(core_file):
     m = re.findall(r"STEP_(\d+)_", open(core_file).read())
     if m:
