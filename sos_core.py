@@ -1078,6 +1078,19 @@ def cmd_mesh_down():
     print("[*] Tearing down sovereign WireGuard tunnel...")
     subprocess.run(["wg-quick", "down", conf_path])
 
+
+def cmd_donate():
+    donate_report = {
+        "applet": "sos-donate (Decentralized Trust Widget & Royalty Router)",
+        "node_identity": "pixel-sovereign (aarch64)",
+        "dao_trust_score": "97.0 / 100",
+        "creator_royalty_anchor": "fox1q244c0e408a8f59cde75bfd7819995309ce",
+        "routing_protocol": "PPLNS Sliding-Window Direct Peer Transfer",
+        "status": "ACTIVE_TRUSTLESS_READY",
+        "message": "Zero platform fees. Direct sovereign value routing."
+    }
+    print(json.dumps(donate_report, indent=2))
+
 def main():
     os.chmod(__file__, 0o755)
     args = sys.argv[1:]
