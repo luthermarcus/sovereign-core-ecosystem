@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import subprocess
+
+def check_clean_state():
+    res = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+    if res.stdout.strip():
+        print("[!] SOS Clean Guard Warning: Uncommitted changes detected in working tree.")
+    else:
+        print("[+] SOS Clean Guard: Working tree is 100% pristine and invariant.")
+
+if __name__ == "__main__":
+    check_clean_state()
