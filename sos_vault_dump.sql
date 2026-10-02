@@ -61,6 +61,18 @@ CREATE TABLE sos_magnets (
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:398ccac7f9bd18e55840afc28eee26a1&dn=README.md','398ccac7f9bd18e55840afc28eee26a1',32768,1500,'pixel-sovereign',1790921560);
+CREATE TABLE sos_royalty_settlements (
+    settlement_id TEXT PRIMARY KEY,
+    chunk_id TEXT NOT NULL,
+    payer_node TEXT NOT NULL,
+    creator_target TEXT NOT NULL,
+    creator_sats INT NOT NULL,
+    seeder_target TEXT NOT NULL,
+    seeder_sats INT NOT NULL,
+    tx_status TEXT NOT NULL,
+    recorded_at INT NOT NULL
+);
+INSERT INTO "sos_royalty_settlements" VALUES('5f38e9fd5f426280f8afa1cc79d609be','398ccac7f9bd18e55840afc28eee26a1','peer-mint-bridge-01','fox://l1/creator/vault',4403,'peer-mint-bridge-01',777,'SETTLED_TIMELIKE',1790922028);
 CREATE TABLE sos_spacetime_anchors (
     anchor_id TEXT PRIMARY KEY,
     gamma REAL NOT NULL,
@@ -80,6 +92,7 @@ CREATE TABLE sos_utxo_logistics (
     spent INT DEFAULT 0,
     recorded_at INT NOT NULL
 );
-INSERT INTO "sos_utxo_logistics" VALUES('82feb96a484561fd6d7fbff760a4c860','GENESIS_COINBASE_44B','DEPIN_PARCEL_AND_OS_ANCHOR','pixel-sovereign',994.18,'79569afdfbf56944ae735e2e27fd169e',0,1790920230);
+INSERT INTO "sos_utxo_logistics" VALUES('82feb96a484561fd6d7fbff760a4c860','GENESIS_COINBASE_44B','DEPIN_PARCEL_AND_OS_ANCHOR','pixel-sovereign',994.18,'79569afdfbf56944ae735e2e27fd169e',1,1790920230);
+INSERT INTO "sos_utxo_logistics" VALUES('269242089bc6f8c94b5ee8ec7ae95f45','82feb96a484561fd6d7fbff760a4c860','P2P_MESH_STREAM_PAYLOAD','peer-mint-bridge-01',5.06,'79569afdfbf56944ae735e2e27fd169e',0,1790922028);
 PRAGMA writable_schema=OFF;
 COMMIT;
