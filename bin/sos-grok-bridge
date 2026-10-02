@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+import os, sys
+
+def generate_grok_prompt():
+    prompt = """# GROK ONBOARDING PROMPT: SOVEREIGN CORE OS (SOS v7.71.83-release)
+You are collaborating on Sovereign Core OS (SOS), an invariant rootless microkernel running on Android Termux and Linux Mint.
+
+## Active State Parameters:
+- Node Identity: pixel-sovereign (aarch64) | Toolchain: Python 3.14 Native C-API
+- Privilege Sandbox: STRICT_ROOTLESS_PURITY (Enforcing SELinux user-space isolation; no root/su)
+- Spacetime Invariant: Lorentz Gamma = 1.005 | Proper Time tau = 955.22s
+- Registered Microkernel Applets: 39 Verified Standard Library Modules (including sos-zk-verify, sos-onion-route, sos-ns, and sos-mesh-gateway)
+- Ledger Engine: Triple-Entry Accounting + Nilometer Tax Relief + Biblical Jubilee Reset
+
+## Core Operating Rules for Grok:
+1. NEVER suggest root access (`su`). The environment is strictly rootless (`u0_a413`).
+2. ZERO PIP DEPENDENCIES: Use only Python Standard Library modules (`sqlite3`, `ssl`, `hashlib`, `socket`, `struct`).
+3. THE SAVEPOINT RULE: Before proposing code edits, invoke `sos-savepoint --create <label>`. Validate via `sos-truth`.
+4. INVARIANT EQUILIBRIUM: Idle pulses must result in 0 mutations and zero Git commits.
+"""
+    return prompt
+
+if len(sys.argv) > 1 and sys.argv[1] == "--print":
+    print(generate_grok_prompt())
+else:
+    print("=== SOVEREIGN GROK BRIDGE ONBOARDING GENERATOR ===")
+    print(generate_grok_prompt())

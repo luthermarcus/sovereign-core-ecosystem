@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+import http.server, sqlite3, json, os
+
+PORT = 8080
+DB_PATH = os.path.expanduser("~/sos-fox-beta/sos_vault.db")
+
+class SovereignBridgeHandler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/api/telemetry":
+            conn = sqlite3.connect(DB_PATH)
+            cur = conn.cursor()
+            try:
+                gateways = cur.execute("SELECT * FROM sos_mesh_gateways").fetchall()
+            except sqlite3.OperationalError:
+                gateways = []
+            conn.close()
+            data = {
+                "node": "pixel-sovereign",
+                "gamma": 1.005,
+                "proper_time": 955.22,
+                "gateways": gateways,
+                "status": "INVARIANT_ACTIVE"
+            }
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps(data).encode("utf-8"))
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+if __name__ == "__main__":
+    server = http.server.HTTPServer(("127.0.0.1", PORT), SovereignBridgeHandler)
+    print(f"[*] Sovereign Web Bridge active on http://127.0.0.1:{PORT}")
+    server.serve_forever()

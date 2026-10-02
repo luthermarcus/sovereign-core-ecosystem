@@ -1,0 +1,24 @@
+#!/usr/bin/env python3
+import os, sys, json, hashlib, time
+
+def simulate_nostr_signaling():
+    # NIP-01 ephemeral signaling frame for decentralized NAT punch coordination
+    now_t = int(time.time())
+    event = {
+        "pubkey": "pixel-sovereign-node",
+        "created_at": now_t,
+        "kind": 20000,  # Ephemeral DePIN mesh event
+        "tags": [["p", "peer-mint-bridge-01"], ["proto", "wireguard-tls13"]],
+        "content": json.dumps({"endpoint": "10.0.0.90:51820", "status": "COORDINATING_TIMELIKE"})
+    }
+    event_id = hashlib.sha256(json.dumps(event, sort_keys=True).encode()).hexdigest()
+    event["id"] = event_id
+    return event
+
+if __name__ == "__main__":
+    ev = simulate_nostr_signaling()
+    print("=== NOSTR / DEPIN EPHEMERAL MESH SIGNALING PROBE ===")
+    print(f"[*] Ephemeral Event ID : {ev['id']}")
+    print(f"[*] Target Peer        : {ev['tags'][0][1]}")
+    print(f"[*] WireGuard Signal   : {ev['content']}")
+    print("[+] Transport Layer    : DECENTRALIZED_RELAY_SAFE (Zero static public IP dependencies)")

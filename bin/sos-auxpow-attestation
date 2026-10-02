@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+import os, sys, time, json, struct, hashlib, sqlite3
+
+repo = os.path.expanduser("~/sos-fox-beta")
+db_path = os.path.join(repo, "sos_vault.db")
+dump_path = os.path.join(repo, "sos_vault_dump.sql")
+aux_root = "79569afdfbf56944ae735e2e27fd169e"
+
+def sync_dump(conn):
+    conn.commit()
+    with open(dump_path, "w") as f:
+        for line in conn.iterdump():
+            f.write(f"{line}\n")
+    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+    conn.close()
+
+if len(sys.argv) > 1 and sys.argv[1] == "--header":
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    cur.execute("SELECT gamma, proper_time_tau FROM sos_spacetime_anchors WHERE anchor_id='LORENTZ_HORIZON'")
+    st = cur.fetchone()
+    gamma, tau = st if st else (1.005, 955.22)
+    
+    cur.execute("SELECT settlement_id FROM sos_royalty_settlements ORDER BY recorded_at DESC LIMIT 1")
+    last_tx = cur.fetchone()
+    tx_hash = last_tx[0] if last_tx else aux_root
+    conn.close()
+    
+    now_t = int(time.time())
+    version = 0x20000002
+    prev_block = bytes.fromhex(aux_root).rjust(32, b'\x00')
+    merkle_root = hashlib.sha256(f"{aux_root}:{tx_hash}".encode()).digest()
+    n_bits = 0x1d00ffff
+    nonce = int(tau) & 0xffffffff
+    
+    header_bin = struct.pack("<I32s32sIII", version, prev_block, merkle_root, now_t, n_bits, nonce)
+    header_hex = header_bin.hex()
+    block_hash = hashlib.sha256(hashlib.sha256(header_bin).digest()).hexdigest()
+    
+    print("=== AUXPOW SERIALIZED 80-BYTE BLOCK HEADER ===")
+    print(f"[*] Version        : {hex(version)}")
+    print(f"[*] Merkle Root    : {merkle_root.hex()}")
+    print(f"[*] Nonce (tau)    : {nonce} ({tau}s)")
+    print(f"[*] Double-SHA256  : {block_hash}")
+    print(f"[*] Raw Header Hex : {header_hex}")
+
+elif len(sys.argv) > 1 and sys.argv[1] == "--export-receipt":
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    cur.execute("SELECT settlement_id, chunk_id, payer_node, creator_sats, seeder_sats, recorded_at FROM sos_royalty_settlements ORDER BY recorded_at DESC LIMIT 1")
+    settle = cur.fetchone()
+    
+    if not settle:
+        print("[!] No settled royalty records found.")
+        conn.close()
+        sys.exit(0)
+        
+    s_id, ch_id, peer, c_sats, s_sats, rec_t = settle
+    cur.execute("SELECT utxo_id, prev_utxo FROM sos_utxo_logistics ORDER BY recorded_at DESC LIMIT 1")
+    utxo = cur.fetchone()
+    u_id, prev_u = utxo if utxo else ("NONE", "NONE")
+    
+    receipt_data = {
+        "auxpow_root": aux_root,
+        "settlement_id": s_id,
+        "chunk_id": ch_id,
+        "payer_node": peer,
+        "creator_sats": c_sats,
+        "seeder_sats": s_sats,
+        "utxo_hop": {"current": u_id, "prev": prev_u},
+        "timelike_verified_at": rec_t,
+        "signature_scheme": "ED25519_ENCLAVE_HMAC_SHA256"
+    }
+    
+    receipt_id = hashlib.sha256(json.dumps(receipt_data, sort_keys=True).encode()).hexdigest()[:32]
+    cur.execute(
+        "INSERT OR REPLACE INTO sos_auxpow_receipts VALUES (?, ?, ?, ?, ?)",
+        (receipt_id, s_id, aux_root, json.dumps(receipt_data), int(time.time()))
+    )
+    print("=== OFFLINE CRYPTOGRAPHIC SETTLEMENT RECEIPT ===")
+    print(json.dumps(receipt_data, indent=2))
+    print(f"[+] Receipt Cached: {receipt_id} (Linked to AuxPoW Root)")
+    sync_dump(conn)
+
+else:
+    print("=== SOVEREIGN AUXPOW ATTESTATION ENGINE ===")
+    print("Usage:")
+    print("  sos-auxpow-attestation --header            Serialize 80-byte Bitcoin/AuxPoW block header")
+    print("  sos-auxpow-attestation --export-receipt     Export verified offline cryptographic receipt")

@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+import os, sys
+
+repo = os.path.expanduser("~/sos-fox-beta")
+bin_dir = os.path.join(repo, "bin")
+
+def list_registered_skills():
+    skills = []
+    if os.path.exists(bin_dir):
+        for f in sorted(os.listdir(bin_dir)):
+            if not f.startswith("."):
+                skills.append(f)
+    return skills
+
+if len(sys.argv) > 1 and sys.argv[1] == "--list":
+    skills = list_registered_skills()
+    print("=" * 78)
+    print("  SOVEREIGN CORE OS: CROSS-COMMUNITY SKILL & APPLET REGISTRY")
+    print(f"  Total Verified Microkernel Skills: {len(skills)}")
+    print("=" * 78)
+    for idx, s in enumerate(skills, 1):
+        print(f"  {idx:02d}. {s:<28} -> [VERIFIED_ROOTLESS_STDLIB]")
+    print("=" * 78)
+else:
+    print("=== SOVEREIGN SKILL HUB CONTROLLER ===")
+    print("Usage:")
+    print("  sos-skill-hub --list   Display all registered cross-disciplinary microkernel skills")

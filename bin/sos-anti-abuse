@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+import os, sys, time, sqlite3
+
+repo = os.path.expanduser("~/sos-fox-beta")
+db_path = os.path.join(repo, "sos_vault.db")
+
+def evaluate_peer(peer_id, req_count, error_count):
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    cur.execute("PRAGMA journal_mode = WAL;")
+    
+    # Anti-Abuse Heuristics (Bitcointalk / DePIN Standards)
+    # 1. Error ratio ceiling: > 30% errors triggers quarantine
+    # 2. Sybil bitfield flooding: > 500 requests/min without settlement
+    verdict = "ALLOW_TIMELIKE"
+    penalty_reason = "NONE"
+    
+    if error_count >= 3 or (req_count > 10 and (error_count / req_count) > 0.3):
+        verdict = "QUARANTINED"
+        penalty_reason = "EXCESSIVE_AUTH_FAILURES_OR_MALFORMED_CHUNKS"
+    elif req_count > 500:
+        verdict = "RATE_LIMITED"
+        penalty_reason = "SYBIL_BITFIELD_REQUEST_FLOOD"
+        
+    now_t = int(time.time())
+    if verdict != "ALLOW_TIMELIKE":
+        cur.execute(
+            "INSERT OR REPLACE INTO sos_peer_quarantine VALUES (?, ?, ?, ?, ?)",
+            (peer_id, error_count, penalty_reason, verdict, now_t)
+        )
+        conn.commit()
+    conn.close()
+    return verdict, penalty_reason
+
+if len(sys.argv) > 1 and sys.argv[1] == "--status":
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+    print("=== SOVEREIGN CORE OS: PEER ANTI-ABUSE SENTINEL ===")
+    rows = cur.execute("SELECT peer_id, failure_count, last_failure_reason, quarantine_status FROM sos_peer_quarantine").fetchall()
+    if not rows:
+        print("[+] All peer connections operating within verified fair-share parameters.")
+    for r in rows:
+        print(f"  * [{r[3]}] Peer: {r[0]:<20} | Violations: {r[1]} | Reason: {r[2]}")
+    conn.close()
+
+elif len(sys.argv) > 3 and sys.argv[1] == "--audit-peer":
+    peer = sys.argv[2]
+    reqs = int(sys.argv[3])
+    errs = int(sys.argv[4]) if len(sys.argv) > 4 else 0
+    v, reason = evaluate_peer(peer, reqs, errs)
+    print(f"[*] Peer Audit: {peer} -> Verdict: [{v}] (Reason: {reason})")
+
+else:
+    print("=== SOVEREIGN ANTI-ABUSE ENGINE ===")
+    print("Usage:")
+    print("  sos-anti-abuse --status                        List quarantined or flagged peers")
+    print("  sos-anti-abuse --audit-peer <peer> <reqs> <errs> Evaluate peer traffic against abuse limits")
