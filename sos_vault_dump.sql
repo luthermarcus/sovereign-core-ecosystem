@@ -11,6 +11,14 @@ CREATE TABLE sos_aead_chunks (
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
 INSERT INTO "sos_aead_chunks" VALUES('398ccac7f9bd18e55840afc28eee26a1','sos://magnet/?xt=urn:sos:398ccac7f9bd18e55840afc28eee26a1&dn=README.md',0,5181,'36c3e079c09c73caaf4f2f85efd59532eb93b44f5e06917d943d76e73c171b68',8500,1500,1790921560);
+CREATE TABLE sos_auxpow_receipts (
+    receipt_id TEXT PRIMARY KEY,
+    tx_id TEXT NOT NULL,
+    merkle_root TEXT NOT NULL,
+    payload_json TEXT NOT NULL,
+    attested_at INT NOT NULL
+);
+INSERT INTO "sos_auxpow_receipts" VALUES('b6514e3a5599583d7dd6326e6623d28b','56907c7f0198bd742405097bfca1bdd8','79569afdfbf56944ae735e2e27fd169e','{"auxpow_root": "79569afdfbf56944ae735e2e27fd169e", "settlement_id": "56907c7f0198bd742405097bfca1bdd8", "chunk_id": "398ccac7f9bd18e55840afc28eee26a1", "payer_node": "pixel-sovereign", "creator_sats": 4404, "seeder_sats": 777, "utxo_hop": {"current": "f434bcca96c16db5bdf212ff017bcedc", "prev": "269242089bc6f8c94b5ee8ec7ae95f45"}, "timelike_verified_at": 1790922261, "signature_scheme": "ED25519_ENCLAVE_HMAC_SHA256"}',1790922421);
 CREATE TABLE sos_depin_peers (
     peer_id TEXT PRIMARY KEY,
     transport TEXT NOT NULL,
@@ -61,6 +69,13 @@ CREATE TABLE sos_magnets (
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:398ccac7f9bd18e55840afc28eee26a1&dn=README.md','398ccac7f9bd18e55840afc28eee26a1',32768,1500,'pixel-sovereign',1790921560);
+CREATE TABLE sos_peer_quarantine (
+    peer_id TEXT PRIMARY KEY,
+    failure_count INT NOT NULL,
+    last_failure_reason TEXT NOT NULL,
+    quarantine_status TEXT NOT NULL,
+    updated_at INT NOT NULL
+);
 CREATE TABLE sos_royalty_settlements (
     settlement_id TEXT PRIMARY KEY,
     chunk_id TEXT NOT NULL,
