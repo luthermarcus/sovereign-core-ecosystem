@@ -3,14 +3,14 @@
 # ==============================================================================
 - **Active Node:** `pixel-sovereign` (`aarch64`) running `Android 17 (SDK 37)` [`CP41.260831.007`]
 - **Toolchain:** Python `3.14.6` | `git version 2.56.0` | `OpenSSL 3.6.5 29 Sep 2026` | `uv 0.12.21 (aarch64-linux-android)`
-- **On-Chain OS Anchor (Note 4507):** `19` x 4KB chunks (`72903` Bytes) | Merkle Root: `27e6c4867d5c77d31019594f4b5f08c3`
+- **On-Chain OS Anchor (Note 4507):** `20` x 4KB chunks (`74031` Bytes) | Merkle Root: `bb3fa12b52f3efd596e0d6d74cc40bb4`
 - **L1/L2 Endpoints (Note 4487):** `fox://l1/auxpow/coinbase_44b (Bitcoin Core Merged Mining)` | `sos://l2/dex/curve_beefy_swap (960s Boomerang Protected)`
 - **SSH Bridge:** `ssh -p 8022 u0_a413@10.0.0.90`
 
 ## [TARGET 1: GEMINI FLASH (3.8 FLASH / FULL REASONING ARCHITECT)]
-- **Live 3D State Vector:** `(0.9, 0.35, 0.454)` (`3402.73 KB` via `SELINUX_SAFE_DEPIN_BUS`) | Velocity: `0.6161c` | Gamma: `1.2695`
+- **Live 3D State Vector:** `(0.9, 0.35, 0.454)` (`3524.87 KB` via `SELINUX_SAFE_DEPIN_BUS`) | Velocity: `0.6161c` | Gamma: `1.2695`
 - **Surge Fee & Escrow:** `1.2695%` | Boomerang Window: `756.19s` (5.0% POL cap).
-- **Debloated Smart Contract VM:** `ACTIVE (Python 3.14 State-VM | Root: 4e210ad93465591e31b66b3e)`
+- **Debloated Smart Contract VM:** `ACTIVE (Python 3.14 State-VM | Root: 6fa31c74099a6d0d2c791e82)`
 
 ## [TARGET 2: GEMINI FLASH-LITE (3.5 FLASH-LITE / LOW-LATENCY TRIAGE & LEXICON)]
 - **Role:** Fast log triage, voice-note cleanup (`--clean`), and 25ms/2000KB WAL governor execution.
@@ -20,11 +20,3 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
-## Sidechain Mining Taxonomy & Three-Prong Matrix
-The Sovereign Core OS ledger coordinates mining state across distinct cryptographic layers:
-- **L1 AuxPoW Merged Mining:** Anchors state into Bitcoin Core coinbase transactions (`fox://l1/auxpow/coinbase_44b`) via 80-byte serialized headers and proper-time nonces (tau = 955s).
-- **L2 Relativistic Rollup VM:** Processes high-frequency DePIN bandwidth micro-royalties (85% Creator / 15% Seeder) using Lorentz gamma dynamic gas pricing and 960s Boomerang protection.
-- **Three-Prong Execution Gate:**
-  * *Prong 1 (Memoized Dirty-Bit):* Eliminates redundant disk commits on clean state.
-  * *Prong 2 (Single-Process Autopilot):* Runs validation pulses without child-process overhead.
-  * *Prong 3 (Savepoint Sandbox):* Quarantines experimental sidechain hops inside SQLite SAVEPOINT checkpoints.
