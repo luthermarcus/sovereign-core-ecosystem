@@ -85,6 +85,7 @@ INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:89ad15af9f9f89098a379d55439bc81d&dn=README.md','89ad15af9f9f89098a379d55439bc81d',32768,1500,'pixel-sovereign',1790923786);
 CREATE TABLE sos_mesh_gateways (gateway_id TEXT PRIMARY KEY, endpoint_ip TEXT, subnet_mask TEXT, status TEXT, last_seen INTEGER);
 INSERT INTO "sos_mesh_gateways" VALUES('ca9abc624938d4656efe3d6809930250','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930560);
+INSERT INTO "sos_mesh_gateways" VALUES('c4878cf8c4e858d2b1558a2353836410','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930667);
 CREATE TABLE sos_name_registry (name TEXT PRIMARY KEY, target_id TEXT, record_type TEXT, updated_at INTEGER);
 INSERT INTO "sos_name_registry" VALUES('sovereign.node','pixel-sovereign','PEER_ENDPOINT',1790929034);
 CREATE TABLE sos_onion_circuits (circuit_id TEXT PRIMARY KEY, entry_node TEXT, exit_node TEXT, status TEXT, established_at INTEGER);
