@@ -15,6 +15,7 @@ __pycache__/
 bips_private/
 exports/
 fox_wallet_meta.json
+kb_sidechain.db
 logs/
 reports_sanitized/
 sandbox/

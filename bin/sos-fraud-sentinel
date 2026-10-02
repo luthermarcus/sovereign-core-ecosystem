@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+import os, sqlite3, sys
+
+DB_PATH = os.path.expanduser("~/sos-fox-beta/sos_vault.db")
+
+FRAUD_CASES = [
+    ("FRAUD_CRYPTSY_FL", "FLORIDA_11TH_CIRCUIT", "Paul Vernon phantom ledger; fake withdrawal delay masking cold-storage drain", "PTLC_STRICT_ONCHAIN_SETTLEMENT"),
+    ("FRAUD_FTX_SDNY", "NEW_YORK_2ND_CIRCUIT", "Internal allow_negative_balance flag and AWS API backdoor routing to Alameda", "ZERO_CUSTODIAL_STATE_MACHINE"),
+    ("RISK_COINBASE_CUSTODY", "REGULATORY_S1_RISK", "Omnibus re-hypothecation and administrative address blacklisting", "TAPROOT_SCHNORR_AIRGAP"),
+    ("ALGO_FRONT_RUN", "INTERNAL_ORDERBOOK", "Internal exchange trading desk priority over public WebSocket mempool", "OFFLINE_COLD_BOOMERANG_QUEUE")
+]
+
+def init_fraud_kb():
+    print("==============================================================================")
+    print("  SOVEREIGN CORE OS: EXCHANGE FRAUD & LEGAL FORENSICS SENTINEL                ")
+    print("==============================================================================")
+    if not os.path.exists(DB_PATH):
+        print("[!] Enclave database not found.")
+        return 1
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS sos_custodial_fraud_kb (
+            case_id TEXT PRIMARY KEY,
+            jurisdiction TEXT,
+            mechanism TEXT,
+            dex_countermeasure TEXT
+        );
+    """)
+    for cid, jur, mech, cm in FRAUD_CASES:
+        cur.execute("INSERT OR REPLACE INTO sos_custodial_fraud_kb VALUES (?, ?, ?, ?);", (cid, jur, mech, cm))
+    conn.commit()
+
+    cur.execute("SELECT case_id, jurisdiction, dex_countermeasure FROM sos_custodial_fraud_kb;")
+    rows = cur.fetchall()
+    for cid, jur, cm in rows:
+        print(f"  [{cid:<22}] {jur:<22} -> Mitigation: {cm}")
+    conn.close()
+
+    print("==============================================================================")
+    print("[+] FRAUD SENTINEL: 4 historical exchange vulnerability mitigations indexed.")
+    print("==============================================================================")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(init_fraud_kb())
