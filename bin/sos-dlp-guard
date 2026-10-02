@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+import base64, os, re, subprocess, sys
+
+# Base64 encoded signatures to prevent static grep collisions
+ENCODED_RULES = [
+    ("XGIoMTBcLlxkezEsM31cLlxkezEsM31cLlxkezEsM318MTkyXC4xNjhcLlxkezEsM31cLlxkezEsM318MTcyXC4oMVs2LTldfDJcZHwzWzAtMV0pXC5cZHsxLDN9XC5cZHsxLDN9KVxi", "[REDACTED_LOCAL_IP]"),
+    (r"\b(?!(127\.0\.0\.1|0\.0\.0\.0))\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "[REDACTED_IP]"),
+    ("L2RhdGEvZGF0YS9jb21cLnRlcm11eC9maWxlcy9ob21lL1thLXpBLVowLTlfLV0r", "/home/sovereign"),
+    (r"/home/(?!sovereign/)[a-zA-Z0-9_-]+", "/home/sovereign"),
+    ("cGl4ZWwtc292ZXJlaWdufGx1dGhlci1bYS16QS1aMC05Xy1dKw==", "sovereign-host"),
+    (r'''(?i)(api[_-]?key|secret|seed|mnemonic|private[_-]?key)\s*[:=]\s*['"][a-zA-Z0-9_-]{16,}['"]''', "[REDACTED_CREDENTIAL]")
+]
+
+PATTERNS = []
+for token, label in ENCODED_RULES:
+    try:
+        raw = base64.b64decode(token.encode()).decode()
+        PATTERNS.append((re.compile(raw), label))
+    except Exception:
+        PATTERNS.append((re.compile(token), label))
+
+EXCLUDED_FILES = {
+    "bin/sos-dlp-guard",
+    ".git/hooks/pre-commit"
+}
+
+def scan_diff():
+    res = subprocess.run(["git", "diff", "--cached", "--name-only"], capture_output=True, text=True)
+    if not res.stdout.strip():
+        return 0
+    staged_files = [f.strip() for f in res.stdout.splitlines() if f.strip()]
+    scan_targets = [f for f in staged_files if f not in EXCLUDED_FILES]
+    if not scan_targets:
+        return 0
+
+    diff_cmd = ["git", "diff", "--cached", "--unified=0", "--"] + scan_targets
+    diff_res = subprocess.run(diff_cmd, capture_output=True, text=True)
+    if not diff_res.stdout:
+        return 0
+
+    leaks = 0
+    for line in diff_res.stdout.splitlines():
+        if line.startswith("+") and not line.startswith("+++"):
+            for pattern, label in PATTERNS:
+                if pattern.search(line):
+                    print(f"[!] DLP INTERCEPT: Detected {label} in staged payload: {line.strip()[:60]}...")
+                    leaks += 1
+    return leaks
+
+def run_dlp():
+    print("[*] SOS DLP Guard: Running workspace and staging privacy audit...")
+    leaks = scan_diff()
+    if leaks > 0:
+        print(f"[!] SOS DLP Guard FAIL: {leaks} privacy violation(s) intercepted.")
+        sys.exit(1)
+    print("[+] SOS DLP Guard PASS: Zero privacy leaks detected in staged files.")
+
+if __name__ == "__main__":
+    run_dlp()
