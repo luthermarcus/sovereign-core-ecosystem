@@ -8,7 +8,7 @@ dump_path = os.path.join(repo, 'sos_vault_dump.sql')
 aux_root = '79569afdfbf56944ae735e2e27fd169e'
 
 class SpacetimeEngine:
-    C = 1.0  # Normalized maximum propagation velocity
+    C = 1.0
 
     @staticmethod
     def lorentz_gamma(beta: float) -> float:
@@ -17,7 +17,6 @@ class SpacetimeEngine:
 
     @classmethod
     def interval(cls, e1: tuple, e2: tuple) -> float:
-        # e = (t, x, y, z)
         dt = e2[0] - e1[0]
         dr2 = sum((b - a) ** 2 for a, b in zip(e1[1:], e2[1:]))
         return (cls.C * dt) ** 2 - dr2
@@ -41,17 +40,13 @@ def get_enclave_key():
     seed = open(ssh_priv, 'rb').read() if os.path.exists(ssh_priv) else b'FALLBACK_NODE_SEED'
     return hashlib.sha256(seed + b':' + aux_root.encode()).digest()
 
-def probe_net_kb():
+def get_net_bytes():
     try:
         with open('/proc/net/dev', 'r') as f:
             lines = f.readlines()[2:]
-        total_bytes = sum(int(l.split(':')[1].split()[0]) + int(l.split(':')[1].split()[8]) for l in lines if ':' in l and not l.strip().startswith('lo:'))
-        if total_bytes > 0:
-            return round(total_bytes / 1024.0, 2)
+        return sum(int(l.split(':')[1].split()[0]) + int(l.split(':')[1].split()[8]) for l in lines if ':' in l and not l.strip().startswith('lo:'))
     except Exception:
-        pass
-    total_b = sum(os.lstat(os.path.join(r, file)).st_size for r, _, files in os.walk(repo) for file in files if '.git' not in r)
-    return round(total_b / 1024.0, 2)
+        return 0
 
 def prune_stale_magnets(cur):
     rows = cur.execute('SELECT magnet_uri, created_at FROM sos_magnets ORDER BY created_at DESC, rowid DESC').fetchall()
@@ -77,7 +72,7 @@ def smart_close(conn, baseline_changes):
         conn.execute('PRAGMA wal_checkpoint(TRUNCATE);')
         print(f'[+] Spacetime Gate: {delta} mutation(s) committed & synced to sos_vault_dump.sql')
     else:
-        print('[=] Invariant Spacetime Gate: 0 causal mutations (Coordinate jitter shielded; skipped SQL dump & WAL I/O)')
+        print('[=] Invariant Spacetime Gate: 0 causal mutations (Telemetry feedback loop dampened; skipped SQL dump & WAL I/O)')
     conn.close()
 
 def seal_target(cur, target):
@@ -113,10 +108,11 @@ CREATE TABLE IF NOT EXISTS sos_spacetime_anchors (
     proper_time_tau REAL NOT NULL,
     coordinate_time_t INT NOT NULL,
     vector_xyz TEXT NOT NULL,
+    last_net_bytes INT DEFAULT 0,
     updated_at INT NOT NULL
 );
 ''')
-cur.execute('INSERT OR IGNORE INTO sos_spacetime_anchors VALUES ("LORENTZ_HORIZON", 1.2503, 767.83, 1775109500, "0.874,0.35,0.441", 1775109500)')
+cur.execute('INSERT OR IGNORE INTO sos_spacetime_anchors VALUES ("LORENTZ_HORIZON", 1.2503, 767.83, 1775109500, "0.874,0.35,0.441", 0, 1775109500)')
 conn.commit()
 base_changes = conn.total_changes
 
@@ -127,12 +123,9 @@ if cmd == '--hop' and len(sys.argv) > 2:
     cur.execute('SELECT utxo_id, depin_kb, auxpow_root, recorded_at FROM sos_utxo_logistics WHERE spent=0 ORDER BY recorded_at DESC LIMIT 1')
     prev_id, kb, root, t_prev = cur.fetchone()
     now_t = int(time.time())
-    
-    # Evaluate Minkowski light-cone interval
     e_src = (t_prev, 0.0, 0.0, 0.0)
     e_dst = (now_t, 0.874, 0.35, 0.441)
     classification = SpacetimeEngine.classify_hop(e_src, e_dst)
-    
     if classification == "SPACELIKE_QUARANTINE":
         print(f'[!] Spacelike interval detected (ds^2 < 0). Diverting {parcel} to SAVEPOINT exp_quarantine.')
         cur.execute('INSERT OR REPLACE INTO sos_feature_lanes VALUES (?, "SPACELIKE_ANOMALY", "QUARANTINED", "LIGHT_CONE_VIOLATION", ?)', (parcel, now_t))
@@ -144,29 +137,34 @@ if cmd == '--hop' and len(sys.argv) > 2:
     smart_close(conn, base_changes)
 
 elif cmd == '--pulse':
-    print('=== RELATIVISTIC SPACETIME PULSE (MINKOWSKI CONE & LORENTZ GATE) ===')
+    print('=== RELATIVISTIC SPACETIME PULSE (DAMPENED INVARIANT GATE) ===')
     pruned = prune_stale_magnets(cur)
     seal_target(cur, os.path.join(repo, 'README.md'))
-    live_kb = probe_net_kb()
     
-    # Calculate live relativistic Lorentz factor
-    beta = min(0.9999, (live_kb % 1000) / 1000.0)
+    now_t = int(time.time())
+    curr_bytes = get_net_bytes()
+    anchor = cur.execute('SELECT gamma, proper_time_tau, coordinate_time_t, last_net_bytes FROM sos_spacetime_anchors WHERE anchor_id="LORENTZ_HORIZON"').fetchone()
+    anchored_gamma, tau, last_t, last_b = anchor[0], anchor[1], anchor[2], anchor[3]
+    
+    dt = max(1, now_t - last_t)
+    delta_bytes = max(0, curr_bytes - last_b) if last_b > 0 else 0
+    rate_kb_s = (delta_bytes / 1024.0) / dt
+    
+    # Differential rate velocity calculation (Damped against git-push burst artifacts)
+    beta = min(0.9999, max(0.1, (rate_kb_s / 10240.0)))
     gamma_live = round(SpacetimeEngine.lorentz_gamma(beta), 4)
-    
-    # Retrieve anchored Lorentz horizon
-    anchored_row = cur.execute('SELECT gamma, proper_time_tau FROM sos_spacetime_anchors WHERE anchor_id="LORENTZ_HORIZON"').fetchone()
-    anchored_gamma = anchored_row[0] if anchored_row else 1.2503
     delta_gamma = abs(gamma_live - anchored_gamma)
     
-    # Only commit coordinate shifts if crossing a discrete Lorentz horizon threshold (d_gamma >= 0.05)
-    if delta_gamma >= 0.05:
-        tau = round(SpacetimeEngine.proper_time(960.0, gamma_live), 2)
-        cur.execute('UPDATE sos_spacetime_anchors SET gamma = ?, proper_time_tau = ?, updated_at = ? WHERE anchor_id = "LORENTZ_HORIZON"', (gamma_live, tau, int(time.time())))
-        mbps = round(max(145.8, (live_kb % 500) + 112.4), 2)
-        cur.execute('UPDATE sos_depin_peers SET bandwidth_mbps = ?, updated_at = ? WHERE peer_id = "peer-mint-bridge-01"', (mbps, int(time.time())))
-        print(f'[+] Lorentz Horizon Shift: gamma {anchored_gamma} -> {gamma_live} (d_gamma: {delta_gamma:.4f} >= 0.05) | Proper Time tau: {tau}s')
+    # Invariant Horizon Gate: update ONLY if dt >= 60s AND delta_gamma >= 0.10
+    if dt >= 60 and delta_gamma >= 0.10:
+        new_tau = round(SpacetimeEngine.proper_time(960.0, gamma_live), 2)
+        cur.execute('UPDATE sos_spacetime_anchors SET gamma=?, proper_time_tau=?, coordinate_time_t=?, last_net_bytes=?, updated_at=? WHERE anchor_id="LORENTZ_HORIZON"',
+                    (gamma_live, new_tau, now_t, curr_bytes, now_t))
+        mbps = round(max(145.8, rate_kb_s * 8 / 1024.0), 2)
+        cur.execute('UPDATE sos_depin_peers SET bandwidth_mbps=?, updated_at=? WHERE peer_id="peer-mint-bridge-01"', (mbps, now_t))
+        print(f'[+] Lorentz Invariant Horizon Shift: gamma {anchored_gamma} -> {gamma_live} (dt: {dt}s, d_gamma: {delta_gamma:.4f}) | tau: {new_tau}s')
     else:
-        print(f'[=] Relativistic Invariant: d_gamma = {delta_gamma:.4f} < 0.05 (Shielded coordinate jitter; 0 mutations)')
+        print(f'[=] Relativistic Invariant Locked: dt={dt}s (<60s) or d_gamma={delta_gamma:.4f} (<0.10). 0 mutations triggered.')
         
     for r in cur.execute('SELECT anchor_id, gamma, proper_time_tau FROM sos_spacetime_anchors'):
         print(f'[Spacetime]   {r[0]:<17} | Lorentz Gamma: {r[1]:<6} | Proper Time tau: {r[2]}s')

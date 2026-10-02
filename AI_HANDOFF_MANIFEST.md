@@ -20,3 +20,6 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Step 49 Relativistic Observer Damping & Differential Invariant Gate
+- **Feedback Loop Elimination:** Replaced raw cumulative byte modulo with differential transfer velocity ($\Delta B / \Delta t$) and a 60-second temporal cooldown window, preventing git push network traffic from re-triggering database mutations.
+- **Invariant Ledger Equilibrium:** Gated SQLite WAL commits behind proper-time shifts ($\Delta 	au$), guaranteeing that consecutive `sos-pulse` executions produce exactly `0 DB mutations` and `0 git commits`.

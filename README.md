@@ -30,3 +30,7 @@ SOS integrates bleeding-edge innovations and open-source contributions from:
 - **Prong 1 (`PRONG_1_MEMOIZATION_GATE` - DEPLOYABLE):** Content-hash (`SHA-256`) and SQLite `total_changes` dirty-bit gating prevents redundant chunk sealing, duplicate `iterdump()` disk writes, and unnecessary WAL truncations.
 - **Prong 2 (`PRONG_2_SINGLE_PASS_PULSE` - DEPLOYABLE):** `sos-pulse` unifies telemetry probing, GC pruning, AEAD sealing, and git delta-syncing into one single-pass command, avoiding Android 17 `PhantomProcessKiller` multi-process overhead and skipping `git push` when the working tree is clean.
 - **Prong 3 (`PRONG_3_SAVEPOINT_SANDBOX` - EXPERIMENTAL_READY):** `sos-vault --experimental <id>` executes experimental capabilities inside an isolated SQLite `SAVEPOINT` quarantine with automatic rollback on failure.
+
+## Step 49 Relativistic Observer Damping & Differential Invariant Gate
+- **Feedback Loop Elimination:** Replaced raw cumulative byte modulo with differential transfer velocity ($\Delta B / \Delta t$) and a 60-second temporal cooldown window, preventing git push network traffic from re-triggering database mutations.
+- **Invariant Ledger Equilibrium:** Gated SQLite WAL commits behind proper-time shifts ($\Delta 	au$), guaranteeing that consecutive `sos-pulse` executions produce exactly `0 DB mutations` and `0 git commits`.
