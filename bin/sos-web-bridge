@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import http.server, sqlite3, json, os, time, math, hashlib
+import http.server, sqlite3, json, os, time, math, hashlib, subprocess
 
 PORT = 8080
 BASE_DIR = os.path.expanduser("~/sos-fox-beta")
@@ -10,19 +10,21 @@ BOOT_MONO = time.monotonic()
 BASE_TAU = 955.22
 
 def compute_workspace_merkle():
-    h = hashlib.sha256()
-    for sub in ("bin", "web_frontend"):
-        target = os.path.join(BASE_DIR, sub)
-        if os.path.isdir(target):
-            for fname in sorted(os.listdir(target)):
-                fpath = os.path.join(target, fname)
-                if os.path.isfile(fpath) and not os.path.islink(fpath):
-                    try:
-                        with open(fpath, "rb") as f:
-                            h.update(hashlib.sha256(f.read()).digest())
-                    except OSError:
-                        pass
-    return h.hexdigest()[:32]
+    merkle = hashlib.sha256()
+    scan_dirs = [BASE_DIR, os.path.join(BASE_DIR, "bin"), os.path.join(BASE_DIR, "web_frontend")]
+    for d in scan_dirs:
+        if not os.path.isdir(d):
+            continue
+        for fname in sorted(os.listdir(d)):
+            fpath = os.path.join(d, fname)
+            if os.path.isfile(fpath) and not os.path.islink(fpath):
+                try:
+                    raw = open(fpath, "rb").read()
+                    rel = os.path.relpath(fpath, BASE_DIR)
+                    merkle.update(rel.encode("utf-8") + b"\0" + hashlib.sha256(raw).digest())
+                except OSError:
+                    pass
+    return merkle.hexdigest()[:32]
 
 def compute_relativistic_state():
     try:
@@ -49,8 +51,7 @@ def query_enclave_audit():
             names = [r[0] for r in cur.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name").fetchall()]
             for tname in names:
                 if tname.replace("_", "").isalnum():
-                    cnt = cur.execute(f"SELECT COUNT(*) FROM {tname}").fetchone()[0]
-                    tables[tname] = cnt
+                    tables[tname] = cur.execute(f"SELECT COUNT(*) FROM {tname}").fetchone()[0]
             conn.close()
         except sqlite3.Error as e:
             integrity = f"error: {e}"
@@ -98,13 +99,14 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
                 except sqlite3.Error:
                     gateways = []
             gamma, proper_time = compute_relativistic_state()
+            merkle_root = compute_workspace_merkle()
             self._send_json({
                 "node": "pixel-sovereign",
                 "release": "v7.71.87-beta",
                 "gamma": gamma,
                 "proper_time": proper_time,
-                "invariant_seal": "f254ba67a2b370d6e38e9d231dd1e5ae",
-                "workspace_merkle_root": compute_workspace_merkle(),
+                "ground_truth_hash": merkle_root,
+                "workspace_merkle_root": merkle_root,
                 "gateways": gateways,
                 "status": "INVARIANT_ACTIVE"
             })
