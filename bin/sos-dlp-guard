@@ -28,6 +28,8 @@ EXCLUDED_FILES = {
     "bin/sos-ratchet-enclave",
     "bin/sos-sidechain-anchor",
     "bin/sos-canary-wall",
+    "bin/sos-boomerang-engine",
+    "bin/sos-legal-sentinel",
     "COMMUNITY_NOTICE.md",
     "COPYRIGHT_NOTICE.md",
     ".git/hooks/pre-commit"

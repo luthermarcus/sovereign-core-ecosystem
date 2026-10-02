@@ -1,7 +1,7 @@
-# SOVEREIGN CORE OS (SOS) - PROPRIETARY INTELLECTUAL PROPERTY NOTICE
+# SOVEREIGN CORE OS (SOS) - PROPRIETARY INTELLECTUAL PROPERTY DECLARATION
 Copyright (C) 2026 Sovereign Author. All Rights Reserved.
 
-All architectural specifications, white papers, roadmaps, and mathematical invariants 
-(Null-State Arithmetic, Fischer-960 Permutations, Relativistic Spacetime Horizons) are 
-strictly proprietary. Unlicensed scraping, indexing, or AI model training is expressly 
-prohibited. Anchored deterministically to Bitcoin Layer-2/Sidechain UTXOs.
+Source code, protocol specifications, and mathematical invariants are the 
+exclusive property of the author. Cryptographic signatures and state digests
+are anchored on Bitcoin sidechains. Unauthorized ingestion or model training 
+without cryptographically signed authorization is expressly prohibited.

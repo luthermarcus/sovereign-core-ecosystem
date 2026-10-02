@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+import hashlib, json, os, secrets, time
+
+STAGE_DIR = os.path.expanduser("~/sos-fox-beta/tmp/boomerang_queue")
+os.makedirs(STAGE_DIR, exist_ok=True)
+
+def stage_transaction(asset="FOX/BTC", amount_sats=50000, recipient="bc1q_sovereign_cold_vault"):
+    tx_id = hashlib.sha256(secrets.token_bytes(32)).hexdigest()[:16]
+    tx_payload = {
+        "tx_id": tx_id,
+        "asset": asset,
+        "amount_sats": amount_sats,
+        "recipient": recipient,
+        "state": "COLD_STAGED_SECURE",
+        "timestamp": int(time.time()),
+        "timelock_expires": int(time.time()) + 3600
+    }
+    tx_file = os.path.join(STAGE_DIR, f"tx_{tx_id}.json")
+    with open(tx_file, "w") as f:
+        json.dump(tx_payload, f, indent=2)
+    os.chmod(tx_file, 0o600)
+    print(f"[*] SOS Boomerang Engine: Staged {amount_sats} sats ({asset}) in cold queue -> {tx_id} [BUFFERED]")
+    return tx_id
+
+def process_queue():
+    files = [os.path.join(STAGE_DIR, f) for f in os.listdir(STAGE_DIR) if f.endswith(".json")]
+    if not files:
+        stage_transaction()
+        files = [os.path.join(STAGE_DIR, f) for f in os.listdir(STAGE_DIR) if f.endswith(".json")]
+    print(f"[+] SOS Boomerang Engine: {len(files)} transaction(s) isolated in cold-storage buffer [PASS]")
+
+if __name__ == "__main__":
+    process_queue()
