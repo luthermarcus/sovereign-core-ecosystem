@@ -25,3 +25,8 @@ SOS integrates bleeding-edge innovations and open-source contributions from:
 - **`FLAG:CROSS_OS_SHEBANG_HARMONY`:** Standardized all `bin/` applets on `#!/usr/bin/env python3` for seamless portability between Android 17 Termux and desktop Linux environments.
 - **`FLAG:OSC52_64KB_DOS_SHIELD`:** Enforced a 64KB ceiling on ANSI OSC 52 clipboard payloads to prevent mobile terminal buffer exhaustion.
 - **`FLAG:DEPIN_BANDWIDTH_QUOTA_GUARD`:** Added `sos_depin_peers` table to prioritize high-bandwidth mesh connections while enforcing the `0.92` RAM ceiling and `2000KB` SQLite WAL cap.
+
+## Step 47 Three-Prong Zero-Repetition Engine (`sos-pulse`)
+- **Prong 1 (`PRONG_1_MEMOIZATION_GATE` - DEPLOYABLE):** Content-hash (`SHA-256`) and SQLite `total_changes` dirty-bit gating prevents redundant chunk sealing, duplicate `iterdump()` disk writes, and unnecessary WAL truncations.
+- **Prong 2 (`PRONG_2_SINGLE_PASS_PULSE` - DEPLOYABLE):** `sos-pulse` unifies telemetry probing, GC pruning, AEAD sealing, and git delta-syncing into one single-pass command, avoiding Android 17 `PhantomProcessKiller` multi-process overhead and skipping `git push` when the working tree is clean.
+- **Prong 3 (`PRONG_3_SAVEPOINT_SANDBOX` - EXPERIMENTAL_READY):** `sos-vault --experimental <id>` executes experimental capabilities inside an isolated SQLite `SAVEPOINT` quarantine with automatic rollback on failure.

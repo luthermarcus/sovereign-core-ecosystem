@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('3ead7ca79c71f5d2495f60bca4ab185b','sos://magnet/?xt=urn:sos:3ead7ca79c71f5d2495f60bca4ab185b&dn=README.md',0,3210,'0bc1d2025a439c06c688c4e0d63c4c90af69f9c24b6c28c7606f2837a579d30b',8500,1500,1790920717);
+INSERT INTO "sos_aead_chunks" VALUES('81d25b16b4000ceff4efd2dedc3a9500','sos://magnet/?xt=urn:sos:81d25b16b4000ceff4efd2dedc3a9500&dn=README.md',0,4015,'e94dc156d2375716ee5325157bbcb2fdbc375c8484346cfad9bdd0e692d397a7',8500,1500,1790920905);
 CREATE TABLE sos_depin_peers (
     peer_id TEXT PRIMARY KEY,
     transport TEXT NOT NULL,
@@ -19,7 +19,17 @@ CREATE TABLE sos_depin_peers (
     priority_tier TEXT NOT NULL,
     updated_at INT NOT NULL
 );
-INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',306.16,0.92,'TIER_1_HIGH_BW',1790920717);
+INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',469.75,0.92,'TIER_1_HIGH_BW',1790920905);
+CREATE TABLE sos_feature_lanes (
+    feature_id TEXT PRIMARY KEY,
+    prong_role TEXT NOT NULL,
+    lane_status TEXT NOT NULL,
+    verification_gate TEXT NOT NULL,
+    updated_at INT NOT NULL
+);
+INSERT INTO "sos_feature_lanes" VALUES('PRONG_1_MEMOIZATION_GATE','HASH_AND_DIRTY_BIT_SKIP','DEPLOYABLE','SHA256_AND_TOTAL_CHANGES',1775109500);
+INSERT INTO "sos_feature_lanes" VALUES('PRONG_2_SINGLE_PASS_PULSE','UNIFIED_PROCESS_PIPELINE','DEPLOYABLE','ZERO_CHILD_SPAWN_OVERHEAD',1775109500);
+INSERT INTO "sos_feature_lanes" VALUES('PRONG_3_SAVEPOINT_SANDBOX','EXPERIMENTAL_QUARANTINE','EXPERIMENTAL_READY','SQLITE_SAVEPOINT_ROLLBACK',1775109500);
 PRAGMA writable_schema=ON;
 INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)VALUES('table','sos_knowledge_fts','sos_knowledge_fts',0,'CREATE VIRTUAL TABLE sos_knowledge_fts USING fts5(
     source_uri,
@@ -50,7 +60,7 @@ CREATE TABLE sos_magnets (
     created_at INT NOT NULL
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:3ead7ca79c71f5d2495f60bca4ab185b&dn=README.md','3ead7ca79c71f5d2495f60bca4ab185b',32768,1500,'pixel-sovereign',1790920717);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:81d25b16b4000ceff4efd2dedc3a9500&dn=README.md','81d25b16b4000ceff4efd2dedc3a9500',32768,1500,'pixel-sovereign',1790920905);
 CREATE TABLE sos_utxo_logistics (
     utxo_id TEXT PRIMARY KEY,
     prev_utxo TEXT NOT NULL,
