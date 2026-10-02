@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+import os, urllib.request, json
+
+def check_bridge():
+    try:
+        req = urllib.request.urlopen("http://127.0.0.1:8080/api/telemetry", timeout=3)
+        data = json.loads(req.read().decode("utf-8"))
+        print(f"[*] SOS Watchdog: Web bridge active. Node: {data.get('node')}, Status: {data.get('status')}")
+    except Exception as e:
+        print(f"[!] SOS Watchdog Warning: Bridge unreachable ({e})")
+
+if __name__ == "__main__":
+    check_bridge()
