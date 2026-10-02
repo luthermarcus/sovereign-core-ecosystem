@@ -19,7 +19,7 @@ CREATE TABLE sos_depin_peers (
     priority_tier TEXT NOT NULL,
     updated_at INT NOT NULL
 );
-INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',534.35,0.92,'TIER_1_HIGH_BW',1790921181);
+INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',438.53,0.92,'TIER_1_HIGH_BW',1790921186);
 CREATE TABLE sos_feature_lanes (
     feature_id TEXT PRIMARY KEY,
     prong_role TEXT NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE sos_spacetime_anchors (
     vector_xyz TEXT NOT NULL,
     updated_at INT NOT NULL
 );
-INSERT INTO "sos_spacetime_anchors" VALUES('LORENTZ_HORIZON',2.5819,371.82,1775109500,'0.874,0.35,0.441',1790921181);
+INSERT INTO "sos_spacetime_anchors" VALUES('LORENTZ_HORIZON',1.7747,540.94,1775109500,'0.874,0.35,0.441',1790921186);
 CREATE TABLE sos_utxo_logistics (
     utxo_id TEXT PRIMARY KEY,
     prev_utxo TEXT NOT NULL,
