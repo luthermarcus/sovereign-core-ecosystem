@@ -11,3 +11,4 @@ fox_wallet_meta.json
 __pycache__/
 *.db-wal
 *.db-shm
+.git-credentials

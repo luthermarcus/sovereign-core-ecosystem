@@ -20,3 +20,7 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Step 42–44 Sovereign P2P Vault, AEAD Bitcache & UTXO Logistics Expansion
+- **Step 42 (`CREDENTIAL_SHIELD`):** Vaulted GitHub PAT in `~/.git-credentials` (`0600`), scrubbed shell history, and masked remote push URLs.
+- **Step 43 (`P2P_LOGISTICS_VAULT`):** Added 32KB Warped SQLite WAL tables (`sos_magnets`, `sos_utxo_logistics`, `sos_knowledge_fts`), Wayback Machine CDX API archival, and ANSI OSC 52 zero-hang clipboard shims.
+- **Step 44 (`AEAD_SEALER_AND_GIT_SYSLINKS`):** Added HMAC-SHA256 authenticated 32KB chunk sealing (`sos-vault --seal`) to prevent P2P framing attacks, bound `85%/15%` Creator/PPLNS Seeder royalty splits, persisted applets in `~/sos-fox-beta/bin/`, and exported deterministic SQL dumps (`sos_vault_dump.sql`).

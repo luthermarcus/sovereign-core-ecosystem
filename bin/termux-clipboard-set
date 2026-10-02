@@ -1,0 +1,8 @@
+#!/data/data/com.termux/files/usr/bin/python3
+import sys, base64
+data = sys.stdin.buffer.read()
+b64 = base64.b64encode(data).decode('ascii')
+with open('/dev/tty', 'w') as tty:
+    tty.write(f'\033]52;c;{b64}\a')
+    tty.flush()
+print('[+] Copied to clipboard via zero-hang ANSI OSC 52.')

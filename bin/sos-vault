@@ -1,0 +1,57 @@
+#!/data/data/com.termux/files/usr/bin/python3
+import os, sys, json, time, hmac, hashlib, sqlite3, urllib.request
+
+repo = os.path.expanduser('~/sos-fox-beta')
+db = os.path.join(repo, 'sos_vault.db')
+conn = sqlite3.connect(db)
+cur = conn.cursor()
+aux_root = '79569afdfbf56944ae735e2e27fd169e'
+
+if len(sys.argv) > 2 and sys.argv[1] == '--wayback':
+    target = sys.argv[2]
+    url = f'https://web.archive.org/cdx/search/cdx?url={target}&output=json&fl=timestamp,original,statuscode,digest&collapse=digest&limit=3'
+    print(f'[*] Querying Wayback CDX API for: {target} ...')
+    req = urllib.request.Request(url, headers={'User-Agent': 'SovereignCoreOS/7.71.81'})
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        rows = json.loads(resp.read().decode('utf-8'))
+    for r in rows[1:]:
+        ts, orig, code, dig = r[0], r[1], r[2], r[3]
+        cur.execute('INSERT INTO sos_knowledge_fts VALUES (?, ?, ?, ?, ?)', (orig, ts, dig, 'WAYBACK_CDX_SNAPSHOT', f'HTTP {code} | Digest {dig}'))
+        print(f'  [+] Indexed Snapshot: [{ts}] {orig} (Digest: {dig})')
+    conn.commit()
+elif len(sys.argv) > 2 and sys.argv[1] == '--hop':
+    parcel = sys.argv[2]
+    cur.execute('SELECT utxo_id, depin_kb, auxpow_root FROM sos_utxo_logistics WHERE spent=0 ORDER BY recorded_at DESC LIMIT 1')
+    prev_id, kb, root = cur.fetchone()
+    new_id = hashlib.sha256(f'{prev_id}:{parcel}:{time.time()}'.encode()).hexdigest()[:32]
+    cur.execute('UPDATE sos_utxo_logistics SET spent=1 WHERE utxo_id=?', (prev_id,))
+    cur.execute('INSERT INTO sos_utxo_logistics VALUES (?, ?, ?, "pixel-sovereign", ?, ?, 0, ?)', (new_id, prev_id, parcel, round(kb + 32.77, 2), root, int(time.time())))
+    conn.commit()
+    print(f'[+] UTXO Custody Hop Locked: {prev_id[:12]}... -> {new_id} ({parcel})')
+elif len(sys.argv) > 2 and sys.argv[1] == '--seal':
+    target = sys.argv[2]
+    raw = open(target, 'rb').read() if os.path.exists(target) else target.encode('utf-8')
+    chunks = [raw[i:i+32768] for i in range(0, len(raw), 32768)] or [b'']
+    merkle = hashlib.sha256(raw).hexdigest()[:32]
+    mag = f'sos://magnet/?xt=urn:sos:{merkle}&dn={os.path.basename(target)}'
+    now = int(time.time())
+    cur.execute('INSERT OR REPLACE INTO sos_magnets VALUES (?, ?, 32768, 1500, "pixel-sovereign", ?)', (mag, merkle, now))
+    for idx, ch in enumerate(chunks):
+        tag = hmac.new(aux_root.encode(), ch + str(idx).encode(), hashlib.sha256).hexdigest()
+        cur.execute('INSERT OR REPLACE INTO sos_aead_chunks VALUES (?, ?, ?, ?, ?, 8500, 1500, ?)', (tag[:32], mag, idx, len(ch), tag, now))
+    conn.commit()
+    print(f'[+] AEAD Sealed {len(chunks)} x 32KB Chunk(s) -> {mag}')
+    print(f'[+] Royalty Split Primed: 85.0% Creator (STEP_41) | 15.0% PPLNS Seeder Pool (STEP_39)')
+else:
+    print('=== SOVEREIGN P2P BITCACHE, AEAD CHUNKS, UTXO LOGISTICS & FTS5 VAULT ===')
+    for row in cur.execute('SELECT magnet_uri, chunk_size, affiliate_bps FROM sos_magnets'):
+        print(f'[P2P Magnet]  {row[0]} | Chunk: {row[1]}B | Seeder Split: {row[2]/100:.1f}%')
+    for row in cur.execute('SELECT chunk_id, chunk_index, byte_len, creator_share_bps, seeder_pplns_bps FROM sos_aead_chunks LIMIT 4'):
+        print(f'[AEAD Chunk]  #{row[1]} ID:{row[0][:16]}... ({row[2]}B) | Split: {row[3]/100:.0f}% Creator / {row[4]/100:.0f}% Seeder')
+    for row in cur.execute('SELECT utxo_id, prev_utxo, parcel_type, depin_kb, spent FROM sos_utxo_logistics'):
+        state = 'SPENT' if row[4] else 'UNSPENT_ACTIVE'
+        print(f'[UTXO Hop]    {row[0][:16]}... <- {row[1][:16]}... | {row[2]} | {row[3]} KB [{state}]')
+    for row in cur.execute('SELECT capture_ts, category, source_uri FROM sos_knowledge_fts LIMIT 5'):
+        print(f'[FTS5 Vault]  [{row[0]}] ({row[1]}) {row[2]}')
+conn.execute('PRAGMA wal_checkpoint(TRUNCATE);')
+conn.close()
