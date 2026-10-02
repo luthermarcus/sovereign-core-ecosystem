@@ -1,4 +1,4 @@
-# Sovereign Core OS (SOS v7.71.55-beta) & FOX Protocol
+# Sovereign Core OS (SOS v7.71.56-beta) & FOX Protocol
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Stage](https://img.shields.io/badge/Stage-Beta%20v7.71.55-orange.svg)]()
@@ -23,5 +23,5 @@ sos --handoff [flash|flash-lite|grok|all] # Generate Multi-AI Handoff manifest
 sos --model-profile [flash|flash-lite]    # Switch local resource governor profile
 sos --problems                            # View the 10-step anomaly & resolution ledger
 sos --export-beta                         # Create portable .tar.gz beta bundle for SSH / PC
-sos --git-push <repo_url>                 # Push zero-leak staged beta directly to GitHub
+sos --git-push https://github.com/luthermarcus/sovereign-core-ecosystem                 # Push zero-leak staged beta directly to GitHub
 ```
