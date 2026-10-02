@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ==============================================================================
-# SOVEREIGN CORE OS (SOS v7.71.56-beta) & FOX PROTOCOL MICROKERNEL
+# SOVEREIGN CORE OS (SOS v7.71.57-beta) & FOX PROTOCOL MICROKERNEL
 # Host: pixel-sovereign (Android 17 SDK 37 | aarch64 Python 3.14.6) & Linux Mint
 # Primed & Verified:
 #   - Step 10 Android 17 SELinux-Safe DePIN Bandwidth & Socket Telemetry Sensor
@@ -67,7 +67,7 @@ class HardwareGovernor:
         try:
             if os.path.exists("/proc/loadavg"):
                 with open("/proc/loadavg", "r") as f:
-                    cpu_load = min(max(float(f.read().split()[0]) / 4.0, 0.05), 0.95)
+                    cpu_load = min(max(float(f.read().split()[0]) / max(os.cpu_count() or 8, 4), 0.05), 0.95)
             if os.path.exists("/proc/meminfo"):
                 info = {}
                 with open("/proc/meminfo", "r") as f:
@@ -117,7 +117,7 @@ class HardwareGovernor:
             for root_dir, _, files in os.walk(BASE_DIR):
                 for fn in files:
                     try:
-                        total_bytes += os.path.getsize(os.path.join(root_dir, fn))
+                        total_bytes += os.lstat(os.path.join(root_dir, fn)).st_size
                     except Exception:
                         pass
 
@@ -397,7 +397,13 @@ class KnowledgeBaseEngine:
              "Anchored 13 x 4KB SOS chunks (49.5KB) to AuxPoW marker and isolated BIP-SOS-001 & BIP-FOX-002."),
             ("STEP_10_ANDROID17_NET_BUS", "RESOLVED", "SELINUX_DEPIN_SENSOR",
              "Android 17 SELinux blocked /proc/net/dev causing Live Net Traffic to display 0.0 MB.",
-             "Added 3-tier rootless sensor cascading /proc/net/dev -> sysfs -> SELinux-safe DePIN workspace I/O counter.")
+             "Added 3-tier rootless sensor cascading /proc/net/dev -> sysfs -> SELinux-safe DePIN workspace I/O counter."),
+            ("STEP_11_PTY_PASTE_AND_SYMLINKS", "RESOLVED", "SYSLINK_DAG_ENGINE",
+             "20KB paste overflowed Android 4KB PTY buffer; added Native OS & BusyBox multi-call symlinks.",
+             "Switched to <4KB Delta-Injector, bound GitHub remote, and pinned 6 OS symlinks (79.87% savings)."),
+            ("STEP_12_LSTAT_AND_8CORE_NORM", "RESOLVED", "TELEMETRY_CALIBRATION",
+             "os.path.getsize followed syslinks (50.9MB) spiking x=0.9, and 4-core divisor tripped HIGH_HOST_LOAD on 8-core Pixel.",
+             "Switched DePIN sensor to os.lstat(), normalized loadavg by os.cpu_count(), and sorted steps 1-12 numerically.")
         ]
         now = datetime.now(timezone.utc).isoformat()
         with self._connect() as conn:
@@ -555,7 +561,7 @@ class SOSFoxEngine:
         return {
             "Gate 1 [Security & Zero-Leak]": "PASS | .gitignore Shield + Private BIPs Isolated + SSH Ed25519 Ready",
             "Gate 2 [Engine & AST Check]  ": f"PASS | Python {tc['python']} + {tc['openssl']}",
-            "Gate 3 [Knowledge & Log Fix] ": "PASS | 11 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
+            "Gate 3 [Knowledge & Log Fix] ": "PASS | 12 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
             "Gate 4 [Virtualization & VM] ": f"PASS | Debloated Python Contract VM + Creator Sandbox (proot: {tc['proot']})",
             "Gate 5 [Emulation & Replay]  ": f"PASS | Forward Causal Arrow + Historical Replay Ready ({self.gov.profile.upper()})"
         }
@@ -571,7 +577,7 @@ class SOSFoxEngine:
 
         common_header = [
             "# ==============================================================================",
-            "# SOVEREIGN CORE OS (SOS v7.71.56-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET",
+            "# SOVEREIGN CORE OS (SOS v7.71.57-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET",
             "# ==============================================================================",
             f"- **Active Node:** `{prof['hostname']}` (`{prof['arch']}`) running `{prof['os_release']}` [`{prof['build_id']}`]",
             f"- **Toolchain:** Python `{prof['toolchain']['python']}` | `{prof['toolchain']['git']}` | `{prof['toolchain']['openssl']}` | `{prof['toolchain']['uv']}`",
@@ -627,7 +633,7 @@ class SOSFoxEngine:
             subprocess.run(["git", "config", "user.email", "dev@sos-fox.local"], cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(["git", "add", "sos_core.py", "README.md", "AI_HANDOFF_MANIFEST.md", ".gitignore"], cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(
-                ["git", "commit", "-m", "Release SOS v7.71.56-beta: Step 10 Android 17 DePIN sensor, L1/L2 endpoints, Debloated Contract VM & Time-Replay"],
+                ["git", "commit", "-m", "Release SOS v7.71.57-beta: Step 10 Android 17 DePIN sensor, L1/L2 endpoints, Debloated Contract VM & Time-Replay"],
                 cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
             )
             status = subprocess.check_output(["git", "log", "-1", "--oneline"], cwd=BASE_DIR).decode().strip()
@@ -638,7 +644,7 @@ class SOSFoxEngine:
     def get_step_problem_ledger(self):
         with self.kb._connect() as conn:
             return conn.execute(
-                "SELECT build_id, severity, component, sanitized_summary, resolution_skill FROM beta_anomalies ORDER BY id ASC"
+                "SELECT build_id, severity, component, sanitized_summary, resolution_skill FROM beta_anomalies ORDER BY CAST(SUBSTR(build_id, 6, INSTR(SUBSTR(build_id, 6), '_') - 1) AS INTEGER) ASC"
             ).fetchall()
 
     def get_ssh_connection_guide(self):
@@ -704,7 +710,7 @@ def prime_private_bips_and_sandbox():
         f.write("\n".join([
             "# PRIVATE SPECIFICATION: BIP-SOS-001 (DO NOT COMMIT TO PUBLIC GIT)",
             "## Title: Relativistic 3D Vector Gas, Conformal Page Warping & On-Chain OS Chunks",
-            "- **Status:** Private Beta Staging (v7.71.56-beta)",
+            "- **Status:** Private Beta Staging (v7.71.57-beta)",
             "- **Lorentz Fee Equation:** F_dyn = F_0 / sqrt(1 - (x^2 + y^2 + z^2)/3)",
             "- **On-Chain OS Persistence:** 4KB SHA-256 chunks anchored to 44-byte AuxPoW marker.",
             ""
@@ -715,7 +721,7 @@ def prime_private_bips_and_sandbox():
         f.write("\n".join([
             "# PRIVATE SPECIFICATION: BIP-FOX-002 (DO NOT COMMIT TO PUBLIC GIT)",
             "## Title: 960s Boomerang Escrow, L1/L2 Endpoints & DAO Safety-Net Reserve",
-            "- **Status:** Private Beta Staging (v7.71.56-beta)",
+            "- **Status:** Private Beta Staging (v7.71.57-beta)",
             "- **Circuit Breaker:** Auto-revert swaps > 5.0% POL reserve cap back to cold storage.",
             "- **Creator Media & Public Goods:** 15% Owner/Creator vault | 85% POL + DePIN + Dev + Healthcare/Safety-Net Economy.",
             ""
@@ -789,7 +795,7 @@ def bootstrap_environment():
 
     fence = chr(96) * 3
     readme_lines = [
-        "# Sovereign Core OS (SOS v7.71.56-beta) & FOX Protocol",
+        "# Sovereign Core OS (SOS v7.71.57-beta) & FOX Protocol",
         "",
         "[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)",
         "[![Stage](https://img.shields.io/badge/Stage-Beta%20v7.71.55-orange.svg)]()",
@@ -846,7 +852,7 @@ def run_status_report(engine):
     prof = engine.os_profile
 
     print("=" * 78)
-    print("  SOVEREIGN CORE OS (SOS v7.71.56-beta) & FOX PROTOCOL MASTER TERMINAL")
+    print("  SOVEREIGN CORE OS (SOS v7.71.57-beta) & FOX PROTOCOL MASTER TERMINAL")
     print(f"  Node: {prof['hostname']} ({prof['arch']}) | OS: {prof['os_release']} [{prof['build_id']}]")
     print("=" * 78)
     print()
@@ -857,7 +863,7 @@ def run_status_report(engine):
     print(f"    Safety Flags      : {' | '.join(flags_ok)}")
     print(f"    Flags of Concern  : {' | '.join(concerns)}")
     print()
-    print("[2] RESOLVED TERMINAL LOG ANOMALIES (11-STEP TRACKER):")
+    print("[2] RESOLVED TERMINAL LOG ANOMALIES (12-STEP TRACKER):")
     for row in engine.get_step_problem_ledger():
         print(f"    * [{row[0]}] ({row[2]}): {row[4]}")
     print()
