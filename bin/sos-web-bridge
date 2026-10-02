@@ -8,9 +8,10 @@ BACKUP_DIR = os.path.join(BASE_DIR, "vault_backups")
 FRONTEND_DIR = os.path.join(BASE_DIR, "web_frontend")
 BOOT_MONO = time.monotonic()
 BASE_TAU = 955.22
-RELEASE_TAG = "v7.71.97-beta"
+RELEASE_TAG = "v7.71.98-beta"
 
 LEDGER_TABLES = ["sos_utxo_logistics", "sos_royalty_settlements", "sos_knowledge_fts"]
+DEPIN_TABLES = ["sos_depin_nodes"]
 NETWORK_TABLES = [
     "sos_atomic_swaps",
     "sos_sidechain_routes",
@@ -18,6 +19,7 @@ NETWORK_TABLES = [
     "sos_onion_circuits",
     "sos_depin_peers"
 ]
+DIAG_TABLES = ["sos_spacetime_anchors", "sos_auxpow_receipts", "sos_peer_reputation", "sos_epoch_claims"]
 
 def compute_workspace_merkle():
     merkle = hashlib.sha256()
@@ -100,6 +102,20 @@ def build_network_payload():
     conn = sqlite3.connect(VAULT_DB_PATH)
     try:
         return {t: fetch_table(conn, t) for t in NETWORK_TABLES}
+    finally:
+        conn.close()
+
+def build_depin_payload():
+    conn = sqlite3.connect(VAULT_DB_PATH)
+    try:
+        return {"sos_depin_nodes": fetch_table(conn, "sos_depin_nodes")}
+    finally:
+        conn.close()
+
+def build_diag_payload():
+    conn = sqlite3.connect(VAULT_DB_PATH)
+    try:
+        return {t: fetch_table(conn, t) for t in DIAG_TABLES}
     finally:
         conn.close()
 
@@ -211,19 +227,21 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
                 self._send_json(build_network_payload())
             except Exception as e:
                 self._send_json({"error": str(e)}, status=500)
+        elif parsed.path == "/api/depin":
+            try:
+                self._send_json(build_depin_payload())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
+        elif parsed.path == "/api/network-diag":
+            try:
+                self._send_json(build_diag_payload())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
         elif parsed.path == "/api/search":
             try:
                 qs = urllib.parse.parse_qs(parsed.query)
                 q = qs.get("q", [""])[0]
                 self._send_json(search_knowledge_fts(q))
-            except Exception as e:
-                self._send_json({"error": str(e)}, status=500)
-        elif parsed.path == "/api/grok-moe":
-            try:
-                qs = urllib.parse.parse_qs(parsed.query)
-                q = qs.get("q", ["network swaps wireguard sidechain ledger"])[0]
-                out = subprocess.check_output([os.path.join(BASE_DIR, "bin/sos-grok-router"), q], text=True)
-                self._send_json(json.loads(out))
             except Exception as e:
                 self._send_json({"error": str(e)}, status=500)
         else:
