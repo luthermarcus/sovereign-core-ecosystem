@@ -133,6 +133,7 @@ CREATE TABLE sos_spacetime_anchors (
     updated_at INT NOT NULL
 , last_net_bytes INT DEFAULT 0);
 INSERT INTO "sos_spacetime_anchors" VALUES('LORENTZ_HORIZON',1.005,955.22,1790921400,'0.874,0.35,0.441',1790921400,0);
+CREATE TABLE sos_threat_log (incident_id TEXT PRIMARY KEY, threat_type TEXT, source_peer TEXT, mitigated_at INTEGER, status TEXT);
 CREATE TABLE sos_utxo_logistics (
     utxo_id TEXT PRIMARY KEY,
     prev_utxo TEXT NOT NULL,
