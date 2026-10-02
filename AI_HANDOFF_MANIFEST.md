@@ -20,3 +20,7 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Step 60 Golden Milestone Release (`v7.71.83-release`)
+- **Master Ledger Verifier (`sos-audit`):** Consolidated health and audit applet inspecting Lorentz metrics, WireGuard peers, AEAD chunk stores, UTXO hops, and offline AuxPoW receipts in a single execution.
+- **Cross-Host Linux Mint Parity:** Full verification of 80-byte serialized headers and offline JSON settlement receipts between mobile Termux nodes and desktop Linux Mint workstations.
+- **True Invariant Idempotence:** Sustained zero-commit equilibrium, damping sensor jitter, eliminating phantom child processes, and ensuring 100% clean Git working trees across consecutive synchronizations.

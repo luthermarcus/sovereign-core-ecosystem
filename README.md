@@ -39,3 +39,8 @@ SOS integrates bleeding-edge innovations and open-source contributions from:
 - **Binary Detachment & Git Purity:** Permanently untracked binary `sos_vault.db` from Git index while preserving local database operations, committing exclusively to human-readable `sos_vault_dump.sql` to avoid SQLite header change false-positives.
 - **Terminal Operations Dashboard (`sos-top`):** Integrated single-screen real-time terminal UI visualising Lorentz factor $\gamma$, proper time $\tau$, DePIN peer bandwidth, and UTXO chain-of-custody.
 - **True Invariant Equilibrium:** Attained idempotent node synchronization with zero spurious commits when operating under stable state.
+
+## Step 60 Golden Milestone Release (`v7.71.83-release`)
+- **Master Ledger Verifier (`sos-audit`):** Consolidated health and audit applet inspecting Lorentz metrics, WireGuard peers, AEAD chunk stores, UTXO hops, and offline AuxPoW receipts in a single execution.
+- **Cross-Host Linux Mint Parity:** Full verification of 80-byte serialized headers and offline JSON settlement receipts between mobile Termux nodes and desktop Linux Mint workstations.
+- **True Invariant Idempotence:** Sustained zero-commit equilibrium, damping sensor jitter, eliminating phantom child processes, and ensuring 100% clean Git working trees across consecutive synchronizations.
