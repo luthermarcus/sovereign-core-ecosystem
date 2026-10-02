@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import http.server, sqlite3, json, os, time, math, hashlib
+import http.server, sqlite3, json, os, time, math, hashlib, urllib.parse
 
 PORT = 8080
 BASE_DIR = os.path.expanduser("~/sos-fox-beta")
@@ -8,7 +8,7 @@ BACKUP_DIR = os.path.join(BASE_DIR, "vault_backups")
 FRONTEND_DIR = os.path.join(BASE_DIR, "web_frontend")
 BOOT_MONO = time.monotonic()
 BASE_TAU = 955.22
-RELEASE_TAG = "v7.71.88-beta"
+RELEASE_TAG = "v7.71.89-beta"
 LEDGER_TABLES = ["sos_utxo_logistics", "sos_royalty_settlements", "sos_knowledge_fts"]
 
 def compute_workspace_merkle():
@@ -52,10 +52,58 @@ def fetch_table(conn, table_name, limit=100):
     rows = [dict(zip(columns, row)) for row in cur.fetchall()]
     return {"columns": columns, "rows": rows, "row_count": len(rows)}
 
+def fetch_joined_provenance(conn):
+    cur = conn.cursor()
+    sql = """
+        SELECT
+            u.utxo_id,
+            u.parcel_type,
+            u.custody_node,
+            u.depin_kb,
+            u.spent,
+            COALESCE(r.settlement_id, 'GENESIS_ANCHOR') AS settlement_id,
+            COALESCE(r.creator_sats, 0) AS creator_sats,
+            COALESCE(r.seeder_sats, 0) AS seeder_sats,
+            COALESCE(r.tx_status, 'ANCHORED') AS tx_status,
+            COALESCE(k.category, 'UNINDEXED') AS fts_category,
+            u.recorded_at
+        FROM sos_utxo_logistics u
+        LEFT JOIN sos_royalty_settlements r
+            ON u.recorded_at = r.recorded_at AND u.custody_node = r.payer_node
+        LEFT JOIN sos_knowledge_fts k
+            ON u.auxpow_root = k.sha256_digest
+        ORDER BY u.recorded_at ASC
+    """
+    cur.execute(sql)
+    cols = [d[0] for d in cur.description]
+    rows = [dict(zip(cols, r)) for r in cur.fetchall()]
+    return {"columns": cols, "rows": rows, "row_count": len(rows)}
+
 def build_ledger_payload():
     conn = sqlite3.connect(VAULT_DB_PATH)
     try:
-        return {t: fetch_table(conn, t) for t in LEDGER_TABLES}
+        payload = {t: fetch_table(conn, t) for t in LEDGER_TABLES}
+        payload["joined_provenance"] = fetch_joined_provenance(conn)
+        return payload
+    finally:
+        conn.close()
+
+def search_knowledge_fts(query_str):
+    conn = sqlite3.connect(VAULT_DB_PATH)
+    try:
+        cur = conn.cursor()
+        cols = ["source_uri", "capture_ts", "sha256_digest", "category", "payload"]
+        q = (query_str or "").strip()
+        if not q:
+            cur.execute("SELECT source_uri, capture_ts, sha256_digest, category, payload FROM sos_knowledge_fts LIMIT 50")
+        else:
+            safe_q = '"' + q.replace('"', '""') + '"'
+            cur.execute(
+                "SELECT source_uri, capture_ts, sha256_digest, category, payload FROM sos_knowledge_fts WHERE sos_knowledge_fts MATCH ? LIMIT 50",
+                (safe_q,)
+            )
+        rows = [dict(zip(cols, r)) for r in cur.fetchall()]
+        return {"query": q, "columns": cols, "rows": rows, "row_count": len(rows)}
     finally:
         conn.close()
 
@@ -110,7 +158,8 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
         self.wfile.write(payload)
 
     def do_GET(self):
-        if self.path.startswith("/api/telemetry"):
+        parsed = urllib.parse.urlparse(self.path)
+        if parsed.path == "/api/telemetry":
             gateways = []
             if os.path.exists(VAULT_DB_PATH):
                 try:
@@ -134,11 +183,18 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
                 "gateways": gateways,
                 "status": "INVARIANT_ACTIVE"
             })
-        elif self.path.startswith("/api/audit"):
+        elif parsed.path == "/api/audit":
             self._send_json(query_enclave_audit())
-        elif self.path.startswith("/api/ledger"):
+        elif parsed.path == "/api/ledger":
             try:
                 self._send_json(build_ledger_payload())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
+        elif parsed.path == "/api/search":
+            try:
+                qs = urllib.parse.parse_qs(parsed.query)
+                q = qs.get("q", [""])[0]
+                self._send_json(search_knowledge_fts(q))
             except Exception as e:
                 self._send_json({"error": str(e)}, status=500)
         else:

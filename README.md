@@ -1,80 +1,73 @@
-# Sovereign Core OS (SOS v7.71.83-release)
-### Decentralized, Relativistic, and Rootless Microkernel Ecosystem
+# Sovereign Core OS (SOS v7.71.89-beta)
 
-[![Version](https://img.shields.io/badge/version-v7.71.83--release-blue.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
-[![Platform](https://img.shields.io/badge/platform-Android%2017%20Termux%20%7C%20Linux%20Mint-green.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
-[![Architecture](https://img.shields.io/badge/architecture-Rootless%20SELinux%20Harmony-brightgreen.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
-[![Ledger](https://img.shields.io/badge/ledger-AuxPoW%20Bitcoin%20L1%20%7C%20Rollup%20L2-orange.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
+Rootless, deterministic Python 3.14 standard-library microkernel ecosystem running on Android Termux (pixel-sovereign, aarch64, Android 17 SDK 37) and Linux Mint workstations.
 
-Sovereign Core OS (SOS) is an invariant, trustless microkernel designed for resource-constrained, high-security mobile devices (Android Termux) and desktop workstations (Linux Mint). It combines relativistic physics-based telemetry pacing, deterministic multi-layer sidechain mining, and enclave-authenticated peer-to-peer data streaming into an autonomous, zero-drift ecosystem.
+## Constitutional Invariants & Architecture
+- **Privilege Sandbox**: `STRICT_ROOTLESS_PURITY` (`u0_a413`, zero root/su, SELinux user-space isolation)
+- **Toolchain**: Python 3.14 Native Standard Library Only (`sqlite3`, `http.server`, `hashlib`, `ast`)
+- **Verified Microkernel Applets**: 44 Rootless Standard-Library Executables
+- **Anti-Hallucination Guard**: `sos-truth` (Real `ast.parse()` syntax verification + full 64-hex SHA-256 Merkle digest)
 
----
+## Master Roadmap Status
+| Milestone Range | Subsystem Architecture | Status |
+| :--- | :--- | :--- |
+| **Steps 01-68** | L1 AuxPoW / L2 Rollup VM & Triple-Entry Ledger | `ACTIVE` |
+| **Steps 69-70** | Grok Sparse MoE Router & Telemetry Bridge | `ACTIVE` |
+| **Steps 71-78** | Anti-Abuse Sentinel, Nilometer Relief & Jubilee Reset | `ACTIVE` |
+| **Steps 79-80** | Claude Bridge & Cross-Community Skill Hub | `ACTIVE` |
+| **Steps 81-95** | WireGuard Mesh Gateway, Onion Routing & DePIN Swarm | `ACTIVE` |
+| **Steps 96-102** | Full 64-Hex SHA-256 Merkle Guard, Joined Ledger & FTS5 API | `ACTIVE` |
 
-## 1. Architectural Foundations & Mathematical Primitives
+## Registered Microkernel Applets (44)
+```text
+01. sos-anti-abuse               -> [VERIFIED_ROOTLESS_STDLIB]
+02. sos-audit                    -> [VERIFIED_ROOTLESS_STDLIB]
+03. sos-auxpow-attestation       -> [VERIFIED_ROOTLESS_STDLIB]
+04. sos-bandwidth-shaper         -> [VERIFIED_ROOTLESS_STDLIB]
+05. sos-bitfield-sync            -> [VERIFIED_ROOTLESS_STDLIB]
+06. sos-chain-bridge             -> [VERIFIED_ROOTLESS_STDLIB]
+07. sos-claude-bridge            -> [VERIFIED_ROOTLESS_STDLIB]
+08. sos-consensus                -> [VERIFIED_ROOTLESS_STDLIB]
+09. sos-constitution             -> [VERIFIED_ROOTLESS_STDLIB]
+10. sos-dex                      -> [VERIFIED_ROOTLESS_STDLIB]
+11. sos-faucet-epochs            -> [VERIFIED_ROOTLESS_STDLIB]
+12. sos-grok-bridge              -> [VERIFIED_ROOTLESS_STDLIB]
+13. sos-grok-router              -> [VERIFIED_ROOTLESS_STDLIB]
+14. sos-heartbeat                -> [VERIFIED_ROOTLESS_STDLIB]
+15. sos-ledger-audit             -> [VERIFIED_ROOTLESS_STDLIB]
+16. sos-mesh-daemon              -> [VERIFIED_ROOTLESS_STDLIB]
+17. sos-mesh-gateway             -> [VERIFIED_ROOTLESS_STDLIB]
+18. sos-mesh-stream              -> [VERIFIED_ROOTLESS_STDLIB]
+19. sos-mesh-swarm               -> [VERIFIED_ROOTLESS_STDLIB]
+20. sos-mint-sync                -> [VERIFIED_ROOTLESS_STDLIB]
+21. sos-mod-probe                -> [VERIFIED_ROOTLESS_STDLIB]
+22. sos-nat-punch                -> [VERIFIED_ROOTLESS_STDLIB]
+23. sos-nilometer-jubilee        -> [VERIFIED_ROOTLESS_STDLIB]
+24. sos-nostr-mesh               -> [VERIFIED_ROOTLESS_STDLIB]
+25. sos-nostr-signaler           -> [VERIFIED_ROOTLESS_STDLIB]
+26. sos-ns                       -> [VERIFIED_ROOTLESS_STDLIB]
+27. sos-onion-route              -> [VERIFIED_ROOTLESS_STDLIB]
+28. sos-pulse                    -> [VERIFIED_ROOTLESS_STDLIB]
+29. sos-roadmap-sync             -> [VERIFIED_ROOTLESS_STDLIB]
+30. sos-rootless-guard           -> [VERIFIED_ROOTLESS_STDLIB]
+31. sos-router                   -> [VERIFIED_ROOTLESS_STDLIB]
+32. sos-savepoint                -> [VERIFIED_ROOTLESS_STDLIB]
+33. sos-skill-hub                -> [VERIFIED_ROOTLESS_STDLIB]
+34. sos-state-proofs             -> [VERIFIED_ROOTLESS_STDLIB]
+35. sos-threat-sentinel          -> [VERIFIED_ROOTLESS_STDLIB]
+36. sos-top                      -> [VERIFIED_ROOTLESS_STDLIB]
+37. sos-truth                    -> [VERIFIED_ROOTLESS_STDLIB]
+38. sos-vault                    -> [VERIFIED_ROOTLESS_STDLIB]
+39. sos-wal-sync                 -> [VERIFIED_ROOTLESS_STDLIB]
+40. sos-web-bridge               -> [VERIFIED_ROOTLESS_STDLIB]
+41. sos-wireguard-tunnel         -> [VERIFIED_ROOTLESS_STDLIB]
+42. sos-zk-verify                -> [VERIFIED_ROOTLESS_STDLIB]
+43. ssh-ed25519                  -> [VERIFIED_ROOTLESS_STDLIB]
+44. termux-clipboard-set         -> [VERIFIED_ROOTLESS_STDLIB]
+```
 
-### Relativistic Telemetry & Lorentz Horizon Gating
-Network traffic accounting and database state flushes are governed by Minkowski 4D spacetime intervals:
-$$\Delta s^2 = c^2\Delta t^2 - (\Delta x^2 + \Delta y^2 + \Delta z^2)$$
-
-The dynamic Lorentz factor ($\gamma$) dictates relativistic rate damping and dynamic surge gas fees:
-$$\gamma = rac{1}{\sqrt{1 - eta^2}}, \quad eta = rac{v}{c}$$
-
-State commits to flash memory are damped by an invariant gate: updates trigger if and only if $\Delta t \ge 60	ext{s}$ AND $\Delta \gamma \ge 0.10$. Otherwise, the node preserves zero-commit equilibrium, preventing write amplification on mobile UFS flash.
-
-### Multi-Layer Sidechain Mining & Three-Prong Execution
-1. **Layer 1 (AuxPoW Anchor):** Merged-mining commitment (`fox://l1/auxpow/coinbase_44b`) binding an 18-chunk Merkle root into parent Bitcoin coinbase transactions via 80-byte serialized headers and proper-time nonces ($	au = 955	ext{s}$).
-2. **Layer 2 (Relativistic Rollup VM):** Sub-second micro-royalties (85% Creator / 15% Seeder) governed by Lorentz gas pricing ($1.2503\%$).
-3. **Three-Prong Execution Matrix:**
-   * **Prong 1 (Memoized Dirty-Bit):** Skips disk writes and commits when zero state mutations occur.
-   * **Prong 2 (Single-Process Autopilot):** Executes pulses in a single process, avoiding child-process termination under Android 17.
-   * **Prong 3 (Savepoint Sandbox):** Quarantines untrusted or unverified hops within SQLite `SAVEPOINT` checkpoints.
-
-### Bounded Softmax Mixture of Experts (MoE) Routing
-Inspired by high-performance sparse MoE architectures (xAI/Grok), `bin/sos-grok-router` calculates route selection across layers using a thermally bounded softmax scaled by the Lorentz factor:
-$$P(	ext{expert}_i) = rac{e^{z_i / \gamma}}{\sum_j e^{z_j / \gamma}}$$
-
----
-
-## 2. Community Attributions & Upstream Standards
-
-Sovereign Core OS directly credits and adheres to foundational research and engineering standards established by the open-source community:
-
-* **Leslie Lamport (1978):** Distributed event ordering, causal clock synchronization, and logical clock primitives.
-* **Albert Einstein (1905, 1915):** Special and General Relativity formulations ($\gamma$, proper time $	au$, Minkowski metrics) governing DePIN telemetry pacing and gas pricing.
-* **Jason A. Donenfeld (zx2c4 / WireGuard):** Modern kernel and userspace cryptographic tunneling architecture.
-* **Bram Cohen & BitTorrent Community:** BEP-52 compact binary bitfield piece negotiation architecture.
-* **topjohnwu & osm0sis (XDA Developers):** Android systemless interface research, mount namespace isolation, and rootless compatibility shims.
-* **xAI / Grok Open-Source Community:** Sparse Top-2 Mixture of Experts (MoE) routing, vector bitmasks, and stable bounded softmax formulations.
-* **Mysterium Network & P2Pool Node Operators:** Traffic volume accounting, WAL truncation caps, pool-hopping resistance, and mobile battery conservation.
-
----
-
-## 3. Node Operator Policy & Anti-Abuse Standards
-
-To ensure fair bandwidth distribution across decentralized mesh networks, nodes enforce strict anti-abuse rules via `bin/sos-anti-abuse`:
-
-* **Zero-Satoshi Leeching:** P2P chunk requests must supply an enclave HMAC signature verifying a valid payment split (85% Creator / 15% Seeder). Unsettled requests are rejected.
-* **Sybil Request Flooding:** Peers exceeding 500 bitfield requests per minute without corresponding chunk downloads are rate-limited.
-* **Malformed Handshake Penalties:** Peers with an authentication error rate exceeding 30% are quarantined (`sos_peer_quarantine`) to prevent resource exhaustion.
-* **Strict Rootless Purity:** The node operates entirely unprivileged within Android SELinux user-space. Superuser (`su`) privileges are neither requested nor required, preserving system integrity and hardware attestation.
-* **Process Stability:** Node operators on Android 14+ must enable:
-  $$\text{Settings} \longrightarrow \text{System} \longrightarrow \text{Developer Options} \longrightarrow \textbf{"Disable child process restrictions"}$$
-
----
-
-## 4. Quickstart & Command Interface
-
-### Primary Applets (`bin/`)
-| Applet | Description |
-| :--- | :--- |
-| `sos --status` | Display full microkernel health, L1/L2 endpoints, and safety flags. |
-| `sos-top` | Real-time single-screen terminal dashboard. |
-| `sos-audit` | Complete 6-pillar system and ledger integrity verification. |
-| `sos-pulse` | Autonomous single-word autopilot sync and equilibrium anchor. |
-| `sos-router` | Deterministic layer router (L1 AuxPoW / L2 VM / L3 Sandbox). |
-| `sos-grok-router` | Grok-inspired Top-2 sparse MoE gating router. |
-| `sos-bitfield-sync` | BEP-52 compact binary bitfield piece negotiator. |
-| `sos-mesh-swarm` | Peer ping and socket reachability engine. |
-| `sos-anti-abuse` | Peer fair-share traffic sentinel and quarantine manager. |
-| `sos-rootless-guard` | SELinux user-space purity and permission validator. |
-| `sos-mod-probe` | Python 3.14 standard library and C-API dependency auditor. |
+## Web Telemetry & SQLite Enclave Endpoints (127.0.0.1:8080)
+- `GET /api/telemetry` : Live Lorentz Gamma, Proper Time (tau), Mesh Gateways & 64-hex SHA-256 Merkle Root
+- `GET /api/audit` : SQLite WAL journal state, PRAGMA quick_check & 26-table row inventory
+- `GET /api/ledger` : PRAGMA table_info schema introspection & SQL LEFT JOIN provenance across UTXO, Royalty & FTS5 tables
+- `GET /api/search?q=...` : Parameterized SQLite FTS5 full-text search over sos_knowledge_fts
