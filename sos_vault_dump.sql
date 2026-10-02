@@ -21,6 +21,7 @@ CREATE TABLE sos_atomic_swaps (
             created_at INTEGER
         );
 INSERT INTO "sos_atomic_swaps" VALUES('6a55172a1e02e0b5b1e00099bb90daef','pixel-sovereign','PENDING_TAKER',500,525,'OPEN',1790926157);
+INSERT INTO "sos_atomic_swaps" VALUES('ccf95e4f5a3a963f4ebf148b2989ad56','pixel-sovereign','PENDING_TAKER',500,525,'OPEN',1790926397);
 CREATE TABLE sos_auxpow_receipts (
     receipt_id TEXT PRIMARY KEY,
     tx_id TEXT NOT NULL,
