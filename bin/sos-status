@@ -2,20 +2,14 @@
 import subprocess
 
 def show_status():
-    print("=== SOVEREIGN CORE OS: UNIFIED SYSTEM STATUS ===")
+    subprocess.run(["sos-master-dashboard"])
     subprocess.run(["sos-risk-sentinel"])
     subprocess.run(["sos-military-enclave"])
     subprocess.run(["sos-wallet-guard"])
-    subprocess.run(["sos-ecosystem-sim"])
     subprocess.run(["sos-boomerang-engine"])
     subprocess.run(["sos-legal-sentinel"])
-    subprocess.run(["sos-ratchet-enclave"])
-    subprocess.run(["sos-sidechain-anchor"])
-    subprocess.run(["sos-canary-wall"])
-    subprocess.run(["sos-earnings-aggregator"])
-    subprocess.run(["sos-peer-reputation"])
-    subprocess.run(["sos-epoch-claims"])
-    print("================================================")
+    subprocess.run(["sos-ptlc-verifier"])
+    subprocess.run(["sos-profile-audit"])
 
 if __name__ == "__main__":
     show_status()
