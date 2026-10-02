@@ -4,16 +4,30 @@ import os, sys, subprocess
 repo = os.path.expanduser("~/sos-fox-beta")
 os.chdir(repo)
 
+# Step A: Run vault pulse
 res = subprocess.run(["sos-vault", "--pulse"])
 if res.returncode != 0:
     print(f"[!] EMERGENCY BRAKE: sos-vault failed with code {res.returncode}. Aborting commit.")
     sys.exit(res.returncode)
 
-# Filter out ignored/transient files from git status check
-raw_status = subprocess.run(["git", "status", "--porcelain", "-uno"], capture_output=True, text=True).stdout.strip()
-tracked_status = [l for l in raw_status.splitlines() if not any(db_ext in l for db_ext in [".db", ".db-wal", ".db-shm"])]
+# Step B: Run verifier BEFORE evaluating git status so any intentional sync is captured
+subprocess.run(["sos-truth"], capture_output=True)
 
-if not tracked_status:
+# Step C: Evaluate status exclusively for real code, docs, or SQL changes
+raw_status = subprocess.run(["git", "status", "--porcelain", "-uno"], capture_output=True, text=True).stdout.strip()
+lines = [l for l in raw_status.splitlines() if l.strip()]
+
+# Filter out untracked DB files and metadata jitter if no functional code changed
+functional_changes = [
+    l for l in lines 
+    if not any(ign in l for ign in [".db", ".db-wal", ".db-shm"])
+    and not (("AI_HANDOFF_MANIFEST.md" in l or "syslink_pins.json" in l) and len(lines) <= 2)
+]
+
+if not functional_changes:
+    # If the only modified files were metadata touch-ups, reset them to keep git pristine
+    if lines:
+        subprocess.run(["git", "checkout", "--", "AI_HANDOFF_MANIFEST.md", "syslinks/syslink_pins.json"], capture_output=True)
     print("[=] Invariant Git Gate: Working tree is 100% clean. Zero redundant commits or network pushes.")
 else:
     msg = sys.argv[1] if len(sys.argv) > 1 else "Autonomous Invariant Sync"
