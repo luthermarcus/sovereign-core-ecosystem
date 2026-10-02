@@ -1,5 +1,6 @@
 {
   "repo_landing_page": "https://github.com/luthermarcus/sovereign-core-ecosystem",
+  "host_platform": "Android-17-aarch64-64bit",
   "busybox_applets": [
     "sos-dash",
     "sos-links",
@@ -7,44 +8,51 @@
     "sos-handoff",
     "fox-dex"
   ],
-  "compression_efficiency_pct": 79.87,
+  "compression_efficiency_pct": 79.88,
+  "verified_pins_count": "6/6",
   "native_os_pins": {
     "python3": {
       "symlink": "/data/data/com.termux/files/home/sos-fox-beta/syslinks/os_python3",
       "realpath": "/data/data/com.termux/files/usr/bin/python3.14",
       "inode": 1495401,
+      "dag_1hop_ok": true,
       "pin_sha256": "cce76741e1537bc4fddbe768"
     },
     "git": {
       "symlink": "/data/data/com.termux/files/home/sos-fox-beta/syslinks/os_git",
       "realpath": "/data/data/com.termux/files/usr/bin/git",
       "inode": 1095042,
+      "dag_1hop_ok": true,
       "pin_sha256": "39946d9a5a3aaebf30aaf89a"
     },
     "proot": {
       "symlink": "/data/data/com.termux/files/home/sos-fox-beta/syslinks/os_proot",
       "realpath": "/data/data/com.termux/files/usr/bin/proot",
       "inode": 1251728,
+      "dag_1hop_ok": true,
       "pin_sha256": "ceedca161b33126efc34616d"
     },
     "ssh": {
       "symlink": "/data/data/com.termux/files/home/sos-fox-beta/syslinks/os_ssh",
       "realpath": "/data/data/com.termux/files/usr/bin/ssh",
       "inode": 1569138,
+      "dag_1hop_ok": true,
       "pin_sha256": "cdde0d66c34698538b50da6d"
     },
     "sshd": {
       "symlink": "/data/data/com.termux/files/home/sos-fox-beta/syslinks/os_sshd",
       "realpath": "/data/data/com.termux/files/usr/bin/sshd",
       "inode": 1556431,
+      "dag_1hop_ok": true,
       "pin_sha256": "210bf3969294a6f2ad66bb38"
     },
     "uv": {
       "symlink": "/data/data/com.termux/files/home/sos-fox-beta/syslinks/os_uv",
       "realpath": "/data/data/com.termux/files/usr/bin/uv",
       "inode": 1265339,
+      "dag_1hop_ok": true,
       "pin_sha256": "e5e98ef318d886a0e9ffb9da"
     }
   },
-  "updated_at": "2026-10-02T00:42:29.307745+00:00"
+  "updated_at": "2026-10-02T00:50:14.800461+00:00"
 }
