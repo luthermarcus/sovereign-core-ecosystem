@@ -40,6 +40,8 @@ CREATE TABLE sos_depin_peers (
     updated_at INT NOT NULL
 );
 INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',145.8,0.92,'TIER_1_HIGH_BW',1790921400);
+CREATE TABLE sos_epoch_claims (claim_id TEXT PRIMARY KEY, node_id TEXT, epoch_id INTEGER, reward_sats INTEGER, claimed_at INTEGER);
+INSERT INTO "sos_epoch_claims" VALUES('fb5f4f4f5e51758ec6a4224f2c74949e','pixel-sovereign',20728,2500,1790926949);
 CREATE TABLE sos_feature_lanes (
     feature_id TEXT PRIMARY KEY,
     prong_role TEXT NOT NULL,
