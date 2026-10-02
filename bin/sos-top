@@ -19,7 +19,7 @@ conn = sqlite3.connect(db)
 cur = conn.cursor()
 
 print("=" * 78)
-print(f"  SOVEREIGN CORE OS (SOS v7.71.81-beta) - STEP {step_num} GOLDEN DASHBOARD")
+print(f"  SOVEREIGN CORE OS (SOS v7.71.90-beta) - STEP {step_num} GOLDEN DASHBOARD")
 print("  Node: pixel-sovereign (aarch64) | Bridge: peer-mint-bridge-01 | Toolchain: Py3.14")
 print("=" * 78)
 

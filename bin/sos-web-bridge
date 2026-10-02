@@ -8,7 +8,7 @@ BACKUP_DIR = os.path.join(BASE_DIR, "vault_backups")
 FRONTEND_DIR = os.path.join(BASE_DIR, "web_frontend")
 BOOT_MONO = time.monotonic()
 BASE_TAU = 955.22
-RELEASE_TAG = "v7.71.89-beta"
+RELEASE_TAG = "v7.71.90-beta"
 LEDGER_TABLES = ["sos_utxo_logistics", "sos_royalty_settlements", "sos_knowledge_fts"]
 
 def compute_workspace_merkle():

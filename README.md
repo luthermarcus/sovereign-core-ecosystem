@@ -1,4 +1,4 @@
-# Sovereign Core OS (SOS v7.71.89-beta)
+# Sovereign Core OS (SOS v7.71.90-beta)
 
 Rootless, deterministic Python 3.14 standard-library microkernel ecosystem running on Android Termux (pixel-sovereign, aarch64, Android 17 SDK 37) and Linux Mint workstations.
 

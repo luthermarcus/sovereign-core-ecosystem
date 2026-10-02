@@ -4,7 +4,7 @@ import os, sys, sqlite3
 BASE_DIR = os.path.expanduser("~/sos-fox-beta")
 README_PATH = os.path.join(BASE_DIR, "README.md")
 DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
-RELEASE_TAG = "v7.71.89-beta"
+RELEASE_TAG = "v7.71.90-beta"
 BT = chr(96)
 FENCE = BT * 3
 
