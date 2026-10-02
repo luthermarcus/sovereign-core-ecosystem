@@ -2,14 +2,7 @@
 import subprocess
 
 def show_status():
-    subprocess.run(["sos-master-dashboard"])
-    subprocess.run(["sos-risk-sentinel"])
-    subprocess.run(["sos-military-enclave"])
-    subprocess.run(["sos-wallet-guard"])
-    subprocess.run(["sos-boomerang-engine"])
-    subprocess.run(["sos-legal-sentinel"])
-    subprocess.run(["sos-ptlc-verifier"])
-    subprocess.run(["sos-profile-audit"])
+    subprocess.run(["sos-dash"])
 
 if __name__ == "__main__":
     show_status()

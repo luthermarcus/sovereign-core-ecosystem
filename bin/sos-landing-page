@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import subprocess
+
+def render_landing():
+    print("================================================================================")
+    print("     SOVEREIGN CORE OS (SOS) | CONVERGENCE RELEASE v7.71.135-beta               ")
+    print("     Decentralized Microkernel Engine & Bilateral PTLC Exchange                 ")
+    print("================================================================================")
+    print("  [ARCH] aarch64 / POSIX User-Space      [SECURITY] Military MLS / Mode 0o600   ")
+    print("  [CONSENSUS] AuxPoW / Bitcoin L2 PTLC   [VAULT] AES-256-GCM Airgapped RAM      ")
+    print("================================================================================")
+    print("  CORE CONTROL ACTIONS & COMMAND PALETTE:                                       ")
+    print("    dash             - Launch unified real-time ecosystem dashboard             ")
+    print("    sos-status       - Execute multi-subsystem integrity diagnostic             ")
+    print("    sos-fallback     - Safe fallback & rollback to verified baseline            ")
+    print("    sos-ptlc-engine  - Run Schnorr adaptor atomic swap simulator                ")
+    print("    sos-boomerang    - Inspect cold storage pre-broadcast transaction queue     ")
+    print("    sos-threat-db    - Query forensic exchange & drainer vulnerability KB       ")
+    print("    sos-truth        - Run 8-point deterministic anti-hallucination guard       ")
+    print("    sos-audit-health - Master ledger & UTXO logistics invariant attestation     ")
+    print("================================================================================")
+    subprocess.run(["sos-risk-sentinel"])
+
+if __name__ == "__main__":
+    render_landing()
