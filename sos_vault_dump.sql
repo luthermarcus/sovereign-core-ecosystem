@@ -83,6 +83,8 @@ CREATE TABLE sos_magnets (
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:89ad15af9f9f89098a379d55439bc81d&dn=README.md','89ad15af9f9f89098a379d55439bc81d',32768,1500,'pixel-sovereign',1790923786);
+CREATE TABLE sos_onion_circuits (circuit_id TEXT PRIMARY KEY, entry_node TEXT, exit_node TEXT, status TEXT, established_at INTEGER);
+INSERT INTO "sos_onion_circuits" VALUES('29bbf64ed6b220ac972c7ce68cd85df4','pixel-sovereign','peer-mint-bridge-01','ACTIVE_MIXNET',1790928860);
 CREATE TABLE sos_peer_bitfields (
     peer_name TEXT PRIMARY KEY,
     total_pieces INT NOT NULL,
