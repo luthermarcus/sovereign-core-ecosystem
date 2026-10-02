@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('31f35e2a5cbd125914710fa3f89ff2a5','sos://magnet/?xt=urn:sos:31f35e2a5cbd125914710fa3f89ff2a5&dn=README.md',0,4758,'3842810b63cf622ec1924269f5d40e1bc0409a87fca787e2b3706679b7a76386',8500,1500,1790944327);
+INSERT INTO "sos_aead_chunks" VALUES('b2bbd9ee0c5a86a9015cb44f1ba6d14d','sos://magnet/?xt=urn:sos:b2bbd9ee0c5a86a9015cb44f1ba6d14d&dn=README.md',0,4821,'2ed36f3cd31ff315b29291b582d40da8ba04c152d86c4e9d3d010c7ec3427cfb',8500,1500,1790946603);
 CREATE TABLE sos_atomic_swaps (
             swap_id TEXT PRIMARY KEY,
             maker_node TEXT,
@@ -98,7 +98,7 @@ CREATE TABLE sos_magnets (
     created_at INT NOT NULL
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.95-beta','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:31f35e2a5cbd125914710fa3f89ff2a5&dn=README.md','31f35e2a5cbd125914710fa3f89ff2a5',32768,1500,'pixel-sovereign',1790944327);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:b2bbd9ee0c5a86a9015cb44f1ba6d14d&dn=README.md','b2bbd9ee0c5a86a9015cb44f1ba6d14d',32768,1500,'pixel-sovereign',1790946603);
 CREATE TABLE sos_mesh_gateways (gateway_id TEXT PRIMARY KEY, endpoint_ip TEXT, subnet_mask TEXT, status TEXT, last_seen INTEGER);
 INSERT INTO "sos_mesh_gateways" VALUES('ca9abc624938d4656efe3d6809930250','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930560);
 INSERT INTO "sos_mesh_gateways" VALUES('c4878cf8c4e858d2b1558a2353836410','10.0.0.99:51820','10.0.0.0/24','ACTIVE_BROADCAST',1790930667);
