@@ -65,3 +65,12 @@ Sovereign Core OS enforces **Zero-Dependency Standard Library Purity**:
 - **C-API Direct Binding:** Binds directly to Python 3.14 native system modules (`ssl`, `sqlite3`, `hashlib`, `socket`, `struct`).
 - **Elimination of PyPI Wheel Fragility:** Removes external pip dependencies, preventing compilation and glibc/bionic compatibility failures on aarch64 Termux.
 - **AST Dependency Scanner (`sos-mod-probe`):** Performs continuous static analysis across repository code to prevent third-party library inclusion.
+
+## Sidechain Mining Taxonomy & Three-Prong Matrix
+The Sovereign Core OS ledger coordinates mining state across distinct cryptographic layers:
+- **L1 AuxPoW Merged Mining:** Anchors state into Bitcoin Core coinbase transactions (`fox://l1/auxpow/coinbase_44b`) via 80-byte serialized headers and proper-time nonces (tau = 955s).
+- **L2 Relativistic Rollup VM:** Processes high-frequency DePIN bandwidth micro-royalties (85% Creator / 15% Seeder) using Lorentz gamma dynamic gas pricing and 960s Boomerang protection.
+- **Three-Prong Execution Gate:**
+  * *Prong 1 (Memoized Dirty-Bit):* Eliminates redundant disk commits on clean state.
+  * *Prong 2 (Single-Process Autopilot):* Runs validation pulses without child-process overhead.
+  * *Prong 3 (Savepoint Sandbox):* Quarantines experimental sidechain hops inside SQLite SAVEPOINT checkpoints.

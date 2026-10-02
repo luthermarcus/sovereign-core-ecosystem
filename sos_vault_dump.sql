@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('4859b0a4087ac23f4a449c21e3985e3c','sos://magnet/?xt=urn:sos:4859b0a4087ac23f4a449c21e3985e3c&dn=README.md',0,7966,'c290ef32ce732e9d8789965561d40871f1936877a97bd2841b440bfa4f44ce5e',8500,1500,1790923054);
+INSERT INTO "sos_aead_chunks" VALUES('6e6a54e5e132aa419d598be92f6cce44','sos://magnet/?xt=urn:sos:6e6a54e5e132aa419d598be92f6cce44&dn=README.md',0,8812,'c57802abf6d878a82aeefb2c05ca1fbc6f2f9376124505fd8deab3f27d676cbf',8500,1500,1790923288);
 CREATE TABLE sos_auxpow_receipts (
     receipt_id TEXT PRIMARY KEY,
     tx_id TEXT NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE sos_magnets (
     created_at INT NOT NULL
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:4859b0a4087ac23f4a449c21e3985e3c&dn=README.md','4859b0a4087ac23f4a449c21e3985e3c',32768,1500,'pixel-sovereign',1790923054);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:6e6a54e5e132aa419d598be92f6cce44&dn=README.md','6e6a54e5e132aa419d598be92f6cce44',32768,1500,'pixel-sovereign',1790923288);
 CREATE TABLE sos_peer_bitfields (
     peer_name TEXT PRIMARY KEY,
     total_pieces INT NOT NULL,
@@ -97,6 +97,17 @@ CREATE TABLE sos_royalty_settlements (
 );
 INSERT INTO "sos_royalty_settlements" VALUES('5f38e9fd5f426280f8afa1cc79d609be','398ccac7f9bd18e55840afc28eee26a1','peer-mint-bridge-01','fox://l1/creator/vault',4403,'peer-mint-bridge-01',777,'SETTLED_TIMELIKE',1790922028);
 INSERT INTO "sos_royalty_settlements" VALUES('56907c7f0198bd742405097bfca1bdd8','398ccac7f9bd18e55840afc28eee26a1','pixel-sovereign','fox://l1/creator/vault',4404,'pixel-sovereign',777,'SETTLED_TIMELIKE',1790922261);
+CREATE TABLE sos_sidechain_routes (
+    layer_id TEXT PRIMARY KEY,
+    consensus_mechanism TEXT NOT NULL,
+    execution_prong TEXT NOT NULL,
+    dynamic_fee_rate REAL NOT NULL,
+    current_anchor TEXT NOT NULL,
+    status TEXT NOT NULL
+);
+INSERT INTO "sos_sidechain_routes" VALUES('L1_AUXPOW_BITCOIN','MERGED_MINING_COINBASE','PRONG_1_DEPLOYED',0.0,'79569afdfbf56944ae735e2e27fd169e','ACTIVE_ANCHOR');
+INSERT INTO "sos_sidechain_routes" VALUES('L2_RELATIVISTIC_VM','LORENTZ_GAMMA_ROLLUP','PRONG_2_DEPLOYED',1.2503,'474c314ab740c6b81eef036c','ACTIVE_ROUTING');
+INSERT INTO "sos_sidechain_routes" VALUES('L3_SAVEPOINT_SANDBOX','CAUSAL_LIGHTCONE_EXP','PRONG_3_THEORETICAL',0.0,'GENESIS_COINBASE','ISOLATED_QUARANTINE');
 CREATE TABLE sos_spacetime_anchors (
     anchor_id TEXT PRIMARY KEY,
     gamma REAL NOT NULL,
