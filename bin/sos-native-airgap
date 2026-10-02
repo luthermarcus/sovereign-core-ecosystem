@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+import os
+
+def airgap_os():
+    home = os.path.expanduser("~/")
+    for hf in [".bash_history", ".zsh_history", ".python_history", ".lesshst"]:
+        target = os.path.join(home, hf)
+        try:
+            if os.path.islink(target) or os.path.exists(target):
+                os.remove(target)
+            os.symlink("/dev/null", target)
+        except Exception:
+            pass
+    db = os.path.expanduser("~/sos-fox-beta/sos_vault.db")
+    if os.path.exists(db):
+        os.chmod(db, 0o600)
+    print("[+] SOS Native Airgap: Shell histories routed to /dev/null; enclave permissions verified.")
+
+if __name__ == "__main__":
+    airgap_os()

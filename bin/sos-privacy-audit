@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+import subprocess, sys
+
+FORBIDDEN = ["sos_vault.db", "sos_vault_dump.sql", "vault_backups/"]
+
+def audit_git():
+    res = subprocess.run(["git", "ls-files"], capture_output=True, text=True)
+    tracked = res.stdout.splitlines()
+    violations = [f for f in tracked if any(f.startswith(bad) for bad in FORBIDDEN)]
+    if violations:
+        print(f"[!] SOS PRIVACY AUDIT FAIL: Tracked vault files detected: {violations}")
+        sys.exit(1)
+    print("[+] SOS PRIVACY AUDIT PASS: All database dumps and backup vaults untracked.")
+
+if __name__ == "__main__":
+    audit_git()

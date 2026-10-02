@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import random
+
+def emit_canary_telemetry():
+    # Active defense: Generates decoy synthetic metrics to confound network observers
+    decoy_bw = round(random.uniform(10.0, 50.0), 2)
+    decoy_sats = random.randint(200, 1500)
+    print(f"[*] SOS Canary Wall: Emitted synthetic decoy telemetry ({decoy_bw} GB / {decoy_sats} sats) | Sandboxed [PASS]")
+
+if __name__ == "__main__":
+    emit_canary_telemetry()

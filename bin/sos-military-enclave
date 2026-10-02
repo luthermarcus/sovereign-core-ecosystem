@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+import os, sqlite3, sys
+
+DB_PATH = os.path.expanduser("~/sos-fox-beta/sos_vault.db")
+
+def audit_mls_boundaries():
+    print("[*] SOS Military MLS Sentinel: Auditing compartmentalization boundaries...")
+    if not os.path.exists(DB_PATH):
+        print("[!] Enclave DB not found.")
+        return 1
+    mode = oct(os.stat(DB_PATH).st_mode)[-3:]
+    if mode != "600":
+        print(f"[!] MLS INTEGRITY FAULT: Vault permissions {mode} != 600.")
+        return 1
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';")
+    tables = [r[0] for r in cur.fetchall()]
+    pii_keywords = ['%health%', '%medical%', '%diagnosis%', '%patient%', '%ssn%', '%email%', '%dob%']
+    for tbl in tables:
+        cur.execute(f"PRAGMA table_info({tbl});")
+        cols = [c[1] for c in cur.fetchall()]
+        for c in cols:
+            for kw in pii_keywords:
+                cur.execute(f"SELECT COUNT(*) FROM {tbl} WHERE {c} LIKE ?;", (kw,))
+                leaks = cur.fetchone()[0]
+                if leaks > 0:
+                    print(f"[!] MLS DEFENSE FAIL: Cleartext sensitive PII/health pattern '{kw}' detected in {tbl}:{c}")
+                    conn.close()
+                    return 1
+    cur.execute("SELECT COUNT(*) FROM sos_aead_chunks;")
+    chunks = cur.fetchone()[0]
+    conn.close()
+    print(f"[+] SOS MLS Sentinel PASS: Top-Secret compartmentalization enforced. Zero PII/health leaks. {chunks} AEAD chunk(s) isolated.")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(audit_mls_boundaries())

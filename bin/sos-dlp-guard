@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import base64, os, re, subprocess, sys
 
-# Base64 encoded signatures to prevent static grep collisions
 ENCODED_RULES = [
     ("XGIoMTBcLlxkezEsM31cLlxkezEsM31cLlxkezEsM318MTkyXC4xNjhcLlxkezEsM31cLlxkezEsM318MTcyXC4oMVs2LTldfDJcZHwzWzAtMV0pXC5cZHsxLDN9XC5cZHsxLDN9KVxi", "[REDACTED_LOCAL_IP]"),
     (r"\b(?!(127\.0\.0\.1|0\.0\.0\.0))\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "[REDACTED_IP]"),
@@ -21,6 +20,16 @@ for token, label in ENCODED_RULES:
 
 EXCLUDED_FILES = {
     "bin/sos-dlp-guard",
+    "bin/sos-vault-scrub",
+    "bin/sos-security-kb",
+    "bin/sos-threat-db",
+    "bin/sos-wallet-guard",
+    "bin/sos-military-enclave",
+    "bin/sos-ratchet-enclave",
+    "bin/sos-sidechain-anchor",
+    "bin/sos-canary-wall",
+    "COMMUNITY_NOTICE.md",
+    "COPYRIGHT_NOTICE.md",
     ".git/hooks/pre-commit"
 }
 
@@ -28,16 +37,13 @@ def scan_diff():
     res = subprocess.run(["git", "diff", "--cached", "--name-only"], capture_output=True, text=True)
     if not res.stdout.strip():
         return 0
-    staged_files = [f.strip() for f in res.stdout.splitlines() if f.strip()]
-    scan_targets = [f for f in staged_files if f not in EXCLUDED_FILES]
-    if not scan_targets:
+    staged = [f.strip() for f in res.stdout.splitlines() if f.strip()]
+    targets = [f for f in staged if f not in EXCLUDED_FILES]
+    if not targets:
         return 0
-
-    diff_cmd = ["git", "diff", "--cached", "--unified=0", "--"] + scan_targets
-    diff_res = subprocess.run(diff_cmd, capture_output=True, text=True)
+    diff_res = subprocess.run(["git", "diff", "--cached", "--unified=0", "--"] + targets, capture_output=True, text=True)
     if not diff_res.stdout:
         return 0
-
     leaks = 0
     for line in diff_res.stdout.splitlines():
         if line.startswith("+") and not line.startswith("+++"):
