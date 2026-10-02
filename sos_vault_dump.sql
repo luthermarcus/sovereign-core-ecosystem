@@ -95,6 +95,8 @@ CREATE TABLE sos_peer_quarantine (
     quarantine_status TEXT NOT NULL,
     updated_at INT NOT NULL
 );
+CREATE TABLE sos_peer_reputation (node_id TEXT PRIMARY KEY, score INTEGER, last_seen INTEGER, status TEXT);
+INSERT INTO "sos_peer_reputation" VALUES('peer-mint-bridge-01',100,1790926574,'ACTIVE_TIMELIKE');
 CREATE TABLE sos_royalty_settlements (
     settlement_id TEXT PRIMARY KEY,
     chunk_id TEXT NOT NULL,
