@@ -69,6 +69,14 @@ CREATE TABLE sos_magnets (
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:dfb3c6ff8be0053cf8dd6a5b22bf2e41&dn=README.md','dfb3c6ff8be0053cf8dd6a5b22bf2e41',32768,1500,'pixel-sovereign',1790922611);
+CREATE TABLE sos_peer_bitfields (
+    peer_name TEXT PRIMARY KEY,
+    total_pieces INT NOT NULL,
+    bitfield_hex TEXT NOT NULL,
+    missing_indices TEXT NOT NULL,
+    updated_at INT NOT NULL
+);
+INSERT INTO "sos_peer_bitfields" VALUES('peer-mint-bridge-01',1,'80','[]',1790922751);
 CREATE TABLE sos_peer_quarantine (
     peer_id TEXT PRIMARY KEY,
     failure_count INT NOT NULL,
@@ -120,6 +128,6 @@ CREATE TABLE sos_wireguard_peers (
     handshake_status TEXT NOT NULL,
     last_handshake INT NOT NULL
 );
-INSERT INTO "sos_wireguard_peers" VALUES('peer-mint-bridge-01','10.0.0.90:51820','AAAAC3NzaC1lZDI1NTE5AAAAILtQudjePzWEGOc1fLrlagrbthn45sjT0s9IYEeHyghV','10.0.0.0/24','a01823fdd3f94b1f5c4eabdf849fdf9d','VERIFIED_TIMELIKE',1790922261);
+INSERT INTO "sos_wireguard_peers" VALUES('peer-mint-bridge-01','10.0.0.90:51820','AAAAC3NzaC1lZDI1NTE5AAAAILtQudjePzWEGOc1fLrlagrbthn45sjT0s9IYEeHyghV','10.0.0.0/24','a01823fdd3f94b1f5c4eabdf849fdf9d','STANDBY_OFFLINE',1790922261);
 PRAGMA writable_schema=OFF;
 COMMIT;
