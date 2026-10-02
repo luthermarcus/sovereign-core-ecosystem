@@ -11,6 +11,16 @@ CREATE TABLE sos_aead_chunks (
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
 INSERT INTO "sos_aead_chunks" VALUES('89ad15af9f9f89098a379d55439bc81d','sos://magnet/?xt=urn:sos:89ad15af9f9f89098a379d55439bc81d&dn=README.md',0,6208,'793961fe28d26df1774c9c15be1e48bc5f442f51b5cb8222aa7b9688fb781a05',8500,1500,1790923786);
+CREATE TABLE sos_atomic_swaps (
+            swap_id TEXT PRIMARY KEY,
+            maker_node TEXT,
+            taker_node TEXT,
+            amount_offered INTEGER,
+            amount_requested INTEGER,
+            swap_status TEXT,
+            created_at INTEGER
+        );
+INSERT INTO "sos_atomic_swaps" VALUES('6a55172a1e02e0b5b1e00099bb90daef','pixel-sovereign','PENDING_TAKER',500,525,'OPEN',1790926157);
 CREATE TABLE sos_auxpow_receipts (
     receipt_id TEXT PRIMARY KEY,
     tx_id TEXT NOT NULL,
