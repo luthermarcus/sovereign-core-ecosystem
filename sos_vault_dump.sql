@@ -30,6 +30,7 @@ CREATE TABLE sos_auxpow_receipts (
     attested_at INT NOT NULL
 );
 INSERT INTO "sos_auxpow_receipts" VALUES('b6514e3a5599583d7dd6326e6623d28b','56907c7f0198bd742405097bfca1bdd8','79569afdfbf56944ae735e2e27fd169e','{"auxpow_root": "79569afdfbf56944ae735e2e27fd169e", "settlement_id": "56907c7f0198bd742405097bfca1bdd8", "chunk_id": "398ccac7f9bd18e55840afc28eee26a1", "payer_node": "pixel-sovereign", "creator_sats": 4404, "seeder_sats": 777, "utxo_hop": {"current": "f434bcca96c16db5bdf212ff017bcedc", "prev": "269242089bc6f8c94b5ee8ec7ae95f45"}, "timelike_verified_at": 1790922261, "signature_scheme": "ED25519_ENCLAVE_HMAC_SHA256"}',1790922421);
+CREATE TABLE sos_consensus_proposals (prop_id TEXT PRIMARY KEY, proposer TEXT, title TEXT, yes_weight INTEGER, no_weight INTEGER, status TEXT, created_at INTEGER);
 CREATE TABLE sos_depin_peers (
     peer_id TEXT PRIMARY KEY,
     transport TEXT NOT NULL,
