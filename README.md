@@ -1,76 +1,80 @@
-# Sovereign Core OS (SOS v7.71.90-beta) & Fox Protocol
+# Sovereign Core OS (SOS v7.71.83-release)
+### Decentralized, Relativistic, and Rootless Microkernel Ecosystem
 
-## Ecosystem Overview
-Sovereign Core OS (SOS) is a zero-leak, trustless, local-first computing microkernel operating natively on rootless Termux (Android 17) and bridged securely with Linux Mint workstations. 
+[![Version](https://img.shields.io/badge/version-v7.71.83--release-blue.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
+[![Platform](https://img.shields.io/badge/platform-Android%2017%20Termux%20%7C%20Linux%20Mint-green.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
+[![Architecture](https://img.shields.io/badge/architecture-Rootless%20SELinux%20Harmony-brightgreen.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
+[![Ledger](https://img.shields.io/badge/ledger-AuxPoW%20Bitcoin%20L1%20%7C%20Rollup%20L2-orange.svg)](https://github.com/luthermarcus/sovereign-core-ecosystem)
 
-## Community Attributions & Acknowledgments
-SOS integrates bleeding-edge innovations and open-source contributions from:
-- **XDA Developers Community:** For rootless SELinux harmonization, `$HOME`-safe staging techniques, and Proot toolchain bindings.
-- **BitcoinTalk / P2Pool Community:** For SQLite Write-Ahead Logging (WAL) atomic transaction safety and Merkle-anchored AuxPoW state ledgers.
-- **GitHub Developer Community:** For delta-injector symlink optimization, AST self-healing verification, and trustless git pre-commit hooks.
+Sovereign Core OS (SOS) is an invariant, trustless microkernel designed for resource-constrained, high-security mobile devices (Android Termux) and desktop workstations (Linux Mint). It combines relativistic physics-based telemetry pacing, deterministic multi-layer sidechain mining, and enclave-authenticated peer-to-peer data streaming into an autonomous, zero-drift ecosystem.
 
-## Roadmap & Architecture
-- **Phase 1 (Core Stabilization - Completed Steps 1–32):** Rootless environment setup, Zsh paste guards, OpenSSL C-API bindings, AST anti-hallucination verification (`sos-truth`), and zero-footprint passcode enclaves (`35433`).
-- **Phase 2 (Functional Mesh Networking - Current Steps 33–35):** P2P encrypted overlay verification (`sos-mesh`), SQLite WAL state synchronization (`sos-sync`), and secure SSH bridge automation.
-- **Phase 3 (Decentralized Value Routing - Upcoming):** PPLNS share-chain sliding windows, `sos-donate` SQLite trust widgets (`97.0/100`), and trustless creator royalty splits (`fox1q244c0e408a8f59cde75bfd7819995309ce`).
+---
 
-## Step 42–44 Sovereign P2P Vault, AEAD Bitcache & UTXO Logistics Expansion
-- **Step 42 (`CREDENTIAL_SHIELD`):** Vaulted GitHub PAT in `~/.git-credentials` (`0600`), scrubbed shell history, and masked remote push URLs.
-- **Step 43 (`P2P_LOGISTICS_VAULT`):** Added 32KB Warped SQLite WAL tables (`sos_magnets`, `sos_utxo_logistics`, `sos_knowledge_fts`), Wayback Machine CDX API archival, and ANSI OSC 52 zero-hang clipboard shims.
-- **Step 44 (`AEAD_SEALER_AND_GIT_SYSLINKS`):** Added HMAC-SHA256 authenticated 32KB chunk sealing (`sos-vault --seal`) to prevent P2P framing attacks, bound `85%/15%` Creator/PPLNS Seeder royalty splits, persisted applets in `~/sos-fox-beta/bin/`, and exported deterministic SQL dumps (`sos_vault_dump.sql`).
+## 1. Architectural Foundations & Mathematical Primitives
 
-## Step 45 Native & Overlay Security Sentinel Advisories
-- **`FLAG:ENCLAVE_KEYED_AEAD_ACTIVE`:** Upgraded P2P Bitcache 32KB chunk tags from public Merkle keys to local hardware enclave derivation (`~/.ssh/id_ed25519` + SHA-256 content hashes), blocking P2P swarm framing attacks.
-- **`FLAG:SQL_DUMP_ATOMIC_SYNC`:** Bound `sos_vault_dump.sql` generation and `PRAGMA wal_checkpoint(TRUNCATE)` directly into the post-transaction hook so binary DB and SQL text dumps never desync.
-- **`FLAG:CROSS_OS_SHEBANG_HARMONY`:** Standardized all `bin/` applets on `#!/usr/bin/env python3` for seamless portability between Android 17 Termux and desktop Linux environments.
-- **`FLAG:OSC52_64KB_DOS_SHIELD`:** Enforced a 64KB ceiling on ANSI OSC 52 clipboard payloads to prevent mobile terminal buffer exhaustion.
-- **`FLAG:DEPIN_BANDWIDTH_QUOTA_GUARD`:** Added `sos_depin_peers` table to prioritize high-bandwidth mesh connections while enforcing the `0.92` RAM ceiling and `2000KB` SQLite WAL cap.
+### Relativistic Telemetry & Lorentz Horizon Gating
+Network traffic accounting and database state flushes are governed by Minkowski 4D spacetime intervals:
+$$\Delta s^2 = c^2\Delta t^2 - (\Delta x^2 + \Delta y^2 + \Delta z^2)$$
 
-## Step 47 Three-Prong Zero-Repetition Engine (`sos-pulse`)
-- **Prong 1 (`PRONG_1_MEMOIZATION_GATE` - DEPLOYABLE):** Content-hash (`SHA-256`) and SQLite `total_changes` dirty-bit gating prevents redundant chunk sealing, duplicate `iterdump()` disk writes, and unnecessary WAL truncations.
-- **Prong 2 (`PRONG_2_SINGLE_PASS_PULSE` - DEPLOYABLE):** `sos-pulse` unifies telemetry probing, GC pruning, AEAD sealing, and git delta-syncing into one single-pass command, avoiding Android 17 `PhantomProcessKiller` multi-process overhead and skipping `git push` when the working tree is clean.
-- **Prong 3 (`PRONG_3_SAVEPOINT_SANDBOX` - EXPERIMENTAL_READY):** `sos-vault --experimental <id>` executes experimental capabilities inside an isolated SQLite `SAVEPOINT` quarantine with automatic rollback on failure.
+The dynamic Lorentz factor ($\gamma$) dictates relativistic rate damping and dynamic surge gas fees:
+$$\gamma = rac{1}{\sqrt{1 - eta^2}}, \quad eta = rac{v}{c}$$
 
-## Step 49 Relativistic Observer Damping & Differential Invariant Gate
-- **Feedback Loop Elimination:** Replaced raw cumulative byte modulo with differential transfer velocity ($\Delta B / \Delta t$) and a 60-second temporal cooldown window, preventing git push network traffic from re-triggering database mutations.
-- **Invariant Ledger Equilibrium:** Gated SQLite WAL commits behind proper-time shifts ($\Delta 	au$), guaranteeing that consecutive `sos-pulse` executions produce exactly `0 DB mutations` and `0 git commits`.
+State commits to flash memory are damped by an invariant gate: updates trigger if and only if $\Delta t \ge 60	ext{s}$ AND $\Delta \gamma \ge 0.10$. Otherwise, the node preserves zero-commit equilibrium, preventing write amplification on mobile UFS flash.
 
-## Step 50 Golden Milestone Architecture Ledger
-- **Binary Detachment & Git Purity:** Permanently untracked binary `sos_vault.db` from Git index while preserving local database operations, committing exclusively to human-readable `sos_vault_dump.sql` to avoid SQLite header change false-positives.
-- **Terminal Operations Dashboard (`sos-top`):** Integrated single-screen real-time terminal UI visualising Lorentz factor $\gamma$, proper time $\tau$, DePIN peer bandwidth, and UTXO chain-of-custody.
-- **True Invariant Equilibrium:** Attained idempotent node synchronization with zero spurious commits when operating under stable state.
+### Multi-Layer Sidechain Mining & Three-Prong Execution
+1. **Layer 1 (AuxPoW Anchor):** Merged-mining commitment (`fox://l1/auxpow/coinbase_44b`) binding an 18-chunk Merkle root into parent Bitcoin coinbase transactions via 80-byte serialized headers and proper-time nonces ($	au = 955	ext{s}$).
+2. **Layer 2 (Relativistic Rollup VM):** Sub-second micro-royalties (85% Creator / 15% Seeder) governed by Lorentz gas pricing ($1.2503\%$).
+3. **Three-Prong Execution Matrix:**
+   * **Prong 1 (Memoized Dirty-Bit):** Skips disk writes and commits when zero state mutations occur.
+   * **Prong 2 (Single-Process Autopilot):** Executes pulses in a single process, avoiding child-process termination under Android 17.
+   * **Prong 3 (Savepoint Sandbox):** Quarantines untrusted or unverified hops within SQLite `SAVEPOINT` checkpoints.
 
-## Step 60 Golden Milestone Release (`v7.71.83-release`)
-- **Master Ledger Verifier (`sos-audit`):** Consolidated health and audit applet inspecting Lorentz metrics, WireGuard peers, AEAD chunk stores, UTXO hops, and offline AuxPoW receipts in a single execution.
-- **Cross-Host Linux Mint Parity:** Full verification of 80-byte serialized headers and offline JSON settlement receipts between mobile Termux nodes and desktop Linux Mint workstations.
-- **True Invariant Idempotence:** Sustained zero-commit equilibrium, damping sensor jitter, eliminating phantom child processes, and ensuring 100% clean Git working trees across consecutive synchronizations.
+### Bounded Softmax Mixture of Experts (MoE) Routing
+Inspired by high-performance sparse MoE architectures (xAI/Grok), `bin/sos-grok-router` calculates route selection across layers using a thermally bounded softmax scaled by the Lorentz factor:
+$$P(	ext{expert}_i) = rac{e^{z_i / \gamma}}{\sum_j e^{z_j / \gamma}}$$
 
-## Community Attributions & Upstream Standards
-Sovereign Core OS (SOS) adheres to foundational open-source and decentralized research standards:
-- **Leslie Lamport (1978):** Distributed event ordering and causal clock synchronization primitives.
-- **Albert Einstein (1905, 1915):** Special & General Relativity math ($Lorentz \gamma$, proper time $\tau$, Minkowski causal cones) governing DePIN telemetry pacing.
-- **topjohnwu & osm0sis (XDA/GitHub):** Magisk systemless interface research, mount namespace boundaries, and Android boot image primitives.
-- **Jason A. Donenfeld (WireGuard):** Next-generation modern kernel and userspace tunneling cryptography.
-- **Bram Cohen & BitTorrent Org:** BEP-52 compact binary bitfield piece negotiation architecture.
-- **Mysterium Network & DePIN Node Ops:** Mobile bandwidth session prioritization and flash storage write conservation.
+---
 
-## Rootless Architecture & Trustless Verification Policy
-Sovereign Core OS (SOS) enforces **Strict Rootless Purity**:
-- **Zero-Privilege Security Model:** Operates entirely within standard Android user-space sandboxes without root access (`su`).
-- **Mathematical Trust Invariance:** Trust is established via deterministic cryptographic verification (Ed25519 Enclave HKDF, AuxPoW Merkle proofs, and Lorentz spacetime invariants), requiring no elevated kernel permissions.
-- **Process Stability Without Root:** Background execution is governed by standard Android settings (`Developer Options -> Disable child process restrictions`), eliminating the need for systemless root modules.
+## 2. Community Attributions & Upstream Standards
 
-## Zero-Dependency Architecture & Module Standards
-Sovereign Core OS enforces **Zero-Dependency Standard Library Purity**:
-- **C-API Direct Binding:** Binds directly to Python 3.14 native system modules (`ssl`, `sqlite3`, `hashlib`, `socket`, `struct`).
-- **Elimination of PyPI Wheel Fragility:** Removes external pip dependencies, preventing compilation and glibc/bionic compatibility failures on aarch64 Termux.
-- **AST Dependency Scanner (`sos-mod-probe`):** Performs continuous static analysis across repository code to prevent third-party library inclusion.
+Sovereign Core OS directly credits and adheres to foundational research and engineering standards established by the open-source community:
 
-## Sidechain Mining Taxonomy & Three-Prong Matrix
-The Sovereign Core OS ledger coordinates mining state across distinct cryptographic layers:
-- **L1 AuxPoW Merged Mining:** Anchors state into Bitcoin Core coinbase transactions (`fox://l1/auxpow/coinbase_44b`) via 80-byte serialized headers and proper-time nonces (tau = 955s).
-- **L2 Relativistic Rollup VM:** Processes high-frequency DePIN bandwidth micro-royalties (85% Creator / 15% Seeder) using Lorentz gamma dynamic gas pricing and 960s Boomerang protection.
-- **Three-Prong Execution Gate:**
-  * *Prong 1 (Memoized Dirty-Bit):* Eliminates redundant disk commits on clean state.
-  * *Prong 2 (Single-Process Autopilot):* Runs validation pulses without child-process overhead.
-  * *Prong 3 (Savepoint Sandbox):* Quarantines experimental sidechain hops inside SQLite SAVEPOINT checkpoints.
+* **Leslie Lamport (1978):** Distributed event ordering, causal clock synchronization, and logical clock primitives.
+* **Albert Einstein (1905, 1915):** Special and General Relativity formulations ($\gamma$, proper time $	au$, Minkowski metrics) governing DePIN telemetry pacing and gas pricing.
+* **Jason A. Donenfeld (zx2c4 / WireGuard):** Modern kernel and userspace cryptographic tunneling architecture.
+* **Bram Cohen & BitTorrent Community:** BEP-52 compact binary bitfield piece negotiation architecture.
+* **topjohnwu & osm0sis (XDA Developers):** Android systemless interface research, mount namespace isolation, and rootless compatibility shims.
+* **xAI / Grok Open-Source Community:** Sparse Top-2 Mixture of Experts (MoE) routing, vector bitmasks, and stable bounded softmax formulations.
+* **Mysterium Network & P2Pool Node Operators:** Traffic volume accounting, WAL truncation caps, pool-hopping resistance, and mobile battery conservation.
+
+---
+
+## 3. Node Operator Policy & Anti-Abuse Standards
+
+To ensure fair bandwidth distribution across decentralized mesh networks, nodes enforce strict anti-abuse rules via `bin/sos-anti-abuse`:
+
+* **Zero-Satoshi Leeching:** P2P chunk requests must supply an enclave HMAC signature verifying a valid payment split (85% Creator / 15% Seeder). Unsettled requests are rejected.
+* **Sybil Request Flooding:** Peers exceeding 500 bitfield requests per minute without corresponding chunk downloads are rate-limited.
+* **Malformed Handshake Penalties:** Peers with an authentication error rate exceeding 30% are quarantined (`sos_peer_quarantine`) to prevent resource exhaustion.
+* **Strict Rootless Purity:** The node operates entirely unprivileged within Android SELinux user-space. Superuser (`su`) privileges are neither requested nor required, preserving system integrity and hardware attestation.
+* **Process Stability:** Node operators on Android 14+ must enable:
+  $$\text{Settings} \longrightarrow \text{System} \longrightarrow \text{Developer Options} \longrightarrow \textbf{"Disable child process restrictions"}$$
+
+---
+
+## 4. Quickstart & Command Interface
+
+### Primary Applets (`bin/`)
+| Applet | Description |
+| :--- | :--- |
+| `sos --status` | Display full microkernel health, L1/L2 endpoints, and safety flags. |
+| `sos-top` | Real-time single-screen terminal dashboard. |
+| `sos-audit` | Complete 6-pillar system and ledger integrity verification. |
+| `sos-pulse` | Autonomous single-word autopilot sync and equilibrium anchor. |
+| `sos-router` | Deterministic layer router (L1 AuxPoW / L2 VM / L3 Sandbox). |
+| `sos-grok-router` | Grok-inspired Top-2 sparse MoE gating router. |
+| `sos-bitfield-sync` | BEP-52 compact binary bitfield piece negotiator. |
+| `sos-mesh-swarm` | Peer ping and socket reachability engine. |
+| `sos-anti-abuse` | Peer fair-share traffic sentinel and quarantine manager. |
+| `sos-rootless-guard` | SELinux user-space purity and permission validator. |
+| `sos-mod-probe` | Python 3.14 standard library and C-API dependency auditor. |
