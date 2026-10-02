@@ -53,3 +53,9 @@ Sovereign Core OS (SOS) adheres to foundational open-source and decentralized re
 - **Jason A. Donenfeld (WireGuard):** Next-generation modern kernel and userspace tunneling cryptography.
 - **Bram Cohen & BitTorrent Org:** BEP-52 compact binary bitfield piece negotiation architecture.
 - **Mysterium Network & DePIN Node Ops:** Mobile bandwidth session prioritization and flash storage write conservation.
+
+## Rootless Architecture & Trustless Verification Policy
+Sovereign Core OS (SOS) enforces **Strict Rootless Purity**:
+- **Zero-Privilege Security Model:** Operates entirely within standard Android user-space sandboxes without root access (`su`).
+- **Mathematical Trust Invariance:** Trust is established via deterministic cryptographic verification (Ed25519 Enclave HKDF, AuxPoW Merkle proofs, and Lorentz spacetime invariants), requiring no elevated kernel permissions.
+- **Process Stability Without Root:** Background execution is governed by standard Android settings (`Developer Options -> Disable child process restrictions`), eliminating the need for systemless root modules.

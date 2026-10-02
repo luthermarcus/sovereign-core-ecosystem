@@ -20,3 +20,8 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Rootless Architecture & Trustless Verification Policy
+Sovereign Core OS (SOS) enforces **Strict Rootless Purity**:
+- **Zero-Privilege Security Model:** Operates entirely within standard Android user-space sandboxes without root access (`su`).
+- **Mathematical Trust Invariance:** Trust is established via deterministic cryptographic verification (Ed25519 Enclave HKDF, AuxPoW Merkle proofs, and Lorentz spacetime invariants), requiring no elevated kernel permissions.
+- **Process Stability Without Root:** Background execution is governed by standard Android settings (`Developer Options -> Disable child process restrictions`), eliminating the need for systemless root modules.
