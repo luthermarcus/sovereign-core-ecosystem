@@ -1,45 +1,82 @@
 #!/usr/bin/env python3
-import http.server, sqlite3, json, os
+import http.server, sqlite3, json, os, time, math, hashlib
 
 PORT = 8080
-DB_PATH = os.path.expanduser("~/sos-fox-beta/sos_vault.db")
-FRONTEND_DIR = os.path.expanduser("~/sos-fox-beta/web_frontend")
+BASE_DIR = os.path.expanduser("~/sos-fox-beta")
+DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
+FRONTEND_DIR = os.path.join(BASE_DIR, "web_frontend")
+BOOT_MONO = time.monotonic()
+BASE_TAU = 955.22
+
+def compute_workspace_merkle():
+    h = hashlib.sha256()
+    for sub in ("bin", "web_frontend"):
+        target = os.path.join(BASE_DIR, sub)
+        if os.path.isdir(target):
+            for fname in sorted(os.listdir(target)):
+                fpath = os.path.join(target, fname)
+                if os.path.isfile(fpath) and not os.path.islink(fpath):
+                    try:
+                        with open(fpath, "rb") as f:
+                            h.update(hashlib.sha256(f.read()).digest())
+                    except OSError:
+                        pass
+    return h.hexdigest()[:32]
+
+def compute_relativistic_state():
+    try:
+        load1 = os.getloadavg()[0]
+    except (AttributeError, OSError):
+        load1 = 0.10
+     cpu_count = os.cpu_count() or 8
+    beta = min(max(load1 / float(cpu_count), 0.0995), 0.99)
+    gamma = round(1.0 / math.sqrt(1.0 - (beta * beta)), 6)
+    dt = time.monotonic() - BOOT_MONO
+    proper_time = round(BASE_TAU + (dt / gamma), 2)
+    return gamma, proper_time
+
+class ReusableHTTPServer(http.server.HTTPServer):
+    allow_reuse_address = True
 
 class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=FRONTEND_DIR, **kwargs)
 
+    def log_message(self, format, *args):
+        pass
+
     def do_GET(self):
         if self.path.startswith("/api/telemetry"):
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            try:
-                gateways = cur.execute("SELECT * FROM sos_mesh_gateways").fetchall()
-            except sqlite3.OperationalError:
-                gateways = []
-            conn.close()
+            gateways = []
+            if os.path.exists(DB_PATH):
+                try:
+                    conn = sqlite3.connect(DB_PATH)
+                    cur = conn.cursor()
+                    gateways = cur.execute("SELECT * FROM sos_mesh_gateways").fetchall()
+                    conn.close()
+                except sqlite3.Error:
+                    gateways = []
+            gamma, proper_time = compute_relativistic_state()
             data = {
                 "node": "pixel-sovereign",
-                "gamma": 1.005,
-                "proper_time": 955.22,
+                "gamma": gamma,
+                "proper_time": proper_time,
+                "invariant_seal": "f254ba67a2b370d6e38e9d231dd1e5ae",
+                "workspace_merkle_root": compute_workspace_merkle(),
                 "gateways": gateways,
                 "status": "INVARIANT_ACTIVE"
             }
+            payload = json.dumps(data).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
+            self.send_header("Cache-Control", "no-store")
             self.end_headers()
-            self.wfile.write(json.dumps(data).encode("utf-8"))
+            self.wfile.write(payload)
         else:
-            index_path = os.path.join(FRONTEND_DIR, "index.html")
-            if not os.path.exists(index_path) and self.path == "/":
-                self.send_response(200)
-                self.send_header("Content-Type", "text/html")
-                self.end_headers()
-                self.wfile.write(b"<html><body><h1>Sovereign Core OS Workspace</h1><p>Frontend assets mounted successfully.</p><p><a href='/api/telemetry'>View Telemetry API</a></p></body></html>")
-            else:
-                super().do_GET()
+            super().do_GET()
 
 if __name__ == "__main__":
-    server = http.server.HTTPServer(("127.0.0.1", PORT), SovereignBridgeHandler)
+    os.makedirs(FRONTEND_DIR, exist_ok=True)
+    server = ReusableHTTPServer(("127.0.0.1", PORT), SovereignBridgeHandler)
     print(f"[*] Sovereign Web Bridge & Frontend active on http://127.0.0.1:{PORT}")
     server.serve_forever()

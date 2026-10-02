@@ -12,9 +12,10 @@
 <body>
     <h1>Sovereign Core OS (pixel-sovereign)</h1>
     <div class="card">
-        <h3>Spacetime Metrics</h3>
+        <h3>Spacetime & Cryptographic State</h3>
         <p>Lorentz Gamma (gamma): <span id="gamma">Loading...</span></p>
         <p>Proper Time (tau): <span id="proper-time">Loading...</span>s</p>
+        <p>Workspace Merkle Root: <span id="merkle-root">Loading...</span></p>
         <p>System Status: <span id="status">CONNECTING</span></p>
     </div>
     <div class="card">
@@ -26,24 +27,26 @@
         async function fetchTelemetry() {
             try {
                 const response = await fetch('/api/telemetry');
+                if (!response.ok) throw new Error('HTTP ' + response.status);
                 const data = await response.json();
-                document.getElementById('gamma').innerText = data.gamma ?? 'N/A';
-                document.getElementById('proper-time').innerText = data.proper_time ?? 'N/A';
-                document.getElementById('status').innerText = data.status ?? 'UNKNOWN';
-                
+                document.getElementById('gamma').textContent = data.gamma ?? 'N/A';
+                document.getElementById('proper-time').textContent = data.proper_time ?? 'N/A';
+                document.getElementById('merkle-root').textContent = data.workspace_merkle_root ?? 'N/A';
+                document.getElementById('status').textContent = data.status ?? 'UNKNOWN';
+
                 const gatewayList = document.getElementById('gateways-list');
                 gatewayList.innerHTML = '';
                 if (data.gateways && data.gateways.length > 0) {
                     data.gateways.forEach(gw => {
                         const li = document.createElement('li');
-                        li.innerText = `ID: ${gw[0]} | Endpoint: ${gw[1]} | Subnet: ${gw[2]} | State: ${gw[3]}`;
+                        li.textContent = `ID: ${gw[0]} | Endpoint: ${gw[1]} | Subnet: ${gw[2]} | State: ${gw[3]}`;
                         gatewayList.appendChild(li);
                     });
                 } else {
                     gatewayList.innerHTML = '<li>No active gateways reported.</li>';
                 }
             } catch (err) {
-                document.getElementById('status').innerText = 'BRIDGE_DISCONNECTED';
+                document.getElementById('status').textContent = 'BRIDGE_DISCONNECTED';
             }
         }
         setInterval(fetchTelemetry, 2000);
