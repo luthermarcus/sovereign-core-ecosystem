@@ -59,3 +59,9 @@ Sovereign Core OS (SOS) enforces **Strict Rootless Purity**:
 - **Zero-Privilege Security Model:** Operates entirely within standard Android user-space sandboxes without root access (`su`).
 - **Mathematical Trust Invariance:** Trust is established via deterministic cryptographic verification (Ed25519 Enclave HKDF, AuxPoW Merkle proofs, and Lorentz spacetime invariants), requiring no elevated kernel permissions.
 - **Process Stability Without Root:** Background execution is governed by standard Android settings (`Developer Options -> Disable child process restrictions`), eliminating the need for systemless root modules.
+
+## Zero-Dependency Architecture & Module Standards
+Sovereign Core OS enforces **Zero-Dependency Standard Library Purity**:
+- **C-API Direct Binding:** Binds directly to Python 3.14 native system modules (`ssl`, `sqlite3`, `hashlib`, `socket`, `struct`).
+- **Elimination of PyPI Wheel Fragility:** Removes external pip dependencies, preventing compilation and glibc/bionic compatibility failures on aarch64 Termux.
+- **AST Dependency Scanner (`sos-mod-probe`):** Performs continuous static analysis across repository code to prevent third-party library inclusion.

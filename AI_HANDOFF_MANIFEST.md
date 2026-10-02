@@ -20,3 +20,8 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Zero-Dependency Architecture & Module Standards
+Sovereign Core OS enforces **Zero-Dependency Standard Library Purity**:
+- **C-API Direct Binding:** Binds directly to Python 3.14 native system modules (`ssl`, `sqlite3`, `hashlib`, `socket`, `struct`).
+- **Elimination of PyPI Wheel Fragility:** Removes external pip dependencies, preventing compilation and glibc/bionic compatibility failures on aarch64 Termux.
+- **AST Dependency Scanner (`sos-mod-probe`):** Performs continuous static analysis across repository code to prevent third-party library inclusion.
