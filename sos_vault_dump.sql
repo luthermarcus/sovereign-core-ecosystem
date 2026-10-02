@@ -10,7 +10,7 @@ CREATE TABLE sos_aead_chunks (
     sealed_at INT NOT NULL
 );
 INSERT INTO "sos_aead_chunks" VALUES('2f46fbece609c3d970cd3d4acdd88be5','sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81',0,32768,'2f46fbece609c3d970cd3d4acdd88be5baece8bcc127835f6e002a5ecce230d4',8500,1500,1790920423);
-INSERT INTO "sos_aead_chunks" VALUES('81d25b16b4000ceff4efd2dedc3a9500','sos://magnet/?xt=urn:sos:81d25b16b4000ceff4efd2dedc3a9500&dn=README.md',0,4015,'e94dc156d2375716ee5325157bbcb2fdbc375c8484346cfad9bdd0e692d397a7',8500,1500,1790920905);
+INSERT INTO "sos_aead_chunks" VALUES('2d8a0bed92db0ad7c443c7ec2e97f5b4','sos://magnet/?xt=urn:sos:2d8a0bed92db0ad7c443c7ec2e97f5b4&dn=README.md',0,4543,'666f220764bf91fcc2e36acdfcd885c12c9cf0cb421caccc8f6c151fcd2c4649',8500,1500,1790921400);
 CREATE TABLE sos_depin_peers (
     peer_id TEXT PRIMARY KEY,
     transport TEXT NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE sos_depin_peers (
     priority_tier TEXT NOT NULL,
     updated_at INT NOT NULL
 );
-INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',438.53,0.92,'TIER_1_HIGH_BW',1790921186);
+INSERT INTO "sos_depin_peers" VALUES('peer-mint-bridge-01','WIREGUARD_TLS13_MESH',145.8,0.92,'TIER_1_HIGH_BW',1790921400);
 CREATE TABLE sos_feature_lanes (
     feature_id TEXT PRIMARY KEY,
     prong_role TEXT NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE sos_magnets (
     created_at INT NOT NULL
 );
 INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:79569afdfbf56944ae735e2e27fd169e&dn=sovereign_core_v7.71.81','79569afdfbf56944ae735e2e27fd169e',32768,1500,'pixel-sovereign',1790920230);
-INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:81d25b16b4000ceff4efd2dedc3a9500&dn=README.md','81d25b16b4000ceff4efd2dedc3a9500',32768,1500,'pixel-sovereign',1790920905);
+INSERT INTO "sos_magnets" VALUES('sos://magnet/?xt=urn:sos:2d8a0bed92db0ad7c443c7ec2e97f5b4&dn=README.md','2d8a0bed92db0ad7c443c7ec2e97f5b4',32768,1500,'pixel-sovereign',1790921400);
 CREATE TABLE sos_spacetime_anchors (
     anchor_id TEXT PRIMARY KEY,
     gamma REAL NOT NULL,
@@ -68,8 +68,8 @@ CREATE TABLE sos_spacetime_anchors (
     coordinate_time_t INT NOT NULL,
     vector_xyz TEXT NOT NULL,
     updated_at INT NOT NULL
-);
-INSERT INTO "sos_spacetime_anchors" VALUES('LORENTZ_HORIZON',1.7747,540.94,1775109500,'0.874,0.35,0.441',1790921186);
+, last_net_bytes INT DEFAULT 0);
+INSERT INTO "sos_spacetime_anchors" VALUES('LORENTZ_HORIZON',1.005,955.22,1790921400,'0.874,0.35,0.441',1790921400,0);
 CREATE TABLE sos_utxo_logistics (
     utxo_id TEXT PRIMARY KEY,
     prev_utxo TEXT NOT NULL,

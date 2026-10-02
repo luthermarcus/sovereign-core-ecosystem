@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 import os, sys, json, math, time, hmac, stat, getpass, hashlib, sqlite3, urllib.request, subprocess
 
-home = os.path.expanduser('~')
-repo = os.path.join(home, 'sos-fox-beta')
-db = os.path.join(repo, 'sos_vault.db')
-dump_path = os.path.join(repo, 'sos_vault_dump.sql')
-aux_root = '79569afdfbf56944ae735e2e27fd169e'
+home = os.path.expanduser("~")
+repo = os.path.join(home, "sos-fox-beta")
+db = os.path.join(repo, "sos_vault.db")
+dump_path = os.path.join(repo, "sos_vault_dump.sql")
+aux_root = "79569afdfbf56944ae735e2e27fd169e"
 
 class SpacetimeEngine:
     C = 1.0
@@ -36,27 +36,27 @@ class SpacetimeEngine:
         return dt / max(1.0, gamma)
 
 def get_enclave_key():
-    ssh_priv = os.path.join(home, '.ssh', 'id_ed25519')
-    seed = open(ssh_priv, 'rb').read() if os.path.exists(ssh_priv) else b'FALLBACK_NODE_SEED'
-    return hashlib.sha256(seed + b':' + aux_root.encode()).digest()
+    ssh_priv = os.path.join(home, ".ssh", "id_ed25519")
+    seed = open(ssh_priv, "rb").read() if os.path.exists(ssh_priv) else b"FALLBACK_NODE_SEED"
+    return hashlib.sha256(seed + b":" + aux_root.encode()).digest()
 
 def get_net_bytes():
     try:
-        with open('/proc/net/dev', 'r') as f:
+        with open("/proc/net/dev", "r") as f:
             lines = f.readlines()[2:]
-        return sum(int(l.split(':')[1].split()[0]) + int(l.split(':')[1].split()[8]) for l in lines if ':' in l and not l.strip().startswith('lo:'))
+        return sum(int(l.split(":")[1].split()[0]) + int(l.split(":")[1].split()[8]) for l in lines if ":" in l and not l.strip().startswith("lo:"))
     except Exception:
         return 0
 
 def prune_stale_magnets(cur):
-    rows = cur.execute('SELECT magnet_uri, created_at FROM sos_magnets ORDER BY created_at DESC, rowid DESC').fetchall()
+    rows = cur.execute("SELECT magnet_uri, created_at FROM sos_magnets ORDER BY created_at DESC, rowid DESC").fetchall()
     seen_dn = set()
     pruned = 0
     for mag, _ in rows:
-        dn = mag.split('&dn=')[1] if '&dn=' in mag else mag
+        dn = mag.split("&dn=")[1] if "&dn=" in mag else mag
         if dn in seen_dn:
-            cur.execute('DELETE FROM sos_aead_chunks WHERE magnet_uri = ?', (mag,))
-            cur.execute('DELETE FROM sos_magnets WHERE magnet_uri = ?', (mag,))
+            cur.execute("DELETE FROM sos_aead_chunks WHERE magnet_uri = ?", (mag,))
+            cur.execute("DELETE FROM sos_magnets WHERE magnet_uri = ?", (mag,))
             pruned += 1
         else:
             seen_dn.add(dn)
@@ -66,42 +66,43 @@ def smart_close(conn, baseline_changes):
     delta = conn.total_changes - baseline_changes
     if delta > 0:
         conn.commit()
-        with open(dump_path, 'w') as f:
+        with open(dump_path, "w") as f:
             for line in conn.iterdump():
-                f.write(f'{line}\n')
-        conn.execute('PRAGMA wal_checkpoint(TRUNCATE);')
-        print(f'[+] Spacetime Gate: {delta} mutation(s) committed & synced to sos_vault_dump.sql')
+                f.write(f"{line}\n")
+        conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+        print(f"[+] Spacetime Gate: {delta} mutation(s) committed & synced to sos_vault_dump.sql")
     else:
-        print('[=] Invariant Spacetime Gate: 0 causal mutations (Telemetry feedback loop dampened; skipped SQL dump & WAL I/O)')
+        print("[=] Invariant Spacetime Gate: 0 causal mutations (Equilibrium preserved; skipped disk writes)")
     conn.close()
 
 def seal_target(cur, target):
-    raw = open(target, 'rb').read() if os.path.exists(target) else target.encode('utf-8')
+    raw = open(target, "rb").read() if os.path.exists(target) else target.encode("utf-8")
     merkle = hashlib.sha256(raw).hexdigest()[:32]
     dn_name = os.path.basename(target)
-    mag = f'sos://magnet/?xt=urn:sos:{merkle}&dn={dn_name}'
-    existing = cur.execute('SELECT magnet_uri FROM sos_magnets WHERE magnet_uri = ?', (mag,)).fetchone()
+    mag = f"sos://magnet/?xt=urn:sos:{merkle}&dn={dn_name}"
+    existing = cur.execute("SELECT magnet_uri FROM sos_magnets WHERE magnet_uri = ?", (mag,)).fetchone()
     if existing:
-        print(f'[=] Prong-1 Cache Hit: {dn_name} ({merkle[:12]}...) already sealed.')
+        print(f"[=] Cache Hit: {dn_name} ({merkle[:12]}...) already sealed.")
         return False
-    chunks = [raw[i:i+32768] for i in range(0, len(raw), 32768)] or [b'']
+    chunks = [raw[i:i+32768] for i in range(0, len(raw), 32768)] or [b""]
     now = int(time.time())
     ekey = get_enclave_key()
-    for old_mag, in cur.execute('SELECT magnet_uri FROM sos_magnets WHERE magnet_uri LIKE ?', (f'%&dn={dn_name}',)).fetchall():
-        cur.execute('DELETE FROM sos_aead_chunks WHERE magnet_uri = ?', (old_mag,))
-        cur.execute('DELETE FROM sos_magnets WHERE magnet_uri = ?', (old_mag,))
-    cur.execute('INSERT OR REPLACE INTO sos_magnets VALUES (?, ?, 32768, 1500, "pixel-sovereign", ?)', (mag, merkle, now))
+    for old_mag, in cur.execute("SELECT magnet_uri FROM sos_magnets WHERE magnet_uri LIKE ?", (f"%&dn={dn_name}",)).fetchall():
+        cur.execute("DELETE FROM sos_aead_chunks WHERE magnet_uri = ?", (old_mag,))
+        cur.execute("DELETE FROM sos_magnets WHERE magnet_uri = ?", (old_mag,))
+    cur.execute("INSERT OR REPLACE INTO sos_magnets VALUES (?, ?, 32768, 1500, 'pixel-sovereign', ?)", (mag, merkle, now))
     for idx, ch in enumerate(chunks):
         ch_hash = hashlib.sha256(ch).hexdigest()
-        tag = hmac.new(ekey, f'{merkle}:{idx}:{ch_hash}'.encode(), hashlib.sha256).hexdigest()
-        cur.execute('INSERT OR REPLACE INTO sos_aead_chunks VALUES (?, ?, ?, ?, ?, 8500, 1500, ?)', (ch_hash[:32], mag, idx, len(ch), tag, now))
-    print(f'[+] Enclave-AEAD Sealed {len(chunks)} x 32KB Chunk(s) -> {mag}')
+        tag = hmac.new(ekey, f"{merkle}:{idx}:{ch_hash}".encode(), hashlib.sha256).hexdigest()
+        cur.execute("INSERT OR REPLACE INTO sos_aead_chunks VALUES (?, ?, ?, ?, ?, 8500, 1500, ?)", (ch_hash[:32], mag, idx, len(ch), tag, now))
+    print(f"[+] Enclave-AEAD Sealed {len(chunks)} x 32KB Chunk(s) -> {mag}")
     return True
 
 conn = sqlite3.connect(db)
 cur = conn.cursor()
-cur.execute('PRAGMA journal_mode = WAL;')
-cur.execute('''
+cur.execute("PRAGMA journal_mode = WAL;")
+
+cur.execute("""
 CREATE TABLE IF NOT EXISTS sos_spacetime_anchors (
     anchor_id TEXT PRIMARY KEY,
     gamma REAL NOT NULL,
@@ -111,70 +112,72 @@ CREATE TABLE IF NOT EXISTS sos_spacetime_anchors (
     last_net_bytes INT DEFAULT 0,
     updated_at INT NOT NULL
 );
-''')
-cur.execute('INSERT OR IGNORE INTO sos_spacetime_anchors VALUES ("LORENTZ_HORIZON", 1.2503, 767.83, 1775109500, "0.874,0.35,0.441", 0, 1775109500)')
+""")
+
+# Safe insertion matching verified column structure
+cur.execute("""
+INSERT INTO sos_spacetime_anchors (anchor_id, gamma, proper_time_tau, coordinate_time_t, vector_xyz, last_net_bytes, updated_at)
+VALUES ("LORENTZ_HORIZON", 1.2503, 767.83, 1775109500, "0.874,0.35,0.441", 0, 1775109500)
+ON CONFLICT(anchor_id) DO NOTHING;
+""")
 conn.commit()
 base_changes = conn.total_changes
 
-cmd = sys.argv[1] if len(sys.argv) > 1 else '--status'
+cmd = sys.argv[1] if len(sys.argv) > 1 else "--status"
 
-if cmd == '--hop' and len(sys.argv) > 2:
+if cmd == "--hop" and len(sys.argv) > 2:
     parcel = sys.argv[2]
-    cur.execute('SELECT utxo_id, depin_kb, auxpow_root, recorded_at FROM sos_utxo_logistics WHERE spent=0 ORDER BY recorded_at DESC LIMIT 1')
+    cur.execute("SELECT utxo_id, depin_kb, auxpow_root, recorded_at FROM sos_utxo_logistics WHERE spent=0 ORDER BY recorded_at DESC LIMIT 1")
     prev_id, kb, root, t_prev = cur.fetchone()
     now_t = int(time.time())
     e_src = (t_prev, 0.0, 0.0, 0.0)
     e_dst = (now_t, 0.874, 0.35, 0.441)
     classification = SpacetimeEngine.classify_hop(e_src, e_dst)
     if classification == "SPACELIKE_QUARANTINE":
-        print(f'[!] Spacelike interval detected (ds^2 < 0). Diverting {parcel} to SAVEPOINT exp_quarantine.')
-        cur.execute('INSERT OR REPLACE INTO sos_feature_lanes VALUES (?, "SPACELIKE_ANOMALY", "QUARANTINED", "LIGHT_CONE_VIOLATION", ?)', (parcel, now_t))
+        print(f"[!] Spacelike anomaly (ds^2 < 0). Quarantining {parcel}.")
+        cur.execute("INSERT OR REPLACE INTO sos_feature_lanes VALUES (?, 'SPACELIKE_ANOMALY', 'QUARANTINED', 'LIGHT_CONE_VIOLATION', ?)", (parcel, now_t))
     else:
-        new_id = hashlib.sha256(f'{prev_id}:{parcel}:{now_t}'.encode()).hexdigest()[:32]
-        cur.execute('UPDATE sos_utxo_logistics SET spent=1 WHERE utxo_id=?', (prev_id,))
-        cur.execute('INSERT INTO sos_utxo_logistics VALUES (?, ?, ?, "pixel-sovereign", ?, ?, 0, ?)', (new_id, prev_id, parcel, round(kb + 32.77, 2), root, now_t))
-        print(f'[+] Minkowski Timelike Hop Verified ({classification}): {prev_id[:12]}... -> {new_id} ({parcel})')
+        new_id = hashlib.sha256(f"{prev_id}:{parcel}:{now_t}".encode()).hexdigest()[:32]
+        cur.execute("UPDATE sos_utxo_logistics SET spent=1 WHERE utxo_id=?", (prev_id,))
+        cur.execute("INSERT INTO sos_utxo_logistics VALUES (?, ?, ?, 'pixel-sovereign', ?, ?, 0, ?)", (new_id, prev_id, parcel, round(kb + 32.77, 2), root, now_t))
+        print(f"[+] Minkowski Timelike Hop Verified ({classification}): {prev_id[:12]}... -> {new_id}")
     smart_close(conn, base_changes)
 
-elif cmd == '--pulse':
-    print('=== RELATIVISTIC SPACETIME PULSE (DAMPENED INVARIANT GATE) ===')
+elif cmd == "--pulse":
+    print("=== RELATIVISTIC SPACETIME PULSE (VERIFIED EQUILIBRIUM) ===")
     pruned = prune_stale_magnets(cur)
-    seal_target(cur, os.path.join(repo, 'README.md'))
+    seal_target(cur, os.path.join(repo, "README.md"))
     
     now_t = int(time.time())
     curr_bytes = get_net_bytes()
-    anchor = cur.execute('SELECT gamma, proper_time_tau, coordinate_time_t, last_net_bytes FROM sos_spacetime_anchors WHERE anchor_id="LORENTZ_HORIZON"').fetchone()
+    anchor = cur.execute("SELECT gamma, proper_time_tau, coordinate_time_t, last_net_bytes FROM sos_spacetime_anchors WHERE anchor_id='LORENTZ_HORIZON'").fetchone()
     anchored_gamma, tau, last_t, last_b = anchor[0], anchor[1], anchor[2], anchor[3]
     
     dt = max(1, now_t - last_t)
     delta_bytes = max(0, curr_bytes - last_b) if last_b > 0 else 0
     rate_kb_s = (delta_bytes / 1024.0) / dt
     
-    # Differential rate velocity calculation (Damped against git-push burst artifacts)
     beta = min(0.9999, max(0.1, (rate_kb_s / 10240.0)))
     gamma_live = round(SpacetimeEngine.lorentz_gamma(beta), 4)
     delta_gamma = abs(gamma_live - anchored_gamma)
     
-    # Invariant Horizon Gate: update ONLY if dt >= 60s AND delta_gamma >= 0.10
     if dt >= 60 and delta_gamma >= 0.10:
         new_tau = round(SpacetimeEngine.proper_time(960.0, gamma_live), 2)
-        cur.execute('UPDATE sos_spacetime_anchors SET gamma=?, proper_time_tau=?, coordinate_time_t=?, last_net_bytes=?, updated_at=? WHERE anchor_id="LORENTZ_HORIZON"',
+        cur.execute("UPDATE sos_spacetime_anchors SET gamma=?, proper_time_tau=?, coordinate_time_t=?, last_net_bytes=?, updated_at=? WHERE anchor_id='LORENTZ_HORIZON'",
                     (gamma_live, new_tau, now_t, curr_bytes, now_t))
         mbps = round(max(145.8, rate_kb_s * 8 / 1024.0), 2)
-        cur.execute('UPDATE sos_depin_peers SET bandwidth_mbps=?, updated_at=? WHERE peer_id="peer-mint-bridge-01"', (mbps, now_t))
-        print(f'[+] Lorentz Invariant Horizon Shift: gamma {anchored_gamma} -> {gamma_live} (dt: {dt}s, d_gamma: {delta_gamma:.4f}) | tau: {new_tau}s')
+        cur.execute("UPDATE sos_depin_peers SET bandwidth_mbps=?, updated_at=? WHERE peer_id='peer-mint-bridge-01'", (mbps, now_t))
+        print(f"[+] Horizon Shift: gamma {anchored_gamma} -> {gamma_live} (dt: {dt}s, d_gamma: {delta_gamma:.4f}) | tau: {new_tau}s")
     else:
-        print(f'[=] Relativistic Invariant Locked: dt={dt}s (<60s) or d_gamma={delta_gamma:.4f} (<0.10). 0 mutations triggered.')
+        print(f"[=] Relativistic Invariant: dt={dt}s (<60s) or d_gamma={delta_gamma:.4f} (<0.10). 0 mutations.")
         
-    for r in cur.execute('SELECT anchor_id, gamma, proper_time_tau FROM sos_spacetime_anchors'):
-        print(f'[Spacetime]   {r[0]:<17} | Lorentz Gamma: {r[1]:<6} | Proper Time tau: {r[2]}s')
-    for r in cur.execute('SELECT magnet_uri, chunk_size FROM sos_magnets'):
-        print(f'[P2P Magnet]  {r[0]} | {r[1]}B')
+    for r in cur.execute("SELECT anchor_id, gamma, proper_time_tau FROM sos_spacetime_anchors"):
+        print(f"[Spacetime]   {r[0]:<17} | Gamma: {r[1]:<6} | Proper Time: {r[2]}s")
+    for r in cur.execute("SELECT magnet_uri, chunk_size FROM sos_magnets"):
+        print(f"[P2P Magnet]  {r[0]} | {r[1]}B")
     smart_close(conn, base_changes)
 
 else:
-    for r in cur.execute('SELECT anchor_id, gamma, proper_time_tau, vector_xyz FROM sos_spacetime_anchors'):
-        print(f'[Spacetime]   {r[0]:<17} | Gamma: {r[1]} | tau: {r[2]}s | Vector: ({r[3]})')
-    for r in cur.execute('SELECT magnet_uri, chunk_size, affiliate_bps FROM sos_magnets'):
-        print(f'[P2P Magnet]  {r[0]} | Chunk: {r[1]}B | Split: {r[2]/100:.1f}%')
+    for r in cur.execute("SELECT anchor_id, gamma, proper_time_tau FROM sos_spacetime_anchors"):
+        print(f"[Spacetime]   {r[0]:<17} | Gamma: {r[1]} | tau: {r[2]}s")
     smart_close(conn, base_changes)
