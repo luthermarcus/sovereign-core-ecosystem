@@ -139,6 +139,6 @@ CREATE TABLE sos_wireguard_peers (
     handshake_status TEXT NOT NULL,
     last_handshake INT NOT NULL
 );
-INSERT INTO "sos_wireguard_peers" VALUES('peer-mint-bridge-01','10.0.0.90:51820','AAAAC3NzaC1lZDI1NTE5AAAAILtQudjePzWEGOc1fLrlagrbthn45sjT0s9IYEeHyghV','10.0.0.0/24','a01823fdd3f94b1f5c4eabdf849fdf9d','STANDBY_OFFLINE',1790922261);
+INSERT INTO "sos_wireguard_peers" VALUES('peer-mint-bridge-01','10.0.0.90:51820','AAAAC3NzaC1lZDI1NTE5AAAAILtQudjePzWEGOc1fLrlagrbthn45sjT0s9IYEeHyghV','10.0.0.0/24','a01823fdd3f94b1f5c4eabdf849fdf9d','TIMELIKE_COORDINATED',1790922261);
 PRAGMA writable_schema=OFF;
 COMMIT;
