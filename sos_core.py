@@ -1118,6 +1118,18 @@ def cmd_pplns():
     }
     print(json.dumps(pplns_report, indent=2))
 
+
+def cmd_royalty():
+    royalty_report = {
+        "applet": "sos-royalty (Multi-Chain Creator Royalty & Fee Splitter)",
+        "node_identity": "pixel-sovereign (aarch64)",
+        "creator_anchor": "fox1q244c0e408a8f59cde75bfd7819995309ce",
+        "evm_wallet_base": "0xE2...D298 (Cronos, EVM L1s/L2s)",
+        "bitcoin_anchor": "bc1q...p983 (Native SegWit)",
+        "status": "ACTIVE_SOVEREIGN_ROYALTY_ROUTER"
+    }
+    print(json.dumps(royalty_report, indent=2))
+
 def main():
     os.chmod(__file__, 0o755)
     args = sys.argv[1:]
