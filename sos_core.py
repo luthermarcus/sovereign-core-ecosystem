@@ -1064,6 +1064,20 @@ def cmd_sync():
     }
     print(json.dumps(sync_report, indent=2))
 
+
+def cmd_mesh_up():
+    conf_path = os.path.expanduser("~/sos-fox-beta/wg0.conf")
+    if not os.path.exists(conf_path):
+        print(f"[!] WireGuard configuration not found at {conf_path}")
+        return
+    print("[*] Bringing up sovereign WireGuard tunnel...")
+    subprocess.run(["wg-quick", "up", conf_path])
+
+def cmd_mesh_down():
+    conf_path = os.path.expanduser("~/sos-fox-beta/wg0.conf")
+    print("[*] Tearing down sovereign WireGuard tunnel...")
+    subprocess.run(["wg-quick", "down", conf_path])
+
 def main():
     os.chmod(__file__, 0o755)
     args = sys.argv[1:]
