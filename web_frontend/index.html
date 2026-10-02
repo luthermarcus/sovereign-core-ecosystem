@@ -27,9 +27,9 @@
             try {
                 const response = await fetch('/api/telemetry');
                 const data = await response.json();
-                document.getElementById('gamma').innerText = data.gamma;
-                document.getElementById('proper-time').innerText = data.proper_time;
-                document.getElementById('status').innerText = data.status;
+                document.getElementById('gamma').innerText = data.gamma ?? 'N/A';
+                document.getElementById('proper-time').innerText = data.proper_time ?? 'N/A';
+                document.getElementById('status').innerText = data.status ?? 'UNKNOWN';
                 
                 const gatewayList = document.getElementById('gateways-list');
                 gatewayList.innerHTML = '';
