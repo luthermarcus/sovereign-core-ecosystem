@@ -1,16 +1,16 @@
 # ==============================================================================
-# SOVEREIGN CORE OS (SOS v7.71.63-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET
+# SOVEREIGN CORE OS (SOS v7.71.65-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET
 # ==============================================================================
 - **Active Node:** `pixel-sovereign` (`aarch64`) running `Android 17 (SDK 37)` [`CP41.260831.007`]
 - **Toolchain:** Python `3.14.6` | `git version 2.56.0` | `OpenSSL 3.6.5 29 Sep 2026` | `uv 0.12.21 (aarch64-linux-android)`
-- **On-Chain OS Anchor (Note 4507):** `15` x 4KB chunks (`59102` Bytes) | Merkle Root: `b02ca0106a1f15224c9b01f6dce1586a`
+- **On-Chain OS Anchor (Note 4507):** `16` x 4KB chunks (`60686` Bytes) | Merkle Root: `065a5102a2308227058b78c081be4148`
 - **L1/L2 Endpoints (Note 4487):** `fox://l1/auxpow/coinbase_44b (Bitcoin Core Merged Mining)` | `sos://l2/dex/curve_beefy_swap (960s Boomerang Protected)`
 - **SSH Bridge:** `ssh -p 8022 u0_a413@10.0.0.90`
 
 ## [TARGET 1: GEMINI FLASH (3.8 FLASH / FULL REASONING ARCHITECT)]
-- **Live 3D State Vector:** `(0.697, 0.35, 0.488)` (`452.09 KB` via `SELINUX_SAFE_DEPIN_BUS`) | Velocity: `0.5312c` | Gamma: `1.1803`
-- **Surge Fee & Escrow:** `1.1803%` | Boomerang Window: `813.37s` (5.0% POL cap).
-- **Debloated Smart Contract VM:** `ACTIVE (Python 3.14 State-VM | Root: 316dd2458cf0c847748621c3)`
+- **Live 3D State Vector:** `(0.714, 0.35, 0.485)` (`476.69 KB` via `SELINUX_SAFE_DEPIN_BUS`) | Velocity: `0.5377c` | Gamma: `1.1861`
+- **Surge Fee & Escrow:** `1.1861%` | Boomerang Window: `809.38s` (5.0% POL cap).
+- **Debloated Smart Contract VM:** `ACTIVE (Python 3.14 State-VM | Root: 6a1eb1c114f8b54ce0ee681c)`
 
 ## [TARGET 2: GEMINI FLASH-LITE (3.5 FLASH-LITE / LOW-LATENCY TRIAGE & LEXICON)]
 - **Role:** Fast log triage, voice-note cleanup (`--clean`), and 25ms/2000KB WAL governor execution.

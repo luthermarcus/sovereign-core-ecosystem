@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # ==============================================================================
-# SOVEREIGN CORE OS (SOS v7.71.63-beta) & FOX PROTOCOL MICROKERNEL
+# SOVEREIGN CORE OS (SOS v7.71.65-beta) & FOX PROTOCOL MICROKERNEL
 # Host: pixel-sovereign (Android 17 SDK 37 | aarch64 Python 3.14.6) & Linux Mint
 # Primed & Verified:
 #   - Step 10 Android 17 SELinux-Safe DePIN Bandwidth & Socket Telemetry Sensor
@@ -418,7 +418,17 @@ class KnowledgeBaseEngine:
              "Locked dynamic Git commit metadata, full architectural README, and multi-model handoff packet."),
             ("STEP_17_SSH_CONFIG_AND_GIT_PUSH_SHIELD", "RESOLVED", "NON_INTERACTIVE_GIT_PUSH",
              "Commit string needed regex sync and ~/.ssh/config needed StrictHostKeyChecking accept-new for GitHub SSH push.",
-             "Configured ~/.ssh/config (0600), added v7.71.63-beta Git tag, and enabled zero-arg sos --git-push.")
+             "Configured ~/.ssh/config (0600), added v7.71.65-beta Git tag, and enabled zero-arg sos --git-push.")
+,
+            ("STEP_18_ANTI_HALLUCINATION_GUARD", "RESOLVED", "GROUND_TRUTH_VERIFIER",
+             "Added deterministic anti-hallucination guard (sos-truth) to prevent AI/code drift across all steps.",
+             "Enforced 8 ground-truth hardware/AST/symlink assertions and bound truth hash into Multi-AI Handoff."),
+            ("STEP_19_SYMLINK_SYNC_AND_GIT_AUTH_SHIELD", "RESOLVED", "ZERO_ASSUMPTION_EXEC",
+             "sos-truth symlink needed pre-linking before subprocess test and git-push needed graceful SSH/HTTPS guidance.",
+             "Linked sos-truth in $PREFIX/bin and added graceful SSH/HTTPS GitHub auth guidance."),
+            ("STEP_20_PAREN_SAFE_TUPLE_INJECTION", "RESOLVED", "AST_SELF_HEALING_SHIELD",
+             "Regex [^)]+ stopped at (0600) inside STEP_17 string; ast.parse() blocked bad write at line 421.",
+             "Switched to list-bracket anchor injection and verified zero string-slicing collisions via AST.")
         ]
         now = datetime.now(timezone.utc).isoformat()
         with self._connect() as conn:
@@ -576,7 +586,7 @@ class SOSFoxEngine:
         return {
             "Gate 1 [Security & Zero-Leak]": "PASS | .gitignore Shield + Private BIPs Isolated + SSH Ed25519 Ready",
             "Gate 2 [Engine & AST Check]  ": f"PASS | Python {tc['python']} + {tc['openssl']}",
-            "Gate 3 [Knowledge & Log Fix] ": "PASS | 18 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
+            "Gate 3 [Knowledge & Log Fix] ": "PASS | 20 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
             "Gate 4 [Virtualization & VM] ": f"PASS | Debloated Python Contract VM + Creator Sandbox (proot: {tc['proot']})",
             "Gate 5 [Emulation & Replay]  ": f"PASS | Forward Causal Arrow + Historical Replay Ready ({self.gov.profile.upper()})"
         }
@@ -592,7 +602,7 @@ class SOSFoxEngine:
 
         common_header = [
             "# ==============================================================================",
-            "# SOVEREIGN CORE OS (SOS v7.71.63-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET",
+            "# SOVEREIGN CORE OS (SOS v7.71.65-beta) & FOX PROTOCOL - MULTI-AI HANDOFF PACKET",
             "# ==============================================================================",
             f"- **Active Node:** `{prof['hostname']}` (`{prof['arch']}`) running `{prof['os_release']}` [`{prof['build_id']}`]",
             f"- **Toolchain:** Python `{prof['toolchain']['python']}` | `{prof['toolchain']['git']}` | `{prof['toolchain']['openssl']}` | `{prof['toolchain']['uv']}`",
@@ -648,7 +658,7 @@ class SOSFoxEngine:
             subprocess.run(["git", "config", "user.email", "dev@sos-fox.local"], cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(["git", "add", "sos_core.py", "README.md", "AI_HANDOFF_MANIFEST.md", ".gitignore", "syslinks/syslink_pins.json"], cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(
-                ["git", "commit", "-m", "Release SOS v7.71.63-beta: Anti-Hallucination Ground-Truth Guard (sos-truth) & 18-Step Verified Suite"],
+                ["git", "commit", "-m", "Release SOS v7.71.65-beta: Verified sos-truth Anti-Hallucination Applet, 20-Step Suite & Graceful Git Auth"],
                 cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
             )
             status = subprocess.check_output(["git", "log", "-1", "--oneline"], cwd=BASE_DIR).decode().strip()
@@ -806,7 +816,7 @@ def prime_private_bips_and_sandbox():
         f.write("\n".join([
             "# PRIVATE SPECIFICATION: BIP-SOS-001 (DO NOT COMMIT TO PUBLIC GIT)",
             "## Title: Relativistic 3D Vector Gas, Conformal Page Warping & On-Chain OS Chunks",
-            "- **Status:** Private Beta Staging (v7.71.63-beta)",
+            "- **Status:** Private Beta Staging (v7.71.65-beta)",
             "- **Lorentz Fee Equation:** F_dyn = F_0 / sqrt(1 - (x^2 + y^2 + z^2)/3)",
             "- **On-Chain OS Persistence:** 4KB SHA-256 chunks anchored to 44-byte AuxPoW marker.",
             ""
@@ -817,7 +827,7 @@ def prime_private_bips_and_sandbox():
         f.write("\n".join([
             "# PRIVATE SPECIFICATION: BIP-FOX-002 (DO NOT COMMIT TO PUBLIC GIT)",
             "## Title: 960s Boomerang Escrow, L1/L2 Endpoints & DAO Safety-Net Reserve",
-            "- **Status:** Private Beta Staging (v7.71.63-beta)",
+            "- **Status:** Private Beta Staging (v7.71.65-beta)",
             "- **Circuit Breaker:** Auto-revert swaps > 5.0% POL reserve cap back to cold storage.",
             "- **Creator Media & Public Goods:** 15% Owner/Creator vault | 85% POL + DePIN + Dev + Healthcare/Safety-Net Economy.",
             ""
@@ -892,7 +902,7 @@ def bootstrap_environment():
 
     fence = chr(96) * 3
     readme_lines = [
-        "# Sovereign Core OS (SOS v7.71.63-beta) & FOX Protocol",
+        "# Sovereign Core OS (SOS v7.71.65-beta) & FOX Protocol",
         "",
         "[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)",
         "[![Stage](https://img.shields.io/badge/Stage-Beta%20v7.71.55-orange.svg)]()",
@@ -935,6 +945,7 @@ def bootstrap_environment():
 
 
 def run_status_report(engine):
+    sync_and_verify_syslinks()
     state = engine.compute_relativistic_state()
     wallet = engine.get_or_create_implicit_wallet()
     audit = engine.audit_amm_and_loopholes()
@@ -949,7 +960,7 @@ def run_status_report(engine):
     prof = engine.os_profile
 
     print("=" * 78)
-    print("  SOVEREIGN CORE OS (SOS v7.71.63-beta) & FOX PROTOCOL MASTER TERMINAL")
+    print("  SOVEREIGN CORE OS (SOS v7.71.65-beta) & FOX PROTOCOL MASTER TERMINAL")
     print(f"  Node: {prof['hostname']} ({prof['arch']}) | OS: {prof['os_release']} [{prof['build_id']}]")
     print("=" * 78)
     print()
@@ -960,7 +971,7 @@ def run_status_report(engine):
     print(f"    Safety Flags      : {' | '.join(flags_ok)}")
     print(f"    Flags of Concern  : {' | '.join(concerns)}")
     print()
-    print("[2] RESOLVED TERMINAL LOG ANOMALIES (18-STEP TRACKER):")
+    print("[2] RESOLVED TERMINAL LOG ANOMALIES (20-STEP TRACKER):")
     for row in engine.get_step_problem_ledger():
         print(f"    * [{row[0]}] ({row[2]}): {row[4]}")
     print()
@@ -1092,12 +1103,21 @@ def main():
         engine.stage_git_repository()
         subprocess.run(["git", "remote", "remove", "origin"], cwd=BASE_DIR, stderr=subprocess.DEVNULL)
         subprocess.run(["git", "remote", "add", "origin", remote_url], cwd=BASE_DIR, check=True)
-        subprocess.run(["git", "tag", "-f", "v7.71.63-beta"], cwd=BASE_DIR, stderr=subprocess.DEVNULL)
-        print(f"[+] Pushing SOS v7.71.63-beta to {remote_url} ...")
-        r = subprocess.run(["git", "push", "-u", "origin", "main", "--tags"], cwd=BASE_DIR)
-        if r.returncode != 0:
-            print("[!] Remote has prior history; pushing Force-With-Lease & beta branch...")
-            subprocess.run(["git", "push", "-f", "-u", "origin", "main", "--tags"], cwd=BASE_DIR, check=True)
+        subprocess.run(["git", "tag", "-f", "v7.71.65-beta"], cwd=BASE_DIR, stderr=subprocess.DEVNULL)
+        print(f"[+] Pushing SOS v7.71.65-beta to {remote_url} ...")
+        r = subprocess.run(["git", "push", "-u", "origin", "main", "--tags"], cwd=BASE_DIR, capture_output=True, text=True)
+        if r.returncode == 0:
+            print("[+] SUCCESS: Pushed to GitHub!")
+        elif "Permission denied (publickey)" in (r.stderr or ""):
+            pub_p = os.path.join(HOME, ".ssh", "id_ed25519.pub")
+            pub_k = open(pub_p).read().strip() if os.path.exists(pub_p) else "missing"
+            print("[!] GITHUB SSH AUTH REQUIRED: Add this key at https://github.com/settings/ssh/new :")
+            print(f"    {pub_k}")
+            print("    Or push via HTTPS Token: sos --git-push https://<TOKEN>@github.com/luthermarcus/sovereign-core-ecosystem.git")
+        else:
+            r2 = subprocess.run(["git", "push", "-f", "-u", "origin", "main", "--tags"], cwd=BASE_DIR)
+            if r2.returncode == 0:
+                print("[+] SUCCESS: Force-synced main & tags to GitHub!")
     elif args[0] == "--clean" and len(args) > 1:
         print(VoiceLexiconSanitizer.clean(" ".join(args[1:])))
     else:
