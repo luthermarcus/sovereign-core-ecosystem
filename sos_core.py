@@ -586,7 +586,7 @@ class SOSFoxEngine:
         return {
             "Gate 1 [Security & Zero-Leak]": "PASS | .gitignore Shield + Private BIPs Isolated + SSH Ed25519 Ready",
             "Gate 2 [Engine & AST Check]  ": f"PASS | Python {tc['python']} + {tc['openssl']}",
-            "Gate 3 [Knowledge & Log Fix] ": "PASS | 68 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
+            "Gate 3 [Knowledge & Log Fix] ": "PASS | 69 Step-by-Step Terminal Log Fixes & On-Chain OS Chunker Indexed",
             "Gate 4 [Virtualization & VM] ": f"PASS | Debloated Python Contract VM + Creator Sandbox (proot: {tc['proot']})",
             "Gate 5 [Emulation & Replay]  ": f"PASS | Forward Causal Arrow + Historical Replay Ready ({self.gov.profile.upper()})"
         }
@@ -658,7 +658,7 @@ class SOSFoxEngine:
             subprocess.run(["git", "config", "user.email", "dev@sos-fox.local"], cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(["git", "add", "sos_core.py", "README.md", "AI_HANDOFF_MANIFEST.md", ".gitignore", "syslinks/syslink_pins.json"], cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             subprocess.run(
-                ["git", "commit", "-m", "Release SOS v7.71.81-beta: Verified sos-truth Anti-Hallucination Applet, 68-Step Suite & Graceful Git Auth"],
+                ["git", "commit", "-m", "Release SOS v7.71.81-beta: Verified sos-truth Anti-Hallucination Applet, 69-Step Suite & Graceful Git Auth"],
                 cwd=BASE_DIR, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
             )
             status = subprocess.check_output(["git", "log", "-1", "--oneline"], cwd=BASE_DIR).decode().strip()
@@ -971,7 +971,7 @@ def run_status_report(engine):
     print(f"    Safety Flags      : {' | '.join(flags_ok)}")
     print(f"    Flags of Concern  : {' | '.join(concerns)}")
     print()
-    print("[2] RESOLVED TERMINAL LOG ANOMALIES (68-STEP TRACKER):")
+    print("[2] RESOLVED TERMINAL LOG ANOMALIES (69-STEP TRACKER):")
     for row in engine.get_step_problem_ledger():
         print(f"    * [{row[0]}] ({row[2]}): {row[4]}")
     print()
