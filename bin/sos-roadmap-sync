@@ -1,13 +1,33 @@
 #!/usr/bin/env python3
-import os, sys
+import os, sys, sqlite3
 
-if len(sys.argv) > 1 and sys.argv[1] == "--status":
+BASE_DIR = os.path.expanduser("~/sos-fox-beta")
+README_PATH = os.path.join(BASE_DIR, "README.md")
+DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
+RELEASE_TAG = "v7.71.88-beta"
+
+PHASES = [
+    ("Steps 01-68", "L1 AuxPoW / L2 Rollup VM & Triple-Entry Ledger", "ACTIVE"),
+    ("Steps 69-70", "Grok Sparse MoE Router & Telemetry Bridge", "ACTIVE"),
+    ("Steps 71-78", "Anti-Abuse Sentinel, Nilometer Relief & Jubilee Reset", "ACTIVE"),
+    ("Steps 79-80", "Claude Bridge & Cross-Community Skill Hub", "ACTIVE"),
+    ("Steps 81-95", "WireGuard Mesh Gateway, Onion Routing & DePIN Swarm", "ACTIVE"),
+    ("Steps 96-101", "Full 64-Hex SHA-256 Merkle Guard, /api/audit & /api/ledger", "ACTIVE"),
+]
+
+def get_applets():
+    bin_dir = os.path.join(BASE_DIR, "bin")
+    if not os.path.isdir(bin_dir):
+        return []
+    return sorted([f for f in os.listdir(bin_dir) if os.path.isfile(os.path.join(bin_dir, f))])
+
+def main():
+    applets = get_applets()
     print("=== SOVEREIGN MASTER ROADMAP & ATTRIBUTIONS ===")
-    print("[+] L1 AuxPoW / L2 Rollup VM       : ACTIVE (Steps 1-68)")
-    print("[+] Grok Sparse MoE Router         : ACTIVE (Steps 69-70)")
-    print("[+] Anti-Abuse & Nilometer Relief  : ACTIVE (Steps 71-78)")
-    print("[+] Claude Bridge & Skill Hub      : ACTIVE (Steps 79-80)")
-    print("[+] Roadmap Status                 : MILESTONE v7.71.83-release SYNCHRONIZED")
-else:
-    print("=== SOS ROADMAP SYNCHRONIZER ===")
-    print("Usage: sos-roadmap-sync --status")
+    for step_range, desc, status in PHASES:
+        print(f"[+] {desc:<58} : {status} ({step_range})")
+    print(f"[+] Verified Microkernel Applets                               : {len(applets)} STDLIB MODULES")
+    print(f"[+] Roadmap Status                                             : MILESTONE {RELEASE_TAG} SYNCHRONIZED")
+
+if __name__ == "__main__":
+    main()

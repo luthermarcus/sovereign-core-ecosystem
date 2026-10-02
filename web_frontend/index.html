@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sovereign Core OS - Telemetry & Enclave Workspace</title>
+    <title>Sovereign Core OS - Telemetry & Ledger Workspace</title>
     <style>
         body { background: #0b0f19; color: #38bdf8; font-family: monospace; padding: 20px; }
         .card { border: 1px solid #38bdf8; padding: 15px; margin-bottom: 15px; border-radius: 5px; background: #1e293b; }
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 12px; }
+        th, td { border: 1px solid #334155; padding: 6px; text-align: left; font-size: 12px; }
+        th { background: #0f172a; color: #7dd3fc; }
         ul { padding-left: 20px; }
     </style>
 </head>
@@ -13,32 +16,78 @@
     <h1>Sovereign Core OS (pixel-sovereign)</h1>
     <div class="card">
         <h3>Spacetime & Cryptographic State</h3>
-        <p>Release: <span id="release">v7.71.87-beta</span></p>
+        <p>Release: <span id="release">v7.71.88-beta</span></p>
         <p>Lorentz Gamma (gamma): <span id="gamma">Loading...</span></p>
         <p>Proper Time (tau): <span id="proper-time">Loading...</span>s</p>
-        <p>Live Ground-Truth Merkle Hash: <span id="merkle-root">Loading...</span></p>
+        <p>SHA-256 Merkle Root (64-hex): <span id="merkle-root">Loading...</span> (<span id="files-hashed">0</span> files)</p>
         <p>System Status: <span id="status">CONNECTING</span></p>
     </div>
     <div class="card">
         <h3>Active Mesh Gateways</h3>
         <ul id="gateways-list">Loading gateways...</ul>
     </div>
+    <section class="card">
+        <h2>Ledger &amp; Knowledge Inspector (/api/ledger)</h2>
+        <h3>Unspent UTXOs (Simulation Units)</h3>
+        <table id="utxo-table"><thead></thead><tbody></tbody></table>
+        <h3>Royalty Settlements (Simulation Units)</h3>
+        <table id="royalty-table"><thead></thead><tbody></tbody></table>
+        <h3>Knowledge Entries (FTS5)</h3>
+        <table id="knowledge-table"><thead></thead><tbody></tbody></table>
+    </section>
     <div class="card">
-        <h3>Ledger & Enclave Audit (/api/audit)</h3>
+        <h3>Enclave Schema Audit (/api/audit)</h3>
         <p>Vault Size: <span id="db-bytes">Loading...</span> bytes | Journal: <span id="journal-mode">...</span> | Integrity: <span id="integrity">...</span></p>
         <ul id="tables-list">Loading SQLite schema...</ul>
     </div>
 
     <script>
+        const LEDGER_TARGETS = {
+            sos_utxo_logistics: 'utxo-table',
+            sos_royalty_settlements: 'royalty-table',
+            sos_knowledge_fts: 'knowledge-table',
+        };
+
+        function renderTable(elementId, tableData) {
+            const table = document.getElementById(elementId);
+            const thead = table.querySelector('thead');
+            const tbody = table.querySelector('tbody');
+            if (!tableData || tableData.error) {
+                thead.innerHTML = '';
+                tbody.innerHTML = `<tr><td>${tableData?.error ?? 'no data'}</td></tr>`;
+                return;
+            }
+            thead.innerHTML = '<tr>' + tableData.columns.map(c => `<th>${c}</th>`).join('') + '</tr>';
+            tbody.innerHTML = tableData.rows.length
+                ? tableData.rows.map(row =>
+                    '<tr>' + tableData.columns.map(c => `<td>${row[c] ?? ''}</td>`).join('') + '</tr>'
+                  ).join('')
+                : `<tr><td colspan="${tableData.columns.length}">No rows</td></tr>`;
+        }
+
+        async function fetchLedger() {
+            try {
+                const res = await fetch('/api/ledger');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                for (const [table, elId] of Object.entries(LEDGER_TARGETS)) {
+                    renderTable(elId, data[table]);
+                }
+            } catch (err) {
+                console.error('ledger fetch failed:', err);
+            }
+        }
+
         async function fetchTelemetry() {
             try {
                 const res = await fetch('/api/telemetry');
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
-                document.getElementById('release').textContent = data.release ?? 'v7.71.87-beta';
+                document.getElementById('release').textContent = data.release ?? 'v7.71.88-beta';
                 document.getElementById('gamma').textContent = data.gamma ?? 'N/A';
                 document.getElementById('proper-time').textContent = data.proper_time ?? 'N/A';
                 document.getElementById('merkle-root').textContent = data.ground_truth_hash ?? 'N/A';
+                document.getElementById('files-hashed').textContent = data.files_hashed ?? 0;
                 document.getElementById('status').textContent = data.status ?? 'UNKNOWN';
 
                 const gwList = document.getElementById('gateways-list');
@@ -71,8 +120,11 @@
                 document.getElementById('status').textContent = 'BRIDGE_DISCONNECTED';
             }
         }
+
         setInterval(fetchTelemetry, 2000);
+        setInterval(fetchLedger, 2000);
         fetchTelemetry();
+        fetchLedger();
     </script>
 </body>
 </html>

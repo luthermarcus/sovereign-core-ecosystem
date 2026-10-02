@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
-import http.server, sqlite3, json, os, time, math, hashlib, subprocess
+import http.server, sqlite3, json, os, time, math, hashlib
 
 PORT = 8080
 BASE_DIR = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
+VAULT_DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
 BACKUP_DIR = os.path.join(BASE_DIR, "vault_backups")
 FRONTEND_DIR = os.path.join(BASE_DIR, "web_frontend")
 BOOT_MONO = time.monotonic()
 BASE_TAU = 955.22
+RELEASE_TAG = "v7.71.88-beta"
+LEDGER_TABLES = ["sos_utxo_logistics", "sos_royalty_settlements", "sos_knowledge_fts"]
 
 def compute_workspace_merkle():
     merkle = hashlib.sha256()
+    files_hashed = 0
     scan_dirs = [BASE_DIR, os.path.join(BASE_DIR, "bin"), os.path.join(BASE_DIR, "web_frontend")]
     for d in scan_dirs:
         if not os.path.isdir(d):
@@ -22,9 +25,10 @@ def compute_workspace_merkle():
                     raw = open(fpath, "rb").read()
                     rel = os.path.relpath(fpath, BASE_DIR)
                     merkle.update(rel.encode("utf-8") + b"\0" + hashlib.sha256(raw).digest())
+                    files_hashed += 1
                 except OSError:
                     pass
-    return merkle.hexdigest()[:32]
+    return merkle.hexdigest(), files_hashed
 
 def compute_relativistic_state():
     try:
@@ -38,13 +42,30 @@ def compute_relativistic_state():
     proper_time = round(BASE_TAU + (dt / gamma), 2)
     return gamma, proper_time
 
+def fetch_table(conn, table_name, limit=100):
+    cur = conn.cursor()
+    cur.execute(f"PRAGMA table_info({table_name})")
+    columns = [row[1] for row in cur.fetchall()]
+    if not columns:
+        return {"error": f"table '{table_name}' not found"}
+    cur.execute(f"SELECT * FROM {table_name} LIMIT ?", (limit,))
+    rows = [dict(zip(columns, row)) for row in cur.fetchall()]
+    return {"columns": columns, "rows": rows, "row_count": len(rows)}
+
+def build_ledger_payload():
+    conn = sqlite3.connect(VAULT_DB_PATH)
+    try:
+        return {t: fetch_table(conn, t) for t in LEDGER_TABLES}
+    finally:
+        conn.close()
+
 def query_enclave_audit():
     tables = {}
     journal_mode = "unknown"
     integrity = "unverified"
-    if os.path.exists(DB_PATH):
+    if os.path.exists(VAULT_DB_PATH):
         try:
-            conn = sqlite3.connect(DB_PATH)
+            conn = sqlite3.connect(VAULT_DB_PATH)
             cur = conn.cursor()
             journal_mode = cur.execute("PRAGMA journal_mode").fetchone()[0]
             integrity = cur.execute("PRAGMA quick_check").fetchone()[0]
@@ -62,15 +83,16 @@ def query_enclave_audit():
             if os.path.isfile(fpath):
                 snapshots.append({"file": fname, "bytes": os.path.getsize(fpath)})
     return {
-        "db_bytes": os.path.getsize(DB_PATH) if os.path.exists(DB_PATH) else 0,
+        "db_bytes": os.path.getsize(VAULT_DB_PATH) if os.path.exists(VAULT_DB_PATH) else 0,
         "journal_mode": journal_mode,
         "integrity": integrity,
         "tables": tables,
         "wal_snapshots": snapshots
     }
 
-class ReusableHTTPServer(http.server.HTTPServer):
+class ThreadedSovereignServer(http.server.ThreadingHTTPServer):
     allow_reuse_address = True
+    daemon_threads = True
 
 class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -79,9 +101,9 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, fmt, *args):
         pass
 
-    def _send_json(self, data):
+    def _send_json(self, data, status=200):
         payload = json.dumps(data).encode("utf-8")
-        self.send_response(200)
+        self.send_response(status)
         self.send_header("Content-Type", "application/json")
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
@@ -90,33 +112,40 @@ class SovereignBridgeHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path.startswith("/api/telemetry"):
             gateways = []
-            if os.path.exists(DB_PATH):
+            if os.path.exists(VAULT_DB_PATH):
                 try:
-                    conn = sqlite3.connect(DB_PATH)
+                    conn = sqlite3.connect(VAULT_DB_PATH)
                     cur = conn.cursor()
                     gateways = cur.execute("SELECT * FROM sos_mesh_gateways").fetchall()
                     conn.close()
                 except sqlite3.Error:
                     gateways = []
             gamma, proper_time = compute_relativistic_state()
-            merkle_root = compute_workspace_merkle()
+            merkle_root, files_hashed = compute_workspace_merkle()
             self._send_json({
                 "node": "pixel-sovereign",
-                "release": "v7.71.87-beta",
+                "release": RELEASE_TAG,
                 "gamma": gamma,
                 "proper_time": proper_time,
                 "ground_truth_hash": merkle_root,
                 "workspace_merkle_root": merkle_root,
+                "hash_len": len(merkle_root),
+                "files_hashed": files_hashed,
                 "gateways": gateways,
                 "status": "INVARIANT_ACTIVE"
             })
         elif self.path.startswith("/api/audit"):
             self._send_json(query_enclave_audit())
+        elif self.path.startswith("/api/ledger"):
+            try:
+                self._send_json(build_ledger_payload())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
         else:
             super().do_GET()
 
 if __name__ == "__main__":
     os.makedirs(FRONTEND_DIR, exist_ok=True)
-    server = ReusableHTTPServer(("127.0.0.1", PORT), SovereignBridgeHandler)
-    print(f"[*] Sovereign Web Bridge & Frontend active on http://127.0.0.1:{PORT}")
+    server = ThreadedSovereignServer(("127.0.0.1", PORT), SovereignBridgeHandler)
+    print(f"[*] Sovereign Web Bridge active on http://127.0.0.1:{PORT}")
     server.serve_forever()
