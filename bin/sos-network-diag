@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+import sqlite3, json, os, sys
+
+BASE_DIR = os.path.expanduser("~/sos-fox-beta")
+DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
+DIAG_TABLES = ["sos_spacetime_anchors", "sos_auxpow_receipts", "sos_peer_reputation", "sos_epoch_claims"]
+
+def fetch_table(conn, table_name, limit=50):
+    cur = conn.cursor()
+    try:
+        cur.execute(f"PRAGMA table_info({table_name})")
+        columns = [row[1] for row in cur.fetchall()]
+        if not columns:
+            return {"error": f"table '{table_name}' not found"}
+        cur.execute(f"SELECT * FROM {table_name} LIMIT ?", (limit,))
+        rows = [dict(zip(columns, row)) for row in cur.fetchall()]
+        return {"columns": columns, "rows": rows, "row_count": len(rows)}
+    except sqlite3.Error as e:
+        return {"error": str(e)}
+
+def run_diagnostic():
+    if not os.path.exists(DB_PATH):
+        print(json.dumps({"error": "sos_vault.db not found"}))
+        sys.exit(1)
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        res = {t: fetch_table(conn, t) for t in DIAG_TABLES}
+        print(json.dumps(res, indent=2))
+    finally:
+        conn.close()
+
+if __name__ == "__main__":
+    run_diagnostic()
