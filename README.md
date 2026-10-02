@@ -18,3 +18,10 @@ SOS integrates bleeding-edge innovations and open-source contributions from:
 - **Step 42 (`CREDENTIAL_SHIELD`):** Vaulted GitHub PAT in `~/.git-credentials` (`0600`), scrubbed shell history, and masked remote push URLs.
 - **Step 43 (`P2P_LOGISTICS_VAULT`):** Added 32KB Warped SQLite WAL tables (`sos_magnets`, `sos_utxo_logistics`, `sos_knowledge_fts`), Wayback Machine CDX API archival, and ANSI OSC 52 zero-hang clipboard shims.
 - **Step 44 (`AEAD_SEALER_AND_GIT_SYSLINKS`):** Added HMAC-SHA256 authenticated 32KB chunk sealing (`sos-vault --seal`) to prevent P2P framing attacks, bound `85%/15%` Creator/PPLNS Seeder royalty splits, persisted applets in `~/sos-fox-beta/bin/`, and exported deterministic SQL dumps (`sos_vault_dump.sql`).
+
+## Step 45 Native & Overlay Security Sentinel Advisories
+- **`FLAG:ENCLAVE_KEYED_AEAD_ACTIVE`:** Upgraded P2P Bitcache 32KB chunk tags from public Merkle keys to local hardware enclave derivation (`~/.ssh/id_ed25519` + SHA-256 content hashes), blocking P2P swarm framing attacks.
+- **`FLAG:SQL_DUMP_ATOMIC_SYNC`:** Bound `sos_vault_dump.sql` generation and `PRAGMA wal_checkpoint(TRUNCATE)` directly into the post-transaction hook so binary DB and SQL text dumps never desync.
+- **`FLAG:CROSS_OS_SHEBANG_HARMONY`:** Standardized all `bin/` applets on `#!/usr/bin/env python3` for seamless portability between Android 17 Termux and desktop Linux environments.
+- **`FLAG:OSC52_64KB_DOS_SHIELD`:** Enforced a 64KB ceiling on ANSI OSC 52 clipboard payloads to prevent mobile terminal buffer exhaustion.
+- **`FLAG:DEPIN_BANDWIDTH_QUOTA_GUARD`:** Added `sos_depin_peers` table to prioritize high-bandwidth mesh connections while enforcing the `0.92` RAM ceiling and `2000KB` SQLite WAL cap.

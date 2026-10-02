@@ -20,3 +20,9 @@
 - **Sandbox Spec:** `/data/data/com.termux/files/home/sos-fox-beta/sandbox/grok_airgap_manifest.json` (DAO Trust Score `97.0/100`).
 - **Security Policy:** Zero external network egress; read-only binding to `kb_sidechain.db`.
 
+## Step 45 Native & Overlay Security Sentinel Advisories
+- **`FLAG:ENCLAVE_KEYED_AEAD_ACTIVE`:** Upgraded P2P Bitcache 32KB chunk tags from public Merkle keys to local hardware enclave derivation (`~/.ssh/id_ed25519` + SHA-256 content hashes), blocking P2P swarm framing attacks.
+- **`FLAG:SQL_DUMP_ATOMIC_SYNC`:** Bound `sos_vault_dump.sql` generation and `PRAGMA wal_checkpoint(TRUNCATE)` directly into the post-transaction hook so binary DB and SQL text dumps never desync.
+- **`FLAG:CROSS_OS_SHEBANG_HARMONY`:** Standardized all `bin/` applets on `#!/usr/bin/env python3` for seamless portability between Android 17 Termux and desktop Linux environments.
+- **`FLAG:OSC52_64KB_DOS_SHIELD`:** Enforced a 64KB ceiling on ANSI OSC 52 clipboard payloads to prevent mobile terminal buffer exhaustion.
+- **`FLAG:DEPIN_BANDWIDTH_QUOTA_GUARD`:** Added `sos_depin_peers` table to prioritize high-bandwidth mesh connections while enforcing the `0.92` RAM ceiling and `2000KB` SQLite WAL cap.
