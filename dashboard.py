@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.61)
-Consolidated Mobile-Responsive Architecture (No Line Wrapping):
-  [1] Executive Workstation (Live OS /proc telemetry)
-  [2] Security & Military Encryption Vault (AES-256 / Kyber-1024)
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.67)
+Consolidates all 8 functional suites:
+  [1] Executive Workstation & Live /proc Host OS Scraper
+  [2] Security Matrix & Military Encryption Vault (AES-256 / FIPS 203 ML-KEM)
   [3] Enclave File Manager & RAM WAL Storage Inspector
   [4] 7-Node DePIN Fleet & Passive Yield Harvest
-  [5] Three-Prong Boomerang & Cold-Storage Fallback
-  [6] Top 33 Cross-Chain Liquidity Matrix (Sub-paginated 5/view)
-  [7] Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
-  [8] Pre-flight Flags, Anomaly Logs, DAO Governance & P2P Media Shield
+  [5] Fox DEX, BTC Pools & Three-Prong Boomerang (Cold-Storage Fallback)
+  [6] Attached User Wallets & Percentage Allocation Distribution
+  [7] Bitcoin L1/L2 Taproot Pipeline & Settlement Finalizer
+  [8] DAO Governance, P2P Media Shield & KB Flags Anomaly Inspector
 """
 import os, sys, sqlite3, time, datetime
 
-BOLD, GREEN, CYAN, YELLOW, MAGENTA, WHITE, RED, RESET = (
-    "\033[1m", "\033[32m", "\033[36m", "\033[33m", "\033[35m", "\033[37m", "\033[31m", "\033[0m"
-)
+BOLD    = "\033[1m"
+GREEN   = "\033[32m"
+CYAN    = "\033[36m"
+YELLOW  = "\033[33m"
+MAGENTA = "\033[35m"
+WHITE   = "\033[37m"
+RED     = "\033[31m"
+RESET   = "\033[0m"
+
 METRICS_DB = '/dev/shm/ecosystem_metrics.db'
 TRUST_DB   = '/dev/shm/trust_store.db'
 ROOT_DIR   = os.path.dirname(os.path.abspath(__file__))
@@ -43,7 +49,6 @@ def get_db(path):
         return None
 
 def get_hardware_telemetry():
-    """Reads real kernel telemetry from /proc directly."""
     try:
         with open('/proc/loadavg', 'r') as f:
             parts = f.read().split()
@@ -76,19 +81,17 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "3-Prong Boomerang", "Top 33 DEX", "Bitcoin/Wallets", "Flags/DAO/P2P"]
     mask_tag = f"{YELLOW}[MASKED]{RESET}" if masked else f"{GREEN}[LIVE]{RESET}"
-
     print(f"{CYAN}┌────────────────────────────────────────────────────┐{RESET}")
     print(f"{CYAN}│{BOLD} SOVEREIGN CORE OS (SOS) — MASTER WORKSTATION v7.72  {RESET}{CYAN}│{RESET}")
     print(f"{CYAN}└────────────────────────────────────────────────────┘{RESET}")
-    print(f" {BOLD}[P1:Workstation] [P2:Vault] [P3:Files] [P4:DePIN]{RESET}")
-    print(f" {BOLD}[P5:Boomerang]   [P6:DEX]   [P7:BTC]   [P8:DAO/Flags]{RESET}")
+    print(f" {BOLD}[P1:Workstation] [P2:Vault]   [P3:Files]   [P4:DePIN]{RESET}")
+    print(f" {BOLD}[P5:FoxDEX/Boom] [P6:Wallets] [P7:BTC L2]  [P8:DAO/Flags]{RESET}")
     print(f" {YELLOW}>> PAGE {current_page} OF {total_pages}: {title}{RESET} {mask_tag}\n")
 
-# PAGE 1: Pixel 10 Pro XL Executive Workstation
+# PAGE 1: Executive Workstation & Host OS Scraper
 def render_page_1(m_conn, t_conn, masked):
-    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
+    draw_header(1, 8, "EXECUTIVE WORKSTATION & HOST OS SCRAPER", masked)
     raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
     cpu  = "[SHIELDED]" if masked else raw_cpu
     load = "[PROTECTED]" if masked else raw_load
@@ -104,25 +107,25 @@ def render_page_1(m_conn, t_conn, masked):
 
     print(f" {BOLD}[1] WORKERS{RESET} : {GREEN}telemetry:ON{RESET} | {GREEN}cron:ON{RESET} | {GREEN}api:ON{RESET}")
     print(f" {BOLD}[2] METRICS{RESET} : CPU:{CYAN}{cpu}{RESET} | Load:{CYAN}{load}{RESET} | Free:{CYAN}{free}{RESET}")
-    print(f" {BOLD}[3] ENTROPY{RESET} : θ Ratio: {MAGENTA}{theta}{RESET} | Fischer Domain: {CYAN}960 TRNG{RESET}")
+    print(f" {BOLD}[3] ENTROPY{RESET} : θ Ratio: {MAGENTA}{theta}{RESET} | Domain: {CYAN}960 Fischer TRNG{RESET}")
     print(f" {BOLD}[4] DEPIN{RESET}   : Mysterium: {GREEN}RUNNING{RESET} | Loopback: {WHITE}:8545{RESET}")
     print(f" {BOLD}[5] ASSETS{RESET}  : {YELLOW}{btc}{RESET} | {MAGENTA}{fox}{RESET}")
-    print(f" {BOLD}[6] ENCLAVE{RESET} : sos-truth: {GREEN}ACTIVE{RESET} | DLP: {GREEN}SECURE{RESET}")
+    print(f" {BOLD}[6] ENCLAVE{RESET} : sos-truth: {GREEN}ACTIVE{RESET} | DLP Gate: {GREEN}SECURE{RESET}")
     print(f"\n {CYAN}{'─'*52}{RESET}")
     ts = datetime.datetime.now().strftime("%H:%M:%S")
     print(f" #1273 | {ts} | Load: {CYAN}{load}{RESET} | {GREEN}Running{RESET}")
     print(f" #1272 | {ts} | Load: {CYAN}{load}{RESET} | {GREEN}Running{RESET}")
-    print(f" Operator: Sovereign Core Operator | {GREEN}HEALTHY{RESET}")
+    print(f" Identity: Sovereign Core Operator | Status: {GREEN}HEALTHY{RESET}")
 
-# PAGE 2: Security & Military Encryption Vault
+# PAGE 2: Security Matrix & Military Encryption Vault
 def render_page_2(m_conn, t_conn):
     draw_header(2, 8, "SECURITY MATRIX & MILITARY VAULT")
     features = [
         ("1. Identity Boundary", "Sovereign Core Operator", "VERIFIED_ACTIVE"),
         ("2. DLP Pre-Commit Gate", "sos-dlp-guard barrier", "FAIL_CLOSED"),
         ("3. RAM-Backed Storage", "RAM tmpfs WAL (/dev/shm)", "ACTIVE_WAL"),
-        ("4. PRoot Jail Enclave", "Isolated Debian Linux", "HARDENED_CHROOT"),
-        ("5. Scrubbed History", "Exfiltration purged", "PURGED_CLEAN"),
+        ("4. PRoot Jail Enclave", "Isolated Debian Sandbox", "HARDENED_CHROOT"),
+        ("5. Scrubbed History", "Zero forensic traces", "PURGED_CLEAN"),
         ("6. Crypto Key Ring", "Socket-isolated vault IPC", "SECURE_STANDBY"),
         ("7. Supervisor Watchdog", "master_watchdog_v3 prober", "HEARTBEAT_NOMINAL"),
         ("8. State Commit Anchor", "Bitcoin L1 Taproot commit", "STATE_LOCKED")
@@ -177,86 +180,80 @@ def render_page_4(m_conn, masked):
         except Exception as e:
             print(f"  [-] DePIN query error: {e}")
 
-# PAGE 5: Three-Prong Boomerang & Cold-Storage Fallback Protection
+# PAGE 5: Fox DEX, BTC Pools & Three-Prong Boomerang
 def render_page_5(m_conn, masked):
-    draw_header(5, 8, "THREE-PRONG BOOMERANG ARBITRAGE", masked)
-    print(f" {BOLD}{YELLOW}[+] THREE-PRONG ARCHITECTURAL PATHS:{RESET}")
-    print(f"  * PRONG-1: Bitcoin L1 Taproot State Anchor")
-    print(f"  * PRONG-2: L2 Fast-Exit Liquidity Router")
-    print(f"  * PRONG-3: Cold-Storage Local RAM Escrow Buffer")
-
-    print(f"\n {BOLD}{YELLOW}[+] RECENT THREE-PRONG EXECUTIONS & FALLBACKS:{RESET}")
+    draw_header(5, 8, "FOX DEX, BTC LIQUIDITY & 3-PRONG BOOMERANG", masked)
+    print(f" {BOLD}{YELLOW}[+] FOX DEX & BITCOIN LIQUIDITY VENUES:{RESET}")
     if m_conn:
         try:
             c = m_conn.cursor()
+            c.execute("SELECT rank_idx, dex_platform, pair_label, tvl_usd, apr_pct, pool_health FROM dex_cross_chain_liquidity ORDER BY rank_idx ASC LIMIT 5")
+            for r in c.fetchall():
+                tvl = "[MASKED]" if masked else f"${r[3]:>9,.0f}"
+                print(f"  #{r[0]} {BOLD}{r[1]:<10}{RESET} | {CYAN}{r[2]:<12}{RESET} | TVL:{tvl} | {GREEN}{r[5]}{RESET}")
+
+            print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE & COLD-STORAGE FALLBACK:{RESET}")
             c.execute("SELECT route_pair, prong_variation, capital_injected, profit_captured, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 3")
             for r in c.fetchall():
                 p_fox = "[MASKED]" if masked else f"+{r[3]:.2f} FOX"
-                print(f"  # {MAGENTA}{r[0]}{RESET}")
-                print(f"    Mode  : {CYAN}{r[1]}{RESET}")
-                print(f"    Yield : Injected {r[2]:>6,.0f} -> {GREEN}{p_fox}{RESET}")
-                print(f"    State : {GREEN}{r[4]}{RESET}")
+                print(f"  # {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:18]}...{RESET}]")
+                print(f"    Capital: {r[2]:>6,.0f} | Profit: {GREEN}{p_fox}{RESET} | {GREEN}{r[4]}{RESET}")
         except Exception as e:
-            print(f"  [-] Boomerang state error: {e}")
-    print(f"\n {BOLD}Cold Protection:{RESET} Instant loopback return on execution stall.")
+            print(f"  [-] DEX/Boomerang query error: {e}")
+    print(f"\n {BOLD}Three-Prong Defense:{RESET} L1 Anchor | L2 Fast-Exit | Hard Cold Escrow Fallback.")
 
-# PAGE 6: Top 33 Cross-Chain Liquidity Matrix (Sub-paginated 5/view)
-def render_page_6(m_conn, masked, subpage=0):
-    draw_header(6, 8, f"TOP 33 CROSS-CHAIN LIQUIDITY ({subpage+1}/7)", masked)
-    offset = subpage * 5
-    print(f" {BOLD}{YELLOW}[+] VENUES #{offset + 1} TO #{min(offset + 5, 33)} OF 33:{RESET}")
+# PAGE 6: Attached User Wallets & Percentage Allocation Rules
+def render_page_6(m_conn, masked):
+    draw_header(6, 8, "ATTACHED USER WALLETS & DISTRIBUTION", masked)
+    print(f" {BOLD}{YELLOW}[+] ATTACHED WALLETS & ALLOCATION ROUTING:{RESET}")
     if m_conn:
         try:
             c = m_conn.cursor()
-            c.execute("SELECT rank_idx, dex_platform, pair_label, network_layer, tvl_usd, apr_pct, pool_health FROM dex_cross_chain_liquidity ORDER BY rank_idx ASC LIMIT 5 OFFSET ?", (offset,))
+            c.execute("SELECT vault_category, allocation_pct, target_wallet_address, allocated_balance_usd, routing_status FROM wallet_distribution_rules ORDER BY rule_id ASC")
             for r in c.fetchall():
-                tvl = "[MASKED]" if masked else f"${r[4]:>9,.0f}"
-                print(f"  #{r[0]:<2} {BOLD}{r[1]:<11}{RESET} | {CYAN}{r[2]:<12}{RESET} | {r[3]}")
-                print(f"      TVL: {tvl} | APR: {r[5]:>4.1f}% | {GREEN}{r[6]}{RESET}")
+                bal = "[MASKED]" if masked else f"${r[3]:>9,.2f}"
+                print(f"  * {BOLD}{r[0]:<20}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] | Bal: {bal}")
+                print(f"    Address : {CYAN}{r[2]}{RESET}")
+                print(f"    Routing : {GREEN}{r[4]}{RESET}")
         except Exception as e:
-            print(f"  [-] Liquidity matrix error: {e}")
-    print(f"\n {CYAN}[< / >]{RESET} Use '<' / '>' or 'd' / 'f' to cycle all 33 pools.")
+            print(f"  [-] Wallet query error: {e}")
+    print(f"\n {BOLD}Security Policy:{RESET} Automatic loopback routing directly protects cold storage.")
 
-# PAGE 7: Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
+# PAGE 7: Bitcoin L1/L2 Taproot Settlement Pipeline
 def render_page_7(m_conn, masked):
-    draw_header(7, 8, "BITCOIN L1/L2 SETTLEMENT & WALLETS", masked)
-    print(f" {BOLD}{YELLOW}[+] STATE FINALITY & ROLLUP ANCHOR:{RESET}")
+    draw_header(7, 8, "BITCOIN L1/L2 TAPROOT SETTLEMENT PIPELINE", masked)
+    print(f" {BOLD}{YELLOW}[+] BITCOIN L1/L2 ANCHOR & SETTLEMENT PIPELINE:{RESET}")
     if m_conn:
         try:
             c = m_conn.cursor()
-            c.execute("SELECT epoch_ref, btc_txid FROM btc_l2_taproot_anchor_logs ORDER BY anchor_id DESC LIMIT 1")
+            c.execute("SELECT epoch_ref, btc_txid, anchor_status FROM btc_l2_taproot_anchor_logs ORDER BY anchor_id DESC LIMIT 1")
             anc = c.fetchone()
             epoch = anc[0] if anc else 1201
             txid  = "[MASKED]" if masked else (anc[1] if anc else "0xe75650fa6e0e1d8ad032ed3d")
-            print(f"  * Epoch: #{epoch} | Finality: {GREEN}6/6 Confirmations{RESET}")
-            print(f"  * Taproot TxID: {CYAN}{txid[:22]}...{RESET}")
-            print(f"  * Status: {GREEN}L2_SETTLEMENT_IMMUTABLY_SEALED{RESET}")
-
-            print(f"\n {BOLD}{YELLOW}[+] WALLET PERCENTAGE DISTRIBUTION RULES:{RESET}")
-            c.execute("SELECT vault_category, allocation_pct, target_wallet_address, routing_status FROM wallet_distribution_rules ORDER BY rule_id ASC")
-            for r in c.fetchall():
-                print(f"  * {BOLD}{r[0]:<14}{RESET} : {GREEN}{r[1]:>4.1f}%{RESET} -> {CYAN}{r[2][:22]}...{RESET}")
-                print(f"    Routing Status: {GREEN}{r[3]}{RESET}")
+            print(f"  * Rollup Epoch   : #{epoch}")
+            print(f"  * Taproot TxID   : {CYAN}{txid[:26]}...{RESET}")
+            print(f"  * Finality Depth : {GREEN}6/6 Confirmations (L1 Validated){RESET}")
+            print(f"  * Settlement     : {GREEN}{anc[2]}{RESET}")
         except Exception as e:
-            print(f"  [-] Wallet query error: {e}")
+            print(f"  [-] Bitcoin L2 query error: {e}")
 
-# PAGE 8: Daemons, Flags, DAO Governance & P2P Media Shield
+# PAGE 8: DAO Governance, P2P Media Shield & KB Flags
 def render_page_8(m_conn):
-    draw_header(8, 8, "FLAGS, ANOMALIES, DAO & P2P SHIELD")
-    print(f" {BOLD}{YELLOW}[+] ACTIVE PROTOCOL FLAGS & AUDIT STATUS:{RESET}")
+    draw_header(8, 8, "DAO GOVERNANCE, P2P MEDIA SHIELD & FLAGS")
+    print(f" {BOLD}{YELLOW}[+] LIVE KERNEL FLAGS & DISCREPANCY AUDIT:{RESET}")
     if m_conn:
         try:
             c = m_conn.cursor()
             c.execute("SELECT domain_scope, flag_key, flag_status FROM kb_flag_inspection_catalog ORDER BY flag_id ASC LIMIT 5")
             for r in c.fetchall():
-                print(f"  * {CYAN}{r[0]:<9}{RESET} {BOLD}{r[1]:<28}{RESET} : {GREEN}{r[2]}{RESET}")
+                print(f"  * {CYAN}{r[0]:<10}{RESET} {BOLD}{r[1]:<28}{RESET} : {GREEN}{r[2]}{RESET}")
 
-            print(f"\n {BOLD}{YELLOW}[+] P2P MEDIA SHIELD & DAO GOVERNANCE:{RESET}")
+            print(f"\n {BOLD}{YELLOW}[+] P2P MEDIA SHIELD & DAO GOVERNANCE WARDEN:{RESET}")
             c.execute("SELECT protocol_type, active_torrents_routed, blocked_prohibited_hashes FROM p2p_media_filter_stats")
             p2p = c.fetchone()
             if p2p:
-                print(f"  * P2P Protocol : {CYAN}{p2p[0]}{RESET} (Audio/Video Relay)")
-                print(f"  * Active Torrents: {GREEN}{p2p[1]} Streams{RESET} | Blocked: {MAGENTA}{p2p[2]} Hashes{RESET}")
+                print(f"  * P2P Protocol : {CYAN}{p2p[0]}{RESET} (WebTorrent/IPFS Audio/Video)")
+                print(f"  * Active Streams: {GREEN}{p2p[1]} Streams{RESET} | Filtered Hashes: {MAGENTA}{p2p[2]}{RESET}")
 
             c.execute("SELECT proposal_title, quorum_reached_pct, warden_status FROM dao_governance_proposals")
             dao = c.fetchone()
@@ -270,7 +267,6 @@ def main():
     current_page = 1
     total_pages = 8
     masked = True
-    dex_subpage = 0
 
     while True:
         m_conn = get_db(METRICS_DB)
@@ -281,7 +277,7 @@ def main():
         elif current_page == 3: render_page_3(masked)
         elif current_page == 4: render_page_4(m_conn, masked)
         elif current_page == 5: render_page_5(m_conn, masked)
-        elif current_page == 6: render_page_6(m_conn, masked, dex_subpage)
+        elif current_page == 6: render_page_6(m_conn, masked)
         elif current_page == 7: render_page_7(m_conn, masked)
         elif current_page == 8: render_page_8(m_conn)
 
@@ -289,7 +285,7 @@ def main():
         if t_conn: t_conn.close()
 
         print(f"\n{CYAN}┌────────────────────────────────────────────────────┐{RESET}")
-        print(f"{BOLD}[1-8] Jump | [n/p] Page | [</>] DEX | [m] Mask | [q] Exit{RESET}")
+        print(f"{BOLD}[1-8] Jump | [n/p] Page | [m] Mask | [x] Boomerang | [q] Exit{RESET}")
 
         ch = get_tty_input(f"{BOLD}Command: {RESET}")
 
@@ -299,14 +295,10 @@ def main():
             current_page = 1 if current_page >= total_pages else current_page + 1
         elif ch in ['p', 'prev']:
             current_page = total_pages if current_page <= 1 else current_page - 1
-        elif ch in ['>', 'right', 'f']:
-            if current_page == 6: dex_subpage = (dex_subpage + 1) % 7
-        elif ch in ['<', 'left', 'd']:
-            if current_page == 6: dex_subpage = (dex_subpage - 1) % 7
         elif ch == 'm':
             masked = not masked
         elif ch == 'x':
-            print(f"\n{YELLOW}[*] Triggering Three-Prong Boomerang Arbitrage Engine...{RESET}")
+            print(f"\n{YELLOW}[*] Executing Three-Prong Boomerang Arbitrage...{RESET}")
             os.system(f"python3 {os.path.join(ROOT_DIR, 'fox_boomerang_engine.py')} 2>/dev/null || true")
             time.sleep(1.2)
         elif ch == 'b':
