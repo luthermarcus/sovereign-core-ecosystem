@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.105)
-Authenticated 5-Tab Workstation Layout:
-  [1] Overview | [2] DePIN | [3] L2 Vaults | [4] Enclave | [5] Master
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.120)
+Flicker-Free Event-Driven Render Architecture with Post-Exit KB Flag Conflict Auditor.
 """
 import os, sys, select, time, sqlite3
 
@@ -31,7 +30,7 @@ def get_telemetry():
     except: free_s = "81.3 GB"
     return "897MHz", load_s, free_s
 
-def render(tab, masked, banner_msg):
+def render(tab, masked, banner_msg, subpage=0):
     os.system('clear' if os.name == 'posix' else 'cls')
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED]{RESET}"
     
@@ -53,10 +52,9 @@ def render(tab, masked, banner_msg):
     load_disp = "[PROTECTED]" if masked else raw_load
     free_disp = "[CONFIDENTIAL]" if masked else raw_free
     btc_disp  = "BTC: #140 (38 V)" if masked else "BTC: #140 (38 V) [bc1q-cold-77a]"
-    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox DAO Cut]"
+    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox Cut Active]"
 
     if tab == 1:
-        # Tab 1: Overview
         print(f" {BOLD}[1] WORKERS{RESET} : {GREEN}telemetry:ON{RESET} | {GREEN}cron:ON{RESET} | {YELLOW}alert:STBY{RESET} | {GREEN}api:ON{RESET}")
         print(f" {BOLD}[2] METRICS{RESET} : CPU: {CYAN}{cpu_disp}{RESET} | Load: {CYAN}{load_disp}{RESET} | Free: {CYAN}{free_disp}{RESET} | θ: {MAGENTA}0.85{RESET}")
         print(f" {BOLD}[3] DEPIN{RESET}   : Mysterium: {GREEN}RUNNING{RESET} | RPC Loopback: {WHITE}127.0.0.1:8545{RESET}")
@@ -68,7 +66,6 @@ def render(tab, masked, banner_msg):
         print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
     elif tab == 2:
-        # Tab 2: DePIN
         print(f" {BOLD}DECENTRALIZED PROTOCOL RPC:{RESET} {CYAN}http://127.0.0.1:8545 [ONLINE]{RESET}")
         print(f" Mysterium (Native WireGuard) : • {GREEN}RUNNING{RESET} [L2 Edge]")
         print(f" Host Cluster Bridge (Docker) : o {YELLOW}STANDBY{RESET} [SECURE-PEER-DELEGATOR]")
@@ -83,7 +80,6 @@ def render(tab, masked, banner_msg):
             conn.close()
 
     elif tab == 3:
-        # Tab 3: L2 Vaults, Attached Wallets & 1% DAO Royalty Breakdown
         print(f" {BOLD}BTC L2 REGTEST{RESET} : Block #140 | 38 Active Vaults")
         print(f" {BOLD}EVM ADDRESS{RESET}    : {CYAN}0x7d6bede176a688c9...{RESET}")
         print(f" {BOLD}FOX L2 VAULT{RESET}   : {MAGENTA}{fox_disp}{RESET} | Swaps: #17")
@@ -100,71 +96,105 @@ def render(tab, masked, banner_msg):
             conn.close()
 
     elif tab == 4:
-        # Tab 4: Enclave Hardening & Fraud Shield
         print(f" {BOLD}{YELLOW}SECURITY ENCLAVE PROTOCOLS{RESET}")
         print(f" sos-truth        : • {GREEN}ACTIVE{RESET} [Hardware Nonce Certified]")
         print(f" sos-error-logger : • {GREEN}SECURE{RESET} [Zero Buffer Anomalies]")
         print(f" sos-dlp-guard    : • {GREEN}ACTIVE{RESET} [Zero PAT/Cred Leaks]")
         print(f" PRoot Boundary   : • {GREEN}VERIFIED{RESET} [UID Namespace Isolation]")
-        print(f"\n {BOLD}{YELLOW}[+] ANTI-FRAUD HEURISTIC SHIELD & MILITARY ENCRYPTION:{RESET}")
-        print(f" Cipher Standard : {CYAN}AES-256-GCM / ChaCha20-Poly1305{RESET}")
-        print(f" Post-Quantum    : {GREEN}FIPS 203 ML-KEM-1024 Lattice Defense{RESET}")
-        print(f" Fraud Sentinel  : {GREEN}HONEYPOT_HEURISTIC_SHIELD (Zero Malicious Drain Invariant){RESET}")
-
-    elif tab == 5:
-        # Tab 5: Master Multi-Chain & Supervisor Daemons
-        print(f" {BOLD}{YELLOW}[+] 12 RUNTIME DAEMONS SUPERVISOR & MESH AUDITOR:{RESET}")
+        print(f"\n {BOLD}{YELLOW}[+] ANTI-FRAUD HEURISTIC SHIELD & PROTOCOL FLAGS:{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
-            daemons = conn.execute("SELECT daemon_name, pid, heartbeat_status FROM enclave_daemon_heartbeats LIMIT 4").fetchall()
-            for d in daemons:
-                print(f"   * {BOLD}{d[0]:<26}{RESET} [PID:{d[1]:<5}] : {GREEN}{d[2]}{RESET}")
+            for r in conn.execute("SELECT domain_scope, flag_key, flag_status FROM kb_flag_inspection_catalog LIMIT 5").fetchall():
+                print(f"   * [{CYAN}{r[0]:<10}{RESET}] {BOLD}{r[1]:<30}{RESET} : {GREEN}{r[2]}{RESET}")
+            conn.close()
+
+    elif tab == 5:
+        offset = subpage * 4
+        print(f" {BOLD}{YELLOW}[+] TOP 33 CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/9):{RESET}")
+        print(f"   {'#':<3} {'Venue':<12} | {'Pair':<14} | {'TVL':<13} | {'Health'}")
+        print(f"   {'-'*2:3} {'-'*10:12} | {'-'*12:14} | {'-'*11:13} | {'-'*16}")
+        if os.path.exists(METRICS_DB):
+            conn = sqlite3.connect(METRICS_DB)
+            for r in conn.execute("SELECT rank_idx, dex_platform, pair_label, tvl_usd, pool_health FROM dex_cross_chain_liquidity ORDER BY rank_idx ASC LIMIT 4 OFFSET ?", (offset,)).fetchall():
+                tvl = "[MASKED]" if masked else f"${r[3]:>10,.0f}"
+                print(f"   #{r[0]:<2} {BOLD}{r[1]:<12}{RESET} | {CYAN}{r[2]:<14}{RESET} | {tvl:<13} | {GREEN}{r[4]}{RESET}")
+            print(f"   {CYAN}[Use '<' / '>' to cycle all 33 pools]{RESET}")
+
             print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE (1% SATOSHI FOX DAO CUT):{RESET}")
-            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, dao_royalty_cut_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 3").fetchall():
+            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, dao_royalty_cut_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 2").fetchall():
                 p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX (1% DAO: +{r[3]:.3f})"
-                print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:20]}...{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[4]}{RESET}]")
+                print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:18]}...{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[4]}{RESET}]")
             conn.close()
 
     print(f"\n{CYAN}────────────────────────────────────────────────────────────────────────{RESET}")
-    print(f"{BOLD}ACTIONS: [1-5] Tab | [p] Toggle Mask | [x] Swap | [b] BTC | [q] Exit{RESET}")
+    print(f"{BOLD}ACTIONS: [1-5] Tab | [p] Mask | [x] Swap | [b] BTC | [</>] Pools | [q] Exit{RESET}")
     sys.stdout.write(f"{BOLD}Command: {RESET}")
     sys.stdout.flush()
 
+def post_exit_audit():
+    print(f"\n{GREEN}[+] Sovereign Core Dashboard closed cleanly.{RESET}")
+    print(f"{CYAN}{'─'*72}{RESET}")
+    print(f"{BOLD}{YELLOW}[+] ACTIVE PROTOCOL KNOWLEDGE BASE & SECURITY DISCREPANCY AUDIT:{RESET}")
+    if os.path.exists(METRICS_DB):
+        conn = sqlite3.connect(METRICS_DB)
+        c = conn.cursor()
+        for r in c.execute("SELECT domain_scope, flag_key, flag_status, community_consensus, anomaly_severity FROM kb_flag_inspection_catalog").fetchall():
+            sev_color = GREEN if r[4] == 'NONE' else YELLOW
+            print(f"  * [{CYAN}{r[0]:<10}{RESET}] {BOLD}{r[1]:<30}{RESET} : {GREEN}{r[2]:<16}{RESET} | {sev_color}{r[4]}{RESET}")
+            print(f"    Consensus: {r[3]}")
+        conn.close()
+    print(f"{CYAN}{'─'*72}{RESET}\n")
+
 def main():
-    cur_tab = 1
-    masked = True
+    cur_tab, masked, dex_sub = 1, True, 0
     banner = "⚡ Privacy Mask: ENGAGED [MASKED-DEFAULT]"
+    needs_render = True
 
     while True:
-        render(cur_tab, masked, banner)
-        banner = ""
+        if needs_render:
+            render(cur_tab, masked, banner, dex_sub)
+            banner = ""
+            needs_render = False
+
+        r, _, _ = select.select([sys.stdin], [], [], 1.0)
+        if not r:
+            continue
 
         try:
-            r, _, _ = select.select([sys.stdin], [], [], 2.0)
-            if not r:
-                continue
             ch = sys.stdin.readline().strip().lower()
         except (KeyboardInterrupt, EOFError):
-            print(f"\n\n{GREEN}[+] Sovereign Core Dashboard closed cleanly.{RESET}\n")
+            post_exit_audit()
             sys.exit(0)
 
         if ch in ['1', '2', '3', '4', '5']:
             cur_tab = int(ch)
+            needs_render = True
         elif ch == 'p':
             masked = not masked
             banner = f"⚡ Privacy Mask: {'ENGAGED' if masked else 'DISENGAGED (OPERATOR REVEAL)'}"
+            needs_render = True
+        elif ch in ['>', 'right', 'f']:
+            if cur_tab == 5:
+                dex_sub = (dex_sub + 1) % 9
+                needs_render = True
+        elif ch in ['<', 'left', 'd']:
+            if cur_tab == 5:
+                dex_sub = (dex_sub - 1) % 9
+                needs_render = True
         elif ch == 'x':
             os.system("python3 /root/sos-fox-beta/fox_boomerang_engine.py 2>/dev/null || true")
             banner = "⚡ Boomerang Swap Settled: 50,000 Sats <-> 500 FOX [1% DAO Cut Routed]"
+            needs_render = True
         elif ch == 'b':
             banner = "⚡ 2-of-2 Multisig Channel Settled!"
+            needs_render = True
         elif ch in ['q', 'quit', 'exit']:
-            print(f"\n\n{GREEN}[+] Sovereign Core Dashboard closed cleanly.{RESET}\n")
+            post_exit_audit()
             sys.exit(0)
 
 if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        print(f"\n\n{GREEN}[+] Sovereign Core Dashboard closed cleanly.{RESET}\n")
+        post_exit_audit()
         sys.exit(0)
