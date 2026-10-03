@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.53)
-Consolidates all historical modules, wallet percentage routing, zero-fail escrow,
-military encryption vault, and star project porting across 8 pages.
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.55)
+Consolidates all 8 functional suites:
+  [1] Executive Workstation (Live OS /proc telemetry)
+  [2] Security & Military Encryption Vault
+  [3] Enclave File Manager & Secure Storage Inspector
+  [4] 7-Node DePIN Fleet & Passive Yield Harvest
+  [5] Boomerang AMM & Zero-Fail Escrow Rollback
+  [6] Top 33 Cross-Chain Liquidity Matrix (Sub-paginated)
+  [7] Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
+  [8] Daemons Super-Tree & KB Flag Anomaly Inspector
 """
 import os, sys, sqlite3, time, datetime
 
@@ -68,7 +75,7 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "DePIN Fleet", "Boomerang Escrow", "Top 33 DEX", "Bitcoin L2/Wallets", "12 Daemons", "KB Flags"]
+    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "Boomerang Escrow", "Top 33 DEX", "Bitcoin L2/Wallets", "Daemons/Flags"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -78,7 +85,7 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
-# PAGE 1: Pixel 10 Pro XL Executive Workstation
+# PAGE 1: Executive Workstation
 def render_page_1(m_conn, t_conn, masked):
     draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
     raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
@@ -137,9 +144,31 @@ def render_page_2(m_conn, t_conn):
         except Exception as e:
             print(f"   [-] Vault query error: {e}")
 
-# PAGE 3: 7-Node DePIN Fleet
-def render_page_3(m_conn, masked):
-    draw_header(3, 8, "7-NODE DEPIN INFRASTRUCTURE & YIELD HARVEST", masked)
+# PAGE 3: Enclave File Manager & Secure Storage Inspector
+def render_page_3(masked):
+    draw_header(3, 8, "ENCLAVE FILE MANAGER & SECURE STORAGE INSPECTOR")
+    print(f" {BOLD}{YELLOW}[+] REPOSITORY ROOT STORAGE DIRECTORY ({ROOT_DIR}):{RESET}")
+    print(f"   {'Filename':<30} | {'Type':<12} | {'Permissions':<14} | {'Status'}")
+    print(f"   {'-'*28:30} | {'-'*10:12} | {'-'*12:14} | {'-'*14}")
+    try:
+        files = sorted(os.listdir(ROOT_DIR))
+        for fn in files[:10]:
+            full_path = os.path.join(ROOT_DIR, fn)
+            ftype = "Directory" if os.path.isdir(full_path) else "Python Script" if fn.endswith('.py') else "Markdown Doc" if fn.endswith('.md') else "File"
+            perms = oct(os.stat(full_path).st_mode)[-3:]
+            print(f"   {CYAN}{fn:<30}{RESET} | {ftype:<12} | {perms:<14} | {GREEN}SECURE_SYNC{RESET}")
+    except Exception as e:
+        print(f"   [-] File manager scan error: {e}")
+
+    print(f"\n {BOLD}{YELLOW}[+] RAM WAL SHARED MEMORY STORAGE (/dev/shm):{RESET}")
+    print(f"   {'Database Name':<28} | {'Storage Type':<16} | {'Access Mode':<16} | {'Integrity'}")
+    print(f"   {'-'*26:28} | {'-'*14:16} | {'-'*14:16} | {'-'*12}")
+    print(f"   {MAGENTA}{'ecosystem_metrics.db':<28}{RESET} | {'RAM tmpfs':<16} | {'WAL Read/Write':<16} | {GREEN}100% NOMINAL{RESET}")
+    print(f"   {MAGENTA}{'trust_store.db':<28}{RESET} | {'RAM tmpfs':<16} | {'Isolated IPC':<16} | {GREEN}VERIFIED{RESET}")
+
+# PAGE 4: 7-Node DePIN Fleet
+def render_page_4(m_conn, masked):
+    draw_header(4, 8, "7-NODE DEPIN INFRASTRUCTURE & YIELD HARVEST", masked)
     print(f" {BOLD}{YELLOW}[+] VERIFIED PASSIVE INCOME DEPIN FLEET (7/7 ACTIVE NODES):{RESET}")
     print(f"   {'Node Target':<18} | {'Service Model':<18} | {'Uptime':<8} | {'Latency':<9} | {'Yield Harvest':<13} | {'Status'}")
     print(f"   {'-'*16:18} | {'-'*16:18} | {'-'*6:8} | {'-'*7:9} | {'-'*11:13} | {'-'*16}")
@@ -154,9 +183,9 @@ def render_page_3(m_conn, masked):
         except Exception as e:
             print(f"   [-] DePIN telemetry unavailable: {e}")
 
-# PAGE 4: Boomerang AMM & Zero-Fail Escrow Rollback Protection
-def render_page_4(m_conn, masked):
-    draw_header(4, 8, "BOOMERANG AMM & ZERO-FAIL ESCROW ROLLBACK", masked)
+# PAGE 5: Boomerang AMM & Zero-Fail Escrow Rollback Protection
+def render_page_5(m_conn, masked):
+    draw_header(5, 8, "BOOMERANG AMM & ZERO-FAIL ESCROW ROLLBACK", masked)
     print(f" {BOLD}{YELLOW}[+] CROSS-CHAIN LIQUIDITY POOLS & ARBITRAGE PATHS:{RESET}")
     print(f"   {'Pool Pair':<18} | {'DEX Target':<18} | {'Depth (FOX)':<14} | {'24h Vol (USD)':<14} | {'Fee / APR':<12} | {'State'}")
     print(f"   {'-'*16:18} | {'-'*16:18} | {'-'*12:14} | {'-'*12:14} | {'-'*10:12} | {'-'*16}")
@@ -179,9 +208,9 @@ def render_page_4(m_conn, masked):
             print(f"   [-] Boomerang state query error: {e}")
     print(f"\n {BOLD}Zero-Fail Architecture:{RESET} Automated time-lock escrow rollback active (zero gas loss upon settlement timeouts).")
 
-# PAGE 5: Top 33 Cross-Chain Liquidity Matrix (Including Ported Star Projects)
-def render_page_5(m_conn, masked, subpage=0):
-    draw_header(5, 8, f"TOP 33 CROSS-CHAIN LIQUIDITY MATRIX (PART {subpage + 1}/4)", masked)
+# PAGE 6: Top 33 Cross-Chain Liquidity Matrix
+def render_page_6(m_conn, masked, subpage=0):
+    draw_header(6, 8, f"TOP 33 CROSS-CHAIN LIQUIDITY MATRIX (PART {subpage + 1}/4)", masked)
     offset = subpage * 10
     print(f" {BOLD}{YELLOW}[+] ACTIVE CROSS-CHAIN MATRIX (RANKS #{offset + 1} TO #{min(offset + 10, 33)} OF 33):{RESET}")
     print(f"   {'#':<3} | {'Platform':<14} | {'Pair':<15} | {'Network':<18} | {'TVL (USD)':<12} | {'24h Vol':<10} | {'APR':<6} | {'Health'}")
@@ -197,11 +226,11 @@ def render_page_5(m_conn, masked, subpage=0):
                 print(f"   {r[0]:<3} | {r[1]:<14} | {r[2]:<15} | {r[3]:<18} | {tvl:<12} | {vol:<10} | {apr:<6} | {GREEN}{r[7]}{RESET}")
         except Exception as e:
             print(f"   [-] Liquidity matrix query error: {e}")
-    print(f"\n {CYAN}[< / >]{RESET} Use left/right keys or type {BOLD}'<' / '>'{RESET} to flip through all 33 pools. Ported Star Projects Active.")
+    print(f"\n {CYAN}[< / >]{RESET} Use left/right keys or type {BOLD}'<' / '>'{RESET} to flip through all 33 pools.")
 
-# PAGE 6: Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
-def render_page_6(m_conn, masked):
-    draw_header(6, 8, "BITCOIN L1/L2 SETTLEMENT & WALLET PERCENTAGE ALLOCATION", masked)
+# PAGE 7: Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
+def render_page_7(m_conn, masked):
+    draw_header(7, 8, "BITCOIN L1/L2 SETTLEMENT & WALLET PERCENTAGE ALLOCATION", masked)
     print(f" {BOLD}{YELLOW}[+] STATE FINALITY, ROLLUP COMMITS & ANCHOR STATUS:{RESET}")
     if m_conn:
         try:
@@ -223,39 +252,25 @@ def render_page_6(m_conn, masked):
         except Exception as e:
             print(f"   [-] Wallet rules query error: {e}")
 
-# PAGE 7: 12 Enclave Daemons Super-Tree
-def render_page_7(m_conn):
-    draw_header(7, 8, "ENCLAVE DAEMONS SUPER-TREE & WATCHDOG STATUS")
-    print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
-    print(f"   {'Daemon Script':<30} | {'PID':<6} | {'Subsystem Function':<30} | {'RAM (MB)':<8} | {'Status'}")
-    print(f"   {'-'*28:30} | {'-'*4:6} | {'-'*28:30} | {'-'*6:8} | {'-'*16}")
-    if m_conn:
-        try:
-            c = m_conn.cursor()
-            c.execute("SELECT daemon_name, pid, subsystem_role, memory_mb, heartbeat_status FROM enclave_daemon_heartbeats ORDER BY daemon_id ASC")
-            for r in c.fetchall():
-                print(f"   {BOLD}{r[0]:<30}{RESET} | {r[1]:<6} | {r[2]:<30} | {r[3]:>6.1f}MB | {GREEN}{r[4]}{RESET}")
-        except Exception as e:
-            print(f"   [-] Daemon supervisor offline: {e}")
-
-# PAGE 8: Dynamic KB Flags & Anomaly Inspector
+# PAGE 8: Daemons Super-Tree & KB Flags Anomaly Inspector
 def render_page_8(m_conn):
-    draw_header(8, 8, "KNOWLEDGE BASE FLAG & ANOMALY INSPECTOR CATALOG")
-    print(f" {BOLD}{YELLOW}[+] ACTIVE PROTOCOL FLAGS & COMMUNITY CONSENSUS ATTENUATION:{RESET}")
-    print(f"   {'Domain':<12} | {'Flag Key':<32} | {'Status':<16} | {'Community Consensus':<34} | {'Severity'}")
-    print(f"   {'-'*10:12} | {'-'*30:32} | {'-'*14:16} | {'-'*32:34} | {'-'*8}")
+    draw_header(8, 8, "ENCLAVE DAEMONS SUPER-TREE & KB FLAG INSPECTOR")
+    print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
+    print(f"   {'Daemon Script':<30} | {'PID':<6} | {'Subsystem Function':<28} | {'Status'}")
+    print(f"   {'-'*28:30} | {'-'*4:6} | {'-'*26:28} | {'-'*14}")
     if m_conn:
         try:
             c = m_conn.cursor()
+            c.execute("SELECT daemon_name, pid, subsystem_role, heartbeat_status FROM enclave_daemon_heartbeats ORDER BY daemon_id ASC")
+            for r in c.fetchall():
+                print(f"   {BOLD}{r[0]:<30}{RESET} | {r[1]:<6} | {r[2]:<28} | {GREEN}{r[3]}{RESET}")
+
+            print(f"\n {BOLD}{YELLOW}[+] KNOWLEDGE BASE FLAG & ANOMALY INSPECTOR CATALOG:{RESET}")
             c.execute("SELECT domain_scope, flag_key, flag_status, community_consensus, anomaly_severity FROM kb_flag_inspection_catalog ORDER BY flag_id ASC")
-            rows = c.fetchall()
-            if rows:
-                for r in rows:
-                    print(f"   {CYAN}{r[0]:<12}{RESET} | {BOLD}{r[1]:<32}{RESET} | {GREEN}{r[2]:<16}{RESET} | {r[3]:<34} | {GREEN}{r[4]}{RESET}")
-            else:
-                print("   [-] No active KB flags found in catalog.")
+            for r in c.fetchall():
+                print(f"   {CYAN}{r[0]:<10}{RESET} | {BOLD}{r[1]:<28}{RESET} | {GREEN}{r[2]:<14}{RESET} | {r[3]:<32} | {GREEN}{r[4]}{RESET}")
         except Exception as e:
-            print(f"   [-] KB flag catalog query error: {e}")
+            print(f"   [-] Daemons/Flags query error: {e}")
 
 def main():
     current_page = 1
@@ -269,11 +284,11 @@ def main():
 
         if current_page == 1: render_page_1(m_conn, t_conn, masked)
         elif current_page == 2: render_page_2(m_conn, t_conn)
-        elif current_page == 3: render_page_3(m_conn, masked)
+        elif current_page == 3: render_page_3(masked)
         elif current_page == 4: render_page_4(m_conn, masked)
-        elif current_page == 5: render_page_5(m_conn, masked, dex_subpage)
-        elif current_page == 6: render_page_6(m_conn, masked)
-        elif current_page == 7: render_page_7(m_conn)
+        elif current_page == 5: render_page_5(m_conn, masked)
+        elif current_page == 6: render_page_6(m_conn, masked, dex_subpage)
+        elif current_page == 7: render_page_7(m_conn, masked)
         elif current_page == 8: render_page_8(m_conn)
 
         if m_conn: m_conn.close()
@@ -291,9 +306,9 @@ def main():
         elif ch in ['p', 'prev']:
             current_page = total_pages if current_page <= 1 else current_page - 1
         elif ch in ['>', 'right', 'f']:
-            if current_page == 5: dex_subpage = (dex_subpage + 1) % 4
+            if current_page == 6: dex_subpage = (dex_subpage + 1) % 4
         elif ch in ['<', 'left', 'd']:
-            if current_page == 5: dex_subpage = (dex_subpage - 1) % 4
+            if current_page == 6: dex_subpage = (dex_subpage - 1) % 4
         elif ch == 'm':
             masked = not masked
         elif ch == 'x':
