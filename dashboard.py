@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.57)
-Consolidates all 8 functional suites including Native Host OS Scraper Telemetry,
-Military Vault, File Manager, DePIN Fleet, Boomerang Cold-Storage Fallback,
-Top 33 DEX Matrix, Bitcoin Taproot / Wallet Percentage Rules, and DAO/P2P Flags.
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.58)
+Consolidates all 8 functional suites including Three-Prong Boomerang Cold-Storage Fallback,
+File Manager, DePIN Fleet, Top 33 DEX Matrix, Wallet Allocation Rules, and DAO/P2P Shield.
 """
 import os, sys, sqlite3, time, datetime
 
@@ -37,7 +36,6 @@ def get_db(path):
         return None
 
 def get_hardware_telemetry():
-    """Non-intrusive native OS scraper pulling metrics from host /proc."""
     try:
         with open('/proc/loadavg', 'r') as f:
             parts = f.read().split()
@@ -70,7 +68,7 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "Boomerang Escrow", "Top 33 DEX", "Bitcoin/Wallets", "DAO/P2P Flags"]
+    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "3-Prong Boomerang", "Top 33 DEX", "Bitcoin/Wallets", "DAO/P2P Flags"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -80,9 +78,9 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
-# PAGE 1: Executive Workstation & Native Host Scraper
+# PAGE 1: Executive Workstation
 def render_page_1(m_conn, t_conn, masked):
-    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION & OS SCRAPER", masked)
+    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
     raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
     cpu  = "[SHIELDED]" if masked else raw_cpu
     load = "[PROTECTED]" if masked else raw_load
@@ -178,30 +176,22 @@ def render_page_4(m_conn, masked):
         except Exception as e:
             print(f"   [-] DePIN telemetry unavailable: {e}")
 
-# PAGE 5: Boomerang AMM & Cold-Storage Zero-Fail Escrow Rollback
+# PAGE 5: Three-Prong Boomerang & Cold-Storage Fallback Protection
 def render_page_5(m_conn, masked):
-    draw_header(5, 8, "BOOMERANG AMM & COLD-STORAGE ZERO-FAIL ESCROW", masked)
-    print(f" {BOLD}{YELLOW}[+] CROSS-CHAIN LIQUIDITY POOLS & ARBITRAGE PATHS:{RESET}")
-    print(f"   {'Pool Pair':<18} | {'DEX Target':<18} | {'Depth (FOX)':<14} | {'24h Vol (USD)':<14} | {'Fee / APR':<12} | {'State'}")
-    print(f"   {'-'*16:18} | {'-'*16:18} | {'-'*12:14} | {'-'*12:14} | {'-'*10:12} | {'-'*16}")
+    draw_header(5, 8, "THREE-PRONG BOOMERANG & COLD-STORAGE FALLBACK", masked)
+    print(f" {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE VARIATIONS & L1/L2 ROUTING:{RESET}")
+    print(f"   {'Route Pair':<24} | {'Prong Variation':<28} | {'Injected':<10} | {'Profit':<12} | {'Fallback State'}")
+    print(f"   {'-'*22:24} | {'-'*26:28} | {'-'*8:10} | {'-'*10:12} | {'-'*18}")
     if m_conn:
         try:
             c = m_conn.cursor()
-            c.execute("SELECT pair_label, dex_platform, pool_reserve_a, volume_24h_usd, fee_tier_bps, apr_pct, pool_health FROM dex_cross_chain_liquidity ORDER BY rank_idx ASC LIMIT 5")
+            c.execute("SELECT route_pair, prong_variation, capital_injected, profit_captured, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 5")
             for r in c.fetchall():
-                depth = "[MASKED]" if masked else f"{r[2]:>12,.0f}"
-                vol = "[MASKED]" if masked else f"${r[3]:>12,.0f}"
-                fee_apr = f"{r[4]/100:.2f}%/{r[5]:.1f}%"
-                print(f"   {r[0]:<18} | {r[1]:<18} | {depth:<14} | {vol:<14} | {fee_apr:<12} | {GREEN}{r[6]}{RESET}")
-
-            print(f"\n {BOLD}{YELLOW}[+] COLD-STORAGE ZERO-FAIL ESCROW & ROLLBACK PROTECTION LOGS:{RESET}")
-            c.execute("SELECT route_pair, capital_injected, profit_captured, execution_latency_ms, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 4")
-            for r in c.fetchall():
-                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX"
-                print(f"   {MAGENTA}{r[0]:<26}{RESET} | Injected: {r[1]:>8,.0f} | Profit: {GREEN}{p_fox:<10}{RESET} | Lat: {r[3]:>4.1f}ms | Rollback: {GREEN}{r[4]}{RESET}")
+                p_fox = "[MASKED]" if masked else f"+{r[3]:.2f} FOX"
+                print(f"   {MAGENTA}{r[0]:<24}{RESET} | {CYAN}{r[1]:<28}{RESET} | {r[2]:>8,.0f} | {GREEN}{p_fox:<12}{RESET} | {GREEN}{r[4]}{RESET}")
         except Exception as e:
             print(f"   [-] Boomerang state query error: {e}")
-    print(f"\n {BOLD}Cold-Storage Protection:{RESET} Automated time-lock escrow staged in encrypted RAM buffer with instant loopback fallback.")
+    print(f"\n {BOLD}Cold-Storage Protection:{RESET} Prong-3 stages assets in encrypted offline RAM buffers with instant loopback fallback.")
 
 # PAGE 6: Top 33 Cross-Chain Liquidity Matrix
 def render_page_6(m_conn, masked, subpage=0):
@@ -247,7 +237,7 @@ def render_page_7(m_conn, masked):
         except Exception as e:
             print(f"   [-] Wallet rules query error: {e}")
 
-# PAGE 8: Daemons Super-Tree, DAO Governance & P2P Media Filter Status
+# PAGE 8: Daemons Super-Tree, DAO Governance & P2P Media Shield
 def render_page_8(m_conn):
     draw_header(8, 8, "ENCLAVE DAEMONS, DAO GOVERNANCE & P2P MEDIA SHIELD")
     print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
@@ -316,7 +306,7 @@ def main():
         elif ch == 'm':
             masked = not masked
         elif ch == 'x':
-            print(f"\n{YELLOW}[*] Triggering Boomerang Circular Arbitrage Engine (Cold-Storage Zero-Fail Escrow)...{RESET}")
+            print(f"\n{YELLOW}[*] Triggering Three-Prong Boomerang Circular Arbitrage Engine...{RESET}")
             os.system(f"python3 {os.path.join(ROOT_DIR, 'fox_boomerang_engine.py')} 2>/dev/null || true")
             time.sleep(1.2)
         elif ch == 'b':
