@@ -52,7 +52,7 @@ def fetch_records(limit=4):
 def get_daemons():
     now = time.time()
     res = {}
-    for d, threshold in [("telemetry", 8), ("cron", 90), ("alert", 10), ("api", 10)]:
+    for d, threshold in [("telemetry", 8), ("cron", 90), ("alert", 8), ("api", 8)]:
         active = False
         hb_path = os.path.join(HB_DIR, d)
         if os.path.exists(hb_path):
@@ -73,10 +73,10 @@ def trigger_btc_sim():
     except Exception as e:
         return f"Sim error: {e}"
 
-def trigger_fox_sync():
+def trigger_fox_yield():
     try:
         subprocess.run(["python3", "/root/workspace/wallet_engine.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return "FOX Wallet re-attested and synced!"
+        return "DePIN Yield Compounded into FOX L2 Channel Vault!"
     except Exception as e:
         return f"Wallet error: {e}"
 
@@ -108,10 +108,10 @@ def render_ui(page, flash_msg=""):
 
     # Header (Lines 1-3)
     print(f"{C_CYAN}{C_BOLD}╔═══════════════════════════════════════════════════════════════════════╗{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.161)         ║{C_RESET}")
+    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.162)         ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚═══════════════════════════════════════════════════════════════════════╝{C_RESET}")
 
-    # Tabs (Line 4)
+    # Navigation (Line 4)
     nav_tabs = [(1, "Overview"), (2, "DePIN"), (3, "L2 Vaults"), (4, "Enclave"), (5, "Master")]
     tab_line = [f"{C_BOLD}{C_GREEN}[{n}] {l}{C_RESET}" if page == n else f"{C_GRAY}[{n}] {l}{C_RESET}" for n, l in nav_tabs]
     print(" " + " | ".join(tab_line))
@@ -128,8 +128,8 @@ def render_ui(page, flash_msg=""):
         print(f"{C_WHITE}{C_BOLD}[2] METRICS{C_RESET} : Load: {C_GREEN}{ipc.get('load_avg', 'N/A')}{C_RESET} | Free: {C_CYAN}{float(ipc.get('storage_free_mb', 0))/1024:.1f} GB{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | Host Mesh: {C_YELLOW}STANDBY{C_RESET} (10.0.0.130)")
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        btc_str = f"#{btc.get('block_height', '109')} ({len(vaults)} Vaults)"
-        fox_str = f"{fox.get('l1_balance_fox', 25000):,.0f} L1 | {fox.get('l2_channel_balance_fox', 5000):,.0f} L2"
+        btc_str = f"#{btc.get('block_height', '113')} ({len(vaults)} Vaults)"
+        fox_str = f"{fox.get('l2_channel_balance_fox', 5000):,.0f} L2 (+{fox.get('depin_yield_fox', 0):.0f} Yield)"
         print(f"{C_WHITE}{C_BOLD}[4] ASSETS {C_RESET} : BTC: {C_CYAN}{btc_str}{C_RESET} | FOX: {C_YELLOW}{fox_str}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[5] ENCLAVE{C_RESET} : sos-truth: {C_GREEN}ACTIVE{C_RESET} | DLP: {C_GREEN}SECURE{C_RESET} | PRoot: {C_GREEN}ISOLATED{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -159,9 +159,9 @@ def render_ui(page, flash_msg=""):
     # TAB 3: ASSET VAULTS & FOX WALLET
     elif page == 3:
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '109')}{C_RESET} | {C_GREEN}{len(vaults)} Active Multisig Vaults{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '113')}{C_RESET} | {C_GREEN}{len(vaults)} Active Multisig Vaults{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}FOX L1 WALLET {C_RESET} : {C_YELLOW}{fox.get('l1_balance_fox', 25000):,.2f} FOX{C_RESET} ({fox.get('address', 'fox1q...')[:16]}...)")
-        print(f"{C_WHITE}{C_BOLD}FOX L2 BRIDGE {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 5000):,.2f} FOX{C_RESET} | State: {C_GREEN}{fox.get('bridge_state', 'SYNCHRONIZED')}{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}FOX L2 VAULT  {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 5000):,.2f} FOX{C_RESET} (Yield: +{fox.get('depin_yield_fox', 0):.2f})")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
         if vaults:
             last = vaults[-1]
@@ -178,7 +178,7 @@ def render_ui(page, flash_msg=""):
 
     # Footer (Lines 16-17)
     print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}ACTIONS:{C_RESET} [1-5] Tab | [b] Settle BTC | [w] Sync FOX | [s] Sweep | [q] Exit")
+    print(f"{C_CYAN}{C_BOLD}ACTIONS:{C_RESET} [1-5] Tab | [b] Settle BTC | [w] Yield FOX | [s] Sweep | [q] Exit")
     sys.stdout.flush()
 
 def main():
@@ -205,7 +205,7 @@ def main():
                 elif ch in ['b', 'B']:
                     flash = trigger_btc_sim()
                 elif ch in ['w', 'W']:
-                    flash = trigger_fox_sync()
+                    flash = trigger_fox_yield()
                 elif ch in ['s', 'S']:
                     flash = trigger_sweep()
                 elif ch in ['q', 'Q']:

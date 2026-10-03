@@ -19,6 +19,7 @@ def init_wallet():
             "address": fox_addr,
             "l1_balance_fox": 25000.0,
             "l2_channel_balance_fox": 5000.0,
+            "depin_yield_fox": 185.50,
             "bridge_state": "SYNCHRONIZED",
             "cross_asset_swaps": [],
             "last_attestation": time.strftime("%Y-%m-%d %H:%M:%S")
@@ -26,29 +27,29 @@ def init_wallet():
         with open(WALLET_LEDGER, "w") as f:
             json.dump(initial_state, f, indent=2)
 
-def sync_wallet(channel_id=None, amount_fox=250.0):
+def compound_depin_yield():
     init_wallet()
     with open(WALLET_LEDGER, "r") as f:
         data = json.load(f)
 
-    if channel_id:
-        data["l1_balance_fox"] = max(0.0, data["l1_balance_fox"] - amount_fox)
-        data["l2_channel_balance_fox"] += amount_fox
-        swap_entry = {
-            "swap_id": sha256d(f"{channel_id}_{time.time()}".encode())[:12],
-            "channel_ref": channel_id,
-            "fox_amount": amount_fox,
-            "status": "ATOMIC_SWAP_SETTLED"
-        }
-        data["cross_asset_swaps"].append(swap_entry)
-
+    yield_increment = 25.75
+    data["l2_channel_balance_fox"] += yield_increment
+    data["depin_yield_fox"] = round(data.get("depin_yield_fox", 0.0) + yield_increment, 2)
+    swap_id = sha256d(f"yield_{time.time()}".encode())[:12]
+    data["cross_asset_swaps"].append({
+        "tx_id": swap_id,
+        "type": "DEPIN_MESH_REWARD_SETTLED",
+        "amount_fox": yield_increment,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    })
     data["last_attestation"] = time.strftime("%Y-%m-%d %H:%M:%S")
+
     with open(WALLET_LEDGER, "w") as f:
         json.dump(data, f, indent=2)
 
-    print(f"[+] FOX Wallet Attested: Address {data['address'][:12]}...")
-    print(f"    L1 Balance: {data['l1_balance_fox']:,.2f} FOX | L2 Channel Vault: {data['l2_channel_balance_fox']:,.2f} FOX")
+    print(f"[+] DePIN Yield Compounded: +{yield_increment:.2f} FOX -> L2 Channel Vault")
+    print(f"    Total L2 Channel Balance: {data['l2_channel_balance_fox']:,.2f} FOX")
     return data
 
 if __name__ == "__main__":
-    sync_wallet()
+    compound_depin_yield()
