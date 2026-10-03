@@ -1,0 +1,8 @@
+{
+  "container_name": "sos-grok-airgap",
+  "isolation_engine": "proot_rootless_namespace",
+  "network_egress": "BLOCKED_ZERO_LEAK",
+  "knowledge_base_mount": "/data/data/com.termux/files/home/sos-fox-beta/kb_sidechain.db (READ_ONLY)",
+  "handoff_manifest": "/data/data/com.termux/files/home/sos-fox-beta/AI_HANDOFF_MANIFEST.md",
+  "status": "PRIMED_FOR_NEW_WORKSTATION"
+}

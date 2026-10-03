@@ -1,0 +1,9 @@
+{
+  "tx_id": "869d67623b44d33a",
+  "asset": "FOX/BTC",
+  "amount_sats": 50000,
+  "recipient": "bc1q_sovereign_cold_vault",
+  "state": "COLD_STAGED_SECURE",
+  "timestamp": 1790980965,
+  "timelock_expires": 1790984565
+}

@@ -1,0 +1,11 @@
+{
+  "fox_address": "fox1q244c0e408a8f59cde75bfd7819995309ce",
+  "cold_storage_vault": "fox1qcold8f59cde75bfd7819995309cec6ff",
+  "fee_split_policy": "1.0% Base | 15% Owner Multi-Wallet / 85% POL+DePIN+Dev+Burn",
+  "flags": [
+    "IMPLICIT_KEYS_READY",
+    "COLD_STORAGE_ARMED",
+    "GIT_IGNORED_SAFE"
+  ],
+  "created_at": "2026-10-02T00:22:02.623061+00:00"
+}
