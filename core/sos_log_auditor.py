@@ -19,7 +19,7 @@ def print_audit():
     print(f"{C_CYAN}{C_BOLD}║       SOVEREIGN CORE (SOS) - COMPREHENSIVE SYSTEM & LEDGER AUDIT            ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚═════════════════════════════════════════════════════════════════════════════╝{C_RESET}")
 
-    # 1. TELEMETRY WAL DATABASE AUDIT
+    # 1. SQLITE WAL AUDIT
     print(f"\n{C_BOLD}[1] SQLITE WAL TELEMETRY RECORDS (pixel_telemetry.db){C_RESET}")
     print(f"{C_GRAY}─────────────────────────────────────────────────────────────────────────────{C_RESET}")
     if os.path.exists(DB_PATH):
@@ -32,17 +32,17 @@ def print_audit():
                 t = tables[0]
                 c.execute(f"PRAGMA table_info('{t}')")
                 cols = [col[1].lower() for col in c.fetchall()]
-                c.execute(f"SELECT * FROM '{t}' ORDER BY rowid DESC LIMIT 20")
+                c.execute(f"SELECT * FROM '{t}' ORDER BY rowid DESC LIMIT 15")
                 rows = c.fetchall()
                 print(f" {'ID':<4} | {'TIMESTAMP':<19} | {'LOAD (1, 5, 15)':<20} | STATUS")
                 print(f"{C_GRAY} ─────┼─────────────────────┼──────────────────────┼──────────{C_RESET}")
                 for r in rows:
-                    d = dict(zip(cols, r))
-                    r_id = next((d[k] for k in ["id", "record_id"] if k in d), r[0])
-                    r_ts = next((str(d[k]) for k in ["timestamp", "time", "date"] if k in d), str(r[1]) if len(r)>1 else "N/A")
-                    r_ld = next((str(d[k]) for k in ["load_avg", "load"] if k in d), str(r[2]) if len(r)>2 else "N/A")
-                    r_st = next((str(d[k]) for k in ["status", "state"] if k in d), str(r[3]) if len(r)>3 else "Running")
-                    print(f" {str(r_id):<4} | {str(r_ts)[:19]:<19} | {str(r_ld)[:20]:<20} | {C_GREEN}{r_st}{C_RESET}")
+                    d = dict(zip(cols, r)) if cols else {}
+                    r_id = str(d.get("id", d.get("record_id", r[0] if len(r) > 0 else "N/A")))
+                    r_ts = str(d.get("timestamp", d.get("time", r[1] if len(r) > 1 else "N/A")))
+                    r_ld = str(d.get("load_avg", d.get("load", r[2] if len(r) > 2 else "N/A")))
+                    r_st = str(d.get("status", d.get("state", r[3] if len(r) > 3 else "Running")))
+                    print(f" {r_id:<4} | {r_ts[:19]:<19} | {r_ld[:20]:<20} | {C_GREEN}{r_st}{C_RESET}")
             conn.close()
         except Exception as e:
             print(f" [!] Database query notice: {e}")
@@ -83,7 +83,7 @@ def print_audit():
             print(f" [!] FOX wallet read error: {e}")
 
     print(f"\n{C_GRAY}─────────────────────────────────────────────────────────────────────────────{C_RESET}")
-    print(f"{C_CYAN}Navigation: Use arrow keys / volume keys to scroll. Press 'q' to exit.{C_RESET}\n")
+    print(f"{C_CYAN}Navigation: Use arrow keys to scroll. Press 'q' to exit.{C_RESET}\n")
 
 if __name__ == "__main__":
     print_audit()
