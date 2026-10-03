@@ -1,0 +1,44 @@
+{
+  "system_version": "v7.71.146-beta",
+  "layers": {
+    "mobile_edge": {
+      "host": "Pixel 10 Pro XL",
+      "runtime": "Termux + Debian PRoot",
+      "assigned_modules": [
+        "core/continuous_monitor.py",
+        "core/sovereign_manager.py",
+        "core/sovereign_ipc_bridge.py",
+        "ui/terminal_dashboard.py",
+        "bin/sos-truth",
+        "bin/sos-dlp-guard",
+        "bin/sos-error-logger"
+      ],
+      "storage_target": "/root/workspace/pixel_telemetry.db",
+      "ipc_buffer": "/dev/shm/sovereign/sovereign_telemetry_live.json"
+    },
+    "workstation_host": {
+      "host": "Dell Inspiron 1525",
+      "runtime": "Linux (Ubuntu / Mint)",
+      "assigned_modules": [
+        "docker/mysterium-node",
+        "docker/earnapp",
+        "docker/traffmonetizer",
+        "docker/packetstream",
+        "docker/pawns",
+        "docker/honeygain",
+        "daemons/bitcoind-regtest"
+      ],
+      "synchronization": "SSH / Encrypted JSON-RPC"
+    },
+    "reasoning_model": {
+      "engine": "External High-Context Reasoning LLM",
+      "input_payload": "dispatch/audit_payload.json",
+      "assigned_tasks": [
+        "protocol_formal_verification",
+        "cross_examination_bitcointalk_github",
+        "schema_migration_refactoring",
+        "dlp_rule_expansion"
+      ]
+    }
+  }
+}
