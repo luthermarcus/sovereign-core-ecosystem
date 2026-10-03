@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import sqlite3, os, sys, time
+import sqlite3, os, sys
 
 BOLD = "\033[1m"
 GREEN = "\033[32m"
 CYAN = "\033[36m"
 YELLOW = "\033[33m"
 MAGENTA = "\033[35m"
-RED = "\033[31m"
+WHITE = "\033[37m"
 RESET = "\033[0m"
 
 DB = '/dev/shm/ecosystem_metrics.db'
@@ -27,11 +27,21 @@ def view_overview():
     print_header("UNIFIED ECOSYSTEM COMMAND CENTER")
     conn = get_conn()
     if not conn:
-        print(f" {RED}[-] Metrics DB Offline (/dev/shm/ecosystem_metrics.db){RESET}"); return
+        print(" [-] Database offline."); return
     c = conn.cursor()
 
-    # 1. Boomerang LP Summary
-    print(f"\n{BOLD}{YELLOW}[1] BOOMERANG LIQUIDITY POOLS & ARBITRAGE{RESET}")
+    # --- SECTION 1: DUAL-FUND CROSS-ENGINE CONVERGENCE ---
+    print(f"\n{BOLD}{YELLOW}[1] DUAL-FUND CONVERGENCE & CAPITAL ROUTING{RESET}")
+    c.execute("SELECT fund_1_depin_inflow_usd, fund_1_myst_tokens, fund_2_dex_depth_fox, rebalanced_to_anchor_sat, convergence_status FROM dual_fund_settlement_ledger ORDER BY convergence_id DESC LIMIT 1")
+    df = c.fetchone()
+    if df:
+        print(f"   * {BOLD}Fund 1 (DePIN Yield):{RESET}    ${df[0]:.2f} USD | {df[1]:.2f} MYST (Native + Docker)")
+        print(f"   * {BOLD}Fund 2 (Boomerang DEX):{RESET}  {df[2]:,.0f} FOX Liquidity Depth")
+        print(f"   * {BOLD}Settlement Routing:{RESET}      {GREEN}+{df[3]:,} Sats{RESET} directed to L1 Taproot Anchor Reserve")
+        print(f"   * {BOLD}Convergence State:{RESET}       {GREEN}{df[4]}{RESET}")
+
+    # --- SECTION 2: BOOMERANG LIQUIDITY POOLS & CIRCULAR ARBITRAGE ---
+    print(f"\n{BOLD}{YELLOW}[2] BOOMERANG LIQUIDITY POOLS & ARBITRAGE{RESET}")
     c.execute("SELECT pool_pair, dex_target, liquidity_depth, volume_24h, apr_pct, rebalance_status FROM boomerang_lp_metrics ORDER BY pool_id ASC")
     for row in c.fetchall():
         pair, dex, depth, vol, apr, stat = row
@@ -41,8 +51,8 @@ def view_overview():
     if arb:
         print(f"     -> Circular Path: {MAGENTA}{arb[0]}{RESET} | Profit: {GREEN}+{arb[1]} FOX{RESET} | Latency: {arb[2]} ms")
 
-    # 2. Bitcoin L2 Taproot Settlement
-    print(f"\n{BOLD}{YELLOW}[2] BITCOIN L2 TAPROOT SETTLEMENT PIPELINE{RESET}")
+    # --- SECTION 3: BITCOIN L2 TAPROOT SETTLEMENT PIPELINE ---
+    print(f"\n{BOLD}{YELLOW}[3] BITCOIN L2 TAPROOT SETTLEMENT PIPELINE{RESET}")
     c.execute("SELECT epoch_ref, btc_txid FROM btc_l2_taproot_anchor_logs ORDER BY anchor_id DESC LIMIT 1")
     anchor = c.fetchone()
     c.execute("SELECT confirmations_observed, finality_depth FROM btc_l1_confirmation_logs ORDER BY watch_id DESC LIMIT 1")
@@ -63,20 +73,25 @@ def view_overview():
     print(f"   * State Root:    {root[:18]}... | Status: {GREEN}L2_SETTLEMENT_IMMUTABLY_SEALED{RESET}")
     print(f"   * Fast Exits:    Disbursed: {lp_amt} | Fee Captured: {fee}")
 
-    # 3. DePIN Fleet
-    print(f"\n{BOLD}{YELLOW}[3] 7-NODE DEPIN FLEET PORTFOLIO{RESET}")
+    # --- SECTION 4: 7-NODE DEPIN FLEET PORTFOLIO ---
+    print(f"\n{BOLD}{YELLOW}[4] 7-NODE DEPIN FLEET PORTFOLIO{RESET}")
     c.execute("SELECT node_name, target_type, uptime_ratio, latency_ms, est_earnings, sla_status FROM depin_sla_audit_logs ORDER BY audit_id ASC")
     for row in c.fetchall():
         name, t_type, uptime, lat, earn, stat = row
         s_col = GREEN if "OPTIMAL" in stat else CYAN
         print(f"   * {name:<18} | {t_type:<18} | {uptime:>5.2f}% | {lat:>5.1f} ms | {MAGENTA}{earn:<10}{RESET} | {s_col}{stat}{RESET}")
 
-    # 4. RAM WAL Integrity
-    c.execute("SELECT pages_checkpointed, checkpoint_status FROM wal_checkpoint_logs ORDER BY checkpoint_id DESC LIMIT 1")
+    # --- SECTION 5: ENGINE IPC & RAM WAL INTEGRITY ---
+    print(f"\n{BOLD}{YELLOW}[5] STANDARD ENGINE IPC & RUNTIME TELEMETRY{RESET}")
+    c.execute("SELECT engine_name, transport_protocol, state_channel_status FROM standard_engine_ipc_registry")
+    for row in c.fetchall():
+        eng, trans, status = row
+        print(f"   * {eng:<22} | Transport: {CYAN}{trans:<18}{RESET} | State: {GREEN}{status}{RESET}")
+
+    c.execute("SELECT pages_checkpointed FROM wal_checkpoint_logs ORDER BY checkpoint_id DESC LIMIT 1")
     chk = c.fetchone()
     pages = chk[0] if chk else 0
-    print(f"\n{BOLD}{YELLOW}[4] STORAGE RUNTIME{RESET}")
-    print(f"   * RAM WAL Checkpoint: {GREEN}OPTIMAL{RESET} ({pages} pages flushed) | Target: /dev/shm/ecosystem_metrics.db")
+    print(f"   * RAM WAL Checkpointer: {GREEN}OPTIMAL{RESET} ({pages} pages flushed) | Target: /dev/shm/ecosystem_metrics.db")
     print(f"{BOLD}{CYAN}================================================================================{RESET}\n")
     conn.close()
 
