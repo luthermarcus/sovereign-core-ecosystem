@@ -14,7 +14,6 @@ def init_wallet():
     if not os.path.exists(WALLET_LEDGER) or os.path.getsize(WALLET_LEDGER) == 0:
         os.makedirs(os.path.dirname(WALLET_LEDGER), exist_ok=True)
         priv_seed = os.urandom(32).hex()
-        # Derive checksummed EVM-compatible address and native SegWit address
         evm_addr = "0x" + hashlib.sha256(priv_seed.encode()).hexdigest()[:40]
         segwit_addr = "bcrt1q" + sha256d(priv_seed.encode())[:38]
         initial_state = {
@@ -53,7 +52,6 @@ def execute_atomic_swap():
     with open(WALLET_LEDGER, "r") as f:
         w_data = json.load(f)
 
-    # 50,000 sats -> 500 FOX atomic off-chain swap
     preimage = os.urandom(32).hex()
     p_hash = hashlib.sha256(bytes.fromhex(preimage)).hexdigest()[:16]
 
@@ -65,7 +63,6 @@ def execute_atomic_swap():
     with open(WALLET_LEDGER, "w") as f:
         json.dump(w_data, f, indent=2)
 
-    # Also log settlement in Bitcoin sandbox
     if os.path.exists(BTC_LEDGER):
         try:
             with open(BTC_LEDGER, "r") as bf:

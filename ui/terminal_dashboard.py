@@ -16,7 +16,7 @@ BTC_FILE   = "/root/workspace/bitcoin_sandbox.json"
 FOX_FILE   = "/root/workspace/fox_wallet.json"
 HB_DIR     = "/dev/shm/sovereign/heartbeats"
 
-def fetch_records(limit=3):
+def fetch_records(limit=2):
     if not os.path.exists(DB_PATH): return "system_logs", 0, []
     try:
         conn = sqlite3.connect(DB_PATH, timeout=1.0)
@@ -95,9 +95,9 @@ def trigger_sweep():
         return f"Sweep Error: {e}"
 
 def render_ui(page, flash_msg=""):
-    # Reposition to line 1 and clear viewport canvas
+    # Reposition to home row and clear canvas in-place
     sys.stdout.write("\033[H\033[2J")
-    tbl, tot, recs = fetch_records(limit=3)
+    tbl, tot, recs = fetch_records(limit=2)
     ipc, btc, fox = {}, {}, {}
     if os.path.exists(SHM_FILE):
         try:
@@ -116,7 +116,7 @@ def render_ui(page, flash_msg=""):
 
     # Header & Tab Navigation Bar (Rows 1-3)
     print(f"{C_CYAN}{C_BOLD}╔══════════════════════════════════════════════════════════════════════╗{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.164)        ║{C_RESET}")
+    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.165)        ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚══════════════════════════════════════════════════════════════════════╝{C_RESET}")
     tabs = [(1, "Overview"), (2, "DePIN"), (3, "L2 Vaults"), (4, "Enclave"), (5, "Master")]
     tab_bar = [f"{C_BOLD}{C_GREEN}[{n}] {l}{C_RESET}" if page == n else f"{C_GRAY}[{n}] {l}{C_RESET}" for n, l in tabs]
@@ -134,12 +134,12 @@ def render_ui(page, flash_msg=""):
         print(f"{C_WHITE}{C_BOLD}[2] METRICS{C_RESET} : Load: {C_GREEN}{ipc.get('load_avg', 'N/A')}{C_RESET} | Free: {C_CYAN}{float(ipc.get('storage_free_mb', 0))/1024:.1f} GB{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | RPC Loopback: {C_GREEN}127.0.0.1:8545{C_RESET}")
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        btc_summary = f"#{btc.get('block_height', '116')} ({len(vaults)} Vaults)"
+        btc_summary = f"#{btc.get('block_height', '117')} ({len(vaults)} Vaults)"
         fox_summary = f"{fox.get('l2_channel_balance_fox', 5000):,.0f} L2 (Swaps: #{fox.get('cross_chain_swaps', 0)})"
         print(f"{C_WHITE}{C_BOLD}[4] ASSETS {C_RESET} : BTC: {C_CYAN}{btc_summary}{C_RESET} | FOX: {C_YELLOW}{fox_summary}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[5] ENCLAVE{C_RESET} : sos-truth: {C_GREEN}ACTIVE{C_RESET} | DLP: {C_GREEN}SECURE{C_RESET} | PRoot: {C_GREEN}ISOLATED{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
-        for r_id, r_ts, r_load, r_stat in recs[:2]:
+        for r_id, r_ts, r_load, r_stat in recs:
             print(f" #{str(r_id):<3} | {str(r_ts)[11:19]} | Load: {str(r_load)[:16]} | {C_GREEN}{r_stat}{C_RESET}")
 
     elif page == 1:
@@ -158,7 +158,7 @@ def render_ui(page, flash_msg=""):
 
     elif page == 3:
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '116')}{C_RESET} | {C_GREEN}{len(vaults)} Active Vaults{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '117')}{C_RESET} | {C_GREEN}{len(vaults)} Active Vaults{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}EVM ADDRESS   {C_RESET} : {C_YELLOW}{fox.get('evm_address', '0x...')[:22]}...{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}FOX L2 VAULT  {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 5000):,.2f} FOX{C_RESET} | Swaps: {C_CYAN}#{fox.get('cross_chain_swaps', 0)}{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -212,7 +212,6 @@ def main():
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         sys.stdout.write("\033[?1049l\033[?25h")
         sys.stdout.flush()
-        # Wipe physical scrollback canvas on exit
         print("\033[2J\033[3J\033[H[+] Sovereign Core Dashboard closed cleanly.")
 
 if __name__ == "__main__":
