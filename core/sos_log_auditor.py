@@ -4,7 +4,6 @@ import sqlite3, json, os, sys
 DB_PATH     = "/root/workspace/pixel_telemetry.db"
 WALLET_FILE = "/root/workspace/fox_wallet.json"
 BTC_FILE    = "/root/workspace/bitcoin_sandbox.json"
-SHM_FILE    = "/dev/shm/sovereign_telemetry_live.json"
 
 C_RESET  = "\033[0m"
 C_BOLD   = "\033[1m"
@@ -19,7 +18,7 @@ def print_audit():
     print(f"{C_CYAN}{C_BOLD}║       SOVEREIGN CORE (SOS) - COMPREHENSIVE SYSTEM & LEDGER AUDIT            ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚═════════════════════════════════════════════════════════════════════════════╝{C_RESET}")
 
-    # 1. SQLITE WAL AUDIT
+    # 1. SQLITE WAL TELEMETRY RECORDS
     print(f"\n{C_BOLD}[1] SQLITE WAL TELEMETRY RECORDS (pixel_telemetry.db){C_RESET}")
     print(f"{C_GRAY}─────────────────────────────────────────────────────────────────────────────{C_RESET}")
     if os.path.exists(DB_PATH):
@@ -27,13 +26,22 @@ def print_audit():
             conn = sqlite3.connect(DB_PATH, timeout=2.0)
             c = conn.cursor()
             c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
-            tables = [r[0] for r in c.fetchall()]
-            if tables:
-                t = tables[0]
-                c.execute(f"PRAGMA table_info('{t}')")
+            all_tables = [r[0] for r in c.fetchall()]
+            
+            # Select table with most records (typically system_logs)
+            target_table, max_cnt = None, -1
+            for tbl in all_tables:
+                c.execute(f"SELECT COUNT(*) FROM '{tbl}'")
+                cnt = c.fetchone()[0]
+                if cnt > max_cnt:
+                    max_cnt, target_table = cnt, tbl
+
+            if target_table:
+                c.execute(f"PRAGMA table_info('{target_table}')")
                 cols = [col[1].lower() for col in c.fetchall()]
-                c.execute(f"SELECT * FROM '{t}' ORDER BY rowid DESC LIMIT 15")
+                c.execute(f"SELECT * FROM '{target_table}' ORDER BY rowid DESC LIMIT 15")
                 rows = c.fetchall()
+                print(f" Source Table: {C_MAGENTA}{target_table}{C_RESET} | Total Ledger Commits: {C_YELLOW}{max_cnt}{C_RESET}")
                 print(f" {'ID':<4} | {'TIMESTAMP':<19} | {'LOAD (1, 5, 15)':<20} | STATUS")
                 print(f"{C_GRAY} ─────┼─────────────────────┼──────────────────────┼──────────{C_RESET}")
                 for r in rows:
@@ -83,7 +91,7 @@ def print_audit():
             print(f" [!] FOX wallet read error: {e}")
 
     print(f"\n{C_GRAY}─────────────────────────────────────────────────────────────────────────────{C_RESET}")
-    print(f"{C_CYAN}Navigation: Use arrow keys to scroll. Press 'q' to exit.{C_RESET}\n")
+    print(f"{C_CYAN}Navigation: Use arrow keys / volume keys to scroll. Press 'q' to exit.{C_RESET}\n")
 
 if __name__ == "__main__":
     print_audit()
