@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.58)
-Consolidates all 8 functional suites including Three-Prong Boomerang Cold-Storage Fallback,
-File Manager, DePIN Fleet, Top 33 DEX Matrix, Wallet Allocation Rules, and DAO/P2P Shield.
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.59)
+Unified Single-Window Micro-Kernel Architecture:
+  - Page 1: Native OS Scraper & Executive Workstation (/proc telemetry)
+  - Page 2: Security & Military Encryption Vault (AES-256 / Kyber-1024)
+  - Page 3: Enclave File Manager & Secure Storage Inspector
+  - Page 4: 7-Node DePIN Fleet & Passive Yield Harvest
+  - Page 5: Three-Prong Boomerang & Cold-Storage Fallback
+  - Page 6: Top 33 Cross-Chain Liquidity Matrix (Sub-paginated)
+  - Page 7: Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
+  - Page 8: Pre-flight Flags, Anomaly Logs, DAO Governance & P2P Media Shield
 """
 import os, sys, sqlite3, time, datetime
 
@@ -36,6 +43,7 @@ def get_db(path):
         return None
 
 def get_hardware_telemetry():
+    """Non-intrusive native OS scraper pulling metrics from host /proc."""
     try:
         with open('/proc/loadavg', 'r') as f:
             parts = f.read().split()
@@ -68,7 +76,7 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "3-Prong Boomerang", "Top 33 DEX", "Bitcoin/Wallets", "DAO/P2P Flags"]
+    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "3-Prong Boomerang", "Top 33 DEX", "Bitcoin/Wallets", "Flags & Anomalies"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -78,9 +86,9 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
-# PAGE 1: Executive Workstation
+# PAGE 1: Executive Workstation & Native OS Scraper
 def render_page_1(m_conn, t_conn, masked):
-    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
+    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION & OS SCRAPER", masked)
     raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
     cpu  = "[SHIELDED]" if masked else raw_cpu
     load = "[PROTECTED]" if masked else raw_load
@@ -237,18 +245,18 @@ def render_page_7(m_conn, masked):
         except Exception as e:
             print(f"   [-] Wallet rules query error: {e}")
 
-# PAGE 8: Daemons Super-Tree, DAO Governance & P2P Media Shield
+# PAGE 8: Pre-Dash Flags, Anomaly Logs, DAO Governance & P2P Media Shield
 def render_page_8(m_conn):
-    draw_header(8, 8, "ENCLAVE DAEMONS, DAO GOVERNANCE & P2P MEDIA SHIELD")
-    print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
-    print(f"   {'Daemon Script':<30} | {'PID':<6} | {'Subsystem Function':<28} | {'Status'}")
-    print(f"   {'-'*28:30} | {'-'*4:6} | {'-'*26:28} | {'-'*14}")
+    draw_header(8, 8, "PRE-DASH FLAGS, ANOMALIES, DAO & P2P MEDIA SHIELD")
+    print(f" {BOLD}{YELLOW}[+] PRE-FLIGHT LOGS & KB FLAG ANOMALY INSPECTOR:{RESET}")
+    print(f"   {'Domain':<12} | {'Flag Key':<32} | {'Status':<16} | {'Community Consensus':<34} | {'Severity'}")
+    print(f"   {'-'*10:12} | {'-'*30:32} | {'-'*14:16} | {'-'*32:34} | {'-'*8}")
     if m_conn:
         try:
             c = m_conn.cursor()
-            c.execute("SELECT daemon_name, pid, subsystem_role, heartbeat_status FROM enclave_daemon_heartbeats ORDER BY daemon_id ASC")
+            c.execute("SELECT domain_scope, flag_key, flag_status, community_consensus, anomaly_severity FROM kb_flag_inspection_catalog ORDER BY flag_id ASC")
             for r in c.fetchall():
-                print(f"   {BOLD}{r[0]:<30}{RESET} | {r[1]:<6} | {r[2]:<28} | {GREEN}{r[3]}{RESET}")
+                print(f"   {CYAN}{r[0]:<12}{RESET} | {BOLD}{r[1]:<32}{RESET} | {GREEN}{r[2]:<16}{RESET} | {r[3]:<34} | {GREEN}{r[4]}{RESET}")
 
             print(f"\n {BOLD}{YELLOW}[+] P2P MEDIA FILTER & DAO GOVERNANCE WARDEN STATUS:{RESET}")
             c.execute("SELECT protocol_type, active_torrents_routed, blocked_prohibited_hashes, bandwidth_saved_mb, filter_status FROM p2p_media_filter_stats")
@@ -264,7 +272,7 @@ def render_page_8(m_conn):
             if dao:
                 print(f"   * DAO Arbitration Warden: {GREEN}{dao[3]} ({dao[2]}% Quorum){RESET} — {dao[0]}")
         except Exception as e:
-            print(f"   [-] Daemons/DAO query error: {e}")
+            print(f"   [-] Flags/DAO query error: {e}")
 
 def main():
     current_page = 1
