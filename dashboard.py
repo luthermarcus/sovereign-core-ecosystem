@@ -1,15 +1,8 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.52)
-Consolidates:
-  - Page 1: Pixel 10 Pro XL Executive Workstation (Live OS /proc telemetry)
-  - Page 2: OS Security Foundation & Military Encryption Vault (AES-256 / Kyber-1024)
-  - Page 3: 7-Node DePIN Fleet & Passive Yield Harvest (Mysterium + 6 Containers)
-  - Page 4: Boomerang AMM & Zero-Fail Escrow Rollback Protection
-  - Page 5: Top 30 Cross-Chain Liquidity Matrix (Solana, Tron, BNB, Starknet, Base, Curve)
-  - Page 6: Bitcoin L1/L2 Taproot Settlement & Wallet Percentage Allocation Rules
-  - Page 7: 12 Enclave Background Daemons Super-Tree & Watchdog Prober
-  - Page 8: Developer Configuration Parameters & KB Flag Anomaly Inspector
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.53)
+Consolidates all historical modules, wallet percentage routing, zero-fail escrow,
+military encryption vault, and star project porting across 8 pages.
 """
 import os, sys, sqlite3, time, datetime
 
@@ -75,7 +68,7 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "DePIN Fleet", "Boomerang Escrow", "Top 30 DEX", "Bitcoin L2/Wallets", "12 Daemons", "KB Flags"]
+    page_names = ["Workstation", "Security/Vault", "DePIN Fleet", "Boomerang Escrow", "Top 33 DEX", "Bitcoin L2/Wallets", "12 Daemons", "KB Flags"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -186,11 +179,11 @@ def render_page_4(m_conn, masked):
             print(f"   [-] Boomerang state query error: {e}")
     print(f"\n {BOLD}Zero-Fail Architecture:{RESET} Automated time-lock escrow rollback active (zero gas loss upon settlement timeouts).")
 
-# PAGE 5: Top 30 Cross-Chain Liquidity Matrix
+# PAGE 5: Top 33 Cross-Chain Liquidity Matrix (Including Ported Star Projects)
 def render_page_5(m_conn, masked, subpage=0):
-    draw_header(5, 8, f"TOP 30 CROSS-CHAIN LIQUIDITY MATRIX (PART {subpage + 1}/3)", masked)
+    draw_header(5, 8, f"TOP 33 CROSS-CHAIN LIQUIDITY MATRIX (PART {subpage + 1}/4)", masked)
     offset = subpage * 10
-    print(f" {BOLD}{YELLOW}[+] ACTIVE CROSS-CHAIN MATRIX (RANKS #{offset + 1} TO #{offset + 10} OF 30):{RESET}")
+    print(f" {BOLD}{YELLOW}[+] ACTIVE CROSS-CHAIN MATRIX (RANKS #{offset + 1} TO #{min(offset + 10, 33)} OF 33):{RESET}")
     print(f"   {'#':<3} | {'Platform':<14} | {'Pair':<15} | {'Network':<18} | {'TVL (USD)':<12} | {'24h Vol':<10} | {'APR':<6} | {'Health'}")
     print(f"   {'-'*3} | {'-'*12:14} | {'-'*13:15} | {'-'*16:18} | {'-'*10:12} | {'-'*8:10} | {'-'*4:6} | {'-'*14}")
     if m_conn:
@@ -204,9 +197,9 @@ def render_page_5(m_conn, masked, subpage=0):
                 print(f"   {r[0]:<3} | {r[1]:<14} | {r[2]:<15} | {r[3]:<18} | {tvl:<12} | {vol:<10} | {apr:<6} | {GREEN}{r[7]}{RESET}")
         except Exception as e:
             print(f"   [-] Liquidity matrix query error: {e}")
-    print(f"\n {CYAN}[< / >]{RESET} Use left/right keys or type {BOLD}'<' / '>'{RESET} to flip through all 30 pools.")
+    print(f"\n {CYAN}[< / >]{RESET} Use left/right keys or type {BOLD}'<' / '>'{RESET} to flip through all 33 pools. Ported Star Projects Active.")
 
-# PAGE 6: Bitcoin L1/L2 Taproot Pipeline & Wallet Percentage Allocation Rules
+# PAGE 6: Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
 def render_page_6(m_conn, masked):
     draw_header(6, 8, "BITCOIN L1/L2 SETTLEMENT & WALLET PERCENTAGE ALLOCATION", masked)
     print(f" {BOLD}{YELLOW}[+] STATE FINALITY, ROLLUP COMMITS & ANCHOR STATUS:{RESET}")
@@ -287,7 +280,7 @@ def main():
         if t_conn: t_conn.close()
 
         print(f"\n{CYAN}+----------------------------------------------------------------------------------------------------+{RESET}")
-        print(f"{BOLD}CONTROLS: [1-8] Jump | [n/p] Prev/Next | [</>] Top 30 Page | [m] Mask | [x] Swap | [b] Anchor | [q] Exit{RESET}")
+        print(f"{BOLD}CONTROLS: [1-8] Jump | [n/p] Prev/Next | [</>] Top 33 Page | [m] Mask | [x] Swap | [b] Anchor | [q] Exit{RESET}")
 
         ch = get_tty_input(f"{BOLD}Command: {RESET}")
 
@@ -298,9 +291,9 @@ def main():
         elif ch in ['p', 'prev']:
             current_page = total_pages if current_page <= 1 else current_page - 1
         elif ch in ['>', 'right', 'f']:
-            if current_page == 5: dex_subpage = (dex_subpage + 1) % 3
+            if current_page == 5: dex_subpage = (dex_subpage + 1) % 4
         elif ch in ['<', 'left', 'd']:
-            if current_page == 5: dex_subpage = (dex_subpage - 1) % 3
+            if current_page == 5: dex_subpage = (dex_subpage - 1) % 4
         elif ch == 'm':
             masked = not masked
         elif ch == 'x':
