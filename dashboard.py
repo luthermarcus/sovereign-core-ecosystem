@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.55)
-Consolidates all 8 functional suites:
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.56)
+Consolidates all 8 functional suites with zero query errors:
   [1] Executive Workstation (Live OS /proc telemetry)
   [2] Security & Military Encryption Vault
   [3] Enclave File Manager & Secure Storage Inspector
   [4] 7-Node DePIN Fleet & Passive Yield Harvest
-  [5] Boomerang AMM & Zero-Fail Escrow Rollback
+  [5] Boomerang AMM & Zero-Fail Escrow Rollback Protection
   [6] Top 33 Cross-Chain Liquidity Matrix (Sub-paginated)
   [7] Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
-  [8] Daemons Super-Tree & KB Flag Anomaly Inspector
+  [8] Daemons Super-Tree & KB Flags Anomaly Inspector
 """
 import os, sys, sqlite3, time, datetime
 
