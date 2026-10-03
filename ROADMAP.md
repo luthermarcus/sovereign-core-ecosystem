@@ -1,16 +1,18 @@
 # Sovereign Core OS & Satoshi Fox Protocol Roadmap
 
-## Milestone 1: Hardened Enclave Foundation (Completed)
+## Milestone 1: Hardened Enclave & Sandboxed Virtualization (Completed)
 - [x] RAM-backed ephemeral tmpfs ledger migration (`/dev/shm/ecosystem_metrics.db`).
 - [x] Fail-closed DLP gatekeeper (`sos-dlp-guard`) and strict git pre-commit barriers.
-- [x] Authentic 5-tab TUI workstation matching screenshots 6001-5988.
+- [x] Authentic 5-tab TUI workstation matching verified Pixel 10 Pro XL layouts (`v7.71.183`).
+- [x] Host binary dispatchers (`dash`, `sos`, `verify`, `builder`, `foxy`) in `$PREFIX/bin`.
 
-## Milestone 2: Multi-Chain Liquidity & DAO Treasury (Current: v7.72.x)
-- [x] Satoshi Fox 1.0% DAO Treasury codified into five programmatic economic pillars.
-- [x] Three-Prong Boomerang engine with hard cold-storage loopback fallback.
-- [x] Top 33 cross-chain DEX liquidity matrix across Bitcoin L2, EVM, Solana, and Starknet rollups.
-- [x] Honeypot Heuristic Shield for automated anti-fraud validation.
+## Milestone 2: Multi-Chain Liquidity & Anti-Fraud Security (Current: v7.72.x)
+- [x] Native pairing of `FOX/BTC`, `FOX/USDT`, and `FOX/USDC` on L2 AMMs.
+- [x] 1.0% Satoshi Fox DAO Treasury codified into five programmatic economic pillars.
+- [x] Honeypot Heuristic Shield and anti-fraud forensic audit ledger.
+- [x] Interactive 6-step subsystem verification harness with pause-to-enter review buffers.
 
-## Milestone 3: Decentralized P2P & HSM Bridging (Upcoming)
-- [ ] Hardware key derivation bridging to Google Pixel Titan M2 security module.
-- [ ] Direct zero-knowledge proof generation inside PRoot Debian enclave.
+## Milestone 3: Cross-OS Node Virtualization & Hardware Bridge (Upcoming)
+- [ ] Universal virtualization wrappers for Android, iOS, Linux, macOS, and Windows (WSL2).
+- [ ] Hardware Security Module (HSM) bridging to Google Pixel Titan M2.
+- [ ] Non-intrusive resource harvesting for automatic node mining yields.
