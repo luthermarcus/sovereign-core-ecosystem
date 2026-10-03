@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.51)
-Features:
-  - Dynamic Flag & Anomaly Inspector on Page 8 (Live DB Query)
-  - Zero-Fail Boomerang Escrow & Rollback Protection on Page 4
-  - Non-Blocking TTY Input Controller with Safe Exit Trap
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.52)
+Consolidates:
+  - Page 1: Pixel 10 Pro XL Executive Workstation (Live OS /proc telemetry)
+  - Page 2: OS Security Foundation & Military Encryption Vault (AES-256 / Kyber-1024)
+  - Page 3: 7-Node DePIN Fleet & Passive Yield Harvest (Mysterium + 6 Containers)
+  - Page 4: Boomerang AMM & Zero-Fail Escrow Rollback Protection
+  - Page 5: Top 30 Cross-Chain Liquidity Matrix (Solana, Tron, BNB, Starknet, Base, Curve)
+  - Page 6: Bitcoin L1/L2 Taproot Settlement & Wallet Percentage Allocation Rules
+  - Page 7: 12 Enclave Background Daemons Super-Tree & Watchdog Prober
+  - Page 8: Developer Configuration Parameters & KB Flag Anomaly Inspector
 """
 import os, sys, sqlite3, time, datetime
 
@@ -70,7 +75,7 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "DePIN Fleet", "Boomerang Pools", "Top 30 DEX", "Bitcoin L2", "12 Daemons", "KB Flags"]
+    page_names = ["Workstation", "Security/Vault", "DePIN Fleet", "Boomerang Escrow", "Top 30 DEX", "Bitcoin L2/Wallets", "12 Daemons", "KB Flags"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -80,7 +85,7 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
-# PAGE 1: Pixel 10 Pro XL Workstation
+# PAGE 1: Pixel 10 Pro XL Executive Workstation
 def render_page_1(m_conn, t_conn, masked):
     draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
     raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
@@ -173,10 +178,10 @@ def render_page_4(m_conn, masked):
                 print(f"   {r[0]:<18} | {r[1]:<18} | {depth:<14} | {vol:<14} | {fee_apr:<12} | {GREEN}{r[6]}{RESET}")
 
             print(f"\n {BOLD}{YELLOW}[+] ZERO-FAIL ESCROW & ROLLBACK PROTECTION LOGS:{RESET}")
-            c.execute("SELECT route_pair, capital_injected, profit_captured, execution_latency_ms, rollback_status, anti_honeypot_check FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 4")
+            c.execute("SELECT route_pair, capital_injected, profit_captured, execution_latency_ms, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 4")
             for r in c.fetchall():
                 p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX"
-                print(f"   {MAGENTA}{r[0]:<24}{RESET} | Injected: {r[1]:>8,.0f} | Profit: {GREEN}{p_fox:<10}{RESET} | Lat: {r[3]:>4.1f}ms | Rollback: {GREEN}{r[4]}{RESET}")
+                print(f"   {MAGENTA}{r[0]:<26}{RESET} | Injected: {r[1]:>8,.0f} | Profit: {GREEN}{p_fox:<10}{RESET} | Lat: {r[3]:>4.1f}ms | Rollback: {GREEN}{r[4]}{RESET}")
         except Exception as e:
             print(f"   [-] Boomerang state query error: {e}")
     print(f"\n {BOLD}Zero-Fail Architecture:{RESET} Automated time-lock escrow rollback active (zero gas loss upon settlement timeouts).")
@@ -201,9 +206,9 @@ def render_page_5(m_conn, masked, subpage=0):
             print(f"   [-] Liquidity matrix query error: {e}")
     print(f"\n {CYAN}[< / >]{RESET} Use left/right keys or type {BOLD}'<' / '>'{RESET} to flip through all 30 pools.")
 
-# PAGE 6: Bitcoin L1/L2 Settlement Pipeline
+# PAGE 6: Bitcoin L1/L2 Taproot Pipeline & Wallet Percentage Allocation Rules
 def render_page_6(m_conn, masked):
-    draw_header(6, 8, "BITCOIN L1/L2 TAPROOT SETTLEMENT PIPELINE", masked)
+    draw_header(6, 8, "BITCOIN L1/L2 SETTLEMENT & WALLET PERCENTAGE ALLOCATION", masked)
     print(f" {BOLD}{YELLOW}[+] STATE FINALITY, ROLLUP COMMITS & ANCHOR STATUS:{RESET}")
     if m_conn:
         try:
@@ -215,8 +220,15 @@ def render_page_6(m_conn, masked):
             print(f"   * Rollup Epoch Number   : #{epoch}")
             print(f"   * Bitcoin Taproot TxID  : {CYAN}{txid[:26]}...{RESET} ({GREEN}6/6 Confirmations{RESET})")
             print(f"   * Pipeline Status       : {GREEN}L2_SETTLEMENT_IMMUTABLY_SEALED{RESET}")
+
+            print(f"\n {BOLD}{YELLOW}[+] AUTOMATED WALLET PERCENTAGE DISTRIBUTION RULES:{RESET}")
+            print(f"   {'Vault Category':<28} | {'Allocation %':<14} | {'Target Destination':<32} | {'Status'}")
+            print(f"   {'-'*26:28} | {'-'*12:14} | {'-'*30:32} | {'-'*16}")
+            c.execute("SELECT vault_category, allocation_pct, target_wallet_address, routing_status FROM wallet_distribution_rules ORDER BY rule_id ASC")
+            for r in c.fetchall():
+                print(f"   {BOLD}{r[0]:<28}{RESET} | {GREEN}{r[1]:>5.1f}%{'':<8}{RESET} | {CYAN}{r[2]:<32}{RESET} | {GREEN}{r[3]}{RESET}")
         except Exception as e:
-            print(f"   [-] Settlement pipeline query error: {e}")
+            print(f"   [-] Wallet rules query error: {e}")
 
 # PAGE 7: 12 Enclave Daemons Super-Tree
 def render_page_7(m_conn):
