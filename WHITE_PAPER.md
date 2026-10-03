@@ -1,7 +1,6 @@
-# Sovereign Core OS (SOS): Decentralized Enclave Architecture & Cross-Chain Settlement Protocol
+# Sovereign Core OS (SOS): Decentralized Enclave Architecture & Bitcoin L2 Settlement Protocol
 **Author**: Sovereign Core Operator <operator@sovereign-core.local>  
-**Classification**: Public Architecture Whitepaper / Technical Specification  
-**Lineage**: v7.72.70-beta  
+**Status**: Active Architecture Specification (v7.72.80-beta)
 
 ## Abstract
-Sovereign Core OS (SOS) establishes a trustless, zero-leak operational enclave designed for mobile hardware (Google Pixel 10 Pro XL via Termux/PRoot Debian) and decentralized edge nodes. By merging ephemeral RAM-backed SQLite WAL ledgers (`/dev/shm`), military-grade cryptographic encryption (AES-256-GCM combined with FIPS 203 ML-KEM-1024 resistance), Bitcoin L1/L2 Taproot settlement pipelines, and Boomerang multi-hop cross-DEX liquidity routing, SOS achieves robust economic autonomy without compromising host privacy.
+Sovereign Core OS (SOS) provides a zero-leak operational enclave designed for edge mobile hardware and decentralized validator infrastructure. Operating as a user-space microkernel inside an isolated PRoot container, SOS decouples native host telemetry from cryptographic state execution. Using ephemeral RAM tmpfs ledgers (`/dev/shm`), military-grade cryptography (AES-256-GCM combined with FIPS 203 ML-KEM-1024 post-quantum protection), Bitcoin L1/L2 Taproot finality, and Boomerang circular arbitrage, SOS maintains sovereign asset custody without persistent flash wear or external surveillance.

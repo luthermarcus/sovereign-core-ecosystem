@@ -1,11 +1,9 @@
-# Sovereign Core OS (SOS) — Acknowledgments & Credits
+# Sovereign Core OS (SOS) — Acknowledgments & Community Credits
 
-## Core Contributors & Governance
-* **System Architect & Lead Operator**: Sovereign Core Operator <operator@sovereign-core.local>
-* **Community Research Cross-Examiners**: Bitcointalk.org Developer Community, XDA Developers Kernel Architecture Guild, GitHub Open Source Contributors.
+## Lead Architecture
+* **Sovereign Core Lead Operator**: Architecture, microkernel integration, and enclave implementation.
 
-## Protocol References & Inspirations
-* **Bitcoin Core**: Taproot consensus and script anchoring mechanics.
-* **Curve Finance**: TriCrypto automated market maker invariants.
-* **Mysterium Network**: Decentralized VPN and node telemetry protocols.
-* **Project Boomerang**: Circular arbitrage and causal escrow rollback frameworks.
+## Community Cross-Examination & Standards
+* **Bitcointalk.org Developer Community**: Guidance on Taproot script trees, L2 rollup commit finality, and cold-storage escrow time-locks.
+* **XDA Developers Kernel Architecture Guild**: Best practices for PRoot Debian memory isolation, Android `/proc` scraping, and non-intrusive Termux execution.
+* **GitHub Open Source Ecosystem**: Consensus models for Curve TriCrypto AMM invariants, WebTorrent content filtering, and SQLite WAL shared memory management.

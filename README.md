@@ -5,13 +5,11 @@
 [![Settlement](https://img.shields.io/badge/Settlement-Bitcoin%20L2%20Taproot-orange.svg)]()
 [![Storage](https://img.shields.io/badge/Storage-RAM%20tmpfs%20WAL-blue.svg)]()
 
-Sovereign Core OS (SOS) is a privacy-first micro-kernel architecture engineered to operate non-intrusively on top of native mobile and edge Linux hardware (Google Pixel 10 Pro XL via Termux/PRoot Debian).
+Sovereign Core OS (SOS) is an airgapped, non-intrusive microkernel workstation deployed across physical mobile edge hardware (Google Pixel 10 Pro XL) and remote Linux environments.
 
----
-
-## Architecture Overview
-* **Micro-Kernel Enclave**: Operates entirely in RAM-backed tmpfs (`/dev/shm`), guaranteeing zero flash wear and eliminating persistent forensic residue.
-* **Three-Prong Boomerang Arbitrage**: Automated circular multi-hop routing with dedicated cold-storage offline RAM escrow fallback.
-* **Bitcoin L1/L2 Taproot Finality**: Sparse Merkle Tree state roots immutably committed to Bitcoin L1 with continuous 6-block finality tracking.
-* **7-Node DePIN Revenue Fleet**: SLA monitoring for native Mysterium alongside 6 containerized nodes (EarnApp, TraffMonetizer, PacketStream, Pawns.app, Honeygain, Docker Mysterium).
-* **P2P Media & DAO Governance**: Decentralized WebTorrent/IPFS media content filtering with bilateral arbitration wardens.
+## Core Capabilities
+* **Dual-Workspace Architecture**: Workspace A (Termux host hardware scraper) bridges non-intrusively to Workspace B (isolated PRoot Debian microkernel enclave).
+* **Three-Prong Boomerang Arbitrage**: Circular AMM liquidity routing featuring L1 Taproot state commits, L2 fast-exit pools, and hard offline cold-storage RAM escrow fallbacks.
+* **Top 33 Cross-Chain Liquidity Matrix**: Decentralized monitoring across Bitcoin L2, Ethereum L1 (Curve TriCrypto), Solana, Tron, BNB, Starknet, and Base.
+* **7-Node DePIN Fleet**: Continuous SLA auditing for native Mysterium and 6 containerized passive yield applications.
+* **12 Enclave Daemons Super-Tree**: Fully automated runtime process supervisor and watchdog recovery tree.

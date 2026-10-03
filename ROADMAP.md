@@ -1,18 +1,19 @@
-# Sovereign Core OS (SOS) — Official Architectural Roadmap
+# Sovereign Core OS (SOS) — Architecture & Development Roadmap
 
-## Phase 1: Hardened Foundation (Completed)
-- [x] Ephemeral RAM storage migration (`/dev/shm/ecosystem_metrics.db` in SQLite WAL mode).
-- [x] Fail-closed DLP gatekeeper (`sos-dlp-guard`) and pre-commit hooks.
-- [x] 7-node DePIN continuous SLA auditing and jitter tolerance telemetry.
-- [x] Fischer 960 mathematical entropy seeds and contributor trust scoring engine.
+## Phase 1: Hardened Microkernel Foundation (Completed)
+- [x] RAM-backed ephemeral tmpfs ledger migration (`/dev/shm/ecosystem_metrics.db` in SQLite WAL mode).
+- [x] Fail-closed DLP gatekeeper (`sos-dlp-guard`) and strict git pre-commit barriers.
+- [x] Fischer 960 hardware entropy and mathematical null-state (0) trust invariants.
+- [x] 12 background daemon super-tree supervised by `master_watchdog_v3.py`.
 
 ## Phase 2: Multi-Chain Liquidity & Settlement (Current: v7.72.x)
-- [x] Three-Prong Boomerang engine (L1 Taproot, L2 Fast Exit, Hard Cold-Storage Escrow Fallback).
-- [x] Top 33 cross-chain liquidity matrix spanning Bitcoin L2, Ethereum L1, Solana, Tron, BNB, Starknet, and Base.
-- [x] Attached user wallet distribution engine ($40\%$ Cold, $25\%$ DePIN, $20\%$ Boomerang LP, $10\%$ Ops, $5\%$ Insurance).
-- [x] Non-intrusive native OS scraper pulling live hardware metrics from `/proc`.
+- [x] Three-Prong Boomerang circular arbitrage engine with hard cold-storage loopback fallback.
+- [x] Top 33 cross-chain DEX liquidity matrix across Bitcoin L2, EVM, Solana, and Starknet rollups.
+- [x] Automated user wallet percentage distribution rules ($40\%$ Cold, $25\%$ DePIN, $20\%$ LP, $10\%$ Ops, $5\%$ Insurance).
+- [x] Bitcoin L1/L2 Taproot settlement pipeline with Dual-Fund rebalancing (+74,044 sats).
+- [x] Interactive step-by-step verification harness with pause-to-enter review buffers.
 
-## Phase 3: Autonomous Mesh Governance (Upcoming)
-- [ ] Direct encrypted WireGuard/Mysterium P2P overlay tunnels.
-- [ ] Hardware Security Module (Titan M2) key derivation bridge for Taproot spend paths.
-- [ ] Direct zero-knowledge proof generation inside PRoot Debian sandbox.
+## Phase 3: Hardware Security Module (HSM) Integration (Upcoming)
+- [ ] Hardware key derivation bridging to Google Pixel Titan M2 security module.
+- [ ] Direct zero-knowledge proof generation inside PRoot Debian enclave.
+- [ ] Peer-to-peer encrypted WireGuard overlay tunnels between mobile and desktop workstations.
