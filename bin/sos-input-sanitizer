@@ -1,27 +1,11 @@
-#!/usr/bin/env python3
+#!/data/data/com.termux/files/usr/bin/python3
 import sys
+import os
 
-def sanitize():
-    raw = " ".join(sys.argv[1:]).strip()
-    if not raw:
-        print("[SOS CLI GUARD] Empty input stream.")
-        return
-    
-    chat_triggers = ["hey", "claude", "here's", "this", "good", "step", "we ", "i ", "you "]
-    lower_raw = raw.lower()
-    
-    is_chat = any(lower_raw.startswith(t) for t in chat_triggers) or len(raw.split()) > 4
-    
-    if is_chat:
-        print("==============================================================================")
-        print("  [SOS CLI GUARD WARNING] Natural language prose detected in terminal input.")
-        print("  It appears you accidentally pasted chat text instead of a shell command.")
-        print("  Input snippet: " + repr(raw[:60]) + "...")
-        print("==============================================================================")
-        sys.exit(0)
-    else:
-        print(f"[SOS CLI GUARD] '{raw}' is not a recognized microkernel applet. Run 'sos-skill-hub --list'.")
-        sys.exit(1)
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-input-sanitizer"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    sanitize()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

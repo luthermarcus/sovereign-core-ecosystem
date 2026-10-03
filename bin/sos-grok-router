@@ -1,42 +1,11 @@
-#!/usr/bin/env python3
-import sys, json, math, hashlib
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-EXPERTS = [
-    {"id": 0, "name": "Expert_0_SQLite_Enclave_WAL", "domain": "sos_vault.db WAL PRAGMA tables audit"},
-    {"id": 1, "name": "Expert_1_AST_Merkle_Truth", "domain": "sos-truth SHA-256 ast.parse symlinks"},
-    {"id": 2, "name": "Expert_2_UTXO_Royalty_Ledger", "domain": "sos_utxo_logistics sos_royalty_settlements ledger"},
-    {"id": 3, "name": "Expert_3_WireGuard_Onion_Mesh", "domain": "sos_mesh_gateways sos_wireguard_peers sos_onion_circuits network"},
-    {"id": 4, "name": "Expert_4_FTS5_Knowledge_Vault", "domain": "sos_knowledge_fts search fts5 bitcache"},
-    {"id": 5, "name": "Expert_5_Relativistic_Clock", "domain": "gamma proper_time tau monotonic"},
-    {"id": 6, "name": "Expert_6_Atomic_Swap_Sidechain", "domain": "sos_atomic_swaps sos_sidechain_routes sos_depin_peers"},
-    {"id": 7, "name": "Expert_7_Web_Bridge_Frontend", "domain": "sos-web-bridge ThreadingHTTPServer index.html"}
-]
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-grok-router"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def route_query(prompt_text):
-    seed = hashlib.sha256(prompt_text.encode("utf-8")).digest()
-    logits = []
-    lower_p = prompt_text.lower()
-    for i, exp in enumerate(EXPERTS):
-        base_score = (seed[i] / 255.0) * 0.5
-        for kw in exp["domain"].split():
-            if kw.lower() in lower_p:
-                base_score += 1.25
-        logits.append(base_score)
-    max_l = max(logits)
-    exps = [math.exp(x - max_l) for x in logits]
-    sum_e = sum(exps)
-    probs = [round(e / sum_e, 4) for e in exps]
-    ranked = sorted(zip(probs, EXPERTS), key=lambda x: x[0], reverse=True)
-    top2 = [{"expert_id": item[1]["id"], "expert_name": item[1]["name"], "gate_weight": item[0], "domain": item[1]["domain"]} for item in ranked[:2]]
-    return {
-        "architecture": "Open-Source Grok-1 Compatible 8-Expert Top-2 Sparse MoE Router",
-        "release": "v7.71.100-beta",
-        "input_prompt": prompt_text,
-        "top_k": 2,
-        "selected_experts": top2,
-        "all_gate_probabilities": {EXPERTS[i]["name"]: probs[i] for i in range(8)}
-    }
-
-if __name__ == "__main__":
-    query = " ".join(sys.argv[1:]) if len(sys.argv) > 1 else "network swaps wireguard sidechain ledger"
-    print(json.dumps(route_query(query), indent=2))
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

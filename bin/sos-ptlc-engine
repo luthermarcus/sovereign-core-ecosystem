@@ -1,60 +1,11 @@
-#!/usr/bin/env python3
-import hashlib, secrets, sys
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-# secp256k1 curve order
-N = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-ptlc-engine"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def sha256_int(data: bytes) -> int:
-    return int.from_bytes(hashlib.sha256(data).digest(), 'big') % N
-
-def simulate_ptlc_swap():
-    print("==============================================================================")
-    print("   SOVEREIGN CORE OS: SCHNORR PTLC BILATERAL ATOMIC SWAP SIMULATOR            ")
-    print("==============================================================================")
-
-    # 1. Key Setup
-    x_alice = secrets.randbelow(N)  # Alice private key
-    x_bob = secrets.randbelow(N)    # Bob private key
-    m_chain1 = b"SWAP_OUTPUT_CHAIN_1_SATS_50000"
-    m_chain2 = b"SWAP_OUTPUT_CHAIN_2_FOX_1000"
-
-    # 2. Secret Witness / Adaptor Point Generation (Condition)
-    t_secret = secrets.randbelow(N)  # Secret scalar 't'
-    print(f"[*] Step 1: Alice generates secret scalar 't' = {hex(t_secret)[:10]}...")
-
-    # 3. Nonces and Challenges
-    k_alice = secrets.randbelow(N)
-    k_bob = secrets.randbelow(N)
-    e_alice = sha256_int(k_alice.to_bytes(32, 'big') + m_chain1)
-    e_bob = sha256_int(k_bob.to_bytes(32, 'big') + m_chain2)
-
-    # 4. Adaptor Pre-Signatures (Blinded by t)
-    # Alice adaptor: s'_alice = k_alice + e_alice * x_alice + t
-    s_prime_alice = (k_alice + (e_alice * x_alice) + t_secret) % N
-    # Bob adaptor: s'_bob = k_bob + e_bob * x_bob + t
-    s_prime_bob = (k_bob + (e_bob * x_bob) + t_secret) % N
-    print(f"[+] Step 2: Adaptor signatures exchanged (s'_alice, s'_bob) blinded by T.")
-
-    # 5. Alice completes signature on Chain 1 and broadcasts: s_alice = k_alice + e_alice * x_alice
-    s_alice_broadcast = (k_alice + (e_alice * x_alice)) % N
-    print(f"[*] Step 3: Alice broadcasts valid tx on Chain 1: s_alice = {hex(s_alice_broadcast)[:10]}...")
-
-    # 6. Bob observes s_alice on-chain and extracts secret scalar t
-    # t = s'_alice - s_alice
-    t_extracted = (s_prime_alice - s_alice_broadcast) % N
-    assert t_extracted == t_secret, "Mathematical failure: scalar mismatch!"
-    print(f"[+] Step 4: Bob extracts secret scalar 't' from Chain 1 broadcast: {hex(t_extracted)[:10]}... [VERIFIED]")
-
-    # 7. Bob completes his signature on Chain 2: s_bob = s'_bob - t
-    s_bob_final = (s_prime_bob - t_extracted) % N
-    expected_s_bob = (k_bob + (e_bob * x_bob)) % N
-    assert s_bob_final == expected_s_bob, "Mathematical failure: invalid Bob signature!"
-    print(f"[+] Step 5: Bob unlocks Chain 2 with completed Schnorr signature: {hex(s_bob_final)[:10]}... [COMPLETED]")
-
-    print("==============================================================================")
-    print("[+] SWAP VERDICT: Zero-custody atomic swap completed without on-chain preimage leakage.")
-    print("==============================================================================")
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(simulate_ptlc_swap())
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

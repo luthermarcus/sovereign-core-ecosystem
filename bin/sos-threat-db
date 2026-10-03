@@ -1,36 +1,11 @@
-#!/usr/bin/env python3
-import hashlib, os, sqlite3, time
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-DB_PATH = os.path.expanduser("~/sos-fox-beta/sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-threat-db"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-THREAT_PROFILES = [
-    ("THREAT-DRAIN-01", "WEB3_PERMIT2_PHISHING", "Off-chain EIP-712 Permit signatures granting unlimited token transfers to CREATE2 contracts", "REJECT_ALL_PERMIT_SIGNATURES"),
-    ("THREAT-DRAIN-02", "CLIPBOARD_ADDRESS_POISONING", "Android clipboard clippers swapping transaction destination to lookalike vanity address", "STRICT_CHECKSUM_VERIFICATION"),
-    ("THREAT-BTC-03", "ROGUE_PSBT_INJECTION", "Malicious fee or input diversion injected into partially signed bitcoin transactions", "TAPROOT_PTLC_ATOMIC_ENCLAVE"),
-    ("THREAT-HOST-04", "AMBIENT_PROC_SNOOPING", "Co-located unprivileged applications probing memory mappings and environment variables", "SECURE_DELETE_RAM_AIRGAP")
-]
-
-def init_threat_db():
-    if not os.path.exists(DB_PATH):
-        return
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS sos_threat_intel (
-            threat_id TEXT PRIMARY KEY,
-            vector TEXT,
-            description TEXT,
-            mitigation TEXT,
-            timestamp INTEGER
-        );
-    """)
-    for tid, vec, desc, mit in THREAT_PROFILES:
-        cur.execute("""
-            INSERT OR REPLACE INTO sos_threat_intel VALUES (?, ?, ?, ?, ?);
-        """, (tid, vec, desc, mit, int(time.time())))
-    conn.commit()
-    conn.close()
-    print(f"[+] SOS Threat Intel: {len(THREAT_PROFILES)} blockchain fraud and drainer profiles indexed in local enclave.")
-
-if __name__ == "__main__":
-    init_threat_db()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

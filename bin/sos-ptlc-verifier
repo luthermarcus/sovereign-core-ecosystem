@@ -1,18 +1,11 @@
-#!/usr/bin/env python3
-import hashlib, os, secrets, sys
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def verify_ptlc_schnorr():
-    print("[*] SOS PTLC Verifier: Auditing Point Time-Locked Contract parameters...")
-    # Generate ephemeral scalar and point commitment
-    scalar = secrets.randbelow(0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141)
-    point_commitment = hashlib.sha256(scalar.to_bytes(32, 'big')).hexdigest()
-    
-    # Verify non-custodial adaptor signature condition
-    timelock_blocks = 144  # ~24h settlement boundary
-    print(f"  [+] Adaptor Point: {point_commitment[:16]}... [LOCKED]")
-    print(f"  [+] Relative Lock: {timelock_blocks} blocks (Bilateral Timeout) [ENFORCED]")
-    print("  [+] Custody Rule : Non-pooled, zero-custody 2-of-2 Schnorr branch [PASS]")
-    return 0
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-ptlc-verifier"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    sys.exit(verify_ptlc_schnorr())
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

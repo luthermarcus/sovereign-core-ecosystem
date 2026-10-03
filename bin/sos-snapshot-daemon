@@ -1,18 +1,11 @@
-#!/usr/bin/env python3
-import os, time, sqlite3, zipfile
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-BASE_DIR = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
-BACKUP_DIR = os.path.join(BASE_DIR, "vault_backups")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-snapshot-daemon"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def create_snapshot():
-    os.makedirs(BACKUP_DIR, exist_ok=True)
-    snap_name = f"sos_wal_snap_{int(time.time())}.db.zip"
-    snap_path = os.path.join(BACKUP_DIR, snap_name)
-    if os.path.exists(DB_PATH):
-        with zipfile.ZipFile(snap_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-            zf.write(DB_PATH, "sos_vault.db")
-        print(f"[*] SOS Snapshot Daemon: Created encrypted backup snapshot -> {snap_name}")
-
-if __name__ == "__main__":
-    create_snapshot()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

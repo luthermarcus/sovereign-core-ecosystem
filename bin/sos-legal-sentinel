@@ -1,29 +1,11 @@
-#!/usr/bin/env python3
-import hashlib, os, sqlite3, sys
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-WORKSPACE = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(WORKSPACE, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-legal-sentinel"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def verify_legal_declarations():
-    print("[*] SOS Legal Sentinel: Auditing copyright assertions & sidechain prior art...")
-    notice_file = os.path.join(WORKSPACE, "COMMUNITY_NOTICE.md")
-    if not os.path.exists(notice_file):
-        print("[!] COMMUNITY_NOTICE.md missing.")
-        return 1
-    with open(notice_file, "rb") as f:
-        digest = hashlib.sha256(f.read()).hexdigest()
-    
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM sos_sidechain_copyright WHERE status='SEALED_IMMUTABLE';")
-    sealed_count = cur.fetchone()[0]
-    conn.close()
-    
-    if sealed_count > 0:
-        print(f"[+] SOS Legal Sentinel PASS: Codebase hash ({digest[:16]}...) confirmed in {sealed_count} L2 anchor(s).")
-        return 0
-    print("[!] SOS Legal Sentinel WARN: L2 prior art anchor pending commit.")
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(verify_legal_declarations())
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

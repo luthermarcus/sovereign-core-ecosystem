@@ -1,52 +1,11 @@
-#!/usr/bin/env python3
-import os, re, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db = os.path.join(repo, "sos_vault.db")
-core_file = os.path.join(repo, "sos_core.py")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-top"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-step_num = "54"
-if os.path.exists(core_file):
-    m = re.findall(r"STEP_(\d+)_", open(core_file).read())
-    if m:
-        step_num = str(max(map(int, m)))
-
-if not os.path.exists(db):
-    print("[!] Database not found. Run sos-pulse first.")
-    exit(0)
-
-conn = sqlite3.connect(db)
-cur = conn.cursor()
-
-print("=" * 78)
-print(f"  SOVEREIGN CORE OS (SOS v7.71.100-beta) - STEP {step_num} GOLDEN DASHBOARD")
-print("  Node: pixel-sovereign (aarch64) | Bridge: peer-mint-bridge-01 | Toolchain: Py3.14")
-print("=" * 78)
-
-cur.execute("SELECT gamma, proper_time_tau, vector_xyz FROM sos_spacetime_anchors WHERE anchor_id='LORENTZ_HORIZON'")
-st = cur.fetchone()
-if st:
-    print(f"[*] SPACETIME CONTINUUM : Lorentz Gamma: {st[0]} | Proper Time: {st[1]}s | Vector: ({st[2]})")
-
-cur.execute("SELECT peer_id, transport, bandwidth_mbps, priority_tier FROM sos_depin_peers LIMIT 1")
-dp = cur.fetchone()
-if dp:
-    print(f"[*] DEPIN MESH LINK    : {dp[0]} ({dp[1]}) | {dp[2]} Mbps | [{dp[3]}]")
-
-print("-" * 78)
-print("ACTIVE P2P MAGNETS & AEAD CHUNKS:")
-for mag, sz in cur.execute("SELECT magnet_uri, chunk_size FROM sos_magnets LIMIT 2"):
-    dn = mag.split("&dn=")[1] if "&dn=" in mag else "root"
-    print(f"  * [{dn}] {mag[:45]}... ({sz}B Chunks)")
-
-print("-" * 78)
-print("LATEST UTXO LOGISTICS & ROYALTY SETTLEMENTS:")
-for row in cur.execute("SELECT utxo_id, prev_utxo, parcel_type, depin_kb, spent FROM sos_utxo_logistics ORDER BY recorded_at DESC LIMIT 1"):
-    state = "SPENT" if row[4] else "UNSPENT_ACTIVE"
-    print(f"  * [UTXO] {row[0][:16]}... <- {row[1][:16]}... | {row[2]} | {row[3]} KB [{state}]")
-
-for st in cur.execute("SELECT settlement_id, payer_node, creator_sats, seeder_sats, tx_status FROM sos_royalty_settlements ORDER BY recorded_at DESC LIMIT 1"):
-    print(f"  * [SETTLEMENT] TX:{st[0][:12]}... via {st[1]} | {st[2]}c/{st[3]}s sats [{st[4]}]")
-
-print("=" * 78)
-conn.close()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

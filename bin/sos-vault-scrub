@@ -1,27 +1,11 @@
-#!/usr/bin/env python3
-import base64, os, re, subprocess
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-BASE_DIR = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
-DUMP_PATH = os.path.join(BASE_DIR, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-vault-scrub"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-TARGETS = [
-    (re.compile(base64.b64decode("cGl4ZWwtc292ZXJlaWdu").decode()), "sovereign-host"),
-    (re.compile(base64.b64decode("MTAuMC4wLjkw").decode()), "sovereign-mesh-node"),
-    (re.compile(base64.b64decode("MTAuMC4wLjI=").decode()), "sovereign-mesh-node"),
-    (re.compile(base64.b64decode("L2RhdGEvZGF0YS9jb20udGVybXV4L2ZpbGVzL2hvbWU=").decode()), "/home/sovereign")
-]
-
-def scrub_dump():
-    if not os.path.exists(DB_PATH):
-        return
-    res = subprocess.run(["sqlite3", DB_PATH, ".dump"], capture_output=True, text=True)
-    dump_text = res.stdout
-    for pat, repl in TARGETS:
-        dump_text = pat.sub(repl, dump_text)
-    with open(DUMP_PATH, "w") as f:
-        f.write(dump_text)
-    print("[+] Generated sanitized sos_vault_dump.sql.")
-
-if __name__ == "__main__":
-    scrub_dump()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

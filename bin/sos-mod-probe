@@ -1,55 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, ast, ssl, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-mod-probe"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def audit_ecosystem_imports():
-    builtins = set(sys.builtin_module_names)
-    stdlib_complete = {
-        "os", "sys", "re", "ast", "time", "json", "math", "hmac", "hashlib",
-        "sqlite3", "ssl", "socket", "struct", "shutil", "threading", "stat",
-        "subprocess", "getpass", "urllib", "select", "errno", "base64",
-        "platform", "datetime", "tarfile", "secrets", "pathlib", "logging",
-        "copy", "collections", "functools", "itertools", "typing", "io"
-    }
-    
-    external_deps = set()
-    scanned_files = 0
-    
-    for root, _, files in os.walk(repo):
-        if ".git" in root:
-            continue
-        for f in files:
-            if f.endswith(".py") or f.startswith("sos-"):
-                fpath = os.path.join(root, f)
-                try:
-                    tree = ast.parse(open(fpath, "r", errors="ignore").read(), filename=f)
-                    scanned_files += 1
-                    for node in ast.walk(tree):
-                        if isinstance(node, ast.Import):
-                            for alias in node.names:
-                                mod = alias.name.split(".")[0]
-                                if mod not in stdlib_complete and mod not in builtins:
-                                    external_deps.add(mod)
-                        elif isinstance(node, ast.ImportFrom):
-                            if node.module:
-                                mod = node.module.split(".")[0]
-                                if mod not in stdlib_complete and mod not in builtins:
-                                    external_deps.add(mod)
-                except Exception:
-                    pass
-                    
-    return scanned_files, external_deps
-
-if __name__ == "__main__":
-    count, ext = audit_ecosystem_imports()
-    print("=== SOVEREIGN CORE OS: AUDITED DEPENDENCY SENTINEL ===")
-    print(f"[*] Python Runtime      : {sys.version.split()[0]} (Standard C-API)")
-    print(f"[*] OpenSSL Engine      : {ssl.OPENSSL_VERSION}")
-    print(f"[*] SQLite Engine       : {sqlite3.sqlite_version} (WAL Capable)")
-    print(f"[*] Scanned Executables : {count} files analyzed")
-    if not ext:
-        print("[+] External Pip Leaks  : ZERO (100% Verified Stdlib & C-API)")
-        print("[+] Portability Status  : UNCONDITIONAL ROOTLESS HARMONY")
-    else:
-        print(f"[!] Warning: True external dependencies detected: {ext}")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

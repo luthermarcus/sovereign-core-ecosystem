@@ -1,50 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, sqlite3, hashlib, time
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-mesh-gateway"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def sync_dump(conn):
-    conn.commit()
-    with open(dump_path, "w") as f:
-        for line in conn.iterdump():
-            f.write(f"{line}\n")
-    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-    conn.close()
-
-def init_gateway_table(cur):
-    cur.execute("CREATE TABLE IF NOT EXISTS sos_mesh_gateways (gateway_id TEXT PRIMARY KEY, endpoint_ip TEXT, subnet_mask TEXT, status TEXT, last_seen INTEGER)")
-
-def broadcast_zero_config_discovery():
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("PRAGMA journal_mode = WAL;")
-    init_gateway_table(cur)
-    
-    now_t = int(time.time())
-    gw_id = hashlib.sha256(f"pixel-sovereign:{now_t}:GATEWAY".encode()).hexdigest()[:32]
-    endpoint = "10.0.0.99:51820"
-    subnet = "10.0.0.0/24"
-    
-    cur.execute("INSERT OR REPLACE INTO sos_mesh_gateways VALUES (?, ?, ?, 'ACTIVE_BROADCAST', ?)", (gw_id, endpoint, subnet, now_t))
-    sync_dump(conn)
-    conn.close()
-    return gw_id, endpoint
-
-if len(sys.argv) > 1 and sys.argv[1] == "--discover":
-    gid, ep = broadcast_zero_config_discovery()
-    print("=== SOVEREIGN ZERO-CONFIG MESH GATEWAY ===")
-    print(f"[+] Gateway Broadcasted : {gid}")
-    print(f"[+] Subnet Endpoint     : {ep}")
-    print(f"[+] Discovery Status    : INVARIANT_ACTIVE (Zero-trust verified)")
-else:
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    init_gateway_table(cur)
-    print("=== SOVEREIGN MESH GATEWAY STATUS ===")
-    gws = cur.execute("SELECT gateway_id, endpoint_ip, subnet_mask, status FROM sos_mesh_gateways").fetchall()
-    for g in gws:
-        print(f"  * Gateway: {g[0][:8]}... | IP: {g[1]} | Subnet: {g[2]} [{g[3]}]")
-    conn.close()
-    print("Usage: sos-mesh-gateway --discover")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

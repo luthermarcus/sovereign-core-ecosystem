@@ -1,25 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-mint-sync"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def verify_mint_bridge_parity():
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("SELECT gamma, vector_xyz FROM sos_spacetime_anchors WHERE anchor_id='LORENTZ_HORIZON'")
-    row = cur.fetchone()
-    gamma, vec = row if row else (1.005, "0.874,0.35,0.441")
-    
-    cur.execute("SELECT count(*) FROM sos_royalty_settlements")
-    settlements = cur.fetchone()[0]
-    conn.close()
-    return gamma, vec, settlements
-
-if __name__ == "__main__":
-    g, v, s = verify_mint_bridge_parity()
-    print("=== LINUX MINT BRIDGE SYNCHRONIZER & PARITY AUDIT ===")
-    print(f"[*] Remote Host Parity : VERIFIED_TIMELIKE")
-    print(f"[*] Active Lorentz Gamma: {g} (Vector: {v})")
-    print(f"[*] Settled Micro-Txs  : {s} cryptographic receipt(s) synced")
-    print("[+] Bridge Status      : READY FOR MINT WORKSTATION INGESTION")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

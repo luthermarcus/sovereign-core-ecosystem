@@ -1,44 +1,11 @@
-#!/usr/bin/env python3
-import os, subprocess, sys
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-WORKSPACE = os.path.expanduser("~/sos-fox-beta")
-LAST_STABLE_TAG = "v7.71.133-beta"
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-fallback"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def execute_fallback():
-    print("==============================================================================")
-    print("   SOVEREIGN CORE OS: DETERMINISTIC FALLBACK & RECOVERY ENGINE                ")
-    print("==============================================================================")
-    print(f"[*] Verified Stable Target: {LAST_STABLE_TAG}")
-    
-    # 1. Inspect uncommitted delta
-    res = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True, cwd=WORKSPACE)
-    if res.stdout.strip():
-        print("[!] Uncommitted changes detected in experimental workspace.")
-        print("[*] Creating emergency safety snapshot before rollback...")
-        subprocess.run(["git", "stash", "save", "sos_pre_fallback_emergency_stash"], cwd=WORKSPACE)
-    
-    # 2. Verify git tag exists
-    tags_res = subprocess.run(["git", "tag", "-l", LAST_STABLE_TAG], capture_output=True, text=True, cwd=WORKSPACE)
-    if LAST_STABLE_TAG in tags_res.stdout:
-        print(f"[+] Stable milestone {LAST_STABLE_TAG} located in verified history.")
-        print(f"[*] To switch to this stable point without losing work, run:")
-        print(f"    git checkout {LAST_STABLE_TAG}")
-        print(f"[*] To force reset workspace to this exact state, run:")
-        print(f"    git reset --hard {LAST_STABLE_TAG}")
-    else:
-        print(f"[-] Tag {LAST_STABLE_TAG} not found locally. Fetching tags from origin...")
-        subprocess.run(["git", "fetch", "--tags"], cwd=WORKSPACE)
-
-    # 3. Test Enclave Integrity
-    db = os.path.join(WORKSPACE, "sos_vault.db")
-    if os.path.exists(db):
-        mode = oct(os.stat(db).st_mode)[-3:]
-        print(f"[+] Vault Enclave Permissions: Mode {mode} (Target: 600) [PASS]")
-    
-    print("==============================================================================")
-    print("[+] FALLBACK DRILL COMPLETE: Recovery paths verified and operational.")
-    print("==============================================================================")
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(execute_fallback())
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

@@ -1,70 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, json, time, hashlib, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-nostr-signaler"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def sync_dump(conn):
-    conn.commit()
-    with open(dump_path, "w") as f:
-        for line in conn.iterdump():
-            f.write(f"{line}\n")
-    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-    conn.close()
-
-def generate_handshake_frame(target_peer, session_port=8089):
-    now_t = int(time.time())
-    payload = {
-        "source": "pixel-sovereign",
-        "target": target_peer,
-        "endpoint_hint": f"127.0.0.1:{session_port}",
-        "timestamp": now_t,
-        "proto": "WIREGUARD_ENCLAVE_P2P"
-    }
-    raw_bytes = json.dumps(payload, sort_keys=True).encode()
-    event_id = hashlib.sha256(raw_bytes).hexdigest()
-    
-    event = {
-        "id": event_id,
-        "pubkey": hashlib.sha256(b"pixel-sovereign-identity").hexdigest()[:32],
-        "created_at": now_t,
-        "kind": 20000,
-        "tags": [["p", target_peer], ["s", "SOS_P2P_COORDINATION"]],
-        "content": payload
-    }
-    return event
-
-if len(sys.argv) > 2 and sys.argv[1] == "--signal":
-    peer = sys.argv[2]
-    ev = generate_handshake_frame(peer)
-    
-    # Update local SQLite state for target peer
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("PRAGMA journal_mode = WAL;")
-    cur.execute(
-        "UPDATE sos_wireguard_peers SET handshake_status='TIMELIKE_COORDINATED' WHERE peer_name=?",
-        (peer,)
-    )
-    
-    print("=== SOVEREIGN NOSTR EPHEMERAL SIGNALING DISPATCH ===")
-    print(f"[*] Ephemeral NIP-01 Event : {ev['id']}")
-    print(f"[*] Recipient Peer          : {peer}")
-    print(f"[*] Transport Vector        : {ev['content']['endpoint_hint']} via {ev['content']['proto']}")
-    print(f"[+] Status Transition       : STANDBY -> TIMELIKE_COORDINATED")
-    sync_dump(conn)
-
-elif len(sys.argv) > 1 and sys.argv[1] == "--status":
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    print("=== NOSTR MESH TOPOLOGY SIGNALS ===")
-    for r in cur.execute("SELECT peer_name, endpoint, handshake_status FROM sos_wireguard_peers"):
-        print(f"  * Peer: {r[0]:<20} @ {r[1]:<18} | Status: [{r[2]}]")
-    conn.close()
-
-else:
-    print("=== SOVEREIGN NOSTR SIGNALER CONTROLLER ===")
-    print("Usage:")
-    print("  sos-nostr-signaler --signal <peer>   Dispatch ephemeral coordination event to peer")
-    print("  sos-nostr-signaler --status          List mesh peer coordination states")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

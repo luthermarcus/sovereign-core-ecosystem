@@ -1,31 +1,11 @@
-#!/usr/bin/env python3
-import subprocess
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def render_dash():
-    print("==============================================================================")
-    print("  SOVEREIGN CORE OS (SOS v7.71.135-beta) - MASTER RESILIENCE CONSOLE          ")
-    print("  Mode: DEVELOPMENTAL / PRE-RELEASE | Host Identity: AIRGAPPED_ANONYMOUS      ")
-    print("==============================================================================")
-    print("\n--- [1] ACTIVE INVARIANT MATRIX & SECURITY FLAGS ---")
-    subprocess.run(["sos-risk-sentinel"])
-    print("\n--- [2] MULTI-LEVEL SECURITY & ENCLAVE INTEGRITY ---")
-    subprocess.run(["sos-military-enclave"])
-    subprocess.run(["sos-wallet-guard"])
-    print("\n--- [3] ATOMIC SWAPS, BOOMERANG QUEUE & ALLOCATIONS ---")
-    subprocess.run(["sos-boomerang-engine"])
-    subprocess.run(["sos-ptlc-verifier"])
-    subprocess.run(["sos-allocation-guard"])
-    print("\n--- [4] FORENSIC EXCHANGE FRAUD SENTINEL ---")
-    subprocess.run(["sos-fraud-sentinel"])
-    print("\n==============================================================================")
-    print("  OPERATIONAL PALETTE & CONTROL COMMANDS:                                     ")
-    print("    dash            - Render this complete master resilience console          ")
-    print("    sos-status      - Execute unified multi-subsystem diagnostic sweep        ")
-    print("    sos-fallback    - Drill/execute automated recovery to last stable tag     ")
-    print("    sos-ptlc-engine - Run Schnorr adaptor bilateral atomic swap simulator     ")
-    print("    sos-truth       - Run 8-point deterministic zero-drift assertion audit    ")
-    print("    sos-audit-health- Attest to enclave permissions and git quarantine status ")
-    print("==============================================================================")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-dash"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    render_dash()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

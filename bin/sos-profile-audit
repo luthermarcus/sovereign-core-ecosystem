@@ -1,55 +1,11 @@
-#!/usr/bin/env python3
-import os, socket, subprocess, sys
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def check_external_listeners():
-    print("[*] SOS Profile Audit: Auditing active socket bindings...")
-    res = subprocess.run(["netstat", "-tlpn"], capture_output=True, text=True)
-    lines = res.stdout.splitlines() if res.stdout else []
-    exposed = 0
-    for line in lines:
-        parts = line.split()
-        if len(parts) >= 4 and ("LISTEN" in line or "udp" in parts[0]):
-            local_addr = parts[3]
-            # Flag anything listening on 0.0.0.0 or public interfaces
-            if not local_addr.startswith("127.0.0.1") and not local_addr.startswith("::1"):
-                if not local_addr.endswith(":51820"): # Allow WireGuard mesh
-                    print(f"  [!] PROFILING WARNING: Non-loopback listener active: {local_addr}")
-                    exposed += 1
-    if exposed == 0:
-        print("  [+] PASS: Sockets restricted to loopback (127.0.0.1) or encrypted mesh interfaces.")
-    return exposed
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-profile-audit"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def check_hostname_leak():
-    print("[*] SOS Profile Audit: Inspecting system network identifiers...")
-    hostname = socket.gethostname()
-    if any(k in hostname.lower() for k in ["pixel", "android", "termux", "luther", "skiba"]):
-        print(f"  [!] PROFILING WARNING: Hostname contains identifiable fingerprint: '{hostname}'")
-        return 1
-    print(f"  [+] PASS: Hostname alias normalized: '{hostname}'")
-    return 0
-
-def check_git_remote_exposure():
-    print("[*] SOS Profile Audit: Checking remote mirror exposure...")
-    res = subprocess.run(["git", "remote", "-v"], capture_output=True, text=True, cwd=os.path.expanduser("~/sos-fox-beta"))
-    if "http" in res.stdout or "git@" in res.stdout:
-        print("  [*] Remote repositories configured under deterministic origin.")
-    print("  [+] PASS: Git tree isolation intact.")
-    return 0
-
-def run_audit():
-    print("====================================================")
-    print("    SOVEREIGN CORE OS: NODE PROFILING AUDIT         ")
-    print("====================================================")
-    score = 0
-    score += check_external_listeners()
-    score += check_hostname_leak()
-    score += check_git_remote_exposure()
-    print("====================================================")
-    if score == 0:
-        print("[+] STATUS: ZERO CRITICAL PROFILING VECTORS DETECTED")
-    else:
-        print(f"[!] STATUS: {score} PROFILING VECTOR(S) REQUIRE MITIGATION")
-    print("====================================================")
-
-if __name__ == "__main__":
-    run_audit()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

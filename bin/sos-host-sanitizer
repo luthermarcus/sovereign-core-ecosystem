@@ -1,44 +1,11 @@
-#!/usr/bin/env python3
-import base64, os, re, subprocess, sys
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-WORKSPACE = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(WORKSPACE, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-host-sanitizer"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-# Base64 tokens to sanitize host laptop names and private IP configurations
-TOKENS = [
-    (re.compile(base64.b64decode("bHV0aGVyLUluc3Bpcm9uLTE1MjU=").decode(), re.I), "sovereign-workstation"),
-    (re.compile(base64.b64decode("MTAuMC4wLjEzMA==").decode()), "sovereign-mesh-node"),
-    (re.compile(base64.b64decode("MTAuMC4wLjkw").decode()), "sovereign-mesh-node"),
-    (re.compile(base64.b64decode("cGl4ZWwtc292ZXJlaWdu").decode()), "sovereign-host"),
-    (re.compile(r"/home/[a-zA-Z0-9_-]+/(?!\.termux)"), "/home/sovereign/")
-]
-
-def sanitize_environment():
-    print("[*] SOS Host Sanitizer: Purging host laptop signatures and raw IP topologies...")
-    
-    # 1. Sanitize local git working tree config
-    git_config = os.path.join(WORKSPACE, ".git/config")
-    if os.path.exists(git_config):
-        with open(git_config, "r") as f:
-            content = f.read()
-        for pat, repl in TOKENS:
-            content = pat.sub(repl, content)
-        with open(git_config, "w") as f:
-            f.write(content)
-            
-    # 2. Verify .gitignore excludes all local machine configurations
-    gi_path = os.path.join(WORKSPACE, ".gitignore")
-    rules = {"*.db", "*.db-wal", "*.db-shm", "*.sql", "*.log", "*.zip", "sos_vault_dump.sql", "vault_backups/", "logs/", "tmp/", "*.tmp"}
-    existing = set()
-    if os.path.exists(gi_path):
-        with open(gi_path, "r") as f:
-            existing = set(l.strip() for l in f if l.strip())
-    with open(gi_path, "w") as f:
-        for r in sorted(existing.union(rules)):
-            f.write(f"{r}\n")
-            
-    print("[+] SOS Host Sanitizer PASS: Native workstation metadata neutralized. Zero host bleed.")
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(sanitize_environment())
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

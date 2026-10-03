@@ -1,59 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, time, hashlib, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-consensus"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def sync_dump(conn):
-    conn.commit()
-    with open(dump_path, "w") as f:
-        for line in conn.iterdump():
-            f.write(f"{line}\n")
-    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-    conn.close()
-
-def init_consensus_tables(cur):
-    cur.execute("CREATE TABLE IF NOT EXISTS sos_consensus_proposals (prop_id TEXT PRIMARY KEY, proposer TEXT, title TEXT, yes_weight INTEGER, no_weight INTEGER, status TEXT, created_at INTEGER)")
-
-def cast_reputation_vote(prop_id, node_id, vote_yes=True):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("PRAGMA journal_mode = WAL;")
-    init_consensus_tables(cur)
-    
-    # Fetch node reputation score from Step 84 heartbeat table
-    cur.execute("SELECT score FROM sos_peer_reputation WHERE node_id=?", (node_id,))
-    row = cur.fetchone()
-    weight = row[0] if row else 50  # Default base weight if unlisted
-    
-    col = "yes_weight" if vote_yes else "no_weight"
-    cur.execute(f"UPDATE sos_consensus_proposals SET {col} = {col} + ? WHERE prop_id=?", (weight, prop_id))
-    
-    sync_dump(conn)
-    conn.close()
-    return weight
-
-if len(sys.argv) > 2 and sys.argv[1] == "--vote":
-    pid = sys.argv[2]
-    node = sys.argv[3] if len(sys.argv) > 3 else "pixel-sovereign"
-    wt = cast_reputation_vote(pid, node, True)
-    print("=== SOVEREIGN CONSENSUS VOTE CAST ===")
-    print(f"[+] Proposal ID   : {pid}")
-    print(f"[+] Voting Node   : {node} (Reputation Weight: {wt})")
-    print(f"[+] Vote Recorded : YES (Weighted by Proof-of-Reputation)")
-else:
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    init_consensus_tables(cur)
-    
-    # Insert default genesis proposal if empty
-    cur.execute("INSERT OR IGNORE INTO sos_consensus_proposals VALUES ('PROP-001', 'pixel-sovereign', 'Adopt Relativistic Spacetime Gas Scaling', 100, 0, 'ACTIVE', ?)", (int(time.time()),))
-    conn.commit()
-    
-    print("=== SOVEREIGN PROOF-OF-REPUTATION GOVERNANCE ===")
-    for p in cur.execute("SELECT prop_id, proposer, title, yes_weight, no_weight, status FROM sos_consensus_proposals"):
-        print(f"  * [{p[0]}] {p[2]} (Proposer: {p[1]})")
-        print(f"    -> YES Weight: {p[3]} | NO Weight: {p[4]} | Status: [{p[5]}]")
-    conn.close()
-    print("Usage: sos-consensus --vote <prop_id> <node_id>")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

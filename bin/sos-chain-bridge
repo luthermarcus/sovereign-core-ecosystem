@@ -1,31 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-chain-bridge"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-conn = sqlite3.connect(db_path)
-cur = conn.cursor()
-
-if len(sys.argv) > 1 and sys.argv[1] == "--status":
-    print("=== SOVEREIGN L1/L2 SIDECHAIN & THREE-PRONG MINING TOPOLOGY ===")
-    for row in cur.execute("SELECT layer_id, consensus_mechanism, execution_prong, dynamic_fee_rate, status FROM sos_sidechain_routes"):
-        print(f"[*] {row[0]:<22} | {row[1]:<24} | {row[2]:<20} | Fee: {row[3]}% [{row[4]}]")
-    conn.close()
-
-elif len(sys.argv) > 2 and sys.argv[1] == "--route":
-    layer = sys.argv[2]
-    cur.execute("SELECT current_anchor, execution_prong, status FROM sos_sidechain_routes WHERE layer_id=?", (layer,))
-    r = cur.fetchone()
-    if r:
-        print(f"[+] Route: {layer} -> Anchor: {r[0]} | Gate: {r[1]} | State: {r[2]}")
-    else:
-        print(f"[!] Unknown routing layer: {layer}")
-    conn.close()
-
-else:
-    print("=== SOVEREIGN CHAIN BRIDGE CONTROLLER ===")
-    print("Usage:")
-    print("  sos-chain-bridge --status         Inspect active L1/L2 and Three-Prong mining topology")
-    print("  sos-chain-bridge --route <layer>  Query anchor parameters for target execution layer")
-    conn.close()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

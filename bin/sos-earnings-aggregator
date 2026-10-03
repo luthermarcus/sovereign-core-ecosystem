@@ -1,21 +1,11 @@
-#!/usr/bin/env python3
-import os, sqlite3, json
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-BASE_DIR = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(BASE_DIR, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-earnings-aggregator"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def aggregate_earnings():
-    if not os.path.exists(DB_PATH):
-        print("[!] SOS Earnings Aggregator: Enclave DB not found.")
-        return
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT SUM(earnings_sats) FROM sos_depin_nodes;")
-    total_sats = cur.fetchone()[0] or 0
-    cur.execute("SELECT SUM(bandwidth_gb) FROM sos_depin_nodes;")
-    total_bw = cur.fetchone()[0] or 0.0
-    conn.close()
-    print(f"[*] SOS Earnings Aggregated: Total DePIN Earnings = {total_sats} sats | Total Bandwidth = {total_bw:.2f} GB")
-
-if __name__ == "__main__":
-    aggregate_earnings()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

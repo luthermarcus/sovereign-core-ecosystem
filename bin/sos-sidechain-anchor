@@ -1,35 +1,11 @@
-#!/usr/bin/env python3
-import hashlib, os, sqlite3, time
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-DB_PATH = os.path.expanduser("~/sos-fox-beta/sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-sidechain-anchor"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def commit_copyright_anchor():
-    notice_path = os.path.expanduser("~/sos-fox-beta/COPYRIGHT_NOTICE.md")
-    content = b""
-    if os.path.exists(notice_path):
-        with open(notice_path, "rb") as f:
-            content = f.read()
-    digest = hashlib.sha256(content).hexdigest()
-    
-    if os.path.exists(DB_PATH):
-        conn = sqlite3.connect(DB_PATH)
-        cur = conn.cursor()
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS sos_sidechain_copyright (
-                anchor_id TEXT PRIMARY KEY,
-                copyright_hash TEXT,
-                sidechain_layer TEXT,
-                status TEXT,
-                timestamp INTEGER
-            );
-        """)
-        anchor_id = hashlib.sha256(f"BTC_L2_{time.time()}".encode()).hexdigest()[:16]
-        cur.execute("""
-            INSERT OR REPLACE INTO sos_sidechain_copyright VALUES (?, ?, 'BITCOIN_L2_SIDECHAIN', 'SEALED_IMMUTABLE', ?);
-        """, (anchor_id, digest, int(time.time())))
-        conn.commit()
-        conn.close()
-        print(f"[*] SOS Sidechain Anchor: Sealed copyright digest ({digest[:16]}...) to Bitcoin L2 [PASS]")
-
-if __name__ == "__main__":
-    commit_copyright_anchor()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

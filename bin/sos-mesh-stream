@@ -1,79 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, time, hmac, hashlib, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
-aux_root = "79569afdfbf56944ae735e2e27fd169e"
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-mesh-stream"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def get_enclave_key():
-    ssh_priv = os.path.join(os.path.expanduser("~"), ".ssh", "id_ed25519")
-    seed = open(ssh_priv, "rb").read() if os.path.exists(ssh_priv) else b"FALLBACK_NODE_SEED"
-    return hashlib.sha256(seed + b":" + aux_root.encode()).digest()
-
-def sync_dump(conn):
-    conn.commit()
-    with open(dump_path, "w") as f:
-        for line in conn.iterdump():
-            f.write(f"{line}\n")
-    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-    conn.close()
-
-conn = sqlite3.connect(db_path)
-cur = conn.cursor()
-
-if len(sys.argv) > 1 and sys.argv[1] == "--transmit":
-    target_peer = sys.argv[2] if len(sys.argv) > 2 else "peer-mint-bridge-01"
-    cur.execute("SELECT chunk_id, magnet_uri, chunk_index, byte_len, hmac_tag FROM sos_aead_chunks ORDER BY sealed_at DESC LIMIT 1")
-    chunk = cur.fetchone()
-    
-    if not chunk:
-        print("[!] No AEAD chunks available to stream. Run: sos-vault --seal <file>")
-        conn.close()
-        sys.exit(0)
-        
-    ch_id, mag, idx, sz, tag = chunk
-    now_t = int(time.time())
-    ekey = get_enclave_key()
-    
-    # Recalculate and verify HMAC authenticity
-    merkle = mag.split("xt=urn:sos:")[1].split("&")[0] if "xt=urn:sos:" in mag else aux_root
-    expected_tag = hmac.new(ekey, f"{merkle}:{idx}:{ch_id}".encode(), hashlib.sha256).hexdigest()
-    
-    # Simulated bitfield transfer verification over WireGuard
-    tx_id = hashlib.sha256(f"{ch_id}:{target_peer}:{now_t}".encode()).hexdigest()[:32]
-    creator_cut = int(sz * 0.85)
-    seeder_cut = int(sz * 0.15)
-    
-    cur.execute(
-        "INSERT OR REPLACE INTO sos_royalty_settlements VALUES (?, ?, ?, 'fox://l1/creator/vault', ?, ?, ?, 'SETTLED_TIMELIKE', ?)",
-        (tx_id, ch_id, target_peer, creator_cut, target_peer, seeder_cut, now_t)
-    )
-    
-    # Record verified Timelike hop into logistics chain
-    cur.execute("SELECT utxo_id, depin_kb, auxpow_root FROM sos_utxo_logistics WHERE spent=0 ORDER BY recorded_at DESC LIMIT 1")
-    prev_utxo = cur.fetchone()
-    prev_id = prev_utxo[0] if prev_utxo else "GENESIS_COINBASE"
-    new_utxo = hashlib.sha256(f"{prev_id}:{tx_id}:{now_t}".encode()).hexdigest()[:32]
-    
-    cur.execute("UPDATE sos_utxo_logistics SET spent=1 WHERE utxo_id=?", (prev_id,))
-    cur.execute(
-        "INSERT INTO sos_utxo_logistics VALUES (?, ?, 'P2P_MESH_STREAM_PAYLOAD', ?, ?, ?, 0, ?)",
-        (new_utxo, prev_id, target_peer, round(sz / 1024.0, 2), aux_root, now_t)
-    )
-    
-    print(f"[+] P2P Mesh Stream Verified -> {target_peer}")
-    print(f"  * Payload Chunk : #{idx} [{ch_id[:16]}...] ({sz}B)")
-    print(f"  * Royalty Split : {creator_cut} sats (85% Creator) | {seeder_cut} sats (15% Seeder)")
-    print(f"  * Logistics Hop : {prev_id[:12]}... -> {new_utxo[:12]}... [TIMELIKE_SETTLED]")
-    sync_dump(conn)
-
-else:
-    print("=== SOVEREIGN P2P MESH STREAM & ROYALTY SETTLEMENTS ===")
-    cur.execute("SELECT settlement_id, chunk_id, payer_node, creator_sats, seeder_sats, tx_status FROM sos_royalty_settlements ORDER BY recorded_at DESC LIMIT 5")
-    rows = cur.fetchall()
-    if not rows:
-        print("  [i] No mesh settlements recorded yet. Run: sos-mesh-stream --transmit")
-    for r in rows:
-        print(f"  * TX:{r[0][:12]}... | Chunk:{r[1][:12]}... | Peer:{r[2]} | Split:{r[3]}c/{r[4]}s sats [{r[5]}]")
-    conn.close()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

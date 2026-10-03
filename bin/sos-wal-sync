@@ -1,35 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, sqlite3, zipfile, time
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-backup_dir = os.path.join(repo, "vault_backups")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-wal-sync"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def create_incremental_wal_backup():
-    os.makedirs(backup_dir, exist_ok=True)
-    timestamp = int(time.time())
-    dest_db = os.path.join(backup_dir, f"sos_wal_snap_{timestamp}.db")
-    
-    # Use SQLite Online Backup API for safe hot backups under WAL mode
-    src_conn = sqlite3.connect(db_path)
-    dest_conn = sqlite3.connect(dest_db)
-    with dest_conn:
-        src_conn.backup(dest_conn)
-    src_conn.close()
-    dest_conn.close()
-    
-    # Compress snapshot into Enclave-AEAD transport container
-    zip_path = f"{dest_db}.zip"
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
-        zf.write(dest_db, arcname=os.path.basename(dest_db))
-    os.remove(dest_db)
-    return zip_path
-
-if len(sys.argv) > 1 and sys.argv[1] == "--stream":
-    print("=== ENCLAVE-AEAD INCREMENTAL WAL STREAMER ===")
-    zfile = create_incremental_wal_backup()
-    print(f"[+] WAL Snapshot Sealed : {zfile}")
-    print("[+] Transport Integrity : 100% Verified Standard Library C-API")
-else:
-    print("=== SOVEREIGN WAL SYNC CONTROLLER ===")
-    print("Usage: sos-wal-sync --stream   Export incremental WAL snapshot container")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

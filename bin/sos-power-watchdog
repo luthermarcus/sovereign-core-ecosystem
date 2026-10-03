@@ -1,59 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, time, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-WORKSPACE = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(WORKSPACE, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-power-watchdog"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def audit_power_and_thermal():
-    print("==============================================================================")
-    print("  SOVEREIGN CORE OS: BRIEFCASE CYBERDECK POWER & THERMAL WATCHDOG             ")
-    print("==============================================================================")
-    
-    # Simulate hardware power rail metrics for briefcase migration
-    battery_pct = 94.5
-    draw_watts = 12.4
-    core_temp_c = 42.1
-    thermal_status = "NORMAL_NOMINAL"
-    
-    if core_temp_c > 75.0:
-        thermal_status = "THROTTLING_ACTIVE"
-    
-    print(f"[*] Power Subsystem  : Estimated Battery Level = {battery_pct}% | Draw = {draw_watts}W")
-    print(f"[*] Thermal Status   : SoC Temperature = {core_temp_c}°C | State = {thermal_status}")
-    print(f"[*] SQLite WAL Guard : Safe synchronous write-ahead-log persistence [ACTIVE]")
-    
-    # Log telemetry safely with broken pipe handling
-    try:
-        if os.path.exists(DB_PATH):
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            cur.execute("""
-                CREATE TABLE IF NOT EXISTS sos_power_telemetry (
-                    timestamp INTEGER,
-                    battery_pct REAL,
-                    draw_watts REAL,
-                    core_temp REAL,
-                    status TEXT
-                );
-            """)
-            cur.execute("INSERT INTO sos_power_telemetry VALUES (?, ?, ?, ?, ?);",
-                        (int(time.time()), battery_pct, draw_watts, core_temp_c, thermal_status))
-            conn.commit()
-            conn.close()
-    except (IOError, OSError) as e:
-        # Catch BrokenPipeError (EPIPE) silently to prevent crash streams
-        if getattr(e, 'errno', 0) != 32:
-            raise
-
-    print("==============================================================================")
-    print("[+] POWER WATCHDOG PASS: Hardware telemetry rail stable. Zero pipe errors.")
-    print("==============================================================================")
-    return 0
-
-if __name__ == "__main__":
-    try:
-        sys.exit(audit_power_and_thermal())
-    except (BrokenPipeError, OSError):
-        devnull = os.open(os.devnull, os.O_WRONLY)
-        os.dup2(devnull, sys.stdout.fileno())
-        sys.exit(0)
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

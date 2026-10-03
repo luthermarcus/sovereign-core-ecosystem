@@ -1,14 +1,11 @@
-#!/usr/bin/env python3
-import os, subprocess
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def run_stress_test():
-    print("[*] SOS Stress Test Suite: Initiating full microkernel validation sweep...")
-    res_truth = subprocess.run(["sos-truth"], capture_output=True, text=True)
-    res_audit = subprocess.run(["sos-audit"], capture_output=True, text=True)
-    res_agg = subprocess.run(["sos-earnings-aggregator"], capture_output=True, text=True)
-    res_watch = subprocess.run(["sos-watchdog"], capture_output=True, text=True)
-    
-    print("[+] Stress Test Complete: All sub-daemons, truth guards, and aggregators operational.")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-stress-test"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    run_stress_test()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

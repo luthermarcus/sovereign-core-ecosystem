@@ -1,25 +1,11 @@
-#!/usr/bin/env python3
-import socket, json
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def check_port(host="127.0.0.1", port=8080):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.settimeout(1.0)
-    try:
-        s.connect((host, port))
-        active = True
-    except (socket.timeout, ConnectionRefusedError):
-        active = False
-    finally:
-        s.close()
-    
-    report = {
-        "applet": "sos-net-inspect (Standard-Library Socket Health Inspector)",
-        "binding_host": host,
-        "port": port,
-        "listener_active": active,
-        "security_boundary": "STRICT_LOOPBACK_LOCAL_ONLY"
-    }
-    print(json.dumps(report, indent=2))
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-net-inspect"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    check_port()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

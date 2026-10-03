@@ -1,52 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, time, hashlib, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-onion-route"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def sync_dump(conn):
-    conn.commit()
-    with open(dump_path, "w") as f:
-        for line in conn.iterdump():
-            f.write(f"{line}\n")
-    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-    conn.close()
-
-def init_onion_table(cur):
-    cur.execute("CREATE TABLE IF NOT EXISTS sos_onion_circuits (circuit_id TEXT PRIMARY KEY, entry_node TEXT, exit_node TEXT, status TEXT, established_at INTEGER)")
-
-def build_onion_circuit(entry, exit_node):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("PRAGMA journal_mode = WAL;")
-    init_onion_table(cur)
-    
-    now_t = int(time.time())
-    circuit_id = hashlib.sha256(f"{entry}:{exit_node}:{now_t}:ONION".encode()).hexdigest()[:32]
-    
-    cur.execute("INSERT INTO sos_onion_circuits VALUES (?, ?, ?, 'ACTIVE_MIXNET', ?)", (circuit_id, entry, exit_node, now_t))
-    sync_dump(conn)
-    conn.close()
-    return circuit_id
-
-if len(sys.argv) > 2 and sys.argv[1] == "--build":
-    entry = sys.argv[2]
-    exit_node = sys.argv[3] if len(sys.argv) > 3 else "peer-mint-bridge-01"
-    cid = build_onion_circuit(entry, exit_node)
-    print("=== SOVEREIGN ONION ROUTING & MIXNET ===")
-    print(f"[+] Circuit Established : {cid}")
-    print(f"[+] Path Vector         : {entry} -> [MIXNET_OBFUSCATED_HOP] -> {exit_node}")
-    print(f"[+] Metadata Protection : ACTIVE (Zero traffic correlation)")
-else:
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    init_onion_table(cur)
-    print("=== SOVEREIGN MIXNET CIRCUIT STATUS ===")
-    circuits = cur.execute("SELECT circuit_id, entry_node, exit_node, status FROM sos_onion_circuits").fetchall()
-    if not circuits:
-        print("[*] No active circuits. Run 'sos-onion-route --build <entry> <exit>'")
-    for c in circuits:
-        print(f"  * Circuit: {c[0][:8]}... | Entry: {c[1]} -> Exit: {c[2]} | [{c[3]}]")
-    conn.close()
-    print("Usage: sos-onion-route --build <entry_node> <exit_node>")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

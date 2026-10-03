@@ -1,32 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, sqlite3, hashlib
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-state-proofs"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def generate_vault_state_root():
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    hasher = hashlib.sha256()
-    tables = ["sos_spacetime_anchors", "sos_epoch_claims", "sos_peer_reputation", "sos_atomic_swaps"]
-    for t in tables:
-        try:
-            cur.execute(f"SELECT * FROM {t}")
-            for r in cur.fetchall():
-                hasher.update(str(r).encode())
-        except sqlite3.OperationalError:
-            pass
-    conn.close()
-    return hasher.hexdigest()
-
-if len(sys.argv) > 1 and sys.argv[1] == "--root":
-    root_hash = generate_vault_state_root()
-    print("=== SOVEREIGN MERKLE STATE PROOF ===")
-    print(f"[*] Vault State Root : {root_hash}")
-    print(f"[+] Verification     : INVARIANT_CONSISTENT (Zero-transmission proof)")
-else:
-    root_hash = generate_vault_state_root()
-    print("=== SOVEREIGN STATE PROOF CONTROLLER ===")
-    print(f"[*] Current State Root : {root_hash[:32]}...")
-    print("Usage: sos-state-proofs --root")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

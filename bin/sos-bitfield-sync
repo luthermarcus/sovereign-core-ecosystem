@@ -1,65 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, time, json, math, hashlib, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-bitfield-sync"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def get_local_bitfield():
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("SELECT chunk_index FROM sos_aead_chunks ORDER BY chunk_index ASC")
-    rows = cur.fetchall()
-    conn.close()
-    if not rows:
-        return 0, "00", []
-    indices = set(r[0] for r in rows)
-    max_idx = max(indices)
-    num_bytes = math.ceil((max_idx + 1) / 8)
-    byte_arr = bytearray(num_bytes)
-    for idx in indices:
-        byte_arr[idx // 8] |= (1 << (7 - (idx % 8)))
-    return max_idx + 1, byte_arr.hex(), list(indices)
-
-def sync_dump(conn):
-    conn.commit()
-    with open(dump_path, "w") as f:
-        for line in conn.iterdump():
-            f.write(f"{line}\n")
-    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-    conn.close()
-
-if len(sys.argv) > 1 and sys.argv[1] == "--local":
-    total, hex_str, indices = get_local_bitfield()
-    print("=== LOCAL BEP-52 CHUNK BITFIELD ===")
-    print(f"[*] Available Pieces : {len(indices)} / {total}")
-    print(f"[*] Bitfield Hex     : 0x{hex_str}")
-    print(f"[*] Active Indices   : {sorted(indices)}")
-
-elif len(sys.argv) > 2 and sys.argv[1] == "--exchange":
-    peer = sys.argv[2]
-    total, local_hex, local_idx = get_local_bitfield()
-    now_t = int(time.time())
-    
-    # Simulated incoming peer bitfield (peer has index 0, missing index 1)
-    peer_indices = {0}
-    missing = [i for i in local_idx if i not in peer_indices]
-    peer_hex = "80"
-    
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute(
-        "INSERT OR REPLACE INTO sos_peer_bitfields VALUES (?, ?, ?, ?, ?)",
-        (peer, total, peer_hex, json.dumps(missing), now_t)
-    )
-    print(f"=== BEP-52 BITFIELD NEGOTIATION WITH {peer} ===")
-    print(f"[*] Local Pieces  : {sorted(local_idx)}")
-    print(f"[*] Peer Pieces   : {sorted(list(peer_indices))} (0x{peer_hex})")
-    print(f"[+] Outbound Delta: Peer needs chunks {missing} -> Stream Primed")
-    sync_dump(conn)
-
-else:
-    print("=== SOVEREIGN BEP-52 BITFIELD ENGINE ===")
-    print("Usage:")
-    print("  sos-bitfield-sync --local            Display local chunk bitfield")
-    print("  sos-bitfield-sync --exchange <peer>  Negotiate missing chunk delta with peer")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

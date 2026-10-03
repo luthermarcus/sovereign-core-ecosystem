@@ -1,45 +1,11 @@
-#!/usr/bin/env python3
-import os, platform, sqlite3, sys
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-WORKSPACE = os.path.expanduser("~/sos-fox-beta")
-DB_PATH = os.path.join(WORKSPACE, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-hardware-sentinel"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def audit_hardware_and_security():
-    print("==============================================================================")
-    print("  SOVEREIGN CORE OS: HARDWARE PROFILE & COMMUNITY SECURITY SENTINEL          ")
-    print("==============================================================================")
-    
-    # 1. Hardware & Platform Abstraction Check
-    arch = platform.machine()
-    system = platform.system()
-    python_ver = platform.python_version()
-    print(f"[*] Runtime Environment : System={system} | Arch={arch} | Python={python_ver}")
-    
-    if arch in ["aarch64", "arm64"]:
-        profile = "SOVEREIGN_MOBILE_EDGE_NODE"
-    elif arch in ["x86_64", "AMD64"]:
-        profile = "SOVEREIGN_WORKSTATION_NODE"
-    else:
-        profile = "SOVEREIGN_GENERIC_POSIX_NODE"
-    print(f"  [+] Hardware Profile  : {profile} [ABS_VERIFIED]")
-
-    # 2. Enclave & Permission Audit
-    if os.path.exists(DB_PATH):
-        mode = oct(os.stat(DB_PATH).st_mode)[-3:]
-        if mode == "600":
-            print(f"  [+] Enclave Vault     : Mode {mode} Permissions Locked [SECURE]")
-        else:
-            print(f"  [!] Enclave Warning   : Mode {mode} detected, expected 600 [FAIL]")
-            return 1
-    else:
-        print("  [*] Enclave Vault     : Initializing fresh state container.")
-
-    # 3. Community Threat Flags Verification
-    print("  [+] Threat Intelligence: Zero active drainer signatures or permission anomalies [PASS]")
-    print("==============================================================================")
-    print("[+] HARDWARE SENTINEL: Environment normalized. Zero platform leakage.")
-    print("==============================================================================")
-    return 0
-
-if __name__ == "__main__":
-    sys.exit(audit_hardware_and_security())
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

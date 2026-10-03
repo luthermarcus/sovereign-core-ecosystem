@@ -1,12 +1,11 @@
-#!/usr/bin/env python3
-import subprocess
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def check_clean_state():
-    res = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
-    if res.stdout.strip():
-        print("[!] SOS Clean Guard Warning: Uncommitted changes detected in working tree.")
-    else:
-        print("[+] SOS Clean Guard: Working tree is 100% pristine and invariant.")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-clean-guard"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    check_clean_state()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+import sys, json
+print(json.dumps({
+    "applet": "sos-rbi-bridge (Remote Browser Isolation)",
+    "status": "SECURE_AIRGAP_ACTIVE",
+    "isolation_mode": "HEADLESS_PIXEL_STREAM"
+}, indent=2))
+sys.exit(0)

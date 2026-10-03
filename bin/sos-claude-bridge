@@ -1,33 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-claude-bridge"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def generate_claude_handoff():
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("SELECT gamma, proper_time_tau FROM sos_spacetime_anchors WHERE anchor_id='LORENTZ_HORIZON'")
-    row = cur.fetchone()
-    gamma, tau = row if row else (1.005, 955.22)
-    conn.close()
-    
-    handoff = f"""# CLAUDE ONBOARDING PROMPT: SOVEREIGN CORE OS (SOS v7.71.100-beta)
-You are collaborating on Sovereign Core OS (SOS), an invariant rootless microkernel running on Android Termux and Linux Mint.
-
-## Active State Parameters:
-- Node Identity: pixel-sovereign (aarch64) | Toolchain: Python 3.14 Native C-API
-- Privilege Sandbox: STRICT_ROOTLESS_PURITY (Enforcing SELinux user-space isolation; no root/su)
-- Spacetime Invariant: Lorentz Gamma = {gamma} | Proper Time tau = {tau}s
-- Ledger Engine: Triple-Entry Accounting + Nilometer Tax Relief + Biblical Jubilee Reset
-
-## Core Operating Rules for Claude:
-1. NEVER suggest root access (`su`). The environment is strictly rootless.
-2. ZERO PIP DEPENDENCIES: Use only Python Standard Library modules (`sqlite3`, `ssl`, `hashlib`, `socket`, `struct`).
-3. THE SAVEPOINT RULE: Before proposing code edits, invoke `sos-savepoint --create <label>`. Validate via `sos-truth`.
-4. INVARIANT EQUILIBRIUM: Idle pulses must result in 0 mutations and zero Git commits.
-"""
-    print(handoff)
-
-if __name__ == "__main__":
-    generate_claude_handoff()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

@@ -1,25 +1,11 @@
-#!/usr/bin/env python3
-import subprocess
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def render_landing():
-    print("================================================================================")
-    print("     SOVEREIGN CORE OS (SOS) | CONVERGENCE RELEASE v7.71.135-beta               ")
-    print("     Decentralized Microkernel Engine & Bilateral PTLC Exchange                 ")
-    print("================================================================================")
-    print("  [ARCH] aarch64 / POSIX User-Space      [SECURITY] Military MLS / Mode 0o600   ")
-    print("  [CONSENSUS] AuxPoW / Bitcoin L2 PTLC   [VAULT] AES-256-GCM Airgapped RAM      ")
-    print("================================================================================")
-    print("  CORE CONTROL ACTIONS & COMMAND PALETTE:                                       ")
-    print("    dash             - Launch unified real-time ecosystem dashboard             ")
-    print("    sos-status       - Execute multi-subsystem integrity diagnostic             ")
-    print("    sos-fallback     - Safe fallback & rollback to verified baseline            ")
-    print("    sos-ptlc-engine  - Run Schnorr adaptor atomic swap simulator                ")
-    print("    sos-boomerang    - Inspect cold storage pre-broadcast transaction queue     ")
-    print("    sos-threat-db    - Query forensic exchange & drainer vulnerability KB       ")
-    print("    sos-truth        - Run 8-point deterministic anti-hallucination guard       ")
-    print("    sos-audit-health - Master ledger & UTXO logistics invariant attestation     ")
-    print("================================================================================")
-    subprocess.run(["sos-risk-sentinel"])
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-landing-page"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    render_landing()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

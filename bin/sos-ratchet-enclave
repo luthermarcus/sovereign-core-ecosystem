@@ -1,19 +1,11 @@
-#!/usr/bin/env python3
-import hashlib, hmac, os, secrets
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def double_ratchet_kdf():
-    # Signal-style forward-secrecy KDF ratchet step
-    root_key = secrets.token_bytes(32)
-    ephemeral_dh = secrets.token_bytes(32)
-    chain_key = hmac.new(root_key, ephemeral_dh, hashlib.sha256).digest()
-    message_key = hmac.new(chain_key, b"\x01_ENCLAVE_RATCHET", hashlib.sha256).digest()
-    
-    # Fischer 960 state permutation derivation
-    fischer_state = int(hashlib.sha256(message_key).hexdigest()[:4], 16) % 960
-    
-    # Ephemeral zeroization demonstration
-    del root_key, ephemeral_dh
-    print(f"[*] SOS Ratchet Enclave: KDF forward secrecy active | Fischer-960 State: {fischer_state} | Memory Zeroized [PASS]")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-ratchet-enclave"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    double_ratchet_kdf()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

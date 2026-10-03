@@ -1,24 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-bandwidth-shaper"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def apply_hardware_throttling():
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    # Optimize SQLite for older, constrained hardware (Lower memory cache & safe sync)
-    cur.execute("PRAGMA cache_size = -2000;")  # Limit cache to ~2MB
-    cur.execute("PRAGMA synchronous = NORMAL;")
-    conn.commit()
-    conn.close()
-    return True
-
-if len(sys.argv) > 1 and sys.argv[1] == "--throttle":
-    apply_hardware_throttling()
-    print("=== SOVEREIGN HARDWARE RESOURCE GOVERNOR ===")
-    print("[+] Legacy Throttling Active : SQLite cache optimized for constrained laptops/mobile nodes.")
-    print("[+] Thermal Protection      : Background poll intervals scaled back for battery/CPU preservation.")
-else:
-    print("=== SOVEREIGN BANDWIDTH & HARDWARE SHAPER ===")
-    print("Usage: sos-bandwidth-shaper --throttle")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

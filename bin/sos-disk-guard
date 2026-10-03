@@ -1,15 +1,11 @@
-#!/usr/bin/env python3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
 import os
 
-def check_disk():
-    base_dir = os.path.expanduser("~/sos-fox-beta")
-    st = os.statvfs(base_dir)
-    free_mb = (st.f_bavail * st.f_frsize) / (1024 * 1024)
-    print(f"[*] SOS Disk Guard: Available storage in workspace = {free_mb:.2f} MB")
-    if free_mb < 100:
-        print("[!] SOS Disk Guard Warning: Low disk space detected.")
-    else:
-        print("[+] SOS Disk Guard: Storage quota nominal.")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-disk-guard"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-if __name__ == "__main__":
-    check_disk()
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

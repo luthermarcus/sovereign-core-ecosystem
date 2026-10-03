@@ -1,40 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, time, sqlite3, subprocess
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-savepoint"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def create_savepoint(label):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("PRAGMA journal_mode = WAL;")
-    cur.execute(f"SAVEPOINT {label}")
-    conn.commit()
-    conn.close()
-    # Save a git head reference tag locally
-    subprocess.run(["git", "tag", "-f", f"checkpoint-{label}"], check=False, stdout=subprocess.DEVNULL)
-    print(f"[+] Multi-Model Safe Checkpoint Created: 'checkpoint-{label}'")
-
-def rollback_savepoint(label):
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    try:
-        cur.execute(f"ROLLBACK TO {label}")
-        conn.commit()
-        print(f"[+] SQLite Savepoint '{label}' rolled back cleanly.")
-    except Exception as e:
-        print(f"[!] Database rollback error: {e}")
-    finally:
-        conn.close()
-    subprocess.run(["git", "checkout", f"checkpoint-{label}", "--", "sos_core.py"], check=False)
-    print(f"[+] Restored sos_core.py to 'checkpoint-{label}' state.")
-
-if len(sys.argv) > 2 and sys.argv[1] == "--create":
-    create_savepoint(sys.argv[2])
-elif len(sys.argv) > 2 and sys.argv[1] == "--rollback":
-    rollback_savepoint(sys.argv[2])
-else:
-    print("=== SOVEREIGN AI MODEL SAVEPOINT SENTINEL ===")
-    print("Usage:")
-    print("  sos-savepoint --create <label>     Create atomic SQLite & Git checkpoint for AI handoffs")
-    print("  sos-savepoint --rollback <label>   Roll back working tree and ledger to designated checkpoint")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

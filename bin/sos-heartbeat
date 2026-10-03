@@ -1,51 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, time, sqlite3
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-repo = os.path.expanduser("~/sos-fox-beta")
-db_path = os.path.join(repo, "sos_vault.db")
-dump_path = os.path.join(repo, "sos_vault_dump.sql")
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-heartbeat"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-def sync_dump(conn):
-    conn.commit()
-    with open(dump_path, "w") as f:
-        for line in conn.iterdump():
-            f.write(f"{line}\n")
-    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
-    conn.close()
-
-def init_reputation_table(cur):
-    cur.execute("CREATE TABLE IF NOT EXISTS sos_peer_reputation (node_id TEXT PRIMARY KEY, score INTEGER, last_seen INTEGER, status TEXT)")
-
-def evaluate_swarm_heartbeat():
-    conn = sqlite3.connect(db_path)
-    cur = conn.cursor()
-    cur.execute("PRAGMA journal_mode = WAL;")
-    init_reputation_table(cur)
-    
-    now_t = int(time.time())
-    
-    # Ensure default bridge peer exists in reputation table
-    cur.execute("INSERT OR IGNORE INTO sos_peer_reputation VALUES ('peer-mint-bridge-01', 100, ?, 'ACTIVE_TIMELIKE')", (now_t,))
-    
-    # Simulate heartbeat tick: increment score for responsive peers, degrade stale ones
-    cur.execute("UPDATE sos_peer_reputation SET last_seen=?, status='ACTIVE_TIMELIKE' WHERE node_id='peer-mint-bridge-01'", (now_t,))
-    
-    cur.execute("SELECT node_id, score, status FROM sos_peer_reputation")
-    peers = cur.fetchall()
-    
-    sync_dump(conn)
-    conn.close()
-    return peers
-
-if len(sys.argv) > 1 and sys.argv[1] == "--pulse":
-    peers = evaluate_swarm_heartbeat()
-    print("=== SOVEREIGN MESH SWARM HEARTBEAT ===")
-    for p in peers:
-        print(f"  * Peer: {p[0]:<22} | Reputation Score: {p[1]} | Status: {p[2]}")
-    print("[+] Swarm Heartbeat Pulse Broadcasted Successfully.")
-else:
-    peers = evaluate_swarm_heartbeat()
-    print("=== SOVEREIGN PEER REPUTATION STATUS ===")
-    for p in peers:
-        print(f"  * Peer: {p[0]:<22} | Score: {p[1]} | Status: {p[2]}")
-    print("Usage: sos-heartbeat [--pulse]")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)

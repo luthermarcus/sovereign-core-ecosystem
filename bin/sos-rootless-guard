@@ -1,32 +1,11 @@
-#!/usr/bin/env python3
-import os, sys, shutil
+#!/data/data/com.termux/files/usr/bin/python3
+import sys
+import os
 
-def audit_rootless_purity():
-    # Detect if /data/data/.../su is just our Step 1 sudosafe shim
-    su_bin = "/data/data/com.termux/files/usr/bin/su"
-    is_shim = False
-    if os.path.exists(su_bin):
-        try:
-            content = open(su_bin, "r", errors="ignore").read()
-            if "pkg" in content or "sudosafe" in content:
-                is_shim = True
-        except Exception:
-            pass
+script_path = "/data/data/com.termux/files/home/sos-fox-beta/bin/sos-rootless-guard"
+with open(script_path, "rb") as sf:
+    code_bytes = sf.read()
 
-    return {
-        "sandbox_mode": "STRICT_ROOTLESS_PURITY",
-        "selinux_harmony": "SELinux:Enforcing_Rootless_Harmony ($HOME-Safe)",
-        "sudo_shim": "STEP_1_SUDOSAFE_WRAPPER" if is_shim else "UNPRIVILEGED_USER",
-        "ppk_governance": "OS_DEVELOPER_OPTIONS_MANAGED",
-        "trustless_status": "VERIFIED_MATHEMATICAL_INVARIANCE"
-    }
-
-if __name__ == "__main__":
-    audit = audit_rootless_purity()
-    print("=== SOVEREIGN ROOTLESS PURITY & TRUSTLESS SENTINEL ===")
-    print(f"[*] Sandbox Mode      : {audit['sandbox_mode']}")
-    print(f"[*] Host Security     : {audit['selinux_harmony']}")
-    print(f"[*] Command Wrapper   : {audit['sudo_shim']}")
-    print(f"[*] Background Policy : {audit['ppk_governance']}")
-    print(f"[*] Trust Model       : {audit['trustless_status']}")
-    print("[+] System operates strictly unprivileged: Zero root calls, zero integrity trips.")
+# Execute script code within the current global namespace
+global_ns = {"__name__": "__main__", "__file__": script_path}
+exec(compile(code_bytes, script_path, 'exec'), global_ns)
