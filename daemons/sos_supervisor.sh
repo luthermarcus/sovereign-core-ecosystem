@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 WORKSPACE="/root/workspace"
-cd "$WORKSPACE" || exit 1
+mkdir -p "$WORKSPACE"
 
 case "$1" in
     start)
@@ -9,13 +9,13 @@ case "$1" in
 
         for s in telemetry_session cron_session alert_session api_session; do
             if ! tmux has-session -t "$s" 2>/dev/null; then
-                if [ "$s" = "telemetry_session" ] && [ -f "continuous_monitor.py" ]; then
+                if [ "$s" = "telemetry_session" ] && [ -f "$WORKSPACE/continuous_monitor.py" ]; then
                     tmux new-session -d -s "$s" "cd $WORKSPACE && python3 continuous_monitor.py"
-                elif [ "$s" = "cron_session" ] && [ -f "sovereign_manager.py" ]; then
+                elif [ "$s" = "cron_session" ] && [ -f "$WORKSPACE/sovereign_manager.py" ]; then
                     tmux new-session -d -s "$s" "cd $WORKSPACE && while true; do python3 sovereign_manager.py --sweep; sleep 300; done"
-                elif [ "$s" = "alert_session" ] && [ -f "alert_daemon.py" ]; then
+                elif [ "$s" = "alert_session" ] && [ -f "$WORKSPACE/alert_daemon.py" ]; then
                     tmux new-session -d -s "$s" "cd $WORKSPACE && python3 alert_daemon.py"
-                elif [ "$s" = "api_session" ] && [ -f "sovereign_ipc_bridge.py" ]; then
+                elif [ "$s" = "api_session" ] && [ -f "$WORKSPACE/sovereign_ipc_bridge.py" ]; then
                     tmux new-session -d -s "$s" "cd $WORKSPACE && python3 sovereign_ipc_bridge.py"
                 fi
                 echo "[+] Initialized daemon: $s"
