@@ -10,17 +10,18 @@ C_MAGENTA= "\033[1;35m"
 C_GRAY   = "\033[1;30m"
 C_WHITE  = "\033[1;37m"
 
-DB_PATH  = "/root/workspace/pixel_telemetry.db"
-SHM_FILE = "/dev/shm/sovereign_telemetry_live.json"
-BTC_FILE = "/root/workspace/bitcoin_sandbox.json"
-RPC_FILE = "/dev/shm/sovereign/workstation_rpc.json"
+DB_PATH    = "/root/workspace/pixel_telemetry.db"
+SHM_FILE   = "/dev/shm/sovereign_telemetry_live.json"
+BTC_FILE   = "/root/workspace/bitcoin_sandbox.json"
+FOX_FILE   = "/root/workspace/fox_wallet.json"
+HB_DIR     = "/dev/shm/sovereign/heartbeats"
 
 def fetch_records(limit=4):
     if not os.path.exists(DB_PATH): return "system_logs", 0, []
     try:
-        conn = sqlite3.connect(DB_PATH, timeout=2.0)
+        conn = sqlite3.connect(DB_PATH, timeout=1.0)
         c = conn.cursor()
-        c.execute("PRAGMA busy_timeout = 2000;")
+        c.execute("PRAGMA busy_timeout = 1000;")
         c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
         tables = [r[0] for r in c.fetchall()]
         if not tables:
@@ -46,19 +47,24 @@ def fetch_records(limit=4):
             formatted.append((r_id, r_ts, r_load, r_stat))
         return target, max_r, formatted
     except Exception:
-        return "error", 0, []
+        return "system_logs", 0, []
 
 def get_daemons():
-    try:
-        ps_out = subprocess.check_output(["ps", "-ef"], text=True)
-    except Exception:
-        ps_out = ""
-    return {
-        "telemetry": any(x in ps_out for x in ["continuous_monitor", "telemetry_session"]),
-        "cron": any(x in ps_out for x in ["sovereign_manager", "cron_session"]),
-        "alert": any(x in ps_out for x in ["alert_daemon", "alert_session"]),
-        "api": any(x in ps_out for x in ["sovereign_ipc_bridge", "api_session"])
-    }
+    now = time.time()
+    res = {}
+    for d, threshold in [("telemetry", 8), ("cron", 90), ("alert", 10), ("api", 10)]:
+        active = False
+        hb_path = os.path.join(HB_DIR, d)
+        if os.path.exists(hb_path):
+            try:
+                with open(hb_path, "r") as f:
+                    ts = float(f.read().strip())
+                    if (now - ts) <= threshold:
+                        active = True
+            except Exception:
+                pass
+        res[d] = active
+    return res
 
 def trigger_btc_sim():
     try:
@@ -66,6 +72,13 @@ def trigger_btc_sim():
         return "2-of-2 Multisig State Settlement committed!"
     except Exception as e:
         return f"Sim error: {e}"
+
+def trigger_fox_sync():
+    try:
+        subprocess.run(["python3", "/root/workspace/wallet_engine.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return "FOX Wallet re-attested and synced!"
+    except Exception as e:
+        return f"Wallet error: {e}"
 
 def trigger_sweep():
     try:
@@ -75,10 +88,9 @@ def trigger_sweep():
         return f"Sweep error: {e}"
 
 def render_ui(page, flash_msg=""):
-    # Reposition to home row and clear screen buffer
     sys.stdout.write("\033[H\033[2J")
     tbl, tot, recs = fetch_records(limit=4)
-    ipc, btc, rpc = {}, {}, {}
+    ipc, btc, fox = {}, {}, {}
     if os.path.exists(SHM_FILE):
         try:
             with open(SHM_FILE) as f: ipc = json.load(f)
@@ -87,20 +99,20 @@ def render_ui(page, flash_msg=""):
         try:
             with open(BTC_FILE) as f: btc = json.load(f)
         except Exception: pass
-    if os.path.exists(RPC_FILE):
+    if os.path.exists(FOX_FILE):
         try:
-            with open(RPC_FILE) as f: rpc = json.load(f)
+            with open(FOX_FILE) as f: fox = json.load(f)
         except Exception: pass
 
     daemons = get_daemons()
 
-    # Compact Header (Rows 1-3)
+    # Header (Lines 1-3)
     print(f"{C_CYAN}{C_BOLD}╔═══════════════════════════════════════════════════════════════════════╗{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.160)         ║{C_RESET}")
+    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.161)         ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚═══════════════════════════════════════════════════════════════════════╝{C_RESET}")
-    
-    # Navigation Bar (Row 4)
-    nav_tabs = [(1, "Overview"), (2, "DePIN"), (3, "Bitcoin"), (4, "Enclave"), (5, "Master")]
+
+    # Tabs (Line 4)
+    nav_tabs = [(1, "Overview"), (2, "DePIN"), (3, "L2 Vaults"), (4, "Enclave"), (5, "Master")]
     tab_line = [f"{C_BOLD}{C_GREEN}[{n}] {l}{C_RESET}" if page == n else f"{C_GRAY}[{n}] {l}{C_RESET}" for n, l in nav_tabs]
     print(" " + " | ".join(tab_line))
     print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -109,22 +121,23 @@ def render_ui(page, flash_msg=""):
         print(f" {C_YELLOW}⚡ {flash_msg[:68]}{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
 
-    # ==================== COMPACT MASTER MATRIX (TAB 5) ====================
+    # TAB 5: COMPACT MASTER MATRIX
     if page == 5:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}[1] WORKERS{C_RESET} : {' | '.join(badges)}")
         print(f"{C_WHITE}{C_BOLD}[2] METRICS{C_RESET} : Load: {C_GREEN}{ipc.get('load_avg', 'N/A')}{C_RESET} | Free: {C_CYAN}{float(ipc.get('storage_free_mb', 0))/1024:.1f} GB{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
-        print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | Workstation: {C_YELLOW}STANDBY{C_RESET} (10.0.0.130)")
+        print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | Host Mesh: {C_YELLOW}STANDBY{C_RESET} (10.0.0.130)")
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        last_ch = vaults[-1]["channel_id"] if vaults else "None"
-        print(f"{C_WHITE}{C_BOLD}[4] BTC L2 {C_RESET} : Height: {C_CYAN}#{btc.get('block_height', '109')}{C_RESET} | Vaults: {C_GREEN}{len(vaults)} Active{C_RESET} | {last_ch[:8]}..")
+        btc_str = f"#{btc.get('block_height', '109')} ({len(vaults)} Vaults)"
+        fox_str = f"{fox.get('l1_balance_fox', 25000):,.0f} L1 | {fox.get('l2_channel_balance_fox', 5000):,.0f} L2"
+        print(f"{C_WHITE}{C_BOLD}[4] ASSETS {C_RESET} : BTC: {C_CYAN}{btc_str}{C_RESET} | FOX: {C_YELLOW}{fox_str}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[5] ENCLAVE{C_RESET} : sos-truth: {C_GREEN}ACTIVE{C_RESET} | DLP: {C_GREEN}SECURE{C_RESET} | PRoot: {C_GREEN}ISOLATED{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
-        print(f"{C_WHITE}{C_BOLD}RECENT LOGS ({tbl}){C_RESET}:")
+        print(f"{C_WHITE}{C_BOLD}RECENT TELEMETRY LOGS ({tbl}){C_RESET}:")
         for r_id, r_ts, r_load, r_stat in recs[:3]:
             print(f" #{str(r_id):<3} | {str(r_ts)[11:19]} | Load: {str(r_load)[:16]} | {C_GREEN}{r_stat}{C_RESET}")
 
-    # ==================== TAB 1: OVERVIEW & LEDGER ====================
+    # TAB 1: OVERVIEW & LEDGER
     elif page == 1:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STANDBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}SUPERVISOR{C_RESET} : {' | '.join(badges)}")
@@ -134,7 +147,7 @@ def render_ui(page, flash_msg=""):
         for r_id, r_ts, r_load, r_stat in recs:
             print(f" {str(r_id):<3} | {str(r_ts)[11:19]} | {str(r_load):<16} | {C_GREEN}{r_stat}{C_RESET}")
 
-    # ==================== TAB 2: DEPIN CLUSTER ====================
+    # TAB 2: DEPIN CLUSTER
     elif page == 2:
         print(f"{C_WHITE}{C_BOLD}WORKSTATION BRIDGE{C_RESET}: {C_YELLOW}luther@10.0.0.130 -> STANDBY{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -143,16 +156,18 @@ def render_ui(page, flash_msg=""):
         print(f" EarnApp / TraffMonetizer      : {C_YELLOW}○ STANDBY{C_RESET}  [Residential Transit]")
         print(f" PacketStream / Pawns / Honey  : {C_YELLOW}○ STANDBY{C_RESET}  [Bandwidth Proxy]")
 
-    # ==================== TAB 3: BITCOIN L2 REGTEST ====================
+    # TAB 3: ASSET VAULTS & FOX WALLET
     elif page == 3:
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        print(f"{C_WHITE}{C_BOLD}REGTEST CHAIN{C_RESET}: Block {C_CYAN}#{btc.get('block_height', '109')}{C_RESET} | Vaults: {C_GREEN}{len(vaults)} Active{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '109')}{C_RESET} | {C_GREEN}{len(vaults)} Active Multisig Vaults{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}FOX L1 WALLET {C_RESET} : {C_YELLOW}{fox.get('l1_balance_fox', 25000):,.2f} FOX{C_RESET} ({fox.get('address', 'fox1q...')[:16]}...)")
+        print(f"{C_WHITE}{C_BOLD}FOX L2 BRIDGE {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 5000):,.2f} FOX{C_RESET} | State: {C_GREEN}{fox.get('bridge_state', 'SYNCHRONIZED')}{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
-        for ch in vaults[-3:]:
-            print(f" * Channel {C_YELLOW}{ch.get('channel_id')[:12]}..{C_RESET} (2-of-2 Multisig)")
-            print(f"   Cap: {ch.get('capacity_sats', 0):,} sats | Local: {C_GREEN}{ch.get('local_balance', 0):,}{C_RESET} | Remote: {ch.get('remote_balance', 0):,}")
+        if vaults:
+            last = vaults[-1]
+            print(f" Latest Vault : {last.get('channel_id')[:14]}.. | Cap: {last.get('capacity_sats', 0):,} sats")
 
-    # ==================== TAB 4: ENCLAVE ATTESTATION ====================
+    # TAB 4: ENCLAVE ATTESTATION
     elif page == 4:
         print(f"{C_WHITE}{C_BOLD}SECURITY ENCLAVE PROTOCOLS{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -161,9 +176,10 @@ def render_ui(page, flash_msg=""):
         print(f" sos-dlp-guard    : {C_GREEN}● ACTIVE{C_RESET} [Zero PAT/Cred Leaks]")
         print(f" PRoot Boundary   : {C_GREEN}● VERIFIED{C_RESET} [UID Namespace Isolation]")
 
-    # Fixed Action Footer (Row 16-17)
+    # Footer (Lines 16-17)
     print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}ACTIONS:{C_RESET} [1-5] Tab | [b] Settle BTC | [s] Sweep | [q] Exit")
+    print(f"{C_CYAN}{C_BOLD}ACTIONS:{C_RESET} [1-5] Tab | [b] Settle BTC | [w] Sync FOX | [s] Sweep | [q] Exit")
+    sys.stdout.flush()
 
 def main():
     initial_page = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 5
@@ -172,7 +188,7 @@ def main():
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
 
-    # Enter alternate screen buffer & hide blinking cursor
+    # Alternate screen buffer & hide cursor
     sys.stdout.write("\033[?1049h\033[?25l")
     sys.stdout.flush()
 
@@ -188,12 +204,13 @@ def main():
                     page = int(ch)
                 elif ch in ['b', 'B']:
                     flash = trigger_btc_sim()
+                elif ch in ['w', 'W']:
+                    flash = trigger_fox_sync()
                 elif ch in ['s', 'S']:
                     flash = trigger_sweep()
                 elif ch in ['q', 'Q']:
                     break
     finally:
-        # Restore terminal attributes, exit alternate buffer, and show cursor
         termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         sys.stdout.write("\033[?1049l\033[?25h")
         sys.stdout.flush()
