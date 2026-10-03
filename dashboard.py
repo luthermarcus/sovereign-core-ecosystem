@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified Master OS Command Center (v7.72.40)
-Full Architecture Restoration: Integrates 3.1 Pro + 3.5 lineages into a single control plane.
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.41)
+TTY-Aware Input Controller: Direct keyboard binding prevents EOF crashes.
 """
 import os, sys, sqlite3, time, datetime
 
@@ -18,12 +18,19 @@ METRICS_DB = '/dev/shm/ecosystem_metrics.db'
 TRUST_DB   = '/dev/shm/trust_store.db'
 ROOT_DIR   = os.path.dirname(os.path.abspath(__file__))
 
-def flush_input():
+def get_tty_input(prompt_text):
+    """Directly queries /dev/tty to bypass heredoc pipe redirection."""
+    sys.stdout.write(prompt_text)
+    sys.stdout.flush()
     try:
-        import termios
-        termios.tcflush(sys.stdin, termios.TCIFLUSH)
+        with open('/dev/tty', 'r') as tty:
+            return tty.readline().strip().lower()
     except Exception:
-        pass
+        try:
+            return input().strip().lower()
+        except EOFError:
+            time.sleep(2)
+            return 'q'
 
 def get_db(path):
     if not os.path.isfile(path): return None
@@ -49,7 +56,7 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
-# PAGE 1: Original Pixel 10 Pro XL Workstation TUI (Screenshot 5853 / v7.71.183)
+# PAGE 1: Original Pixel 10 Pro XL Workstation TUI (v7.71.183 / Screenshot 5853)
 def render_page_1(m_conn, t_conn, masked):
     draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
     cpu  = "[SHIELDED]" if masked else "14.2%"
@@ -77,7 +84,7 @@ def render_page_1(m_conn, t_conn, masked):
     print(f" #1272 | {ts} | Load: {CYAN}{load}{RESET} | {GREEN}Running{RESET}")
     print(f"\n {BOLD}Workstation Identity:{RESET} Sovereign Core Operator <operator@sovereign-core.local> | {BOLD}Status:{RESET} {GREEN}HEALTHY{RESET}")
 
-# PAGE 2: 8-Feature Security Matrix + Mathematical Entropy (Branch A + Screenshot 5866)
+# PAGE 2: 8-Feature Security Matrix + Mathematical Entropy (Screenshot 5866)
 def render_page_2(t_conn):
     draw_header(2, 8, "OS SECURITY FOUNDATION & MATHEMATICAL ENTROPY")
     features = [
@@ -96,20 +103,19 @@ def render_page_2(t_conn):
     for name, desc, status, col in features:
         print(f"   {BOLD}{name:<32}{RESET} | {desc:<40} | {col}{status}{RESET}")
 
-    # Branch A: Mathematical Entropy & Trust Scoring
-    print(f"\n {BOLD}{YELLOW}[+] MATHEMATICAL SECURITY & ENTROPY INVARIANTS (BRANCH A / v1.92):{RESET}")
+    print(f"\n {BOLD}{YELLOW}[+] MATHEMATICAL SECURITY & ENTROPY INVARIANTS:{RESET}")
     f_seed, null_inv, t_score = (960, 0, 99.4)
     if t_conn:
         try:
             r = t_conn.cursor().execute("SELECT fischer_seed, null_state_invariant, trust_score FROM mathematical_entropy_ledger ORDER BY entropy_id DESC LIMIT 1").fetchone()
             if r: f_seed, null_inv, t_score = r
         except Exception: pass
-    print(f"   * Fischer Random Seed Entropy  : {CYAN}Mode {f_seed}{RESET} (960-Domain State Permutation)")
+    print(f"   * Fischer Random Seed Entropy  : {CYAN}Mode {f_seed}{RESET} (960-Domain Permutation)")
     print(f"   * Null-State Arithmetic (0)     : {GREEN}Invariant Satisfied ({null_inv}){RESET}")
     print(f"   * Spatial Scaling Dimension     : {MAGENTA}[0, 0, ∞]{RESET}")
     print(f"   * Contributor Trust Score      : {GREEN}{t_score}% Nominal Trust{RESET} (/dev/shm/trust_store.db)")
 
-# PAGE 3: 7-Node DePIN Fleet & Passive Yield Portfolio
+# PAGE 3: 7-Node DePIN Fleet
 def render_page_3(m_conn, masked):
     draw_header(3, 8, "7-NODE DEPIN INFRASTRUCTURE & YIELD HARVEST", masked)
     print(f" {BOLD}{YELLOW}[+] VERIFIED PASSIVE INCOME DEPIN FLEET (7/7 ACTIVE NODES):{RESET}")
@@ -127,7 +133,7 @@ def render_page_3(m_conn, masked):
             print(f"   [-] DePIN telemetry unavailable: {e}")
     print(f"\n {BOLD}Portfolio Architecture:{RESET} 1 Native Mysterium Node + 6 Containerized Nodes (EarnApp, TraffMonetizer, PacketStream, Pawns, Honeygain, Docker Myst)")
 
-# PAGE 4: Boomerang AMM & Liquidity Pools (Anti-Honeypot + Rollback Protection)
+# PAGE 4: Boomerang AMM & Liquidity Pools
 def render_page_4(m_conn, masked):
     draw_header(4, 8, "BOOMERANG AMM & LIQUIDITY POOLS (ANTI-HONEYPOT)", masked)
     print(f" {BOLD}{YELLOW}[+] CROSS-CHAIN LIQUIDITY POOLS & ARBITRAGE PATHS:{RESET}")
@@ -154,7 +160,7 @@ def render_page_4(m_conn, masked):
             print(f"   [-] Boomerang state query error: {e}")
     print(f"\n {BOLD}Rollback Security:{RESET} Automated time-lock escrow rollback active (zero gas loss upon settlement timeouts).")
 
-# PAGE 5: Cross-DEX Ecosystem (Fox DEX, Curve CRV, ETH, BTC, P2P HTLC)
+# PAGE 5: Cross-DEX Ecosystem
 def render_page_5(m_conn, masked):
     draw_header(5, 8, "CROSS-DEX ECOSYSTEM & P2P ATOMIC ESCROW", masked)
     print(f" {BOLD}{YELLOW}[+] MULTI-CHAIN LIQUIDITY VENUES & POOL SPREADS:{RESET}")
@@ -180,7 +186,7 @@ def render_page_5(m_conn, masked):
             print(f"   [-] Multi-chain DEX query error: {e}")
     print(f"\n {BOLD}Settlement Engines:{RESET} Curve TriCrypto Proxy & Bitcoin Taproot cross-chain atomic hash locks verified.")
 
-# PAGE 6: Bitcoin L1/L2 Taproot Settlement Pipeline
+# PAGE 6: Bitcoin L1/L2 Taproot Pipeline
 def render_page_6(m_conn, masked):
     draw_header(6, 8, "BITCOIN L1/L2 TAPROOT SETTLEMENT PIPELINE", masked)
     print(f" {BOLD}{YELLOW}[+] STATE FINALITY, ROLLUP COMMITS & ANCHOR STATUS:{RESET}")
@@ -219,7 +225,7 @@ def render_page_6(m_conn, masked):
             print(f"\n {BOLD}Dual-Fund Rebalancer:{RESET} DePIN Revenue Inflow (${df[0]:.2f}) -> {GREEN}+{df[1]:,} Sats{RESET} allocated to L1 Anchor Reserve ({df[2]})")
     except Exception: pass
 
-# PAGE 7: Enclave Daemons Super-Tree (Branch D / v7.71.194)
+# PAGE 7: 12 Enclave Daemons Super-Tree
 def render_page_7(m_conn):
     draw_header(7, 8, "ENCLAVE DAEMONS SUPER-TREE & WATCHDOG STATUS")
     print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
@@ -284,15 +290,11 @@ def main():
         print(f"\n{CYAN}+----------------------------------------------------------------------------------------------------+{RESET}")
         print(f"{BOLD}CONTROLS: [1-8] Jump | [n/p] Prev/Next | [m] Toggle Mask | [x] Swap Engine | [b] BTC Anchor | [q] Exit{RESET}")
 
-        flush_input()
-        try:
-            ch = input(f"{BOLD}Command: {RESET}").strip().lower()
-        except (KeyboardInterrupt, EOFError):
-            break
+        ch = get_tty_input(f"{BOLD}Command: {RESET}")
 
         if ch in ['1', '2', '3', '4', '5', '6', '7', '8']:
             current_page = int(ch)
-        elif ch in ['n', 'next', ' ']:
+        elif ch in ['n', 'next']:
             current_page = 1 if current_page >= total_pages else current_page + 1
         elif ch in ['p', 'prev']:
             current_page = total_pages if current_page <= 1 else current_page - 1
