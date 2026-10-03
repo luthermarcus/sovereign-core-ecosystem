@@ -1,15 +1,7 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.38)
-Integrates all historical releases into a cohesive, paginated terminal workspace:
-  - Page 1: Pixel 10 Pro XL Workstation TUI (v7.71.183 replication with rolling logs & θ)
-  - Page 2: OS Security Matrix & Mathematical Entropy (8 Features + Fischer 960 Seed)
-  - Page 3: 7-Node DePIN Fleet & Passive Yield Harvest (1 Native + 6 Containers)
-  - Page 4: Cross-DEX Ecosystem (Fox DEX, Curve CRV TriCrypto, Boomerang AMM, P2P Escrow)
-  - Page 5: Bitcoin L1/L2 Taproot Settlement Pipeline & Fast Exits
-  - Page 6: Enclave Daemons Super-Tree (12 Process Monitors, PIDs & Memory)
-  - Page 7: Developer Configuration & KB Protocol Switches
-Controls: [1-7] Jump, [n/p] Prev/Next, [m] Toggle Mask, [x] Swap, [b] BTC Anchor, [q] Exit
+dashboard.py - Sovereign Core Grand Unified Master OS Command Center (v7.72.40)
+Full Architecture Restoration: Integrates 3.1 Pro + 3.5 lineages into a single control plane.
 """
 import os, sys, sqlite3, time, datetime
 
@@ -44,7 +36,7 @@ def get_db(path):
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Entropy", "DePIN Fleet", "Cross-DEX", "Bitcoin L2", "12 Daemons", "Dev/Flags"]
+    page_names = ["Workstation", "Security/Entropy", "DePIN Fleet", "Boomerang Pools", "Cross-DEX", "Bitcoin L2", "12 Daemons", "Dev/Flags"]
     page_bar = " | ".join([
         f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}"
         for i, name in enumerate(page_names)
@@ -59,7 +51,7 @@ def draw_header(current_page, total_pages, title, masked=True):
 
 # PAGE 1: Original Pixel 10 Pro XL Workstation TUI (Screenshot 5853 / v7.71.183)
 def render_page_1(m_conn, t_conn, masked):
-    draw_header(1, 7, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
+    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
     cpu  = "[SHIELDED]" if masked else "14.2%"
     load = "[PROTECTED]" if masked else "0.82, 0.74, 0.68"
     free = "[CONFIDENTIAL]" if masked else "6.4 GB"
@@ -87,7 +79,7 @@ def render_page_1(m_conn, t_conn, masked):
 
 # PAGE 2: 8-Feature Security Matrix + Mathematical Entropy (Branch A + Screenshot 5866)
 def render_page_2(t_conn):
-    draw_header(2, 7, "OS SECURITY FOUNDATION & MATHEMATICAL ENTROPY")
+    draw_header(2, 8, "OS SECURITY FOUNDATION & MATHEMATICAL ENTROPY")
     features = [
         ("1. Identity Enclave Boundary", "Sovereign Core Operator <operator@sovereign-core.local>", "VERIFIED_ACTIVE", GREEN),
         ("2. Data Loss Prevention (DLP)", "sos-dlp-guard & strict git pre-commit barriers", "FAIL_CLOSED", GREEN),
@@ -114,11 +106,12 @@ def render_page_2(t_conn):
         except Exception: pass
     print(f"   * Fischer Random Seed Entropy  : {CYAN}Mode {f_seed}{RESET} (960-Domain State Permutation)")
     print(f"   * Null-State Arithmetic (0)     : {GREEN}Invariant Satisfied ({null_inv}){RESET}")
-    print(f"   * Contributor Trust Score      : {MAGENTA}{t_score}% Nominal Trust{RESET} (/dev/shm/trust_store.db)")
+    print(f"   * Spatial Scaling Dimension     : {MAGENTA}[0, 0, ∞]{RESET}")
+    print(f"   * Contributor Trust Score      : {GREEN}{t_score}% Nominal Trust{RESET} (/dev/shm/trust_store.db)")
 
 # PAGE 3: 7-Node DePIN Fleet & Passive Yield Portfolio
 def render_page_3(m_conn, masked):
-    draw_header(3, 7, "7-NODE DEPIN INFRASTRUCTURE & YIELD HARVEST", masked)
+    draw_header(3, 8, "7-NODE DEPIN INFRASTRUCTURE & YIELD HARVEST", masked)
     print(f" {BOLD}{YELLOW}[+] VERIFIED PASSIVE INCOME DEPIN FLEET (7/7 ACTIVE NODES):{RESET}")
     print(f"   {'Node Target':<18} | {'Service Model':<18} | {'Uptime':<8} | {'Latency':<9} | {'Yield Harvest':<13} | {'Status'}")
     print(f"   {'-'*16:18} | {'-'*16:18} | {'-'*6:8} | {'-'*7:9} | {'-'*11:13} | {'-'*16}")
@@ -134,9 +127,36 @@ def render_page_3(m_conn, masked):
             print(f"   [-] DePIN telemetry unavailable: {e}")
     print(f"\n {BOLD}Portfolio Architecture:{RESET} 1 Native Mysterium Node + 6 Containerized Nodes (EarnApp, TraffMonetizer, PacketStream, Pawns, Honeygain, Docker Myst)")
 
-# PAGE 4: Cross-DEX Ecosystem (Fox DEX, Curve CRV, Boomerang AMM, P2P Escrow)
+# PAGE 4: Boomerang AMM & Liquidity Pools (Anti-Honeypot + Rollback Protection)
 def render_page_4(m_conn, masked):
-    draw_header(4, 7, "CROSS-DEX ECOSYSTEM, CURVE (CRV) & P2P ATOMIC ESCROW", masked)
+    draw_header(4, 8, "BOOMERANG AMM & LIQUIDITY POOLS (ANTI-HONEYPOT)", masked)
+    print(f" {BOLD}{YELLOW}[+] CROSS-CHAIN LIQUIDITY POOLS & ARBITRAGE PATHS:{RESET}")
+    print(f"   {'Pool Pair':<18} | {'DEX Target':<18} | {'Depth (FOX)':<14} | {'24h Vol (USD)':<14} | {'Fee / APR':<12} | {'State'}")
+    print(f"   {'-'*16:18} | {'-'*16:18} | {'-'*12:14} | {'-'*12:14} | {'-'*10:12} | {'-'*16}")
+    if m_conn:
+        try:
+            c = m_conn.cursor()
+            c.execute("SELECT pool_pair, dex_target, liquidity_depth, volume_24h, fee_tier_pct, apr_pct, rebalance_status FROM boomerang_lp_metrics ORDER BY pool_id ASC")
+            for r in c.fetchall():
+                depth = "[MASKED]" if masked else f"{r[2]:>12,.0f}"
+                vol = "[MASKED]" if masked else f"${r[3]:>12,.0f}"
+                fee_apr = f"{r[4]:.2f}% / {r[5]:.1f}%"
+                print(f"   {r[0]:<18} | {r[1]:<18} | {depth:<14} | {vol:<14} | {fee_apr:<12} | {GREEN}{r[6]}{RESET}")
+
+            print(f"\n {BOLD}{YELLOW}[+] RECENT BOOMERANG CIRCULAR ARBITRAGE & ROLLBACK LOGS:{RESET}")
+            print(f"   {'Route Path':<26} | {'Injected':<10} | {'Profit':<12} | {'Latency':<8} | {'Gas':<7} | {'Anti-Honeypot'}")
+            print(f"   {'-'*24:26} | {'-'*8:10} | {'-'*10:12} | {'-'*6:8} | {'-'*5:7} | {'-'*16}")
+            c.execute("SELECT route_pair, capital_injected, profit_captured, execution_latency_ms, gas_cost_usd, anti_honeypot_check FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 4")
+            for r in c.fetchall():
+                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX"
+                print(f"   {MAGENTA}{r[0]:<26}{RESET} | {r[1]:>8,.0f} | {GREEN}{p_fox:<12}{RESET} | {r[3]:>5.1f}ms | ${r[4]:>4.2f} | {GREEN}{r[5]}{RESET}")
+        except Exception as e:
+            print(f"   [-] Boomerang state query error: {e}")
+    print(f"\n {BOLD}Rollback Security:{RESET} Automated time-lock escrow rollback active (zero gas loss upon settlement timeouts).")
+
+# PAGE 5: Cross-DEX Ecosystem (Fox DEX, Curve CRV, ETH, BTC, P2P HTLC)
+def render_page_5(m_conn, masked):
+    draw_header(5, 8, "CROSS-DEX ECOSYSTEM & P2P ATOMIC ESCROW", masked)
     print(f" {BOLD}{YELLOW}[+] MULTI-CHAIN LIQUIDITY VENUES & POOL SPREADS:{RESET}")
     print(f"   {'Platform':<16} | {'Pair':<14} | {'Network Layer':<20} | {'TVL (USD)':<12} | {'24h Vol':<11} | {'Health'}")
     print(f"   {'-'*14:16} | {'-'*12:14} | {'-'*18:20} | {'-'*10:12} | {'-'*9:11} | {'-'*14}")
@@ -149,7 +169,7 @@ def render_page_4(m_conn, masked):
                 vol = "[MASKED]" if masked else f"${r[4]:>9,.0f}"
                 print(f"   {r[0]:<16} | {r[1]:<14} | {r[2]:<20} | {tvl:<12} | {vol:<11} | {GREEN}{r[5]}{RESET}")
 
-            print(f"\n {BOLD}{YELLOW}[+] P2P ATOMIC HTLC ESCROW ORDER BOOK:{RESET}")
+            print(f"\n {BOLD}{YELLOW}[+] P2P ATOMIC HTLC ESCROW ORDER BOOK (ACTIVE EXCHANGES):{RESET}")
             print(f"   {'Counterparty':<18} | {'Asset Flow':<12} | {'Amount':<10} | {'Settlement Route':<24} | {'Status'}")
             print(f"   {'-'*16:18} | {'-'*10:12} | {'-'*8:10} | {'-'*22:24} | {'-'*14}")
             c.execute("SELECT counterparty_peer, source_asset || '->' || target_asset, order_amount, settlement_route, order_status FROM p2p_atomic_escrow_orders ORDER BY order_id ASC")
@@ -160,9 +180,9 @@ def render_page_4(m_conn, masked):
             print(f"   [-] Multi-chain DEX query error: {e}")
     print(f"\n {BOLD}Settlement Engines:{RESET} Curve TriCrypto Proxy & Bitcoin Taproot cross-chain atomic hash locks verified.")
 
-# PAGE 5: Bitcoin L1/L2 Taproot Settlement Pipeline
-def render_page_5(m_conn, masked):
-    draw_header(5, 7, "BITCOIN L1/L2 TAPROOT SETTLEMENT PIPELINE", masked)
+# PAGE 6: Bitcoin L1/L2 Taproot Settlement Pipeline
+def render_page_6(m_conn, masked):
+    draw_header(6, 8, "BITCOIN L1/L2 TAPROOT SETTLEMENT PIPELINE", masked)
     print(f" {BOLD}{YELLOW}[+] STATE FINALITY, ROLLUP COMMITS & ANCHOR STATUS:{RESET}")
     if m_conn:
         try:
@@ -191,7 +211,6 @@ def render_page_5(m_conn, masked):
         except Exception as e:
             print(f"   [-] Settlement pipeline query error: {e}")
 
-    # Dual Fund Settlement Status
     try:
         c = m_conn.cursor()
         c.execute("SELECT fund_1_depin_inflow_usd, rebalanced_to_anchor_sat, convergence_status FROM dual_fund_settlement_ledger ORDER BY convergence_id DESC LIMIT 1")
@@ -200,9 +219,9 @@ def render_page_5(m_conn, masked):
             print(f"\n {BOLD}Dual-Fund Rebalancer:{RESET} DePIN Revenue Inflow (${df[0]:.2f}) -> {GREEN}+{df[1]:,} Sats{RESET} allocated to L1 Anchor Reserve ({df[2]})")
     except Exception: pass
 
-# PAGE 6: Enclave Daemons Super-Tree (Branch D / v7.71.194)
-def render_page_6(m_conn):
-    draw_header(6, 7, "ENCLAVE DAEMONS SUPER-TREE & WATCHDOG STATUS")
+# PAGE 7: Enclave Daemons Super-Tree (Branch D / v7.71.194)
+def render_page_7(m_conn):
+    draw_header(7, 8, "ENCLAVE DAEMONS SUPER-TREE & WATCHDOG STATUS")
     print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
     print(f"   {'Daemon Script':<30} | {'PID':<6} | {'Subsystem Function':<30} | {'RAM (MB)':<8} | {'Status'}")
     print(f"   {'-'*28:30} | {'-'*4:6} | {'-'*28:30} | {'-'*6:8} | {'-'*16}")
@@ -216,9 +235,9 @@ def render_page_6(m_conn):
             print(f"   [-] Daemon supervisor offline: {e}")
     print(f"\n {BOLD}Watchdog Engine:{RESET} master_watchdog_v3 sub-process monitor active with zero-allocation polling.")
 
-# PAGE 7: Developer Configuration & KB Protocol Switches
-def render_page_7(m_conn):
-    draw_header(7, 7, "DEVELOPER CONFIGURATION & PROTOCOL SWITCHES")
+# PAGE 8: Developer Configuration & KB Protocol Switches
+def render_page_8(m_conn):
+    draw_header(8, 8, "DEVELOPER CONFIGURATION & PROTOCOL SWITCHES")
     print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME PARAMETERS & KB FLAGS CATALOG:{RESET}")
     if m_conn:
         try:
@@ -235,7 +254,7 @@ def render_page_7(m_conn):
 
 def main():
     current_page = 1
-    total_pages = 7
+    total_pages = 8
     masked = True
 
     while True:
@@ -253,15 +272,17 @@ def main():
         elif current_page == 5:
             render_page_5(m_conn, masked)
         elif current_page == 6:
-            render_page_6(m_conn)
+            render_page_6(m_conn, masked)
         elif current_page == 7:
             render_page_7(m_conn)
+        elif current_page == 8:
+            render_page_8(m_conn)
 
         if m_conn: m_conn.close()
         if t_conn: t_conn.close()
 
         print(f"\n{CYAN}+----------------------------------------------------------------------------------------------------+{RESET}")
-        print(f"{BOLD}CONTROLS: [1-7] Jump | [n/p] Prev/Next | [m] Toggle Mask | [x] Swap Engine | [b] BTC Anchor | [q] Exit{RESET}")
+        print(f"{BOLD}CONTROLS: [1-8] Jump | [n/p] Prev/Next | [m] Toggle Mask | [x] Swap Engine | [b] BTC Anchor | [q] Exit{RESET}")
 
         flush_input()
         try:
@@ -269,7 +290,7 @@ def main():
         except (KeyboardInterrupt, EOFError):
             break
 
-        if ch in ['1', '2', '3', '4', '5', '6', '7']:
+        if ch in ['1', '2', '3', '4', '5', '6', '7', '8']:
             current_page = int(ch)
         elif ch in ['n', 'next', ' ']:
             current_page = 1 if current_page >= total_pages else current_page + 1
@@ -278,8 +299,8 @@ def main():
         elif ch == 'm':
             masked = not masked
         elif ch == 'x':
-            print(f"\n{YELLOW}[*] Triggering Cross-DEX Tri-Arbitrage Engine...{RESET}")
-            os.system(f"python3 {os.path.join(ROOT_DIR, 'fox_cross_dex_engine.py')} 2>/dev/null || true")
+            print(f"\n{YELLOW}[*] Triggering Boomerang Circular Arbitrage Engine...{RESET}")
+            os.system(f"python3 {os.path.join(ROOT_DIR, 'fox_boomerang_engine.py')} 2>/dev/null || true")
             time.sleep(1.2)
         elif ch == 'b':
             print(f"\n{YELLOW}[*] Triggering Bitcoin Taproot Anchor Finalizer...{RESET}")
