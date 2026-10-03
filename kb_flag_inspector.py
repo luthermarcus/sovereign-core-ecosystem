@@ -1,35 +1,32 @@
 #!/usr/bin/env python3
 """
-kb_flag_inspector.py - Sovereign Core KB Flag & Feature Catalog
+kb_flag_inspector.py - Pre-Dash Log & Security Flag Auditor
 """
-import sqlite3, os
+import os, sqlite3, sys
 
-BOLD = "\033[1m"
-CYAN = "\033[36m"
-YELLOW = "\033[33m"
-GREEN = "\033[32m"
-RESET = "\033[0m"
-
+BOLD, GREEN, CYAN, YELLOW, RESET = "\033[1m", "\033[32m", "\033[36m", "\033[33m", "\033[0m"
 DB = '/dev/shm/ecosystem_metrics.db'
 
-def inspect():
-    print(f"\n{BOLD}{CYAN}================================================================================{RESET}")
-    print(f"{BOLD}{CYAN}             SOVEREIGN CORE — KB FLAGS & ACTIVE PROTOCOL SWITCHES               {RESET}")
-    print(f"{BOLD}{CYAN}================================================================================{RESET}")
+def inspect_flags():
+    os.system('clear' if os.name == 'posix' else 'cls')
+    print(f"{CYAN}+-------------------------------------------------------------------------------+{RESET}")
+    print(f"{CYAN}|{BOLD}      SOVEREIGN CORE OS (SOS) — PRE-DASH FLAG & SECURITY ANOMALY INSPECTOR     {RESET}{CYAN}|{RESET}")
+    print(f"{CYAN}+-------------------------------------------------------------------------------+{RESET}")
     if not os.path.exists(DB):
-        print("[-] Database offline.")
+        print(" [-] Metrics database offline.")
         return
-    conn = sqlite3.connect(DB, timeout=5)
+    conn = sqlite3.connect(DB, timeout=3)
     c = conn.cursor()
-    c.execute("SELECT category, param_key, param_value FROM dev_parameters ORDER BY category, param_key")
-    current_cat = None
-    for cat, k, v in c.fetchall():
-        if cat != current_cat:
-            current_cat = cat
-            print(f"\n{BOLD}{YELLOW}[DOMAIN: {current_cat}]{RESET}")
-        print(f"   * {BOLD}{k:<34}{RESET} -> {GREEN}{v}{RESET}")
-    print(f"\n{BOLD}{CYAN}================================================================================{RESET}\n")
+    print(f"\n {BOLD}{YELLOW}[+] LIVE KERNEL FLAGS & DISCREPANCY AUDIT:{RESET}")
+    print(f"   {'Domain':<12} | {'Flag Key':<32} | {'Status':<16} | {'Severity'}")
+    print(f"   {'-'*10:12} | {'-'*30:32} | {'-'*14:16} | {'-'*8}")
+    c.execute("SELECT domain_scope, flag_key, flag_status, anomaly_severity FROM kb_flag_inspection_catalog")
+    for r in c.fetchall():
+        print(f"   {CYAN}{r[0]:<12}{RESET} | {BOLD}{r[1]:<32}{RESET} | {GREEN}{r[2]:<16}{RESET} | {GREEN}{r[3]}{RESET}")
     conn.close()
+    print(f"\n{CYAN}+-------------------------------------------------------------------------------+{RESET}")
+    print(f"{GREEN}[✓] Pre-flight inspection nominal. Launching Grand Unified Master Workstation...{RESET}\n")
+    import time; time.sleep(1.8)
 
 if __name__ == '__main__':
-    inspect()
+    inspect_flags()

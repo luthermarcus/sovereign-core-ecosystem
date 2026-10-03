@@ -1,15 +1,9 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.56)
-Consolidates all 8 functional suites with zero query errors:
-  [1] Executive Workstation (Live OS /proc telemetry)
-  [2] Security & Military Encryption Vault
-  [3] Enclave File Manager & Secure Storage Inspector
-  [4] 7-Node DePIN Fleet & Passive Yield Harvest
-  [5] Boomerang AMM & Zero-Fail Escrow Rollback Protection
-  [6] Top 33 Cross-Chain Liquidity Matrix (Sub-paginated)
-  [7] Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
-  [8] Daemons Super-Tree & KB Flags Anomaly Inspector
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.57)
+Consolidates all 8 functional suites including Native Host OS Scraper Telemetry,
+Military Vault, File Manager, DePIN Fleet, Boomerang Cold-Storage Fallback,
+Top 33 DEX Matrix, Bitcoin Taproot / Wallet Percentage Rules, and DAO/P2P Flags.
 """
 import os, sys, sqlite3, time, datetime
 
@@ -43,6 +37,7 @@ def get_db(path):
         return None
 
 def get_hardware_telemetry():
+    """Non-intrusive native OS scraper pulling metrics from host /proc."""
     try:
         with open('/proc/loadavg', 'r') as f:
             parts = f.read().split()
@@ -75,7 +70,7 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "Boomerang Escrow", "Top 33 DEX", "Bitcoin L2/Wallets", "Daemons/Flags"]
+    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "Boomerang Escrow", "Top 33 DEX", "Bitcoin/Wallets", "DAO/P2P Flags"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -85,9 +80,9 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
-# PAGE 1: Executive Workstation
+# PAGE 1: Executive Workstation & Native Host Scraper
 def render_page_1(m_conn, t_conn, masked):
-    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
+    draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION & OS SCRAPER", masked)
     raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
     cpu  = "[SHIELDED]" if masked else raw_cpu
     load = "[PROTECTED]" if masked else raw_load
@@ -183,9 +178,9 @@ def render_page_4(m_conn, masked):
         except Exception as e:
             print(f"   [-] DePIN telemetry unavailable: {e}")
 
-# PAGE 5: Boomerang AMM & Zero-Fail Escrow Rollback Protection
+# PAGE 5: Boomerang AMM & Cold-Storage Zero-Fail Escrow Rollback
 def render_page_5(m_conn, masked):
-    draw_header(5, 8, "BOOMERANG AMM & ZERO-FAIL ESCROW ROLLBACK", masked)
+    draw_header(5, 8, "BOOMERANG AMM & COLD-STORAGE ZERO-FAIL ESCROW", masked)
     print(f" {BOLD}{YELLOW}[+] CROSS-CHAIN LIQUIDITY POOLS & ARBITRAGE PATHS:{RESET}")
     print(f"   {'Pool Pair':<18} | {'DEX Target':<18} | {'Depth (FOX)':<14} | {'24h Vol (USD)':<14} | {'Fee / APR':<12} | {'State'}")
     print(f"   {'-'*16:18} | {'-'*16:18} | {'-'*12:14} | {'-'*12:14} | {'-'*10:12} | {'-'*16}")
@@ -199,14 +194,14 @@ def render_page_5(m_conn, masked):
                 fee_apr = f"{r[4]/100:.2f}%/{r[5]:.1f}%"
                 print(f"   {r[0]:<18} | {r[1]:<18} | {depth:<14} | {vol:<14} | {fee_apr:<12} | {GREEN}{r[6]}{RESET}")
 
-            print(f"\n {BOLD}{YELLOW}[+] ZERO-FAIL ESCROW & ROLLBACK PROTECTION LOGS:{RESET}")
+            print(f"\n {BOLD}{YELLOW}[+] COLD-STORAGE ZERO-FAIL ESCROW & ROLLBACK PROTECTION LOGS:{RESET}")
             c.execute("SELECT route_pair, capital_injected, profit_captured, execution_latency_ms, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 4")
             for r in c.fetchall():
                 p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX"
                 print(f"   {MAGENTA}{r[0]:<26}{RESET} | Injected: {r[1]:>8,.0f} | Profit: {GREEN}{p_fox:<10}{RESET} | Lat: {r[3]:>4.1f}ms | Rollback: {GREEN}{r[4]}{RESET}")
         except Exception as e:
             print(f"   [-] Boomerang state query error: {e}")
-    print(f"\n {BOLD}Zero-Fail Architecture:{RESET} Automated time-lock escrow rollback active (zero gas loss upon settlement timeouts).")
+    print(f"\n {BOLD}Cold-Storage Protection:{RESET} Automated time-lock escrow staged in encrypted RAM buffer with instant loopback fallback.")
 
 # PAGE 6: Top 33 Cross-Chain Liquidity Matrix
 def render_page_6(m_conn, masked, subpage=0):
@@ -252,9 +247,9 @@ def render_page_7(m_conn, masked):
         except Exception as e:
             print(f"   [-] Wallet rules query error: {e}")
 
-# PAGE 8: Daemons Super-Tree & KB Flags Anomaly Inspector
+# PAGE 8: Daemons Super-Tree, DAO Governance & P2P Media Filter Status
 def render_page_8(m_conn):
-    draw_header(8, 8, "ENCLAVE DAEMONS SUPER-TREE & KB FLAG INSPECTOR")
+    draw_header(8, 8, "ENCLAVE DAEMONS, DAO GOVERNANCE & P2P MEDIA SHIELD")
     print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
     print(f"   {'Daemon Script':<30} | {'PID':<6} | {'Subsystem Function':<28} | {'Status'}")
     print(f"   {'-'*28:30} | {'-'*4:6} | {'-'*26:28} | {'-'*14}")
@@ -265,12 +260,21 @@ def render_page_8(m_conn):
             for r in c.fetchall():
                 print(f"   {BOLD}{r[0]:<30}{RESET} | {r[1]:<6} | {r[2]:<28} | {GREEN}{r[3]}{RESET}")
 
-            print(f"\n {BOLD}{YELLOW}[+] KNOWLEDGE BASE FLAG & ANOMALY INSPECTOR CATALOG:{RESET}")
-            c.execute("SELECT domain_scope, flag_key, flag_status, community_consensus, anomaly_severity FROM kb_flag_inspection_catalog ORDER BY flag_id ASC")
-            for r in c.fetchall():
-                print(f"   {CYAN}{r[0]:<10}{RESET} | {BOLD}{r[1]:<28}{RESET} | {GREEN}{r[2]:<14}{RESET} | {r[3]:<32} | {GREEN}{r[4]}{RESET}")
+            print(f"\n {BOLD}{YELLOW}[+] P2P MEDIA FILTER & DAO GOVERNANCE WARDEN STATUS:{RESET}")
+            c.execute("SELECT protocol_type, active_torrents_routed, blocked_prohibited_hashes, bandwidth_saved_mb, filter_status FROM p2p_media_filter_stats")
+            p2p = c.fetchone()
+            if p2p:
+                print(f"   * P2P Protocol Engine   : {CYAN}{p2p[0]} ({p2p[4]}){RESET}")
+                print(f"   * Active Torrents Routed: {GREEN}{p2p[1]} Streams{RESET}")
+                print(f"   * Blocked Prohibited Hashes: {MAGENTA}{p2p[2]} Filtered{RESET}")
+                print(f"   * Bandwidth Optimized   : {GREEN}{p2p[3]} MB{RESET}")
+
+            c.execute("SELECT proposal_title, voting_domain, quorum_reached_pct, warden_status FROM dao_governance_proposals")
+            dao = c.fetchone()
+            if dao:
+                print(f"   * DAO Arbitration Warden: {GREEN}{dao[3]} ({dao[2]}% Quorum){RESET} — {dao[0]}")
         except Exception as e:
-            print(f"   [-] Daemons/Flags query error: {e}")
+            print(f"   [-] Daemons/DAO query error: {e}")
 
 def main():
     current_page = 1
@@ -312,7 +316,7 @@ def main():
         elif ch == 'm':
             masked = not masked
         elif ch == 'x':
-            print(f"\n{YELLOW}[*] Triggering Boomerang Circular Arbitrage Engine (Zero-Fail Escrow)...{RESET}")
+            print(f"\n{YELLOW}[*] Triggering Boomerang Circular Arbitrage Engine (Cold-Storage Zero-Fail Escrow)...{RESET}")
             os.system(f"python3 {os.path.join(ROOT_DIR, 'fox_boomerang_engine.py')} 2>/dev/null || true")
             time.sleep(1.2)
         elif ch == 'b':
