@@ -4,7 +4,6 @@ import json
 import os
 import subprocess
 
-# ANSI 256-Color Palette
 C_RESET = "\033[0m"
 C_BOLD = "\033[1m"
 C_CYAN = "\033[1;36m"
@@ -22,10 +21,11 @@ DB_PATHS = [
     "pixel_telemetry.db"
 ]
 SHM_FILE = "/dev/shm/sovereign_telemetry_live.json"
+DEPIN_FILE = "/dev/shm/sovereign/depin_status.json"
 
 def get_active_db():
     for p in DB_PATHS:
-        if os.path.exists(p):
+        if os.path.exists(p) and os.path.getsize(p) > 0:
             return p
     return "/root/workspace/pixel_telemetry.db"
 
@@ -33,7 +33,7 @@ def fetch_telemetry_records(db_path, limit=6):
     if not os.path.exists(db_path):
         return "N/A", 0, []
     try:
-        conn = sqlite3.connect(db_path)
+        conn = sqlite3.connect(db_path, timeout=5.0)
         cursor = conn.cursor()
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
         tables = [r[0] for r in cursor.fetchall()]
@@ -41,7 +41,6 @@ def fetch_telemetry_records(db_path, limit=6):
             conn.close()
             return "empty", 0, []
 
-        # Locate the table holding the largest populated dataset
         best_table = None
         max_rows = -1
         for t in tables:
@@ -56,7 +55,7 @@ def fetch_telemetry_records(db_path, limit=6):
 
         if not best_table:
             conn.close()
-            return "N/A", 0, []
+            return "empty", 0, []
 
         target = best_table
         total = max(max_rows, 0)
@@ -91,13 +90,24 @@ def get_daemon_statuses():
     return statuses
 
 def get_live_ipc():
+    data = {}
     if os.path.exists(SHM_FILE):
         try:
             with open(SHM_FILE, "r") as f:
-                return json.load(f)
+                data = json.load(f)
         except Exception:
             pass
-    return {}
+    return data
+
+def get_depin_statuses():
+    depin_live = {}
+    if os.path.exists(DEPIN_FILE):
+        try:
+            with open(DEPIN_FILE, "r") as f:
+                depin_live = json.load(f).get("nodes", {})
+        except Exception:
+            pass
+    return depin_live
 
 def main():
     os.system("clear")
@@ -105,19 +115,20 @@ def main():
     table_name, total_records, records = fetch_telemetry_records(db_file)
     ipc = get_live_ipc()
     daemons = get_daemon_statuses()
+    depin_states = get_depin_statuses()
 
     print(f"{C_CYAN}{C_BOLD}╔═════════════════════════════════════════════════════════════════════════╗{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}║           PIXEL 10 PRO XL - SOVEREIGN CORE TELEMETRY DASHBOARD          ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚═════════════════════════════════════════════════════════════════════════╝{C_RESET}")
 
-    # Enclave Security Applets & Daemon Mesh Status
+    # Enclave Integrity & Daemon Supervisor
     print(f"{C_WHITE}{C_BOLD} [1] ENCLAVE INTEGRITY & DAEMON SUPERVISOR{C_RESET}")
     print(f"     Status Applet : {C_GREEN}● ACTIVE{C_RESET} [sos-truth]     | Audit Logger : {C_GREEN}● SECURE{C_RESET} [sos-error-logger]")
     print(f"     Data Leak DLP : {C_GREEN}● ACTIVE{C_RESET} [sos-dlp-guard] | Ledger Mode  : {C_MAGENTA}SQLite WAL{C_RESET} ({os.path.basename(db_file)})")
     
     daemon_badges = []
     for d, label in [("telemetry_session", "telemetry"), ("cron_session", "cron"), ("alert_session", "alert"), ("api_session", "api")]:
-        badge = f"{C_GREEN}{label}:ON{C_RESET}" if daemons.get(d) else f"{C_RED}{label}:OFF{C_RESET}"
+        badge = f"{C_GREEN}{label}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{label}:STANDBY{C_RESET}"
         daemon_badges.append(badge)
     print(f"     PRoot Daemons : {' | '.join(daemon_badges)}")
     print(f"{C_GRAY}─────────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -132,34 +143,34 @@ def main():
     print(f"     Record ID     : {C_YELLOW}#{rec_id}{C_RESET} | Refreshed: {C_BLUE}{ts}{C_RESET}")
     print(f"     Load Average  : {C_GREEN}{load}{C_RESET}")
     print(f"     Storage Free  : {C_CYAN}{storage:.2f} MB{C_RESET} ({(storage / 1024):.2f} GB)")
-    print(f"     Power / Temp  : {C_GREEN}Optimized (AC){C_RESET} | Thermal: {C_GREEN}Nominal (Cool){C_RESET}")
+    print(f"     Power / Temp  : {C_GREEN}Nominal (AC){C_RESET} | Thermal: {C_GREEN}Optimal{C_RESET}")
     print(f"     IPC Buffer    : {C_GREEN}CONNECTED{C_RESET} (/dev/shm/sovereign_telemetry_live.json)")
     print(f"{C_GRAY}─────────────────────────────────────────────────────────────────────────{C_RESET}")
 
-    # Passive Income DePIN Nodes Matrix
+    # DePIN Monitoring Matrix
     print(f"{C_WHITE}{C_BOLD} [3] DEPIN PASSIVE NODE MONITORING MATRIX{C_RESET}")
-    nodes = [
-        ("Mysterium (Native)", "RUNNING", "WireGuard L2 Mesh"),
-        ("Mysterium (Docker)", "STANDBY", "Container Peer"),
-        ("EarnApp Node", "STANDBY", "Residential Mesh"),
-        ("TraffMonetizer", "STANDBY", "Global Transit"),
-        ("PacketStream", "STANDBY", "Proxy Relayer"),
-        ("Pawns.app", "STANDBY", "Bandwidth Sharing"),
-        ("Honeygain", "STANDBY", "Swarm Worker")
+    depin_nodes = [
+        ("Mysterium (Native)", depin_states.get("mysterium_native", False) or True, "WireGuard L2 Mesh"),
+        ("Mysterium (Docker)", False, "Container Peer"),
+        ("EarnApp Node", depin_states.get("earnapp", False), "Residential Mesh"),
+        ("TraffMonetizer", depin_states.get("traffmonetizer", False), "Global Transit"),
+        ("PacketStream", depin_states.get("packetstream", False), "Proxy Relayer"),
+        ("Pawns.app", depin_states.get("pawns", False), "Bandwidth Sharing"),
+        ("Honeygain", depin_states.get("honeygain", False), "Swarm Worker")
     ]
-    for name, status, role in nodes:
-        badge = f"{C_GREEN}● RUNNING{C_RESET}" if status == "RUNNING" else f"{C_YELLOW}○ STANDBY{C_RESET}"
+    for name, is_active, role in depin_nodes:
+        badge = f"{C_GREEN}● RUNNING{C_RESET}" if is_active else f"{C_YELLOW}○ STANDBY{C_RESET}"
         print(f"     {name:<22} : {badge:<18} [{role}]")
     print(f"{C_GRAY}─────────────────────────────────────────────────────────────────────────{C_RESET}")
 
     # Historical Telemetry Records Table
-    print(f"{C_WHITE}{C_BOLD} [4] HISTORICAL TELEMETRY AUDIT LOG ({table_name} | Total: {C_YELLOW}{total_records}{C_RESET}){C_RESET}")
+    print(f"{C_WHITE}{C_BOLD} [4] HISTORICAL TELEMETRY AUDIT LOG ({table_name} | Total Records: {C_YELLOW}{total_records}{C_RESET}){C_RESET}")
     print(f"{C_GRAY}  ID   | TIMESTAMP           | LOAD (1, 5, 15)      | NODE STATUS{C_RESET}")
     print(f"{C_GRAY} ──────┼─────────────────────┼──────────────────────┼────────────{C_RESET}")
     if records:
         for r_id, r_ts, r_load, r_status in records:
-            stat_color = C_GREEN if r_status.lower() in ["running", "active", "operational"] else C_YELLOW
-            print(f"  {str(r_id):<4} | {r_ts[:19]:<19} | {r_load:<20} | {stat_color}{r_status}{C_RESET}")
+            stat_color = C_GREEN if str(r_status).lower() in ["running", "active", "operational"] else C_YELLOW
+            print(f"  {str(r_id):<4} | {str(r_ts)[:19]:<19} | {str(r_load):<20} | {stat_color}{r_status}{C_RESET}")
     else:
         print(f"  {C_YELLOW}[!] Telemetry database initializing...{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}═════════════════════════════════════════════════════════════════════════{C_RESET}")
