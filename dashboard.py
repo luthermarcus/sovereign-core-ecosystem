@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.59)
-Unified Single-Window Micro-Kernel Architecture:
-  - Page 1: Native OS Scraper & Executive Workstation (/proc telemetry)
-  - Page 2: Security & Military Encryption Vault (AES-256 / Kyber-1024)
-  - Page 3: Enclave File Manager & Secure Storage Inspector
-  - Page 4: 7-Node DePIN Fleet & Passive Yield Harvest
-  - Page 5: Three-Prong Boomerang & Cold-Storage Fallback
-  - Page 6: Top 33 Cross-Chain Liquidity Matrix (Sub-paginated)
-  - Page 7: Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
-  - Page 8: Pre-flight Flags, Anomaly Logs, DAO Governance & P2P Media Shield
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.60)
+Consolidates all 8 functional suites into one seamless workstation:
+  [1] Executive Workstation (Live OS /proc telemetry)
+  [2] Security & Military Encryption Vault (AES-256 / Kyber-1024)
+  [3] Enclave File Manager & Secure Storage Inspector
+  [4] 7-Node DePIN Fleet & Passive Yield Harvest
+  [5] Three-Prong Boomerang & Cold-Storage Fallback (Fixed query)
+  [6] Top 33 Cross-Chain Liquidity Matrix (Sub-paginated 10/view)
+  [7] Bitcoin L1/L2 Settlement & Wallet Percentage Allocation Rules
+  [8] Pre-flight Flags, Anomaly Logs, DAO Governance & P2P Media Shield
 """
 import os, sys, sqlite3, time, datetime
 
@@ -76,7 +76,7 @@ def get_hardware_telemetry():
 
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "3-Prong Boomerang", "Top 33 DEX", "Bitcoin/Wallets", "Flags & Anomalies"]
+    page_names = ["Workstation", "Security/Vault", "File Manager", "DePIN Fleet", "3-Prong Boomerang", "Top 33 DEX", "Bitcoin/Wallets", "Flags/DAO/P2P"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -86,7 +86,7 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
-# PAGE 1: Executive Workstation & Native OS Scraper
+# PAGE 1: Executive Workstation & Native Host Scraper
 def render_page_1(m_conn, t_conn, masked):
     draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION & OS SCRAPER", masked)
     raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
@@ -187,19 +187,29 @@ def render_page_4(m_conn, masked):
 # PAGE 5: Three-Prong Boomerang & Cold-Storage Fallback Protection
 def render_page_5(m_conn, masked):
     draw_header(5, 8, "THREE-PRONG BOOMERANG & COLD-STORAGE FALLBACK", masked)
-    print(f" {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE VARIATIONS & L1/L2 ROUTING:{RESET}")
-    print(f"   {'Route Pair':<24} | {'Prong Variation':<28} | {'Injected':<10} | {'Profit':<12} | {'Fallback State'}")
-    print(f"   {'-'*22:24} | {'-'*26:28} | {'-'*8:10} | {'-'*10:12} | {'-'*18}")
+    print(f" {BOLD}{YELLOW}[+] CROSS-CHAIN LIQUIDITY POOLS & ARBITRAGE PATHS:{RESET}")
+    print(f"   {'Pool Pair':<18} | {'DEX Target':<18} | {'Depth (FOX)':<14} | {'24h Vol (USD)':<14} | {'Fee / APR':<12} | {'State'}")
+    print(f"   {'-'*16:18} | {'-'*16:18} | {'-'*12:14} | {'-'*12:14} | {'-'*10:12} | {'-'*16}")
     if m_conn:
         try:
             c = m_conn.cursor()
-            c.execute("SELECT route_pair, prong_variation, capital_injected, profit_captured, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 5")
+            c.execute("SELECT pair_label, dex_platform, pool_reserve_a, volume_24h_usd, fee_tier_bps, apr_pct, pool_health FROM dex_cross_chain_liquidity ORDER BY rank_idx ASC LIMIT 5")
+            for r in c.fetchall():
+                depth = "[MASKED]" if masked else f"{r[2]:>12,.0f}"
+                vol = "[MASKED]" if masked else f"${r[3]:>12,.0f}"
+                fee_apr = f"{r[4]/100:.2f}%/{r[5]:.1f}%"
+                print(f"   {r[0]:<18} | {r[1]:<18} | {depth:<14} | {vol:<14} | {fee_apr:<12} | {GREEN}{r[6]}{RESET}")
+
+            print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE & COLD-STORAGE FALLBACK LOGS:{RESET}")
+            print(f"   {'Route Pair':<24} | {'Prong Variation':<28} | {'Injected':<9} | {'Profit':<10} | {'Fallback State'}")
+            print(f"   {'-'*22:24} | {'-'*26:28} | {'-'*7:9} | {'-'*8:10} | {'-'*18}")
+            c.execute("SELECT route_pair, prong_variation, capital_injected, profit_captured, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 4")
             for r in c.fetchall():
                 p_fox = "[MASKED]" if masked else f"+{r[3]:.2f} FOX"
-                print(f"   {MAGENTA}{r[0]:<24}{RESET} | {CYAN}{r[1]:<28}{RESET} | {r[2]:>8,.0f} | {GREEN}{p_fox:<12}{RESET} | {GREEN}{r[4]}{RESET}")
+                print(f"   {MAGENTA}{r[0]:<24}{RESET} | {CYAN}{r[1]:<28}{RESET} | {r[2]:>7,.0f} | {GREEN}{p_fox:<10}{RESET} | {GREEN}{r[4]}{RESET}")
         except Exception as e:
             print(f"   [-] Boomerang state query error: {e}")
-    print(f"\n {BOLD}Cold-Storage Protection:{RESET} Prong-3 stages assets in encrypted offline RAM buffers with instant loopback fallback.")
+    print(f"\n {BOLD}Cold-Storage Protection:{RESET} Automated time-lock escrow staged in encrypted RAM buffer with instant loopback fallback.")
 
 # PAGE 6: Top 33 Cross-Chain Liquidity Matrix
 def render_page_6(m_conn, masked, subpage=0):
@@ -247,24 +257,24 @@ def render_page_7(m_conn, masked):
 
 # PAGE 8: Pre-Dash Flags, Anomaly Logs, DAO Governance & P2P Media Shield
 def render_page_8(m_conn):
-    draw_header(8, 8, "PRE-DASH FLAGS, ANOMALIES, DAO & P2P MEDIA SHIELD")
+    draw_header(8, 8, "FLAGS, ANOMALIES, DAO & P2P MEDIA SHIELD")
     print(f" {BOLD}{YELLOW}[+] PRE-FLIGHT LOGS & KB FLAG ANOMALY INSPECTOR:{RESET}")
-    print(f"   {'Domain':<12} | {'Flag Key':<32} | {'Status':<16} | {'Community Consensus':<34} | {'Severity'}")
-    print(f"   {'-'*10:12} | {'-'*30:32} | {'-'*14:16} | {'-'*32:34} | {'-'*8}")
+    print(f"   {'Domain':<12} | {'Flag Key':<32} | {'Status':<16} | {'Severity'}")
+    print(f"   {'-'*10:12} | {'-'*30:32} | {'-'*14:16} | {'-'*8}")
     if m_conn:
         try:
             c = m_conn.cursor()
-            c.execute("SELECT domain_scope, flag_key, flag_status, community_consensus, anomaly_severity FROM kb_flag_inspection_catalog ORDER BY flag_id ASC")
+            c.execute("SELECT domain_scope, flag_key, flag_status, anomaly_severity FROM kb_flag_inspection_catalog ORDER BY flag_id ASC")
             for r in c.fetchall():
-                print(f"   {CYAN}{r[0]:<12}{RESET} | {BOLD}{r[1]:<32}{RESET} | {GREEN}{r[2]:<16}{RESET} | {r[3]:<34} | {GREEN}{r[4]}{RESET}")
+                print(f"   {CYAN}{r[0]:<12}{RESET} | {BOLD}{r[1]:<32}{RESET} | {GREEN}{r[2]:<16}{RESET} | {GREEN}{r[3]}{RESET}")
 
             print(f"\n {BOLD}{YELLOW}[+] P2P MEDIA FILTER & DAO GOVERNANCE WARDEN STATUS:{RESET}")
             c.execute("SELECT protocol_type, active_torrents_routed, blocked_prohibited_hashes, bandwidth_saved_mb, filter_status FROM p2p_media_filter_stats")
             p2p = c.fetchone()
             if p2p:
                 print(f"   * P2P Protocol Engine   : {CYAN}{p2p[0]} ({p2p[4]}){RESET}")
-                print(f"   * Active Torrents Routed: {GREEN}{p2p[1]} Streams{RESET}")
-                print(f"   * Blocked Prohibited Hashes: {MAGENTA}{p2p[2]} Filtered{RESET}")
+                print(f"   * Active Torrents Routed: {GREEN}{p2p[1]} Streams{RESET} (Audio/Video IPFS Bridge)")
+                print(f"   * Blocked Prohibited Hashes: {MAGENTA}{p2p[2]} Filtered{RESET} (Zero-Tolerance Enforcement)")
                 print(f"   * Bandwidth Optimized   : {GREEN}{p2p[3]} MB{RESET}")
 
             c.execute("SELECT proposal_title, voting_domain, quorum_reached_pct, warden_status FROM dao_governance_proposals")
@@ -314,7 +324,7 @@ def main():
         elif ch == 'm':
             masked = not masked
         elif ch == 'x':
-            print(f"\n{YELLOW}[*] Triggering Three-Prong Boomerang Circular Arbitrage Engine...{RESET}")
+            print(f"\n{YELLOW}[*] Triggering Three-Prong Boomerang Circular Arbitrage Engine (Cold-Storage Fallback)...{RESET}")
             os.system(f"python3 {os.path.join(ROOT_DIR, 'fox_boomerang_engine.py')} 2>/dev/null || true")
             time.sleep(1.2)
         elif ch == 'b':
