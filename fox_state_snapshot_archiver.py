@@ -29,9 +29,7 @@ def archive_state_snapshot():
 
     conn.commit()
     conn.close()
-    print(f"[+] Ingested Mesh Quorum Consensus #{consensus_id} for Epoch #{epoch}")
-    print(f"[+] Sealed Snapshot Merkle Root: {snapshot_root[:18]}...{snapshot_root[-6:]} ({archive_size} bytes)")
-    print("[✓] Ecosystem state snapshot archive synchronized in RAM WAL.")
+    print(f"[+] [v7.72.20] Sealed Snapshot Root: {snapshot_root[:18]}...{snapshot_root[-6:]} ({archive_size} bytes)")
 
 if __name__ == '__main__':
     archive_state_snapshot()
