@@ -44,13 +44,12 @@ def fetch_records(limit=2):
 def get_daemons():
     now = time.time()
     res = {}
-    for d, thresh in [("telemetry", 8), ("cron", 90), ("alert", 30), ("api", 8)]:
+    for d, thresh in [("telemetry", 12), ("cron", 90), ("alert", 60), ("api", 12)]:
         act = False
         p = os.path.join(HB_DIR, d)
         if os.path.exists(p):
             try:
-                with open(p) as hf:
-                    if (now - float(hf.read().strip())) <= thresh: act = True
+                if (now - float(open(p).read().strip())) <= thresh: act = True
             except Exception: pass
         res[d] = act
     return res
@@ -86,9 +85,9 @@ def render_ui(page, flash_msg="", mask=True):
     disp_load = "[PROTECTED]" if mask else ipc.get('load_avg', '0.12, 0.07, 0.02')
     disp_free = "[CONFIDENTIAL]" if mask else f"{float(ipc.get('storage_free_mb', 84720.0))/1024:.1f} GB"
     disp_evm = "0x7d6b...********" if mask else fox.get('evm_address', '0x7d6b...N/A')[:18] + "..."
-    disp_fox = "[CONFIDENTIAL]" if mask else f"{fox.get('l2_channel_balance_fox', 12154.5):,.0f} L2"
+    disp_fox = "[CONFIDENTIAL] L2" if mask else f"{fox.get('l2_channel_balance_fox', 12154.5):,.0f} L2"
     disp_swaps = "#**" if mask else f"#{fox.get('cross_chain_swaps', 14)}"
-    disp_freq = "[SHIELDED]" if mask else f"{bm.get('avg_cpu_freq_mhz', 2100)}MHz"
+    disp_cpu = "[SHIELDED]" if mask else f"{bm.get('avg_freq_mhz', 2100)}MHz"
 
     print(f"{C_CYAN}{C_BOLD}╔══════════════════════════════════════════════════════════════════════╗{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.182)        ║{C_RESET}")
@@ -105,11 +104,11 @@ def render_ui(page, flash_msg="", mask=True):
     if page == 5:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}[1] WORKERS{C_RESET} : {' | '.join(badges)}")
-        print(f"{C_WHITE}{C_BOLD}[2] BARE-MTL{C_RESET}: CPU: {C_GREEN}{disp_freq}{C_RESET} | Load: {C_GREEN}{disp_load}{C_RESET} | Free: {C_CYAN}{disp_free}{C_RESET} | Θ: {C_MAG}{theta}{C_RESET}")
-        print(f"{C_WHITE}{C_BOLD}[3] DEPIN   {C_RESET}: Mysterium: {C_GREEN}RUNNING{C_RESET} | RPC Loopback: {C_GREEN}127.0.0.1:8545{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}[2] METRICS{C_RESET} : CPU: {C_GREEN}{disp_cpu}{C_RESET} | Load: {C_GREEN}{disp_load}{C_RESET} | Free: {C_CYAN}{disp_free}{C_RESET} | Θ: {C_MAG}{theta}{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | RPC Loopback: {C_GREEN}127.0.0.1:8545{C_RESET}")
         vaults = btc.get("multisig_vaults", [])
-        print(f"{C_WHITE}{C_BOLD}[4] ASSETS  {C_RESET}: BTC: {C_CYAN}#{btc.get('block_height', '134')} ({len(vaults)} V){C_RESET} | FOX: {C_YELLOW}{disp_fox}{C_RESET} (Swaps: {disp_swaps})")
-        print(f"{C_WHITE}{C_BOLD}[5] ENCLAVE {C_RESET}: sos-truth: {C_GREEN}ACTIVE{C_RESET} | DLP: {C_GREEN}SECURE{C_RESET} | PRoot: {C_GREEN}ISOLATED{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}[4] ASSETS {C_RESET} : BTC: {C_CYAN}#{btc.get('block_height', '134')} ({len(vaults)} V){C_RESET} | FOX: {C_YELLOW}{disp_fox}{C_RESET} ({disp_swaps})")
+        print(f"{C_WHITE}{C_BOLD}[5] ENCLAVE{C_RESET} : sos-truth: {C_GREEN}ACTIVE{C_RESET} | DLP: {C_GREEN}SECURE{C_RESET} | PRoot: {C_GREEN}ISOLATED{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
         for r_id, r_ts, r_load, r_stat in recs:
             rl = "[PROTECTED]" if mask else str(r_load)[:16]
@@ -118,7 +117,7 @@ def render_ui(page, flash_msg="", mask=True):
     elif page == 1:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STANDBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}SUPERVISOR{C_RESET} : {' | '.join(badges)}")
-        print(f"{C_WHITE}{C_BOLD}HARDWARE  {C_RESET} : CPU: {C_GREEN}{disp_freq}{C_RESET} | Free: {C_CYAN}{disp_free}{C_RESET} | Θ: {C_MAG}{theta}{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}STORAGE   {C_RESET} : {C_CYAN}{disp_free}{C_RESET} | Θ Invariant: {C_MAG}{theta}{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
         for r_id, r_ts, r_load, r_stat in recs:
             rl = "[PROTECTED]" if mask else str(r_load)[:16]
@@ -128,7 +127,7 @@ def render_ui(page, flash_msg="", mask=True):
         print(f"{C_WHITE}{C_BOLD}DECENTRALIZED PROTOCOL RPC{C_RESET}: {C_GREEN}http://127.0.0.1:8545 [ONLINE]{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
         print(f" Mysterium (Native WireGuard)  : {C_GREEN}● RUNNING{C_RESET}  [L2 Edge]")
-        print(f" Host Cluster Bridge (Docker)  : {C_YELLOW}○ STANDBY{C_RESET}  [Host Delegation]")
+        print(f" Host Cluster Bridge (Docker)  : {C_YELLOW}○ STANDBY{C_RESET}  [SECURE-PEER-DELEGATOR]")
 
     elif page == 3:
         vaults = btc.get("multisig_vaults", [])
@@ -153,7 +152,7 @@ def render_ui(page, flash_msg="", mask=True):
 
 def main():
     page = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1].isdigit() else 5
-    flash, mask = "", True  # Masked by default for zero-leak privacy
+    flash, mask = "", True
     fd = sys.stdin.fileno()
     old = termios.tcgetattr(fd)
     sys.stdout.write("\033[?1049h\033[?25l")
@@ -169,7 +168,7 @@ def main():
                 if ch in ['1', '2', '3', '4', '5']: page = int(ch)
                 elif ch in ['p', 'P']:
                     mask = not mask
-                    flash = f"Privacy Mask Mode: {'ENGAGED' if mask else 'DISENGAGED (OPERATOR REVEAL)'}"
+                    flash = f"Privacy Mask: {'ENGAGED (DEFAULT)' if mask else 'DISENGAGED (OPERATOR REVEAL)'}"
                 elif ch in ['x', 'X']:
                     flash = trigger("python3 -c 'import sys; sys.path.append(\"/root/workspace\"); from wallet_engine import execute_atomic_swap; execute_atomic_swap()'", "Boomerang Swap Settled: 50,000 Sats <-> 500 FOX")
                 elif ch in ['b', 'B']:
