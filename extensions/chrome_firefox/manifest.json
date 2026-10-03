@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Sovereign Core WebNode — FOX DePIN Relayer",
+  "version": "1.0.0",
+  "description": "Earn passive FOX tokens by sharing idle bandwidth with the Sovereign Core L2 Mesh.",
+  "permissions": ["storage", "alarms"],
+  "host_permissions": ["http://127.0.0.1:8545/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Sovereign WebNode",
+    "default_popup": "popup.html"
+  }
+}
