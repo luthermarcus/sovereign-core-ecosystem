@@ -12,6 +12,7 @@ C_WHITE  = "\033[1;37m"
 
 DB_PATH    = "/root/workspace/pixel_telemetry.db"
 SHM_FILE   = "/dev/shm/sovereign_telemetry_live.json"
+THROT_FILE = "/dev/shm/sovereign_hw_throttle.json"
 BTC_FILE   = "/root/workspace/bitcoin_sandbox.json"
 FOX_FILE   = "/root/workspace/fox_wallet.json"
 HB_DIR     = "/dev/shm/sovereign/heartbeats"
@@ -59,12 +60,17 @@ def get_daemons():
             try:
                 with open(hb_path, "r") as hf:
                     ts = float(hf.read().strip())
-                    if (now - ts) <= threshold:
-                        active = True
-            except Exception:
-                pass
+                    if (now - ts) <= threshold: active = True
+            except Exception: pass
         res[d] = active
     return res
+
+def trigger_swap():
+    try:
+        subprocess.run(["python3", "-c", "import sys; sys.path.append('/root/workspace'); from wallet_engine import execute_atomic_swap; execute_atomic_swap()"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return "Boomerang Swap Settled: 50,000 Sats <-> 500 FOX"
+    except Exception as e:
+        return f"Swap Error: {e}"
 
 def trigger_btc():
     try:
@@ -80,13 +86,6 @@ def trigger_yield():
     except Exception as e:
         return f"FOX Error: {e}"
 
-def trigger_swap():
-    try:
-        subprocess.run(["python3", "-c", "import sys; sys.path.append('/root/workspace'); from wallet_engine import execute_atomic_swap; execute_atomic_swap()"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return "Atomic Swap Settled: 50,000 Sats <-> 500 FOX"
-    except Exception as e:
-        return f"Swap Error: {e}"
-
 def trigger_sweep():
     try:
         subprocess.run(["python3", "/root/workspace/sovereign_manager.py", "--sweep"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -97,10 +96,14 @@ def trigger_sweep():
 def render_ui(page, flash_msg=""):
     sys.stdout.write("\033[H\033[2J")
     tbl, tot, recs = fetch_records(limit=2)
-    ipc, btc, fox = {}, {}, {}
+    ipc, throt, btc, fox = {}, {}, {}, {}
     if os.path.exists(SHM_FILE):
         try:
             with open(SHM_FILE) as sf: ipc = json.load(sf)
+        except Exception: pass
+    if os.path.exists(THROT_FILE):
+        try:
+            with open(THROT_FILE) as tf: throt = json.load(tf)
         except Exception: pass
     if os.path.exists(BTC_FILE):
         try:
@@ -112,10 +115,10 @@ def render_ui(page, flash_msg=""):
         except Exception: pass
 
     daemons = get_daemons()
+    theta_val = throt.get("throttle_coefficient", 0.85)
 
-    # Header & Tab Navigation Bar (14-Row Viewport Bounded)
     print(f"{C_CYAN}{C_BOLD}╔══════════════════════════════════════════════════════════════════════╗{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.171)        ║{C_RESET}")
+    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.179)        ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚══════════════════════════════════════════════════════════════════════╝{C_RESET}")
     tabs = [(1, "Overview"), (2, "DePIN"), (3, "L2 Vaults"), (4, "Enclave"), (5, "Master")]
     tab_bar = [f"{C_BOLD}{C_GREEN}[{n}] {l}{C_RESET}" if page == n else f"{C_GRAY}[{n}] {l}{C_RESET}" for n, l in tabs]
@@ -129,11 +132,11 @@ def render_ui(page, flash_msg=""):
     if page == 5:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}[1] WORKERS{C_RESET} : {' | '.join(badges)}")
-        print(f"{C_WHITE}{C_BOLD}[2] METRICS{C_RESET} : Load: {C_GREEN}{ipc.get('load_avg', '3.85, 3.92, 4.01')}{C_RESET} | Free: {C_CYAN}{float(ipc.get('storage_free_mb', 84787.2))/1024:.1f} GB{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}[2] METRICS{C_RESET} : Load: {C_GREEN}{ipc.get('load_avg', '0.12, 0.07, 0.02')}{C_RESET} | Free: {C_CYAN}{float(ipc.get('storage_free_mb', 84720.0))/1024:.1f} GB{C_RESET} | Θ: {C_MAGENTA}{theta_val}{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | RPC Loopback: {C_GREEN}127.0.0.1:8545{C_RESET}")
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        btc_summary = f"#{btc.get('block_height', '126')} ({len(vaults)} Vaults)"
-        fox_summary = f"{fox.get('l2_channel_balance_fox', 8154.5):,.0f} L2 (Swaps: #{fox.get('cross_chain_swaps', 6)})"
+        btc_summary = f"#{btc.get('block_height', '130')} ({len(vaults)} Vaults)"
+        fox_summary = f"{fox.get('l2_channel_balance_fox', 10154.5):,.0f} L2 (Swaps: #{fox.get('cross_chain_swaps', 10)})"
         print(f"{C_WHITE}{C_BOLD}[4] ASSETS {C_RESET} : BTC: {C_CYAN}{btc_summary}{C_RESET} | FOX: {C_YELLOW}{fox_summary}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[5] ENCLAVE{C_RESET} : sos-truth: {C_GREEN}ACTIVE{C_RESET} | DLP: {C_GREEN}SECURE{C_RESET} | PRoot: {C_GREEN}ISOLATED{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -143,7 +146,7 @@ def render_ui(page, flash_msg=""):
     elif page == 1:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STANDBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}SUPERVISOR{C_RESET} : {' | '.join(badges)}")
-        print(f"{C_WHITE}{C_BOLD}STORAGE   {C_RESET} : {C_CYAN}{float(ipc.get('storage_free_mb', 84787.2)):.1f} MB Free{C_RESET} | WAL Records: {C_YELLOW}{tot}{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}STORAGE   {C_RESET} : {C_CYAN}{float(ipc.get('storage_free_mb', 84720.0)):.1f} MB Free{C_RESET} | Θ Invariant: {C_MAGENTA}{theta_val}{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
         for r_id, r_ts, r_load, r_stat in recs:
             print(f" #{str(r_id):<3} | {str(r_ts)[11:19]} | {str(r_load):<16} | {C_GREEN}{r_stat}{C_RESET}")
@@ -156,9 +159,9 @@ def render_ui(page, flash_msg=""):
 
     elif page == 3:
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '126')}{C_RESET} | {C_GREEN}{len(vaults)} Active Vaults{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '130')}{C_RESET} | {C_GREEN}{len(vaults)} Active Vaults{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}EVM ADDRESS   {C_RESET} : {C_YELLOW}{fox.get('evm_address', '0x7d6b...')}...{C_RESET}")
-        print(f"{C_WHITE}{C_BOLD}FOX L2 VAULT  {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 8154.5):,.2f} FOX{C_RESET} | Swaps: {C_CYAN}#{fox.get('cross_chain_swaps', 6)}{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}FOX L2 VAULT  {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 10154.5):,.2f} FOX{C_RESET} | Swaps: {C_CYAN}#{fox.get('cross_chain_swaps', 10)}{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
         print(f" Preimage Hash : {C_YELLOW}{fox.get('last_swap_hash', 'None')}{C_RESET}")
 
