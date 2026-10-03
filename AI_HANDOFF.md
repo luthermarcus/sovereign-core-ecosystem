@@ -1,16 +1,14 @@
-# Sovereign Core OS (SOS) — Multi-Model AI Delegation & Workspace Protocol
+# Sovereign Core OS (SOS) — Unified AI Model Delegation Contract
 
-## Architectural Contexts
-1. **Workspace A (Host OS Scraper / Termux Host)**:
-   - Prompt: `⚡ SOS-Node:~$`
-   - Role: Hardware telemetry provider (`/proc/loadavg`, `/proc/meminfo`, `/proc/stat`), network bindings, and PRoot bootloader (`~/.termux/boot/start_sovereign.sh`).
-   - Rule: Do NOT run internal enclave Python scripts or git push commands directly in Workspace A.
-2. **Workspace B (Sandboxed Enclave / PRoot Debian)**:
-   - Directory: `/root/sos-fox-beta`
-   - Storage: Ephemeral RAM tmpfs WAL (`/dev/shm/*.db`)
-   - Role: Core micro-kernel OS, 12 background daemons, 8-page workstation (`dashboard.py`), Boomerang AMM, Bitcoin L2 Taproot pipeline.
-   - Rule: All project commits, database schemas, and dashboard features must reside here.
-
-## Model Roles & Responsibilities
-* **Gemini (Architecture & Security Lead)**: Enforces DLP gates, mathematical entropy invariant verification, schema integrity, and Bitcointalk/XDA/GitHub community standard convergence.
-* **Claude / Flash Lite (Execution & Micro-Patches)**: Execute targeted module edits strictly inside Workspace B (`/root/sos-fox-beta`) without altering global schema column structures or corrupting `.bashrc`.
+## Immutable 10-Page Workstation Specification
+To prevent model regressions and dropped features during handoffs, `dashboard.py` MUST strictly retain all 10 unified pages:
+* Page 1: Pixel 10 Pro XL Executive Workstation & Host OS Scraper
+* Page 2: OS Security Foundation, Mathematical Entropy & Military Encryption Vault
+* Page 3: Enclave File Manager & RAM WAL Storage Inspector
+* Page 4: 7-Node DePIN Fleet & Passive Yield Harvest
+* Page 5: Three-Prong Boomerang AMM & Cold-Storage Fallback Router
+* Page 6: Top 33 Cross-Chain Liquidity Matrix (Sub-paginated 5/view)
+* Page 7: Attached User Wallets & Percentage Allocation Distribution
+* Page 8: Bitcoin L1/L2 Taproot Pipeline & Dual-Fund Settlement Engine
+* Page 9: 12 Enclave Daemons Super-Tree & Watchdog Status
+* Page 10: Dev Parameters, DAO Governance, P2P Media Shield & KB Flags
