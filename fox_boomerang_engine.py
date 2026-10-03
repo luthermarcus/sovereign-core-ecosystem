@@ -14,15 +14,16 @@ def execute():
     ]
     p_name, p_stat = random.choice(prongs)
     profit = round(random.uniform(40.0, 160.0), 2)
+    dao_cut = round(profit * 0.01, 3)
     lat = round(random.uniform(7.5, 14.0), 2)
 
-    c.execute('''INSERT INTO boomerang_arbitrage_logs 
-        (route_pair, prong_variation, capital_injected, profit_captured, execution_latency_ms, gas_cost_usd, anti_honeypot_check, rollback_status, trade_status)
-        VALUES ('FOX->BTC->ETH->FOX', ?, 35000.0, ?, ?, 1.65, 'VERIFIED_SAFE', ?, 'SETTLED')''',
-        (p_name, profit, lat, p_stat))
+    c.execute("""INSERT INTO boomerang_arbitrage_logs 
+        (route_pair, prong_variation, capital_injected, profit_captured, dao_royalty_cut_fox, execution_latency_ms, gas_cost_usd, anti_honeypot_check, rollback_status, trade_status)
+        VALUES ('FOX->BTC->ETH->FOX', ?, 35000.0, ?, ?, ?, 1.65, 'VERIFIED_SAFE', ?, 'SETTLED')""",
+        (p_name, profit, dao_cut, lat, p_stat))
     conn.commit()
     conn.close()
-    print(f"[✓] Three-Prong Boomerang Executed: {p_name} | Profit: +{profit} FOX | Status: {p_stat}")
+    print(f"[✓] Three-Prong Boomerang Settled: {p_name} | Profit: +{profit} FOX | 1% DAO Cut: +{dao_cut} FOX | Status: {p_stat}")
 
 if __name__ == '__main__':
     execute()

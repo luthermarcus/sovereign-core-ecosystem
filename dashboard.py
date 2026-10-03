@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core OS (SOS) / Satoshi Fox Workstation (v7.71.183 / v7.72.100)
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.105)
 Authenticated 5-Tab Workstation Layout:
   [1] Overview | [2] DePIN | [3] L2 Vaults | [4] Enclave | [5] Master
 """
@@ -35,7 +35,6 @@ def render(tab, masked, banner_msg):
     os.system('clear' if os.name == 'posix' else 'cls')
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED]{RESET}"
     
-    # Authenticated Box Header
     print(f"{CYAN}┌────────────────────────────────────────────────────────────────────────┐{RESET}")
     print(f"{CYAN}│{BOLD}   PIXEL 10 PRO XL - FOXY NODE / SOVEREIGN CORE WORKSTATION (v7.71.183) {RESET}{CYAN}│{RESET}")
     print(f"{CYAN}└────────────────────────────────────────────────────────────────────────┘{RESET}")
@@ -54,7 +53,7 @@ def render(tab, masked, banner_msg):
     load_disp = "[PROTECTED]" if masked else raw_load
     free_disp = "[CONFIDENTIAL]" if masked else raw_free
     btc_disp  = "BTC: #140 (38 V)" if masked else "BTC: #140 (38 V) [bc1q-cold-77a]"
-    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox Cut Active]"
+    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox DAO Cut]"
 
     if tab == 1:
         # Tab 1: Overview
@@ -84,17 +83,20 @@ def render(tab, masked, banner_msg):
             conn.close()
 
     elif tab == 3:
-        # Tab 3: L2 Vaults & Wallets (With 1% Genesis Cut)
+        # Tab 3: L2 Vaults, Attached Wallets & 1% DAO Royalty Breakdown
         print(f" {BOLD}BTC L2 REGTEST{RESET} : Block #140 | 38 Active Vaults")
         print(f" {BOLD}EVM ADDRESS{RESET}    : {CYAN}0x7d6bede176a688c9...{RESET}")
         print(f" {BOLD}FOX L2 VAULT{RESET}   : {MAGENTA}{fox_disp}{RESET} | Swaps: #17")
         print(f" {BOLD}Preimage Hash{RESET}  : {YELLOW}0xf281bf4e41c2be5e{RESET}")
-        print(f"\n {BOLD}{YELLOW}[+] ATTACHED WALLETS & SATOSHI FOX 1% ROYALTY RULES:{RESET}")
+        print(f"\n {BOLD}{YELLOW}[+] SATOSHI FOX 1.0% DAO ROYALTY SUB-ALLOCATIONS:{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
+            for r in conn.execute("SELECT sub_category, royalty_share_pct, global_economy_pct, target_wallet_address, governance_role FROM dao_royalty_distribution_ledger").fetchall():
+                print(f"   * {BOLD}{r[0]:<32}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET} of 1%] -> {CYAN}{r[3]}{RESET}")
+            print(f"\n {BOLD}{YELLOW}[+] GLOBAL 100% WALLET PERCENTAGE DISTRIBUTION:{RESET}")
             for r in conn.execute("SELECT vault_category, allocation_pct, target_wallet_address, allocated_balance_usd, routing_status FROM wallet_distribution_rules").fetchall():
                 bal = "[MASKED]" if masked else f"${r[3]:>9,.2f}"
-                print(f"   * {BOLD}{r[0]:<23}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{r[2]}{RESET} ({bal}) [{GREEN}{r[4]}{RESET}]")
+                print(f"   * {BOLD}{r[0]:<26}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{r[2]}{RESET} ({bal})")
             conn.close()
 
     elif tab == 4:
@@ -117,9 +119,9 @@ def render(tab, masked, banner_msg):
             daemons = conn.execute("SELECT daemon_name, pid, heartbeat_status FROM enclave_daemon_heartbeats LIMIT 4").fetchall()
             for d in daemons:
                 print(f"   * {BOLD}{d[0]:<26}{RESET} [PID:{d[1]:<5}] : {GREEN}{d[2]}{RESET}")
-            print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE (1% SATOSHI FOX CUT):{RESET}")
-            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, founder_royalty_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 3").fetchall():
-                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX (Royalty: +{r[3]:.2f})"
+            print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE (1% SATOSHI FOX DAO CUT):{RESET}")
+            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, dao_royalty_cut_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 3").fetchall():
+                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX (1% DAO: +{r[3]:.3f})"
                 print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:20]}...{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[4]}{RESET}]")
             conn.close()
 
@@ -153,7 +155,7 @@ def main():
             banner = f"⚡ Privacy Mask: {'ENGAGED' if masked else 'DISENGAGED (OPERATOR REVEAL)'}"
         elif ch == 'x':
             os.system("python3 /root/sos-fox-beta/fox_boomerang_engine.py 2>/dev/null || true")
-            banner = "⚡ Boomerang Swap Settled: 50,000 Sats <-> 500 FOX [1% Cut Routed]"
+            banner = "⚡ Boomerang Swap Settled: 50,000 Sats <-> 500 FOX [1% DAO Cut Routed]"
         elif ch == 'b':
             banner = "⚡ 2-of-2 Multisig Channel Settled!"
         elif ch in ['q', 'quit', 'exit']:

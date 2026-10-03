@@ -34,30 +34,36 @@ def run():
         c = sqlite3.connect(METRICS_DB).cursor()
         for r in c.execute("SELECT daemon_name, pid, subsystem_role, heartbeat_status FROM enclave_daemon_heartbeats").fetchall():
             print(f"   * {BOLD}{r[0]:<28}{RESET} [PID:{r[1]:<5}] | {CYAN}{r[2]:<26}{RESET} | {GREEN}{r[3]}{RESET}")
-    wait_for_enter("Step 3 (Boomerang Arbitrage)")
+    wait_for_enter("Step 3 (Three-Prong Boomerang)")
 
-    # Step 3: Three-Prong Boomerang
+    # Step 3: Three-Prong Boomerang with DAO Royalty
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
-    print(f"{BOLD} STEP 3/6: THREE-PRONG BOOMERANG ARBITRAGE & COLD-STORAGE FALLBACK     {RESET}")
+    print(f"{BOLD} STEP 3/6: THREE-PRONG BOOMERANG ARBITRAGE & 1% DAO ROYALTY LOGS       {RESET}")
     print(f"{CYAN}========================================================================{RESET}")
     os.system("python3 /root/sos-fox-beta/fox_boomerang_engine.py")
     if os.path.exists(METRICS_DB):
         c = sqlite3.connect(METRICS_DB).cursor()
         print(f"\n {BOLD}{YELLOW}[+] Recent Boomerang Arbitrage Logs:{RESET}")
-        for r in c.execute("SELECT route_pair, prong_variation, capital_injected, profit_captured, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 3").fetchall():
-            print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1]}{RESET}] -> {GREEN}+{r[3]:.2f} FOX{RESET} | {GREEN}{r[4]}{RESET}")
-    wait_for_enter("Step 4 (Wallets)")
+        for r in c.execute("SELECT route_pair, prong_variation, capital_injected, profit_captured, dao_royalty_cut_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 3").fetchall():
+            print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:18]}...{RESET}] -> Profit: {GREEN}+{r[3]:.2f} FOX{RESET} | 1% DAO Cut: {YELLOW}+{r[4]:.3f}{RESET} [{GREEN}{r[5]}{RESET}]")
+    wait_for_enter("Step 4 (DAO Royalty & Wallets)")
 
-    # Step 4: Attached User Wallets
+    # Step 4: DAO Royalty Breakdown & Attached Wallets
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
-    print(f"{BOLD} STEP 4/6: ATTACHED USER WALLETS & ALLOCATION ROUTING RULES            {RESET}")
+    print(f"{BOLD} STEP 4/6: SATOSHI FOX 1% DAO SUB-DIVISION & GLOBAL WALLET LEDGER       {RESET}")
     print(f"{CYAN}========================================================================{RESET}")
     if os.path.exists(METRICS_DB):
         c = sqlite3.connect(METRICS_DB).cursor()
+        print(f" {BOLD}{YELLOW}[+] 1.0% SATOSHI FOX DAO ROYALTY SUB-ALLOCATION BREAKDOWN:{RESET}")
+        print(f"   {'Sub-Category':<32} | {'Royalty %':<10} | {'Global %':<9} | {'Target Address':<32} | {'Role'}")
+        print(f"   {'-'*30:32} | {'-'*8:10} | {'-'*7:9} | {'-'*30:32} | {'-'*16}")
+        for r in c.execute("SELECT sub_category, royalty_share_pct, global_economy_pct, target_wallet_address, governance_role FROM dao_royalty_distribution_ledger").fetchall():
+            print(f"   {BOLD}{r[0]:<32}{RESET} | {GREEN}{r[1]:>5.1f}%{'':<4}{RESET} | {CYAN}{r[2]:>4.2f}%{'':<4}{RESET} | {r[3]:<32} | {GREEN}{r[4]}{RESET}")
+        print(f"\n {BOLD}{YELLOW}[+] GLOBAL WALLET PERCENTAGE DISTRIBUTION (100% ECONOMY):{RESET}")
         for r in c.execute("SELECT vault_category, allocation_pct, target_wallet_address, allocated_balance_usd, routing_status FROM wallet_distribution_rules").fetchall():
-            print(f"   * {BOLD}{r[0]:<20}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{r[2]}{RESET} (${r[3]:>10,.2f}) [{GREEN}{r[4]}{RESET}]")
+            print(f"   * {BOLD}{r[0]:<26}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{r[2]}{RESET} (${r[3]:>10,.2f}) [{GREEN}{r[4]}{RESET}]")
     wait_for_enter("Step 5 (Settlement Finality)")
 
     # Step 5: Bitcoin Taproot Settlement
@@ -73,7 +79,7 @@ def run():
         if df: print(f" [*] Dual-Fund Sats: {GREEN}+{df[2]:,} Sats{RESET} to L1 Anchor (Inflow: ${df[0]:.2f} USD + {df[1]:.2f} MYST) [{GREEN}{df[3]}{RESET}]")
     wait_for_enter("Step 6 (P2P Shield & DAO)")
 
-    # Step 6: P2P Media Shield & DAO
+    # Step 6: P2P Media Shield & DAO Warden
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
     print(f"{BOLD} STEP 6/6: P2P MEDIA SHIELD, DAO GOVERNANCE & RUNTIME PARAMETERS       {RESET}")
