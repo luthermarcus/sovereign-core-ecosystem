@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sqlite3, json, os, sys, subprocess
+import sqlite3, json, os, sys, time, subprocess
 
 C_RESET, C_BOLD, C_CYAN, C_GREEN, C_YELLOW, C_MAGENTA, C_GRAY, C_WHITE = (
     "\033[0m", "\033[1m", "\033[1;36m", "\033[1;32m", "\033[1;33m", "\033[1;35m", "\033[1;30m", "\033[1;37m"
@@ -7,6 +7,7 @@ C_RESET, C_BOLD, C_CYAN, C_GREEN, C_YELLOW, C_MAGENTA, C_GRAY, C_WHITE = (
 DB_PATH = "/root/workspace/pixel_telemetry.db"
 SHM_FILE = "/dev/shm/sovereign_telemetry_live.json"
 BTC_FILE = "/root/workspace/bitcoin_sandbox.json"
+HB_DIR = "/dev/shm/sovereign/heartbeats"
 
 def fetch_records(limit=6):
     if not os.path.exists(DB_PATH): return "N/A", 0, []
@@ -39,12 +40,24 @@ def fetch_records(limit=6):
     except: return "error", 0, []
 
 def get_daemons():
+    now = time.time()
     res = {}
-    for d in ["telemetry_session", "cron_session", "alert_session", "api_session"]:
-        try:
-            r = subprocess.run(["tmux", "has-session", "-t", d], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            res[d] = (r.returncode == 0)
-        except: res[d] = False
+    for d in ["telemetry", "cron", "alert", "api"]:
+        active = False
+        hb_path = os.path.join(HB_DIR, d)
+        if os.path.exists(hb_path):
+            try:
+                with open(hb_path, "r") as f:
+                    ts = int(f.read().strip())
+                    thresh = 90 if d == "cron" else 20
+                    if (now - ts) <= thresh: active = True
+            except: pass
+        if not active:
+            try:
+                r = subprocess.run(["tmux", "has-session", "-t", f"{d}_session"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                active = (r.returncode == 0)
+            except: pass
+        res[f"{d}_session"] = active
     return res
 
 def main():
@@ -106,7 +119,7 @@ def main():
         print(f"     sos-dlp-guard   : {C_GREEN}● ACTIVE{C_RESET} [Zero Outbound Token Leakage]")
         print(f"     PRoot Isolation : {C_GREEN}● VERIFIED{C_RESET} [Android UID Kernel Namespace Block]")
     print(f"{C_CYAN}{C_BOLD}═════════════════════════════════════════════════════════════════════════{C_RESET}")
-    print(f"{C_GRAY}Navigation: sos dash [1-4] or run 'sos menu' for live switcher.{C_RESET}")
+    print(f"{C_GRAY}Quick commands: sos dash [1|2|3|4] or run 'sos menu' for live switcher.{C_RESET}")
 
 if __name__ == "__main__":
     main()
