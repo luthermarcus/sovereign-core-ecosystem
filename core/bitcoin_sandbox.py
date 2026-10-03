@@ -14,11 +14,8 @@ def init_sandbox():
         os.makedirs(os.path.dirname(SANDBOX_LEDGER), exist_ok=True)
         initial_state = {
             "chain": "regtest",
-            "block_height": 101,
-            "utxos": [
-                {"txid": sha256d(b"genesis_coinbase"), "vout": 0, "amount_sats": 5000000000, "status": "confirmed"}
-            ],
-            "channel_vaults": [],
+            "block_height": 102,
+            "multisig_vaults": [],
             "last_audit": time.strftime("%Y-%m-%d %H:%M:%S")
         }
         with open(SANDBOX_LEDGER, "w") as f:
@@ -30,22 +27,37 @@ def simulate_channel_settlement():
         state = json.load(f)
 
     state["block_height"] += 1
+    channel_seed = f"multisig_channel_{state['block_height']}_{time.time()}"
+    channel_id = sha256d(channel_seed.encode())[:16]
+    preimage = os.urandom(32).hex()
+    payment_hash = hashlib.sha256(bytes.fromhex(preimage)).hexdigest()
+
     new_channel = {
-        "channel_id": sha256d(f"channel_{state['block_height']}_{time.time()}".encode())[:16],
-        "capacity_sats": 1000000,
-        "local_balance": 750000,
-        "remote_balance": 250000,
+        "channel_id": channel_id,
+        "funding_type": "2-of-2_MULTISIG",
+        "capacity_sats": 2000000,
+        "local_balance": 1400000,
+        "remote_balance": 600000,
+        "htlc": {
+            "payment_hash": payment_hash[:16],
+            "amount_sats": 100000,
+            "timelock_blocks": state["block_height"] + 144,
+            "status": "SETTLED_OFFCHAIN"
+        },
         "settlement_state": "VERIFIED_ISOLATED"
     }
-    state["channel_vaults"].append(new_channel)
+    
+    if "multisig_vaults" not in state:
+        state["multisig_vaults"] = []
+    state["multisig_vaults"].append(new_channel)
     state["last_audit"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
     with open(SANDBOX_LEDGER, "w") as f:
         json.dump(state, f, indent=2)
 
-    print(f"[+] Bitcoin Sandbox Block #{state['block_height']}: Channel {new_channel['channel_id']} committed.")
-    print(f"    Local Balance: {new_channel['local_balance']} sats | Remote Balance: {new_channel['remote_balance']} sats")
-    print(f"    State Settlement: {new_channel['settlement_state']}")
+    print(f"[+] Bitcoin L2 Block #{state['block_height']}: 2-of-2 Channel {channel_id} settled.")
+    print(f"    Capacity: {new_channel['capacity_sats']} sats | Local: {new_channel['local_balance']} | Remote: {new_channel['remote_balance']}")
+    print(f"    HTLC Hash: {payment_hash[:16]}... | Timelock: +144 Blocks | State: {new_channel['settlement_state']}")
 
 if __name__ == "__main__":
     simulate_channel_settlement()
