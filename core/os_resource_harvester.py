@@ -49,4 +49,13 @@ def get_bare_metal():
     except Exception: pass
     return payload
 
-if __name__ == "__main__": get_bare_metal()
+if __name__ == "__main__":
+    report = get_bare_metal()
+    print("═" * 70)
+    print("      ⚡ BARE-METAL HARDWARE TELEMETRY & THROTTLE INVARIANT")
+    print("═" * 70)
+    print(f" Throttle Factor (Θ)     : {report['throttle_coefficient']}")
+    print(f" Junction Temperature   : {report['bare_metal']['temp_c']}°C")
+    print(f" Average CPU Frequency  : {report['bare_metal']['avg_freq_mhz']} MHz ({report['bare_metal']['cores']} Cores)")
+    print(f" Kernel Cooling State   : Level {report['bare_metal']['cooling_level']}")
+    print("═" * 70)

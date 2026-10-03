@@ -90,7 +90,7 @@ def render_ui(page, flash_msg="", mask=True):
     disp_cpu = "[SHIELDED]" if mask else f"{bm.get('avg_freq_mhz', 2100)}MHz"
 
     print(f"{C_CYAN}{C_BOLD}╔══════════════════════════════════════════════════════════════════════╗{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.182)        ║{C_RESET}")
+    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.183)        ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚══════════════════════════════════════════════════════════════════════╝{C_RESET}")
     tabs = [(1, "Overview"), (2, "DePIN"), (3, "L2 Vaults"), (4, "Enclave"), (5, "Master")]
     t_bar = [f"{C_BOLD}{C_GREEN}[{n}] {l}{C_RESET}" if page == n else f"{C_GRAY}[{n}] {l}{C_RESET}" for n, l in tabs]
@@ -117,7 +117,7 @@ def render_ui(page, flash_msg="", mask=True):
     elif page == 1:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STANDBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}SUPERVISOR{C_RESET} : {' | '.join(badges)}")
-        print(f"{C_WHITE}{C_BOLD}STORAGE   {C_RESET} : {C_CYAN}{disp_free}{C_RESET} | Θ Invariant: {C_MAG}{theta}{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}HARDWARE  {C_RESET} : CPU: {C_GREEN}{disp_cpu}{C_RESET} | Free: {C_CYAN}{disp_free}{C_RESET} | Θ: {C_MAG}{theta}{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
         print(f"{C_GRAY}──────────────────────────────────────────────────────────────────────{C_RESET}")
         for r_id, r_ts, r_load, r_stat in recs:
             rl = "[PROTECTED]" if mask else str(r_load)[:16]
