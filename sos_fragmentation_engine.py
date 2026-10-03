@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
-"""
-sos_fragmentation_engine.py - Autonomous Schema Auditor & Knowledge Base Sentinel
-Scans RAM WAL databases, verifies column parity, and self-repairs missing components.
-"""
 import sqlite3, os
 
 METRICS_DB = '/dev/shm/ecosystem_metrics.db'
 TRUST_DB   = '/dev/shm/trust_store.db'
 
-def audit_and_repair():
-    print("[*] Running Sovereign Core Autonomous Fragmentation Audit...")
-    
-    # 1. Trust Store & Mathematical Framework
+def run_sync():
+    # 1. Trust Store
     t_conn = sqlite3.connect(TRUST_DB, timeout=5)
     t_c = t_conn.cursor()
     t_c.execute("PRAGMA journal_mode=WAL;")
@@ -32,7 +26,7 @@ def audit_and_repair():
     t_conn.commit()
     t_conn.close()
 
-    # 2. Ecosystem Metrics Ledger
+    # 2. Ecosystem Metrics
     m_conn = sqlite3.connect(METRICS_DB, timeout=10)
     m_c = m_conn.cursor()
     m_c.execute("PRAGMA journal_mode=WAL;")
@@ -64,7 +58,7 @@ def audit_and_repair():
             (route_pair, prong_variation, capital_injected, profit_captured, execution_latency_ms, gas_cost_usd, anti_honeypot_check, rollback_status, trade_status)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', t)
 
-    # Table B: Fox DEX & Top 33 Cross-Chain Liquidity Matrix
+    # Table B: Top 33 Cross-Chain Liquidity Matrix
     m_c.execute("DROP TABLE IF EXISTS dex_cross_chain_liquidity;")
     m_c.execute('''CREATE TABLE dex_cross_chain_liquidity (
         pool_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -121,7 +115,7 @@ def audit_and_repair():
             (rank_idx, dex_platform, pair_label, network_layer, pool_reserve_a, pool_reserve_b, tvl_usd, fee_tier_bps, volume_24h_usd, apr_pct, pool_health)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', p)
 
-    # Table C: Attached User Wallets & Percentage Allocation Rules
+    # Table C: Attached User Wallets & Allocation Rules
     m_c.execute("DROP TABLE IF EXISTS wallet_distribution_rules;")
     m_c.execute('''CREATE TABLE wallet_distribution_rules (
         rule_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -214,7 +208,7 @@ def audit_and_repair():
         (cipher_standard, key_derivation_func, entropy_source, quantum_resistant_flag, vault_status)
         VALUES ('AES-256-GCM / ChaCha20-Poly1305', 'Argon2id (t=3, m=64MB, p=4)', 'Fischer 960 Hardware Entropy / TRNG', 'FIPS 203 ML-KEM-1024 Enabled', 'MILITARY_GRADE_SECURE');''')
 
-    # Table G: Bitcoin L1/L2 Taproot Anchoring Logs & Dual-Fund Convergence
+    # Table G: Bitcoin L1/L2 Anchoring & Dual-Fund Rebalancing
     m_c.execute("DROP TABLE IF EXISTS btc_l2_taproot_anchor_logs;")
     m_c.execute('''CREATE TABLE btc_l2_taproot_anchor_logs (
         anchor_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -239,7 +233,7 @@ def audit_and_repair():
         (fund_1_depin_inflow_usd, fund_1_myst_tokens, fund_2_dex_depth_fox, rebalanced_to_anchor_sat, convergence_status)
         VALUES (34.95, 22.35, 7070000.0, 74044, 'SETTLED_CONVERGED');''')
 
-    # Table H: Developer Runtime Parameters Catalog
+    # Table H: Developer Runtime Parameters
     m_c.execute("DROP TABLE IF EXISTS dev_parameters;")
     m_c.execute('''CREATE TABLE dev_parameters (
         param_key TEXT PRIMARY KEY,
@@ -315,4 +309,4 @@ def audit_and_repair():
     print("[✓] All 10 unified schemas verified and synchronized in RAM WAL.")
 
 if __name__ == '__main__':
-    audit_and_repair()
+    run_sync()

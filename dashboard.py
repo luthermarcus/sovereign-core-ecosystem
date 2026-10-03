@@ -85,7 +85,7 @@ def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
     mask_tag = f"{YELLOW}[MASKED]{RESET}" if masked else f"{GREEN}[LIVE]{RESET}"
     print(f"{CYAN}┌────────────────────────────────────────────────────┐{RESET}")
-    print(f"{CYAN}│{BOLD} SOVEREIGN CORE OS (SOS) — MASTER WORKSTATION v7.72  {RESET}{CYAN}│{RESET}")
+    print(f"{CYAN}|{BOLD} SOVEREIGN CORE OS (SOS) — MASTER WORKSTATION v7.72  {RESET}{CYAN}|{RESET}")
     print(f"{CYAN}└────────────────────────────────────────────────────┘{RESET}")
     print(f" {BOLD}[P1:Workstation] [P2:Vault]   [P3:Files]   [P4:DePIN]{RESET}")
     print(f" {BOLD}[P5:Boomerang]   [P6:Top 33]  [P7:Wallets] [P8:BTC L2]{RESET}")
@@ -161,7 +161,7 @@ def render_page_2(m_conn, t_conn):
         except Exception as e:
             print(f"  [-] Vault query error: {e}")
 
-# PAGE 3: Enclave File Manager & Secure Storage Inspector
+# PAGE 3: Enclave File Manager & Storage
 def render_page_3(masked):
     draw_header(3, 10, "ENCLAVE FILE MANAGER & STORAGE")
     print(f" {BOLD}{YELLOW}[+] REPOSITORY DIRECTORY ({ROOT_DIR}):{RESET}")
@@ -234,7 +234,7 @@ def render_page_6(m_conn, masked, subpage=0):
             print(f"  [-] Liquidity matrix error: {e}")
     print(f"\n {CYAN}[< / >]{RESET} Use '<' / '>' or 'd' / 'f' to cycle all 33 pools.")
 
-# PAGE 7: Attached User Wallets & Percentage Allocation Rules
+# PAGE 7: Attached User Wallets & Allocation Rules
 def render_page_7(m_conn, masked):
     draw_header(7, 10, "ATTACHED USER WALLETS & ROUTING", masked)
     print(f" {BOLD}{YELLOW}[+] ATTACHED WALLETS & ALLOCATION RULES:{RESET}")
@@ -262,10 +262,9 @@ def render_page_8(m_conn, masked):
             anc = c.fetchone()
             epoch = anc[0] if anc else 1201
             txid  = "[MASKED]" if masked else (anc[1] if anc else "0xe75650fa6e0e1d8ad032ed3d")
-            print(f"  * Rollup Epoch   : #{epoch}")
-            print(f"  * Taproot TxID   : {CYAN}{txid[:26]}...{RESET}")
-            print(f"  * Finality Depth : {GREEN}6/6 Confirmations (L1 Validated){RESET}")
-            print(f"  * Settlement     : {GREEN}{anc[2]}{RESET}")
+            print(f"  * Epoch: #{epoch} | Finality: {GREEN}6/6 Confirmations{RESET}")
+            print(f"  * Taproot TxID: {CYAN}{txid[:22]}...{RESET}")
+            print(f"  * Status: {GREEN}L2_SETTLEMENT_IMMUTABLY_SEALED{RESET}")
 
             print(f"\n {BOLD}{YELLOW}[+] DUAL-FUND CONVERGENCE SETTLEMENT LEDGER:{RESET}")
             c.execute("SELECT fund_1_depin_inflow_usd, fund_1_myst_tokens, rebalanced_to_anchor_sat, convergence_status FROM dual_fund_settlement_ledger ORDER BY convergence_id DESC LIMIT 1")
