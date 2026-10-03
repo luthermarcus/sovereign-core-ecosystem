@@ -1,0 +1,31 @@
+# >>> SOS-ZERO-LEAK >>>
+*.db
+*.db-*
+*.sqlite*
+*.sql
+*.log
+*_key.json
+*-key.json
+*keys.json
+*_keys*.json
+*keystore*.json
+*wallet*.json
+*seed*.json
+*mnemonic*.json
+*private*.json
+*secret*.json
+*credentials*.json
+*.pem
+*.key
+*.wif
+.env
+.env.*
+bips_private/
+vault_backups/
+sos_vault*
+fox_wallet_meta.json
+session_transcript.log
+dev/shm/
+shm_dump*/
+*.shmdump
+# <<< SOS-ZERO-LEAK <<<
