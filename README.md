@@ -11,3 +11,4 @@ Sovereign Core OS (SOS) is an airgapped, non-intrusive microkernel workstation d
 * **Native Liquid Pairs**: Deep on-chain pools for `FOX/BTC`, `FOX/USDT`, and `FOX/USDC` enabling instant atomic swaps directly in the terminal workstation.
 * **Three-Prong Boomerang Arbitrage**: Automated circular AMM routing featuring L1 Taproot state commits, L2 fast-exit pools, and hard offline cold-storage loopback escrow fallbacks.
 * **1.0% Satoshi Fox DAO Economy**: Programmatic split allocating 40% Founder Cold Storage, 25% POL Depth, 15% DAO Grants, 10% Node Mesh Staking, and 10% Anti-Fraud Escrow.
+* **Resource-Contribution Node Mining**: Automated rewards for verified bandwidth relay (DePIN) and Taproot state validation.
