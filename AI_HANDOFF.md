@@ -1,14 +1,15 @@
-# Sovereign Core OS (SOS) — Unified AI Model Delegation Contract
+# Sovereign Core OS (SOS) — Multi-Model AI Delegation & Workspace Protocol
 
-## Immutable 10-Page Workstation Specification
-To prevent model regressions and dropped features during handoffs, `dashboard.py` MUST strictly retain all 10 unified pages:
-* Page 1: Pixel 10 Pro XL Executive Workstation & Host OS Scraper
-* Page 2: OS Security Foundation, Mathematical Entropy & Military Encryption Vault
-* Page 3: Enclave File Manager & RAM WAL Storage Inspector
-* Page 4: 7-Node DePIN Fleet & Passive Yield Harvest
-* Page 5: Three-Prong Boomerang AMM & Cold-Storage Fallback Router
-* Page 6: Top 33 Cross-Chain Liquidity Matrix (Sub-paginated 5/view)
-* Page 7: Attached User Wallets & Percentage Allocation Distribution
-* Page 8: Bitcoin L1/L2 Taproot Pipeline & Dual-Fund Settlement Engine
-* Page 9: 12 Enclave Daemons Super-Tree & Watchdog Status
-* Page 10: Dev Parameters, DAO Governance, P2P Media Shield & KB Flags
+## 1. Dual Workspace Architecture
+* **Workspace A (Host OS Scraper / Termux)**:
+  - Prompt: `⚡ SOS-Node:~$`
+  - Responsibilities: Android host kernel metrics (`/proc`), physical network bindings, boot startup (`~/.termux/boot/start_sovereign.sh`).
+* **Workspace B (Sandboxed Enclave / PRoot Debian)**:
+  - Prompt: `root@localhost:~/sos-fox-beta#`
+  - Directory: `/root/sos-fox-beta`
+  - Storage: RAM tmpfs SQLite WAL (`/dev/shm/*.db`)
+  - Responsibilities: 10-page master workstation (`dashboard.py`), 12 background daemons, Three-Prong Boomerang AMM, Bitcoin L2 Taproot state engine.
+
+## 2. Model Roles
+* **Gemini (Architecture & Governance)**: Maintains overall enclave schema integrity, DLP gate enforcement, mathematical entropy scoring, and Bitcointalk/XDA/GitHub convergence.
+* **Claude / Flash-Lite (Execution & Patches)**: Must execute strictly inside Workspace B (`/root/sos-fox-beta`). Never alter SQLite schema structures without running `sos_fragmentation_engine.py`.
