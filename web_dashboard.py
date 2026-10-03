@@ -105,6 +105,7 @@ class TelemetryHandler(http.server.SimpleHTTPRequestHandler):
         self.wfile.write(html.encode("utf-8"))
 
 if __name__ == "__main__":
-    with socketserver.TCPServer(("", PORT), TelemetryHandler) as httpd:
+    socketserver.TCPServer.allow_reuse_address = True
+with socketserver.TCPServer(("", PORT), TelemetryHandler) as httpd:
         print(f"[✓] Master Web Dashboard serving on port {PORT}")
         httpd.serve_forever()
