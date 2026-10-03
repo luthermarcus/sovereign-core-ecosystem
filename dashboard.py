@@ -285,9 +285,10 @@ def main():
             print(f"\n{YELLOW}[*] Triggering Bitcoin Taproot Anchor Finalizer...{RESET}")
             os.system(f"python3 {os.path.join(ROOT_DIR, 'fox_dual_fund_bridge.py')} 2>/dev/null || true")
             time.sleep(1.2)
-        elif ch in ['q', 'exit']:
-            print(f"\n{GREEN}[✓] Master Command Center closed. Returning cleanly to shell.{RESET}\n")
-            break
+        elif ch in ['q', 'quit', 'exit']:
+            sys.stdout.write(f"\n\033[32m[✓] Master Command Center closed. Returning cleanly to shell.\033[0m\n\n")
+            sys.stdout.flush()
+            sys.exit(0)
 
 if __name__ == '__main__':
     main()
