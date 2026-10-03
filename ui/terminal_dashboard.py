@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 import sqlite3, json, os, sys, time, select, termios, tty, subprocess
 
-C_RESET, C_BOLD, C_CYAN, C_GREEN, C_YELLOW, C_MAGENTA, C_GRAY, C_WHITE, C_RED = (
-    "\033[0m", "\033[1m", "\033[1;36m", "\033[1;32m", "\033[1;33m", "\033[1;35m", "\033[1;30m", "\033[1;37m", "\033[1;31m"
+C_RESET, C_BOLD, C_CYAN, C_GREEN, C_YELLOW, C_MAGENTA, C_GRAY, C_WHITE = (
+    "\033[0m", "\033[1m", "\033[1;36m", "\033[1;32m", "\033[1;33m", "\033[1;35m", "\033[1;30m", "\033[1;37m"
 )
 DB_PATH = "/root/workspace/pixel_telemetry.db"
 SHM_FILE = "/dev/shm/sovereign_telemetry_live.json"
 BTC_FILE = "/root/workspace/bitcoin_sandbox.json"
-HB_DIR = "/dev/shm/sovereign/heartbeats"
 
 def fetch_records(limit=5):
     if not os.path.exists(DB_PATH): return "N/A", 0, []
@@ -42,24 +41,16 @@ def fetch_records(limit=5):
     except: return "error", 0, []
 
 def get_daemons():
-    now = time.time()
-    res = {}
-    for d in ["telemetry", "cron", "alert", "api"]:
-        active = False
-        hb_path = os.path.join(HB_DIR, d)
-        if os.path.exists(hb_path):
-            try:
-                with open(hb_path, "r") as f:
-                    ts = int(f.read().strip())
-                    if (now - ts) <= (90 if d == "cron" else 25): active = True
-            except: pass
-        if not active:
-            try:
-                r = subprocess.run(["tmux", "has-session", "-t", f"{d}_session"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                active = (r.returncode == 0)
-            except: pass
-        res[d] = active
-    return res
+    try:
+        ps_out = subprocess.check_output(["ps", "-ef"], text=True)
+    except Exception:
+        ps_out = ""
+    return {
+        "telemetry": "continuous_monitor.py" in ps_out,
+        "cron": "run_worker.sh cron_session" in ps_out or "sovereign_manager.py" in ps_out,
+        "alert": "alert_daemon.py" in ps_out or "run_worker.sh alert_session" in ps_out,
+        "api": "sovereign_ipc_bridge.py" in ps_out or "run_worker.sh api_session" in ps_out
+    }
 
 def trigger_btc_sim():
     try:
@@ -90,15 +81,11 @@ def render_ui(page, flash_msg=""):
             with open(BTC_FILE) as f: btc = json.load(f)
         except: pass
 
-    # Header
     print(f"{C_CYAN}{C_BOLD}╔═════════════════════════════════════════════════════════════════════════╗{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.155)           ║{C_RESET}")
+    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.156)           ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚═════════════════════════════════════════════════════════════════════════╝{C_RESET}")
     
-    # Navigation Bar
-    navs = [
-        (1, "Overview"), (2, "DePIN Swarm"), (3, "Bitcoin L2"), (4, "Enclave"), (5, "Master Matrix")
-    ]
+    navs = [(1, "Overview"), (2, "DePIN Swarm"), (3, "Bitcoin L2"), (4, "Enclave"), (5, "Master Matrix")]
     bar_items = []
     for num, label in navs:
         if page == num:
@@ -112,7 +99,6 @@ def render_ui(page, flash_msg=""):
         print(f" {C_YELLOW}⚡ {flash_msg}{C_RESET}")
         print(f"{C_GRAY}─────────────────────────────────────────────────────────────────────────{C_RESET}")
 
-    # Views
     if page == 1 or page == 5:
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STANDBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD} [1] SYSTEM TELEMETRY & WORKERS{C_RESET}")
@@ -155,7 +141,6 @@ def render_ui(page, flash_msg=""):
         print(f"     Sandbox   : {C_GREEN}● VERIFIED{C_RESET} [PRoot UID Kernel Namespace Isolation]")
         print(f"{C_GRAY}─────────────────────────────────────────────────────────────────────────{C_RESET}")
 
-    # Persistent Footer Action Bar
     print(f"{C_CYAN}{C_BOLD}ACTIONS:{C_RESET} [1-5] Switch Tab | [b] Settle BTC Channel | [s] Sweep | [q] Exit")
 
 def main():
