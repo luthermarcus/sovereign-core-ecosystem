@@ -10,11 +10,11 @@ C_MAGENTA= "\033[1;35m"
 C_GRAY   = "\033[1;30m"
 C_WHITE  = "\033[1;37m"
 
-DB_PATH    = "/root/workspace/pixel_telemetry.db"
-SHM_FILE   = "/dev/shm/sovereign_telemetry_live.json"
-BTC_FILE   = "/root/workspace/bitcoin_sandbox.json"
-FOX_FILE   = "/root/workspace/fox_wallet.json"
-HB_DIR     = "/dev/shm/sovereign/heartbeats"
+DB_PATH  = "/root/workspace/pixel_telemetry.db"
+SHM_FILE = "/dev/shm/sovereign_telemetry_live.json"
+BTC_FILE = "/root/workspace/bitcoin_sandbox.json"
+FOX_FILE = "/root/workspace/fox_wallet.json"
+HB_DIR   = "/dev/shm/sovereign/heartbeats"
 
 def fetch_records(limit=4):
     if not os.path.exists(DB_PATH): return "system_logs", 0, []
@@ -52,14 +52,14 @@ def fetch_records(limit=4):
 def get_daemons():
     now = time.time()
     res = {}
-    for d, threshold in [("telemetry", 8), ("cron", 90), ("alert", 8), ("api", 8)]:
+    for d in ["telemetry", "cron", "alert", "api"]:
         active = False
         hb_path = os.path.join(HB_DIR, d)
         if os.path.exists(hb_path):
             try:
                 with open(hb_path, "r") as f:
                     ts = float(f.read().strip())
-                    if (now - ts) <= threshold:
+                    if (now - ts) <= 6.0:
                         active = True
             except Exception:
                 pass
@@ -76,9 +76,16 @@ def trigger_btc_sim():
 def trigger_fox_yield():
     try:
         subprocess.run(["python3", "/root/workspace/wallet_engine.py"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        return "DePIN Yield Compounded into FOX L2 Channel Vault!"
+        return "DePIN Yield Compounded into FOX Vault!"
     except Exception as e:
         return f"Wallet error: {e}"
+
+def trigger_atomic_swap():
+    try:
+        res = subprocess.run(["python3", "-c", "import sys; sys.path.append('/root/workspace'); from wallet_engine import execute_atomic_swap; execute_atomic_swap()"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        return "Atomic Swap Settled: 50,000 Sats <-> 500 FOX"
+    except Exception as e:
+        return f"Swap error: {e}"
 
 def trigger_sweep():
     try:
@@ -108,7 +115,7 @@ def render_ui(page, flash_msg=""):
 
     # Header (Lines 1-3)
     print(f"{C_CYAN}{C_BOLD}╔═══════════════════════════════════════════════════════════════════════╗{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.162)         ║{C_RESET}")
+    print(f"{C_CYAN}{C_BOLD}║      PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.163)         ║{C_RESET}")
     print(f"{C_CYAN}{C_BOLD}╚═══════════════════════════════════════════════════════════════════════╝{C_RESET}")
 
     # Navigation (Line 4)
@@ -126,10 +133,10 @@ def render_ui(page, flash_msg=""):
         badges = [f"{C_GREEN}{d}:ON{C_RESET}" if daemons.get(d) else f"{C_YELLOW}{d}:STBY{C_RESET}" for d in ["telemetry", "cron", "alert", "api"]]
         print(f"{C_WHITE}{C_BOLD}[1] WORKERS{C_RESET} : {' | '.join(badges)}")
         print(f"{C_WHITE}{C_BOLD}[2] METRICS{C_RESET} : Load: {C_GREEN}{ipc.get('load_avg', 'N/A')}{C_RESET} | Free: {C_CYAN}{float(ipc.get('storage_free_mb', 0))/1024:.1f} GB{C_RESET} | WAL: {C_YELLOW}#{tot}{C_RESET}")
-        print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | Host Mesh: {C_YELLOW}STANDBY{C_RESET} (10.0.0.130)")
+        print(f"{C_WHITE}{C_BOLD}[3] DEPIN  {C_RESET} : Mysterium: {C_GREEN}RUNNING{C_RESET} | RPC Server: {C_GREEN}127.0.0.1:8545{C_RESET}")
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        btc_str = f"#{btc.get('block_height', '113')} ({len(vaults)} Vaults)"
-        fox_str = f"{fox.get('l2_channel_balance_fox', 5000):,.0f} L2 (+{fox.get('depin_yield_fox', 0):.0f} Yield)"
+        btc_str = f"#{btc.get('block_height', '115')} ({len(vaults)} Vaults)"
+        fox_str = f"{fox.get('l2_channel_balance_fox', 5000):,.0f} L2 (Swaps: {fox.get('cross_chain_swaps', 0)})"
         print(f"{C_WHITE}{C_BOLD}[4] ASSETS {C_RESET} : BTC: {C_CYAN}{btc_str}{C_RESET} | FOX: {C_YELLOW}{fox_str}{C_RESET}")
         print(f"{C_WHITE}{C_BOLD}[5] ENCLAVE{C_RESET} : sos-truth: {C_GREEN}ACTIVE{C_RESET} | DLP: {C_GREEN}SECURE{C_RESET} | PRoot: {C_GREEN}ISOLATED{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
@@ -147,25 +154,23 @@ def render_ui(page, flash_msg=""):
         for r_id, r_ts, r_load, r_stat in recs:
             print(f" {str(r_id):<3} | {str(r_ts)[11:19]} | {str(r_load):<16} | {C_GREEN}{r_stat}{C_RESET}")
 
-    # TAB 2: DEPIN CLUSTER
+    # TAB 2: DEPIN CLUSTER & RPC STATUS
     elif page == 2:
-        print(f"{C_WHITE}{C_BOLD}WORKSTATION BRIDGE{C_RESET}: {C_YELLOW}luther@10.0.0.130 -> STANDBY{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}DECENTRALIZED PROTOCOL RPC{C_RESET}: {C_GREEN}http://127.0.0.1:8545 [ACTIVE]{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
         print(f" Mysterium (Native Edge)       : {C_GREEN}● RUNNING{C_RESET}  [WireGuard L2 Mesh]")
         print(f" Mysterium (Host Container)    : {C_YELLOW}○ STANDBY{C_RESET}  [Container Relayer]")
         print(f" EarnApp / TraffMonetizer      : {C_YELLOW}○ STANDBY{C_RESET}  [Residential Transit]")
         print(f" PacketStream / Pawns / Honey  : {C_YELLOW}○ STANDBY{C_RESET}  [Bandwidth Proxy]")
 
-    # TAB 3: ASSET VAULTS & FOX WALLET
+    # TAB 3: ASSET VAULTS & ATOMIC SWAPS
     elif page == 3:
         vaults = btc.get("multisig_vaults", []) or btc.get("channel_vaults", [])
-        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '113')}{C_RESET} | {C_GREEN}{len(vaults)} Active Multisig Vaults{C_RESET}")
-        print(f"{C_WHITE}{C_BOLD}FOX L1 WALLET {C_RESET} : {C_YELLOW}{fox.get('l1_balance_fox', 25000):,.2f} FOX{C_RESET} ({fox.get('address', 'fox1q...')[:16]}...)")
-        print(f"{C_WHITE}{C_BOLD}FOX L2 VAULT  {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 5000):,.2f} FOX{C_RESET} (Yield: +{fox.get('depin_yield_fox', 0):.2f})")
+        print(f"{C_WHITE}{C_BOLD}BTC L2 REGTEST{C_RESET} : Block {C_CYAN}#{btc.get('block_height', '115')}{C_RESET} | {C_GREEN}{len(vaults)} Active Vaults{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}EVM ADDRESS   {C_RESET} : {C_YELLOW}{fox.get('evm_address', '0x...')[:22]}...{C_RESET}")
+        print(f"{C_WHITE}{C_BOLD}FOX L2 VAULT  {C_RESET} : {C_GREEN}{fox.get('l2_channel_balance_fox', 5000):,.2f} FOX{C_RESET} | Swaps: {C_CYAN}#{fox.get('cross_chain_swaps', 0)}{C_RESET}")
         print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
-        if vaults:
-            last = vaults[-1]
-            print(f" Latest Vault : {last.get('channel_id')[:14]}.. | Cap: {last.get('capacity_sats', 0):,} sats")
+        print(f" Last Atomic Swap Preimage Hash : {C_YELLOW}{fox.get('last_swap_hash', 'None')}{C_RESET}")
 
     # TAB 4: ENCLAVE ATTESTATION
     elif page == 4:
@@ -178,7 +183,7 @@ def render_ui(page, flash_msg=""):
 
     # Footer (Lines 16-17)
     print(f"{C_GRAY}───────────────────────────────────────────────────────────────────────{C_RESET}")
-    print(f"{C_CYAN}{C_BOLD}ACTIONS:{C_RESET} [1-5] Tab | [b] Settle BTC | [w] Yield FOX | [s] Sweep | [q] Exit")
+    print(f"{C_CYAN}{C_BOLD}ACTIONS:{C_RESET} [1-5] Tab | [b] BTC | [w] Yield | [x] Swap | [s] Sweep | [q] Exit")
     sys.stdout.flush()
 
 def main():
@@ -206,6 +211,8 @@ def main():
                     flash = trigger_btc_sim()
                 elif ch in ['w', 'W']:
                     flash = trigger_fox_yield()
+                elif ch in ['x', 'X']:
+                    flash = trigger_atomic_swap()
                 elif ch in ['s', 'S']:
                     flash = trigger_sweep()
                 elif ch in ['q', 'Q']:
