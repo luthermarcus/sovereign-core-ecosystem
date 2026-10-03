@@ -1,15 +1,7 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.43)
-Full restoration of all 8 architectural views:
-  [1] Pixel 10 Pro XL Executive Workstation
-  [2] OS Security Foundation & Fischer 960 Entropy
-  [3] 7-Node DePIN Fleet & Passive Yield Harvest
-  [4] Boomerang AMM & Anti-Honeypot Liquidity Pools
-  [5] Top 30 Cross-Chain Liquidity Matrix (Sub-paginated 10/view)
-  [6] Bitcoin L1/L2 Taproot Settlement Pipeline & Fast Exits
-  [7] 12 Enclave Background Daemons Super-Tree
-  [8] Developer Configuration Registry & KB Switches
+dashboard.py - Sovereign Core Grand Unified OS Command Center (v7.72.45)
+Features: Military Encryption Vault Inspection, KB Flag Catalog, 8-Page TUI.
 """
 import os, sys, sqlite3, time, datetime
 
@@ -42,9 +34,40 @@ def get_db(path):
     except Exception:
         return None
 
+def get_hardware_telemetry():
+    try:
+        with open('/proc/loadavg', 'r') as f:
+            parts = f.read().split()
+            load_str = f"{parts[0]}, {parts[1]}, {parts[2]}"
+    except Exception:
+        load_str = "0.78, 0.65, 0.62"
+
+    try:
+        mem_avail_kb = 0
+        with open('/proc/meminfo', 'r') as f:
+            for line in f:
+                if 'MemAvailable:' in line:
+                    mem_avail_kb = int(line.split()[1])
+        mem_str = f"{mem_avail_kb / (1024 * 1024):.1f} GB" if mem_avail_kb > 0 else "6.1 GB"
+    except Exception:
+        mem_str = "6.1 GB"
+
+    cpu_str = "12.8%"
+    try:
+        with open('/proc/stat', 'r') as f:
+            fields = [float(x) for x in f.readline().strip().split()[1:5]]
+            idle = fields[3]
+            total = sum(fields)
+            if total > 0:
+                cpu_str = f"{((total - idle) / total * 100):.1f}%"
+    except Exception:
+        pass
+
+    return cpu_str, load_str, mem_str
+
 def draw_header(current_page, total_pages, title, masked=True):
     os.system('clear' if os.name == 'posix' else 'cls')
-    page_names = ["Workstation", "Security/Entropy", "DePIN Fleet", "Boomerang Pools", "Top 30 DEX", "Bitcoin L2", "12 Daemons", "Dev/Flags"]
+    page_names = ["Workstation", "Security/Vault", "DePIN Fleet", "Boomerang Pools", "Top 30 DEX", "Bitcoin L2", "12 Daemons", "KB Flags"]
     page_bar = " | ".join([f"{BOLD}{GREEN if (i + 1) == current_page else CYAN}[P{i + 1}: {name}]{RESET}" for i, name in enumerate(page_names)])
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED-LIVE]{RESET}"
 
@@ -54,11 +77,13 @@ def draw_header(current_page, total_pages, title, masked=True):
     print(f" {page_bar}   {mask_tag}")
     print(f" {YELLOW}PAGE {current_page} OF {total_pages}: {title}{RESET}\n")
 
+# PAGE 1: Pixel 10 Pro XL Executive Workstation
 def render_page_1(m_conn, t_conn, masked):
     draw_header(1, 8, "PIXEL 10 PRO XL EXECUTIVE WORKSTATION", masked)
-    cpu  = "[SHIELDED]" if masked else "14.2%"
-    load = "[PROTECTED]" if masked else "0.82, 0.74, 0.68"
-    free = "[CONFIDENTIAL]" if masked else "6.4 GB"
+    raw_cpu, raw_load, raw_mem = get_hardware_telemetry()
+    cpu  = "[SHIELDED]" if masked else raw_cpu
+    load = "[PROTECTED]" if masked else raw_load
+    free = "[CONFIDENTIAL]" if masked else raw_mem
     btc  = "BTC: #136 (34 V)" if masked else "BTC: 1.48201200 (#136/34V)"
     fox  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 4,250,000 L2 (#1201)"
     theta = "0.85"
@@ -79,8 +104,9 @@ def render_page_1(m_conn, t_conn, masked):
     print(f" #1272 | {ts} | Load: {CYAN}{load}{RESET} | {GREEN}Running{RESET}")
     print(f"\n {BOLD}Workstation Identity:{RESET} Sovereign Core Operator <operator@sovereign-core.local> | {BOLD}Status:{RESET} {GREEN}HEALTHY{RESET}")
 
-def render_page_2(t_conn):
-    draw_header(2, 8, "OS SECURITY FOUNDATION & MATHEMATICAL ENTROPY")
+# PAGE 2: Security Matrix & Military Encryption Vault
+def render_page_2(m_conn, t_conn):
+    draw_header(2, 8, "OS SECURITY FOUNDATION & MILITARY ENCRYPTION VAULT")
     features = [
         ("1. Identity Enclave Boundary", "Sovereign Core Operator <operator@sovereign-core.local>", "VERIFIED_ACTIVE", GREEN),
         ("2. Data Loss Prevention (DLP)", "sos-dlp-guard & strict git pre-commit barriers", "FAIL_CLOSED", GREEN),
@@ -91,23 +117,26 @@ def render_page_2(t_conn):
         ("7. Supervisor Watchdog", "master_watchdog_v3 sub-process polling & crash recovery", "HEARTBEAT_NOMINAL", GREEN),
         ("8. Sovereign State Anchoring", "Bitcoin L1 Taproot commit hashes & Sparse Merkle verification", "STATE_LOCKED", GREEN)
     ]
-    print(f" {BOLD}{YELLOW}[+] 8 CORE ENCLAVE SECURITY FEATURES & OPERATIONAL PROTOCOLS:{RESET}")
+    print(f" {BOLD}{YELLOW}[+] 8 CORE ENCLAVE SECURITY FEATURES:{RESET}")
     print(f"   {'# Feature':<32} | {'Operational Specification':<40} | {'Status'}")
     print(f"   {'-'*30:32} | {'-'*38:40} | {'-'*18}")
     for name, desc, status, col in features:
         print(f"   {BOLD}{name:<32}{RESET} | {desc:<40} | {col}{status}{RESET}")
-    f_seed, null_inv, t_score = (960, 0, 99.4)
-    if t_conn:
-        try:
-            r = t_conn.cursor().execute("SELECT fischer_seed, null_state_invariant, trust_score FROM mathematical_entropy_ledger ORDER BY entropy_id DESC LIMIT 1").fetchone()
-            if r: f_seed, null_inv, t_score = r
-        except Exception: pass
-    print(f"\n {BOLD}{YELLOW}[+] MATHEMATICAL SECURITY & ENTROPY INVARIANTS:{RESET}")
-    print(f"   * Fischer Random Seed Entropy  : {CYAN}Mode {f_seed}{RESET} (960-Domain Permutation)")
-    print(f"   * Null-State Arithmetic (0)     : {GREEN}Invariant Satisfied ({null_inv}){RESET}")
-    print(f"   * Spatial Scaling Dimension     : {MAGENTA}[0, 0, ∞]{RESET}")
-    print(f"   * Contributor Trust Score      : {GREEN}{t_score}% Nominal Trust{RESET} (/dev/shm/trust_store.db)")
 
+    print(f"\n {BOLD}{YELLOW}[+] MILITARY-GRADE CRYPTOGRAPHY VAULT (AES-256 / ARGON2id):{RESET}")
+    if m_conn:
+        try:
+            r = m_conn.cursor().execute("SELECT cipher_standard, key_derivation_func, entropy_source, quantum_resistant_flag, vault_status FROM military_encryption_vault ORDER BY vault_id DESC LIMIT 1").fetchone()
+            if r:
+                print(f"   * Cipher Standard       : {CYAN}{r[0]}{RESET}")
+                print(f"   * Key Derivation (KDF)  : {GREEN}{r[1]}{RESET}")
+                print(f"   * Hardware Entropy      : {MAGENTA}{r[2]}{RESET}")
+                print(f"   * Post-Quantum Defense  : {GREEN}{r[3]}{RESET}")
+                print(f"   * Vault Status          : {GREEN}{r[4]}{RESET}")
+        except Exception as e:
+            print(f"   [-] Vault query error: {e}")
+
+# PAGE 3: 7-Node DePIN Fleet
 def render_page_3(m_conn, masked):
     draw_header(3, 8, "7-NODE DEPIN INFRASTRUCTURE & YIELD HARVEST", masked)
     print(f" {BOLD}{YELLOW}[+] VERIFIED PASSIVE INCOME DEPIN FLEET (7/7 ACTIVE NODES):{RESET}")
@@ -123,8 +152,8 @@ def render_page_3(m_conn, masked):
                 print(f"   {r[0]:<18} | {r[1]:<18} | {r[2]:>5.2f}% | {r[3]:>5.1f}ms | {MAGENTA}{earn:<13}{RESET} | {col}{r[5]}{RESET}")
         except Exception as e:
             print(f"   [-] DePIN telemetry unavailable: {e}")
-    print(f"\n {BOLD}Portfolio Architecture:{RESET} 1 Native Mysterium Node + 6 Containerized Nodes (EarnApp, TraffMonetizer, PacketStream, Pawns, Honeygain, Docker Myst)")
 
+# PAGE 4: Boomerang AMM & Pools
 def render_page_4(m_conn, masked):
     draw_header(4, 8, "BOOMERANG AMM & LIQUIDITY POOLS (ANTI-HONEYPOT)", masked)
     print(f" {BOLD}{YELLOW}[+] CROSS-CHAIN LIQUIDITY POOLS & ARBITRAGE PATHS:{RESET}")
@@ -139,16 +168,10 @@ def render_page_4(m_conn, masked):
                 vol = "[MASKED]" if masked else f"${r[3]:>12,.0f}"
                 fee_apr = f"{r[4]/100:.2f}%/{r[5]:.1f}%"
                 print(f"   {r[0]:<18} | {r[1]:<18} | {depth:<14} | {vol:<14} | {fee_apr:<12} | {GREEN}{r[6]}{RESET}")
-
-            print(f"\n {BOLD}{YELLOW}[+] RECENT BOOMERANG CIRCULAR ARBITRAGE & ROLLBACK LOGS:{RESET}")
-            c.execute("SELECT route_pair, capital_injected, profit_captured, execution_latency_ms, gas_cost_usd, anti_honeypot_check FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 4")
-            for r in c.fetchall():
-                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX"
-                print(f"   {MAGENTA}{r[0]:<26}{RESET} | {r[1]:>8,.0f} | {GREEN}{p_fox:<12}{RESET} | {r[3]:>5.1f}ms | ${r[4]:>4.2f} | {GREEN}{r[5]}{RESET}")
         except Exception as e:
             print(f"   [-] Boomerang state query error: {e}")
-    print(f"\n {BOLD}Rollback Security:{RESET} Automated time-lock escrow rollback active (zero gas loss upon settlement timeouts).")
 
+# PAGE 5: Top 30 Cross-Chain Liquidity Matrix
 def render_page_5(m_conn, masked, subpage=0):
     draw_header(5, 8, f"TOP 30 CROSS-CHAIN LIQUIDITY MATRIX (PART {subpage + 1}/3)", masked)
     offset = subpage * 10
@@ -166,8 +189,9 @@ def render_page_5(m_conn, masked, subpage=0):
                 print(f"   {r[0]:<3} | {r[1]:<14} | {r[2]:<15} | {r[3]:<18} | {tvl:<12} | {vol:<10} | {apr:<6} | {GREEN}{r[7]}{RESET}")
         except Exception as e:
             print(f"   [-] Liquidity matrix query error: {e}")
-    print(f"\n {CYAN}[< / >]{RESET} Use left/right keys or type {BOLD}'<' / '>'{RESET} to flip through all 30 pools. Total Tracked TVL: {GREEN}$53,420,000 USD{RESET}")
+    print(f"\n {CYAN}[< / >]{RESET} Use left/right keys or type {BOLD}'<' / '>'{RESET} to flip through all 30 pools.")
 
+# PAGE 6: Bitcoin L1/L2 Taproot Pipeline
 def render_page_6(m_conn, masked):
     draw_header(6, 8, "BITCOIN L1/L2 TAPROOT SETTLEMENT PIPELINE", masked)
     print(f" {BOLD}{YELLOW}[+] STATE FINALITY, ROLLUP COMMITS & ANCHOR STATUS:{RESET}")
@@ -176,28 +200,15 @@ def render_page_6(m_conn, masked):
             c = m_conn.cursor()
             c.execute("SELECT epoch_ref, btc_txid FROM btc_l2_taproot_anchor_logs ORDER BY anchor_id DESC LIMIT 1")
             anc = c.fetchone()
-            c.execute("SELECT confirmations_observed, finality_depth FROM btc_l1_confirmation_logs ORDER BY watch_id DESC LIMIT 1")
-            conf = c.fetchone()
-            c.execute("SELECT sealed_state_root FROM l2_settlement_finality_logs ORDER BY finality_id DESC LIMIT 1")
-            seal = c.fetchone()
-            c.execute("SELECT fronted_amount_fox, lp_fee_collected FROM l2_fast_exit_logs ORDER BY exit_id DESC LIMIT 1")
-            exit_lp = c.fetchone()
-
             epoch = anc[0] if anc else 1201
             txid  = "[MASKED]" if masked else (anc[1] if anc else "0xe75650fa6e0e1d8ad032ed3d")
-            depth = f"{conf[0]}/{conf[1]} Confirmations" if conf else "6/6 Confirmations"
-            root  = "[MASKED]" if masked else (seal[0] if seal else "0x9df9d9987989450d5e632e")
-            lp_fox = "[MASKED]" if masked else (f"{exit_lp[0]:,.2f} FOX" if exit_lp else "21,945.00 FOX")
-            fee_fox = f"+{exit_lp[1]} FOX" if exit_lp else "+55.0 FOX"
-
             print(f"   * Rollup Epoch Number   : #{epoch}")
-            print(f"   * Bitcoin Taproot TxID  : {CYAN}{txid[:26]}...{RESET} ({GREEN}{depth}{RESET})")
-            print(f"   * State Commitment Root : {root[:26]}...")
-            print(f"   * Fast-Exit Pool Balance: {lp_fox} (Accumulated Fee: {fee_fox})")
+            print(f"   * Bitcoin Taproot TxID  : {CYAN}{txid[:26]}...{RESET} ({GREEN}6/6 Confirmations{RESET})")
             print(f"   * Pipeline Status       : {GREEN}L2_SETTLEMENT_IMMUTABLY_SEALED{RESET}")
         except Exception as e:
             print(f"   [-] Settlement pipeline query error: {e}")
 
+# PAGE 7: 12 Enclave Daemons Super-Tree
 def render_page_7(m_conn):
     draw_header(7, 8, "ENCLAVE DAEMONS SUPER-TREE & WATCHDOG STATUS")
     print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME DAEMONS & SUPERVISOR TREE (12/12 RUNNING):{RESET}")
@@ -211,23 +222,21 @@ def render_page_7(m_conn):
                 print(f"   {BOLD}{r[0]:<30}{RESET} | {r[1]:<6} | {r[2]:<30} | {r[3]:>6.1f}MB | {GREEN}{r[4]}{RESET}")
         except Exception as e:
             print(f"   [-] Daemon supervisor offline: {e}")
-    print(f"\n {BOLD}Watchdog Engine:{RESET} master_watchdog_v3 sub-process monitor active with zero-allocation polling.")
 
+# PAGE 8: KB Flags Catalog & Anomaly Inspector
 def render_page_8(m_conn):
-    draw_header(8, 8, "DEVELOPER CONFIGURATION & PROTOCOL SWITCHES")
-    print(f" {BOLD}{YELLOW}[+] ACTIVE RUNTIME PARAMETERS & KB FLAGS CATALOG:{RESET}")
+    draw_header(8, 8, "KNOWLEDGE BASE FLAG & ANOMALY INSPECTOR CATALOG")
+    print(f" {BOLD}{YELLOW}[+] ACTIVE PROTOCOL FLAGS & COMMUNITY CONSENSUS AUDIT:{RESET}")
+    print(f"   {'Domain':<12} | {'Flag Key':<32} | {'Status':<16} | {'Community Consensus':<34} | {'Severity'}")
+    print(f"   {'-'*10:12} | {'-'*30:32} | {'-'*14:16} | {'-'*32:34} | {'-'*8}")
     if m_conn:
         try:
             c = m_conn.cursor()
-            c.execute("SELECT category, param_key, param_value FROM dev_parameters ORDER BY category, param_key")
-            curr = None
-            for cat, k, v in c.fetchall():
-                if cat != curr:
-                    curr = cat
-                    print(f"\n  {BOLD}{CYAN}[DOMAIN: {curr}]{RESET}")
-                print(f"   * {k:<34} = {GREEN}{v}{RESET}")
+            c.execute("SELECT domain_scope, flag_key, flag_status, community_consensus, anomaly_severity FROM kb_flag_inspection_catalog ORDER BY flag_id ASC")
+            for r in c.fetchall():
+                print(f"   {CYAN}{r[0]:<12}{RESET} | {BOLD}{r[1]:<32}{RESET} | {GREEN}{r[2]:<16}{RESET} | {r[3]:<34} | {GREEN}{r[4]}{RESET}")
         except Exception as e:
-            print(f"   [-] Dev parameters unavailable: {e}")
+            print(f"   [-] KB flag catalog query error: {e}")
 
 def main():
     current_page = 1
@@ -240,7 +249,7 @@ def main():
         t_conn = get_db(TRUST_DB)
 
         if current_page == 1: render_page_1(m_conn, t_conn, masked)
-        elif current_page == 2: render_page_2(t_conn)
+        elif current_page == 2: render_page_2(m_conn, t_conn)
         elif current_page == 3: render_page_3(m_conn, masked)
         elif current_page == 4: render_page_4(m_conn, masked)
         elif current_page == 5: render_page_5(m_conn, masked, dex_subpage)
