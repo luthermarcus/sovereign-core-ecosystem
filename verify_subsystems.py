@@ -9,7 +9,7 @@ def wait_for_enter(next_step):
     input(f"{YELLOW}{BOLD}[PAUSE] Review/copy output above. Press [ENTER] to advance to {next_step} >> {RESET}")
 
 def run():
-    # Step 1
+    # Step 1: Security Flags & Entropy
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
     print(f"{BOLD} STEP 1/6: SECURITY FLAGS & MATHEMATICAL ENTROPY AUDIT                 {RESET}")
@@ -23,9 +23,9 @@ def run():
         print(f"\n {BOLD}{YELLOW}[+] Active Knowledge Base Flags:{RESET}")
         for r in c.execute("SELECT domain_scope, flag_key, flag_status, anomaly_severity FROM kb_flag_inspection_catalog").fetchall():
             print(f"   * [{CYAN}{r[0]:<10}{RESET}] {BOLD}{r[1]:<30}{RESET} : {GREEN}{r[2]:<16}{RESET} | {r[3]}")
-    wait_for_enter("Step 2 (Daemons)")
+    wait_for_enter("Step 2 (12 Daemons)")
 
-    # Step 2
+    # Step 2: 12 Daemons Super-Tree
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
     print(f"{BOLD} STEP 2/6: 12 ENCLAVE RUNTIME DAEMONS SUPER-TREE & WATCHDOG STATUS     {RESET}")
@@ -34,9 +34,9 @@ def run():
         c = sqlite3.connect(METRICS_DB).cursor()
         for r in c.execute("SELECT daemon_name, pid, subsystem_role, heartbeat_status FROM enclave_daemon_heartbeats").fetchall():
             print(f"   * {BOLD}{r[0]:<28}{RESET} [PID:{r[1]:<5}] | {CYAN}{r[2]:<26}{RESET} | {GREEN}{r[3]}{RESET}")
-    wait_for_enter("Step 3 (Boomerang)")
+    wait_for_enter("Step 3 (Boomerang Arbitrage)")
 
-    # Step 3
+    # Step 3: Three-Prong Boomerang
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
     print(f"{BOLD} STEP 3/6: THREE-PRONG BOOMERANG ARBITRAGE & COLD-STORAGE FALLBACK     {RESET}")
@@ -49,7 +49,7 @@ def run():
             print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1]}{RESET}] -> {GREEN}+{r[3]:.2f} FOX{RESET} | {GREEN}{r[4]}{RESET}")
     wait_for_enter("Step 4 (Wallets)")
 
-    # Step 4
+    # Step 4: Attached User Wallets
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
     print(f"{BOLD} STEP 4/6: ATTACHED USER WALLETS & ALLOCATION ROUTING RULES            {RESET}")
@@ -58,9 +58,9 @@ def run():
         c = sqlite3.connect(METRICS_DB).cursor()
         for r in c.execute("SELECT vault_category, allocation_pct, target_wallet_address, allocated_balance_usd, routing_status FROM wallet_distribution_rules").fetchall():
             print(f"   * {BOLD}{r[0]:<20}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{r[2]}{RESET} (${r[3]:>10,.2f}) [{GREEN}{r[4]}{RESET}]")
-    wait_for_enter("Step 5 (Settlement)")
+    wait_for_enter("Step 5 (Settlement Finality)")
 
-    # Step 5
+    # Step 5: Bitcoin Taproot Settlement
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
     print(f"{BOLD} STEP 5/6: BITCOIN L1/L2 TAPROOT FINALITY & DUAL-FUND CONVERGENCE      {RESET}")
@@ -70,10 +70,10 @@ def run():
         anc = c.execute("SELECT epoch_ref, btc_txid, anchor_status FROM btc_l2_taproot_anchor_logs ORDER BY anchor_id DESC LIMIT 1").fetchone()
         if anc: print(f" [*] Epoch: #{anc[0]} | TxID: {CYAN}{anc[1]}{RESET} | {GREEN}{anc[2]}{RESET} (6/6 Confirmations)")
         df = c.execute("SELECT fund_1_depin_inflow_usd, fund_1_myst_tokens, rebalanced_to_anchor_sat, convergence_status FROM dual_fund_settlement_ledger ORDER BY convergence_id DESC LIMIT 1").fetchone()
-        if df: print(f" [*] Dual-Fund Sats: {GREEN}+{df[2]:,} Sats{RESET} allocated to L1 Anchor (Inflow: ${df[0]:.2f} USD + {df[1]:.2f} MYST) [{GREEN}{df[3]}{RESET}]")
-    wait_for_enter("Step 6 (P2P & DAO)")
+        if df: print(f" [*] Dual-Fund Sats: {GREEN}+{df[2]:,} Sats{RESET} to L1 Anchor (Inflow: ${df[0]:.2f} USD + {df[1]:.2f} MYST) [{GREEN}{df[3]}{RESET}]")
+    wait_for_enter("Step 6 (P2P Shield & DAO)")
 
-    # Step 6
+    # Step 6: P2P Media Shield & DAO
     os.system('clear')
     print(f"{CYAN}========================================================================{RESET}")
     print(f"{BOLD} STEP 6/6: P2P MEDIA SHIELD, DAO GOVERNANCE & RUNTIME PARAMETERS       {RESET}")

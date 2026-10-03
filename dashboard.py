@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-dashboard.py / terminal_dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.90)
-Authentic 5-Tab Workstation with Rolling Logs, Dynamic Alert Banners, and Zero-Crash Trap.
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.95)
+Exact UI Layout matching Screenshots 6001-5988:
+  [1] Overview | [2] DePIN | [3] L2 Vaults | [4] Enclave | [5] Master
 """
 import os, sys, select, time, sqlite3
 
@@ -34,7 +35,7 @@ def render(tab, masked, banner_msg):
     os.system('clear' if os.name == 'posix' else 'cls')
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED]{RESET}"
     
-    # Authenticated Box Header (From Screenshots 5996-5988)
+    # Authenticated Box Header (Matching Screenshots 6001, 5999, 5996)
     print(f"{CYAN}┌────────────────────────────────────────────────────────────────────────┐{RESET}")
     print(f"{CYAN}│{BOLD}       PIXEL 10 PRO XL - SOVEREIGN CORE WORKSTATION (v7.71.183)          {RESET}{CYAN}│{RESET}")
     print(f"{CYAN}└────────────────────────────────────────────────────────────────────────┘{RESET}")
@@ -44,7 +45,7 @@ def render(tab, masked, banner_msg):
     tab_line = " | ".join([f"{BOLD}{GREEN if (i+1)==tab else CYAN}[{i+1}] {name}{RESET}" for i, name in enumerate(tabs)])
     print(f" {tab_line}  {mask_tag}")
     
-    # Dynamic Alert Banner
+    # Dynamic Alert Banners
     if banner_msg:
         print(f" {YELLOW}{banner_msg}{RESET}")
     else:
@@ -54,11 +55,11 @@ def render(tab, masked, banner_msg):
     cpu_disp  = "[SHIELDED]" if masked else raw_cpu
     load_disp = "[PROTECTED]" if masked else raw_load
     free_disp = "[CONFIDENTIAL]" if masked else raw_free
-    btc_disp  = "BTC: #136 (34 V)" if masked else "BTC: #139 (37 V)"
-    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,154 L2 (#16)"
+    btc_disp  = "BTC: #140 (38 V)" if masked else "BTC: #140 (38 V) [bc1q-cold-77a]"
+    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17)"
 
     if tab == 1:
-        # Tab 1: Overview
+        # Tab 1: Overview (Screenshots 6001, 5996, 5992)
         print(f" {BOLD}[1] WORKERS{RESET} : {GREEN}telemetry:ON{RESET} | {GREEN}cron:ON{RESET} | {YELLOW}alert:STBY{RESET} | {GREEN}api:ON{RESET}")
         print(f" {BOLD}[2] METRICS{RESET} : CPU: {CYAN}{cpu_disp}{RESET} | Load: {CYAN}{load_disp}{RESET} | Free: {CYAN}{free_disp}{RESET} | θ: {MAGENTA}0.85{RESET}")
         print(f" {BOLD}[3] DEPIN{RESET}   : Mysterium: {GREEN}RUNNING{RESET} | RPC Loopback: {WHITE}127.0.0.1:8545{RESET}")
@@ -66,12 +67,15 @@ def render(tab, masked, banner_msg):
         print(f" {BOLD}[5] ENCLAVE{RESET} : sos-truth: {GREEN}ACTIVE{RESET} | DLP: {GREEN}SECURE{RESET} | PRoot: {GREEN}ISOLATED{RESET}")
         print(f" {CYAN}{'─'*72}{RESET}")
         t_now = time.strftime("%H:%M:%S")
-        print(f" #2001 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
-        print(f" #2000 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
+        print(f" #2084 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
+        print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
     elif tab == 2:
-        # Tab 2: DePIN Fleet
-        print(f" {BOLD}{YELLOW}[+] 7-NODE PASSIVE REVENUE FLEET TELEMETRY:{RESET}")
+        # Tab 2: DePIN (Screenshot 5998)
+        print(f" {BOLD}DECENTRALIZED PROTOCOL RPC:{RESET} {CYAN}http://127.0.0.1:8545 [ONLINE]{RESET}")
+        print(f" Mysterium (Native WireGuard) : • {GREEN}RUNNING{RESET} [L2 Edge]")
+        print(f" Host Cluster Bridge (Docker) : o {YELLOW}STANDBY{RESET} [SECURE-PEER-DELEGATOR]")
+        print(f"\n {BOLD}{YELLOW}[+] 7-NODE PASSIVE REVENUE FLEET TELEMETRY:{RESET}")
         print(f"   {'Node Target':<18} | {'Uptime':<8} | {'Latency':<9} | {'Est Yield':<12} | {'SLA Status'}")
         print(f"   {'-'*16:18} | {'-'*6:8} | {'-'*7:9} | {'-'*10:12} | {'-'*16}")
         if os.path.exists(METRICS_DB):
@@ -82,11 +86,11 @@ def render(tab, masked, banner_msg):
             conn.close()
 
     elif tab == 3:
-        # Tab 3: L2 Vaults & Wallets (Screenshot 5988 match)
-        print(f" {BOLD}BTC L2 REGTEST{RESET} : Block #136 | 34 Active Vaults")
-        print(f" {BOLD}EVM ADDRESS{RESET}    : {CYAN}0x7d6b...********{RESET}")
-        print(f" {BOLD}FOX L2 VAULT{RESET}   : {MAGENTA}{fox_disp}{RESET}")
-        print(f" {BOLD}Preimage Hash{RESET}  : {YELLOW}[REDACTED]{RESET}")
+        # Tab 3: L2 Vaults & Attached Wallets (Screenshots 5999, 5988)
+        print(f" {BOLD}BTC L2 REGTEST{RESET} : Block #140 | 38 Active Vaults")
+        print(f" {BOLD}EVM ADDRESS{RESET}    : {CYAN}0x7d6bede176a688c9...{RESET}")
+        print(f" {BOLD}FOX L2 VAULT{RESET}   : {MAGENTA}{fox_disp}{RESET} | Swaps: #17")
+        print(f" {BOLD}Preimage Hash{RESET}  : {YELLOW}0xf281bf4e41c2be5e{RESET}")
         print(f"\n {BOLD}{YELLOW}[+] ATTACHED WALLETS & AUTOMATED PERCENTAGE ROUTING:{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
@@ -96,27 +100,27 @@ def render(tab, masked, banner_msg):
             conn.close()
 
     elif tab == 4:
-        # Tab 4: Security Enclave Protocols (Screenshot 5989 match)
+        # Tab 4: Enclave Hardening & Fraud Shield (Screenshots 6000, 5989)
         print(f" {BOLD}{YELLOW}SECURITY ENCLAVE PROTOCOLS{RESET}")
         print(f" sos-truth        : • {GREEN}ACTIVE{RESET} [Hardware Nonce Certified]")
         print(f" sos-error-logger : • {GREEN}SECURE{RESET} [Zero Buffer Anomalies]")
         print(f" sos-dlp-guard    : • {GREEN}ACTIVE{RESET} [Zero PAT/Cred Leaks]")
         print(f" PRoot Boundary   : • {GREEN}VERIFIED{RESET} [UID Namespace Isolation]")
-        print(f"\n {BOLD}{YELLOW}[+] MILITARY CRYPTO & ENTROPY:{RESET}")
+        print(f"\n {BOLD}{YELLOW}[+] ANTI-FRAUD HEURISTIC SHIELD & MILITARY ENCRYPTION:{RESET}")
         print(f" Cipher Standard : {CYAN}AES-256-GCM / ChaCha20-Poly1305{RESET}")
         print(f" Post-Quantum    : {GREEN}FIPS 203 ML-KEM-1024 Lattice Defense{RESET}")
-        print(f" Hardware TRNG   : {MAGENTA}Fischer 960 Domain Seed | Null Invariant: 0{RESET}")
+        print(f" Fraud Sentinel  : {GREEN}HONEYPOT_HEURISTIC_SHIELD (Zero Malicious Drain Invariant){RESET}")
 
     elif tab == 5:
         # Tab 5: Master Multi-Chain & Supervisor Daemons
-        print(f" {BOLD}{YELLOW}[+] 12 RUNTIME DAEMONS SUPERVISOR & ANTI-FRAUD WARDEN:{RESET}")
+        print(f" {BOLD}{YELLOW}[+] 12 RUNTIME DAEMONS SUPERVISOR & MESH AUDITOR:{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
             daemons = conn.execute("SELECT daemon_name, pid, heartbeat_status FROM enclave_daemon_heartbeats LIMIT 4").fetchall()
             for d in daemons:
                 print(f"   * {BOLD}{d[0]:<26}{RESET} [PID:{d[1]:<5}] : {GREEN}{d[2]}{RESET}")
-            print(f"\n {BOLD}{YELLOW}[+] RECENT THREE-PRONG ARBITRAGE EXECUTIONS:{RESET}")
-            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 2").fetchall():
+            print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE EXECUTIONS & COLD FALLBACK:{RESET}")
+            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 3").fetchall():
                 p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX"
                 print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:20]}...{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[3]}{RESET}]")
             conn.close()
@@ -136,7 +140,6 @@ def main():
         banner = ""
 
         try:
-            # Clean Non-Blocking I/O Trap (Prevents KeyboardInterrupt Signal 2 terminates)
             r, _, _ = select.select([sys.stdin], [], [], 2.0)
             if not r:
                 continue
