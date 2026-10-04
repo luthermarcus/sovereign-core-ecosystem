@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-"""
-dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.175)
-Tab 1 Overview includes standard-keyboard ASCII Ad Box at the bottom.
-Direct tab navigation supported via integer argument (1-5).
-"""
 import os, sys, select, time, sqlite3
 
 BOLD    = "\033[1m"
@@ -22,12 +17,15 @@ def get_telemetry():
         with open('/proc/loadavg', 'r') as f:
             p = f.read().split()
             load_s = f"{p[0]}, {p[1]}, {p[2]}"
-    except: load_s = "0.12, 0.07, 0.02"
+    except Exception:
+        load_s = "0.12, 0.07, 0.02"
     try:
         with open('/proc/meminfo', 'r') as f:
             for l in f:
-                if 'MemAvailable:' in l: free_s = f"{int(l.split()[1])/(1024*1024):.1f} GB"
-    except: free_s = "81.3 GB"
+                if 'MemAvailable:' in l:
+                    free_s = f"{int(l.split()[1])/(1024*1024):.1f} GB"
+    except Exception:
+        free_s = "81.3 GB"
     return "897MHz", load_s, free_s
 
 def render(tab, masked, banner_msg, subpage=0):
@@ -55,7 +53,6 @@ def render(tab, masked, banner_msg, subpage=0):
     fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox DAO Cut]"
 
     if tab == 1:
-        # Tab 1: Overview
         print(f" {BOLD}[1] WORKERS{RESET} : {GREEN}telemetry:ON{RESET} | {GREEN}cron:ON{RESET} | {YELLOW}alert:STBY{RESET} | {GREEN}api:ON{RESET}")
         print(f" {BOLD}[2] METRICS{RESET} : CPU: {CYAN}{cpu_disp}{RESET} | Load: {CYAN}{load_disp}{RESET} | Free: {CYAN}{free_disp}{RESET} | θ: {MAGENTA}0.85{RESET}")
         print(f" {BOLD}[3] DEPIN{RESET}   : Mysterium: {GREEN}RUNNING{RESET} | RPC Loopback: {WHITE}127.0.0.1:8545{RESET}")
@@ -66,7 +63,18 @@ def render(tab, masked, banner_msg, subpage=0):
         print(f" #2084 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
         print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
-        # Standard ASCII Ad Box at Bottom of Overview
+        if os.path.exists(METRICS_DB):
+            try:
+                conn = sqlite3.connect(METRICS_DB)
+                print(f"\n {BOLD}{YELLOW}[+] CAPITAL COIN MARKET BENCHMARKS:{RESET}")
+                for r in conn.execute("SELECT symbol, price_usd, change_24h_pct FROM cmc_market_telemetry LIMIT 4").fetchall():
+                    c_tag = f"{GREEN}+{r[2]}%{RESET}" if r[2] >= 0 else f"{YELLOW}{r[2]}%{RESET}"
+                    print(f"   * {BOLD}{r[0]:<5}{RESET}: ${r[1]:>9,.2f} ({c_tag})", end=" | ")
+                print("")
+                conn.close()
+            except Exception:
+                pass
+
         print(f"\n +{'-'*68}+")
         print(f" | SPONSOR AD (1% DAO Yield & Bounty Fund) | Rate: $1/day, $13/mo, $120/yr  |")
         ad_txt = "Sovereign Core OS: Decentralized Foxy Node Microkernel & AMM Engine"
@@ -74,14 +82,15 @@ def render(tab, masked, banner_msg, subpage=0):
             try:
                 c_ad = sqlite3.connect(METRICS_DB)
                 r_ad = c_ad.execute("SELECT ad_text_500 FROM foxy_ad_bounty_ledger LIMIT 1").fetchone()
-                if r_ad: ad_txt = r_ad[0][:64]
+                if r_ad:
+                    ad_txt = r_ad[0][:64]
                 c_ad.close()
-            except: pass
+            except Exception:
+                pass
         print(f" | \"{ad_txt:<64}\" |")
         print(f" +{'-'*68}+")
 
     elif tab == 2:
-        # Tab 2: DePIN Fleet
         print(f" {BOLD}DECENTRALIZED PROTOCOL RPC:{RESET} {CYAN}http://127.0.0.1:8545 [ONLINE]{RESET}")
         print(f" Mysterium (Native WireGuard) : • {GREEN}RUNNING{RESET} [L2 Edge]")
         print(f" Host Cluster Bridge (Docker) : o {YELLOW}STANDBY{RESET} [SECURE-PEER-DELEGATOR]")
@@ -96,7 +105,6 @@ def render(tab, masked, banner_msg, subpage=0):
             conn.close()
 
     elif tab == 3:
-        # Tab 3: L2 Vaults, Attached Wallets & Satoshi Fox 1% DAO Breakdown
         print(f" {BOLD}BTC L2 REGTEST{RESET} : Block #140 | 38 Active Vaults")
         print(f" {BOLD}EVM ADDRESS{RESET}    : {CYAN}0x7d6bede176a688c9...{RESET}")
         print(f" {BOLD}FOX L2 VAULT{RESET}   : {MAGENTA}{fox_disp}{RESET} | Swaps: #17")
@@ -115,7 +123,6 @@ def render(tab, masked, banner_msg, subpage=0):
             conn.close()
 
     elif tab == 4:
-        # Tab 4: 4D Security Vectors & DNT Dummy Middleman Firewall
         print(f" {BOLD}{YELLOW}[+] 4D-FOX SECURITY VECTORS (SATOSHI-EINSTEIN-FISHER):{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
@@ -128,7 +135,6 @@ def render(tab, masked, banner_msg, subpage=0):
             conn.close()
 
     elif tab == 5:
-        # Tab 5: Master Matrix (Top Liquidity Pools & Three-Prong AMM)
         offset = subpage * 4
         print(f" {BOLD}{YELLOW}[+] TOP CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/3):{RESET}")
         print(f"   {'#':<3} {'Venue':<12} | {'Pair':<14} | {'TVL':<13} | {'Health'}")
