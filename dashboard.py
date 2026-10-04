@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.155)
-Authentic 5-Tab Workstation with 4D Security Vectors, DNT Firewall, and Micro-Ads.
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.165)
+Tab 1 Overview includes standard-keyboard ASCII Ad Box at the bottom.
 """
 import os, sys, select, time, sqlite3
 
@@ -11,7 +11,6 @@ CYAN    = "\033[36m"
 YELLOW  = "\033[33m"
 MAGENTA = "\033[35m"
 WHITE   = "\033[37m"
-RED     = "\033[31m"
 RESET   = "\033[0m"
 
 METRICS_DB = '/dev/shm/ecosystem_metrics.db'
@@ -66,6 +65,21 @@ def render(tab, masked, banner_msg, subpage=0):
         print(f" #2084 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
         print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
+        # Standard-Keyboard Character ASCII Ad Box at Bottom of Overview
+        print(f"
+ +{'-'*68}+")
+        print(f" | SPONSOR AD (1% DAO Yield & Bounty Fund) | Rate: $1/day, $13/mo, $120/yr  |")
+        ad_txt = "Sovereign Core OS: Decentralized Foxy Node Microkernel & AMM Engine"
+        if os.path.exists(METRICS_DB):
+            try:
+                c_ad = sqlite3.connect(METRICS_DB)
+                r_ad = c_ad.execute("SELECT ad_text_500 FROM foxy_ad_bounty_ledger LIMIT 1").fetchone()
+                if r_ad: ad_txt = r_ad[0][:64]
+                c_ad.close()
+            except: pass
+        print(f" | "{ad_txt:<64}" |")
+        print(f" +{'-'*68}+")
+
     elif tab == 2:
         # Tab 2: DePIN Fleet
         print(f" {BOLD}DECENTRALIZED PROTOCOL RPC:{RESET} {CYAN}http://127.0.0.1:8545 [ONLINE]{RESET}")
@@ -114,7 +128,7 @@ def render(tab, masked, banner_msg, subpage=0):
             conn.close()
 
     elif tab == 5:
-        # Tab 5: Master Matrix (Top Liquidity Pools, 12 Daemons, Ad Sponsor)
+        # Tab 5: Master Matrix (Top Liquidity Pools & Three-Prong AMM)
         offset = subpage * 4
         print(f" {BOLD}{YELLOW}[+] TOP CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/3):{RESET}")
         print(f"   {'#':<3} {'Venue':<12} | {'Pair':<14} | {'TVL':<13} | {'Health'}")
@@ -126,10 +140,10 @@ def render(tab, masked, banner_msg, subpage=0):
                 print(f"   #{r[0]:<2} {BOLD}{r[1]:<12}{RESET} | {CYAN}{r[2]:<14}{RESET} | {tvl:<13} | {GREEN}{r[4]}{RESET}")
             print(f"   {CYAN}[Use '<' / '>' to cycle liquidity venues]{RESET}")
 
-            print(f"\n {BOLD}{YELLOW}[+] SATOSHI FOX 500-CHAR MICRO-AD & EARLY BOUNTY:{RESET}")
-            ad = conn.execute("SELECT sponsor_tier, cost_usd, ad_text_500 FROM foxy_ad_bounty_ledger LIMIT 1").fetchone()
-            if ad:
-                print(f"   * [{CYAN}{ad[0]}{RESET} - ${ad[1]}/day]: "{YELLOW}{ad[2][:56]}...{RESET}"")
+            print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE (1% SATOSHI FOX DAO CUT):{RESET}")
+            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, dao_royalty_cut_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 2").fetchall():
+                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX (1% DAO: +{r[3]:.3f})"
+                print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:18]}...{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[4]}{RESET}]")
             conn.close()
 
     print(f"\n{CYAN}────────────────────────────────────────────────────────────────────────{RESET}")
