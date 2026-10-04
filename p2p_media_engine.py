@@ -1,11 +1,7 @@
 #!/usr/bin/env python3
-"""
-p2p_media_engine.py - Decentralized BitTorrent Open-Source Media Marketplace
-Enables seeding, pay-per-stream in FOX, and free open-source media distribution.
-"""
 import os, sys, sqlite3
 
-BOLD, GREEN, CYAN, YELLOW, MAGENTA, RESET = "\033[1m", "\033[32m", "\033[36m", "\033[33m", "\033[35m", "\033[0m"
+BOLD, GREEN, CYAN, YELLOW, RESET = "\033[1m", "\033[32m", "\033[36m", "\033[33m", "\033[0m"
 DB = '/dev/shm/ecosystem_metrics.db'
 
 def list_media():

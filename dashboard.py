@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.165)
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.170)
 Tab 1 Overview includes standard-keyboard ASCII Ad Box at the bottom.
+Direct tab navigation supported via integer argument (1-5).
 """
 import os, sys, select, time, sqlite3
 
@@ -65,7 +66,7 @@ def render(tab, masked, banner_msg, subpage=0):
         print(f" #2084 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
         print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
-        # Standard-Keyboard Character ASCII Ad Box at Bottom of Overview
+        # Standard ASCII Ad Box at Bottom of Overview
         print(f"
  +{'-'*68}+")
         print(f" | SPONSOR AD (1% DAO Yield & Bounty Fund) | Rate: $1/day, $13/mo, $120/yr  |")
@@ -128,7 +129,7 @@ def render(tab, masked, banner_msg, subpage=0):
             conn.close()
 
     elif tab == 5:
-        # Tab 5: Master Matrix (Top Liquidity Pools & Three-Prong AMM)
+        # Tab 5: Master Matrix (Top Liquidity Pools & P2P Media)
         offset = subpage * 4
         print(f" {BOLD}{YELLOW}[+] TOP CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/3):{RESET}")
         print(f"   {'#':<3} {'Venue':<12} | {'Pair':<14} | {'TVL':<13} | {'Health'}")
@@ -166,7 +167,9 @@ def post_exit_audit():
     print(f"{CYAN}{'─'*72}{RESET}\n")
 
 def main():
-    cur_tab, masked, dex_sub = 1, True, 0
+    cur_tab = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] in ['1','2','3','4','5'] else 1
+    masked = True
+    dex_sub = 0
     banner = "⚡ Privacy Mask: ENGAGED [MASKED-DEFAULT]"
     needs_render = True
 
