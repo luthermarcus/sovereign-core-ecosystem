@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.195)
+Mobile-optimized viewport (<=68 columns) with 2x2 CMC ticker, clean ASCII ad banner,
+and comprehensive chronological exit closing ledger with donation vault routing.
+"""
 import os, sys, select, time, sqlite3
 
 BOLD    = "\033[1m"
@@ -32,9 +37,9 @@ def render(tab, masked, banner_msg, subpage=0):
     os.system('clear' if os.name == 'posix' else 'cls')
     mask_tag = f"{YELLOW}[MASKED-DEFAULT]{RESET}" if masked else f"{GREEN}[UNMASKED]{RESET}"
     
-    print(f"{CYAN}┌────────────────────────────────────────────────────────────────────────┐{RESET}")
-    print(f"{CYAN}│{BOLD}   PIXEL 10 PRO XL - FOXY NODE / SOVEREIGN CORE WORKSTATION (v7.71.183) {RESET}{CYAN}│{RESET}")
-    print(f"{CYAN}└────────────────────────────────────────────────────────────────────────┘{RESET}")
+    print(f"{CYAN}┌──────────────────────────────────────────────────────────────────┐{RESET}")
+    print(f"{CYAN}│{BOLD} PIXEL 10 PRO XL - FOXY NODE / SOVEREIGN CORE WORKSTATION (v7.71) {RESET}{CYAN}│{RESET}")
+    print(f"{CYAN}└──────────────────────────────────────────────────────────────────┘{RESET}")
     
     tabs = ["Overview", "DePIN", "L2 Vaults", "Enclave", "Master"]
     tab_line = " | ".join([f"{BOLD}{GREEN if (i+1)==tab else CYAN}[{i+1}] {name}{RESET}" for i, name in enumerate(tabs)])
@@ -53,58 +58,68 @@ def render(tab, masked, banner_msg, subpage=0):
     fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox DAO Cut]"
 
     if tab == 1:
+        # Tab 1: Overview
         print(f" {BOLD}[1] WORKERS{RESET} : {GREEN}telemetry:ON{RESET} | {GREEN}cron:ON{RESET} | {YELLOW}alert:STBY{RESET} | {GREEN}api:ON{RESET}")
         print(f" {BOLD}[2] METRICS{RESET} : CPU: {CYAN}{cpu_disp}{RESET} | Load: {CYAN}{load_disp}{RESET} | Free: {CYAN}{free_disp}{RESET} | θ: {MAGENTA}0.85{RESET}")
         print(f" {BOLD}[3] DEPIN{RESET}   : Mysterium: {GREEN}RUNNING{RESET} | RPC Loopback: {WHITE}127.0.0.1:8545{RESET}")
         print(f" {BOLD}[4] ASSETS{RESET}  : {YELLOW}{btc_disp}{RESET} | {MAGENTA}{fox_disp}{RESET}")
         print(f" {BOLD}[5] ENCLAVE{RESET} : sos-truth: {GREEN}ACTIVE{RESET} | DLP: {GREEN}SECURE{RESET} | PRoot: {GREEN}ISOLATED{RESET}")
-        print(f" {CYAN}{'─'*72}{RESET}")
+        print(f" {CYAN}{'─'*66}{RESET}")
         t_now = time.strftime("%H:%M:%S")
         print(f" #2084 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
         print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
+        # Compact 2x2 CMC Market Grid (Eliminates horizontal screen overflow)
         if os.path.exists(METRICS_DB):
             try:
                 conn = sqlite3.connect(METRICS_DB)
                 print(f"\n {BOLD}{YELLOW}[+] CAPITAL COIN MARKET BENCHMARKS:{RESET}")
-                for r in conn.execute("SELECT symbol, price_usd, change_24h_pct FROM cmc_market_telemetry LIMIT 4").fetchall():
-                    c_tag = f"{GREEN}+{r[2]}%{RESET}" if r[2] >= 0 else f"{YELLOW}{r[2]}%{RESET}"
-                    print(f"   * {BOLD}{r[0]:<5}{RESET}: ${r[1]:>9,.2f} ({c_tag})", end=" | ")
-                print("")
+                m_rows = conn.execute("SELECT symbol, price_usd, change_24h_pct FROM cmc_market_telemetry LIMIT 4").fetchall()
+                if len(m_rows) >= 4:
+                    t0 = f"{GREEN}+{m_rows[0][2]}%{RESET}" if m_rows[0][2] >= 0 else f"{YELLOW}{m_rows[0][2]}%{RESET}"
+                    t1 = f"{GREEN}+{m_rows[1][2]}%{RESET}" if m_rows[1][2] >= 0 else f"{YELLOW}{m_rows[1][2]}%{RESET}"
+                    t2 = f"{GREEN}+{m_rows[2][2]}%{RESET}" if m_rows[2][2] >= 0 else f"{YELLOW}{m_rows[2][2]}%{RESET}"
+                    t3 = f"{GREEN}+{m_rows[3][2]}%{RESET}" if m_rows[3][2] >= 0 else f"{YELLOW}{m_rows[3][2]}%{RESET}"
+                    print(f"   * {BOLD}{m_rows[0][0]:<5}{RESET}: ${m_rows[0][1]:>9,.2f} ({t0})  |  {BOLD}{m_rows[1][0]:<5}{RESET}: ${m_rows[1][1]:>8,.2f} ({t1})")
+                    print(f"   * {BOLD}{m_rows[2][0]:<5}{RESET}: ${m_rows[2][1]:>9,.4f} ({t2})  |  {BOLD}{m_rows[3][0]:<5}{RESET}: ${m_rows[3][1]:>8,.2f} ({t3})")
                 conn.close()
             except Exception:
                 pass
 
-        print(f"\n +{'-'*68}+")
-        print(f" | SPONSOR AD (1% DAO Yield & Bounty Fund) | Rate: $1/day, $13/mo, $120/yr  |")
-        ad_txt = "Sovereign Core OS: Decentralized Foxy Node Microkernel & AMM Engine"
+        # Standard ASCII Ad Box (Strictly <= 66 columns)
+        print(f"\n +{'-'*64}+")
+        print(f" | SPONSOR AD (1% DAO Bounty Fund) | $1/day, $13/mo, $120/yr     |")
+        ad_txt = "Sovereign Core OS: Decentralized Foxy Node Microkernel Engine"
         if os.path.exists(METRICS_DB):
             try:
                 c_ad = sqlite3.connect(METRICS_DB)
                 r_ad = c_ad.execute("SELECT ad_text_500 FROM foxy_ad_bounty_ledger LIMIT 1").fetchone()
                 if r_ad:
-                    ad_txt = r_ad[0][:64]
+                    ad_txt = r_ad[0][:60]
                 c_ad.close()
             except Exception:
                 pass
-        print(f" | \"{ad_txt:<64}\" |")
-        print(f" +{'-'*68}+")
+        print(f" | \"{ad_txt:<60}\" |")
+        print(f" +{'-'*64}+")
 
     elif tab == 2:
+        # Tab 2: DePIN Fleet
         print(f" {BOLD}DECENTRALIZED PROTOCOL RPC:{RESET} {CYAN}http://127.0.0.1:8545 [ONLINE]{RESET}")
         print(f" Mysterium (Native WireGuard) : • {GREEN}RUNNING{RESET} [L2 Edge]")
         print(f" Host Cluster Bridge (Docker) : o {YELLOW}STANDBY{RESET} [SECURE-PEER-DELEGATOR]")
         print(f"\n {BOLD}{YELLOW}[+] 7-NODE PASSIVE REVENUE FLEET TELEMETRY:{RESET}")
-        print(f"   {'Node Target':<18} | {'Uptime':<8} | {'Latency':<9} | {'Est Yield':<12} | {'SLA Status'}")
-        print(f"   {'-'*16:18} | {'-'*6:8} | {'-'*7:9} | {'-'*10:12} | {'-'*16}")
+        print(f"   {'Node Target':<16} | {'Uptime':<7} | {'Latency':<8} | {'Est Yield':<10} | {'SLA'}")
+        print(f"   {'-'*14:16} | {'-'*5:7} | {'-'*6:8} | {'-'*8:10} | {'-'*10}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
             for r in conn.execute("SELECT node_name, uptime_ratio, latency_ms, est_earnings, sla_status FROM depin_sla_audit_logs").fetchall():
                 earn = "[MASKED]" if masked else r[3]
-                print(f"   {r[0]:<18} | {r[1]:>5.2f}% | {r[2]:>5.1f}ms | {MAGENTA}{earn:<12}{RESET} | {GREEN}{r[4]}{RESET}")
+                stat_short = "OPTIMAL" if "OPTIMAL" in r[4] else "STABLE"
+                print(f"   {r[0]:<16} | {r[1]:>5.2f}% | {r[2]:>4.1f}ms | {MAGENTA}{earn:<10}{RESET} | {GREEN}{stat_short}{RESET}")
             conn.close()
 
     elif tab == 3:
+        # Tab 3: L2 Vaults, Attached Wallets & Satoshi Fox 1% DAO Breakdown
         print(f" {BOLD}BTC L2 REGTEST{RESET} : Block #140 | 38 Active Vaults")
         print(f" {BOLD}EVM ADDRESS{RESET}    : {CYAN}0x7d6bede176a688c9...{RESET}")
         print(f" {BOLD}FOX L2 VAULT{RESET}   : {MAGENTA}{fox_disp}{RESET} | Swaps: #17")
@@ -112,64 +127,89 @@ def render(tab, masked, banner_msg, subpage=0):
         print(f"\n {BOLD}{YELLOW}[+] SATOSHI FOX 1.0% DAO ROYALTY SUB-ALLOCATIONS:{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
-            for r in conn.execute("SELECT sub_category, royalty_share_pct, global_economy_pct, target_wallet_address, governance_role FROM dao_royalty_distribution_ledger").fetchall():
-                addr_short = r[3][:16] + "..." if len(r[3]) > 18 else r[3]
-                print(f"   * {BOLD}{r[0]:<24}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{addr_short}{RESET}")
+            for r in conn.execute("SELECT sub_category, royalty_share_pct, global_economy_pct, target_wallet_address FROM dao_royalty_distribution_ledger").fetchall():
+                addr_short = r[3][:14] + "..." if len(r[3]) > 16 else r[3]
+                print(f"   * {BOLD}{r[0][:20]:<20}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{addr_short}{RESET}")
             print(f"\n {BOLD}{YELLOW}[+] GLOBAL 100% WALLET PERCENTAGE DISTRIBUTION:{RESET}")
             for r in conn.execute("SELECT vault_category, allocation_pct, target_wallet_address, allocated_balance_usd FROM wallet_distribution_rules").fetchall():
-                bal = "[MASKED]" if masked else f"${r[3]:>9,.2f}"
-                addr_short = r[2][:16] + "..." if len(r[2]) > 18 else r[2]
-                print(f"   * {BOLD}{r[0]:<20}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{addr_short:<19}{RESET} ({bal})")
+                bal = "[MASKED]" if masked else f"${r[3]:>8,.0f}"
+                addr_short = r[2][:14] + "..." if len(r[2]) > 16 else r[2]
+                print(f"   * {BOLD}{r[0][:18]:<18}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{addr_short:<17}{RESET} ({bal})")
             conn.close()
 
     elif tab == 4:
+        # Tab 4: 4D Security Vectors & DNT Dummy Middleman Firewall
         print(f" {BOLD}{YELLOW}[+] 4D-FOX SECURITY VECTORS (SATOSHI-EINSTEIN-FISHER):{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
             for r in conn.execute("SELECT quadrant_label, core_theorist, vector_metric FROM foxy_4d_security_vectors").fetchall():
-                print(f"   * {BOLD}{r[0]:<20}{RESET} ({CYAN}{r[1]}{RESET}) -> {GREEN}{r[2]}{RESET}")
+                print(f"   * {BOLD}{r[0]:<19}{RESET} ({CYAN}{r[1][:14]}{RESET}) -> {GREEN}{r[2][:22]}{RESET}")
             print(f"\n {BOLD}{YELLOW}[+] DO-NOT-TRACK DUMMY MIDDLEMAN FIREWALL STATUS:{RESET}")
             fw = conn.execute("SELECT traffic_source, dummy_node_relay_status, latency_ms FROM foxy_dummy_firewall_logs ORDER BY probe_id DESC LIMIT 2").fetchall()
             for f in fw:
-                print(f"   * Probed: {f[0]:<24} -> {CYAN}{f[1]}{RESET} ({f[2]}ms)")
+                print(f"   * Probed: {f[0]:<22} -> {CYAN}{f[1]}{RESET} ({f[2]}ms)")
             conn.close()
 
     elif tab == 5:
+        # Tab 5: Master Matrix (Top Liquidity Pools & Three-Prong AMM)
         offset = subpage * 4
         print(f" {BOLD}{YELLOW}[+] TOP CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/3):{RESET}")
-        print(f"   {'#':<3} {'Venue':<12} | {'Pair':<14} | {'TVL':<13} | {'Health'}")
-        print(f"   {'-'*2:3} {'-'*10:12} | {'-'*12:14} | {'-'*11:13} | {'-'*16}")
+        print(f"   {'#':<2} {'Venue':<10} | {'Pair':<14} | {'TVL':<11} | {'Health'}")
+        print(f"   {'-'*2:2} {'-'*8:10} | {'-'*12:14} | {'-'*9:11} | {'-'*12}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
             for r in conn.execute("SELECT rank_idx, dex_platform, pair_label, tvl_usd, pool_health FROM dex_cross_chain_liquidity ORDER BY rank_idx ASC LIMIT 4 OFFSET ?", (offset,)).fetchall():
-                tvl = "[MASKED]" if masked else f"${r[3]:>10,.0f}"
-                print(f"   #{r[0]:<2} {BOLD}{r[1]:<12}{RESET} | {CYAN}{r[2]:<14}{RESET} | {tvl:<13} | {GREEN}{r[4]}{RESET}")
+                tvl = "[MASKED]" if masked else f"${r[3]:>8,.0f}"
+                print(f"   #{r[0]:<2} {BOLD}{r[1]:<10}{RESET} | {CYAN}{r[2]:<14}{RESET} | {tvl:<11} | {GREEN}{r[4][:12]}{RESET}")
             print(f"   {CYAN}[Use '<' / '>' to cycle liquidity venues]{RESET}")
 
             print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE (1% SATOSHI FOX DAO CUT):{RESET}")
             for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, dao_royalty_cut_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 2").fetchall():
-                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX (1% DAO: +{r[3]:.3f})"
-                print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:18]}...{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[4]}{RESET}]")
+                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX (1%: +{r[3]:.2f})"
+                p_var = "P1:L1" if "PRONG-1" in r[1] else "P2:L2" if "PRONG-2" in r[1] else "P3:Cold"
+                print(f"   * {MAGENTA}{r[0][:15]:<15}{RESET} [{CYAN}{p_var}{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[4][:14]}{RESET}]")
             conn.close()
 
-    print(f"\n{CYAN}────────────────────────────────────────────────────────────────────────{RESET}")
+    print(f"\n{CYAN}──────────────────────────────────────────────────────────────────{RESET}")
     print(f"{BOLD}ACTIONS: [1-5] Tab | [p] Mask | [x] Swap | [6] Files | [7] Verify | [q] Exit{RESET}")
     sys.stdout.write(f"{BOLD}Command: {RESET}")
     sys.stdout.flush()
 
 def post_exit_audit():
     print(f"\n{GREEN}[+] Sovereign Core Dashboard closed cleanly.{RESET}")
-    print(f"{CYAN}{'─'*72}{RESET}")
-    print(f"{BOLD}{YELLOW}[+] ACTIVE PROTOCOL KNOWLEDGE BASE & SECURITY DISCREPANCY AUDIT:{RESET}")
+    print(f"{CYAN}{'═'*68}{RESET}")
+    print(f"{BOLD}{YELLOW} 1. CHRONOLOGICAL PROTOCOL REPUTATION & AUDIT REGISTRY{RESET}")
+    print(f"{CYAN}{'─'*68}{RESET}")
+    if os.path.exists(METRICS_DB):
+        conn = sqlite3.connect(METRICS_DB)
+        c = conn.cursor()
+        for r in c.execute("SELECT protocol_name, subsystem_maintained, capital_pool_allocation, reputation_score, audit_status FROM protocol_reputation_registry ORDER BY proto_id ASC").fetchall():
+            print(f"  * {BOLD}{r[0]:<24}{RESET} : {CYAN}{r[1]:<24}{RESET}")
+            print(f"    Cap: {r[2]:<22} | Score: {GREEN}{r[3]}%{RESET} [{GREEN}{r[4]}{RESET}]")
+        conn.close()
+
+    print(f"\n{CYAN}{'─'*68}{RESET}")
+    print(f"{BOLD}{YELLOW} 2. DONATION, ROYALTY & LIQUIDITY COLD STORAGE VAULTS{RESET}")
+    print(f"{CYAN}{'─'*68}{RESET}")
+    print(f" +{'-'*66}+")
+    print(f" | ARCHITECT COLD RESERVE  : {CYAN}bc1q-hard-cold-enclave-vault-77a{RESET}        |")
+    print(f" | SATOSHI FOX 1% DAO POOL : {CYAN}bc1q-satoshi-fox-founder-01{RESET}             |")
+    print(f" | DAO COMMUNITY GRANTS    : {CYAN}bc1q-dao-community-grants-15{RESET}            |")
+    print(f" | METAMASK EVM L2 BRIDGE  : {CYAN}0x7d6bede176a688c9a3bf12b4{RESET}             |")
+    print(f" +{'-'*66}+")
+
+    print(f"\n{CYAN}{'─'*68}{RESET}")
+    print(f"{BOLD}{YELLOW} 3. KNOWLEDGE BASE FLAGS & SECURITY INVARIANT LEDGER{RESET}")
+    print(f"{CYAN}{'─'*68}{RESET}")
     if os.path.exists(METRICS_DB):
         conn = sqlite3.connect(METRICS_DB)
         c = conn.cursor()
         for r in c.execute("SELECT domain_scope, flag_key, flag_status, community_consensus, anomaly_severity FROM kb_flag_inspection_catalog").fetchall():
             sev_color = GREEN if r[4] == 'NONE' else YELLOW
-            print(f"  * [{CYAN}{r[0]:<10}{RESET}] {BOLD}{r[1]:<30}{RESET} : {GREEN}{r[2]:<16}{RESET} | {sev_color}{r[4]}{RESET}")
+            print(f"  * [{CYAN}{r[0]:<10}{RESET}] {BOLD}{r[1]:<28}{RESET} : {GREEN}{r[2]:<15}{RESET} | {sev_color}{r[4]}{RESET}")
             print(f"    Consensus: {r[3]}")
         conn.close()
-    print(f"{CYAN}{'─'*72}{RESET}\n")
+    print(f"{CYAN}{'═'*68}{RESET}\n")
 
 def main():
     cur_tab = int(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] in ['1','2','3','4','5'] else 1
