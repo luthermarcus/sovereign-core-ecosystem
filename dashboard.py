@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.120)
-Flicker-Free Event-Driven Render Architecture with Post-Exit KB Flag Conflict Auditor.
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.155)
+Authentic 5-Tab Workstation with 4D Security Vectors, DNT Firewall, and Micro-Ads.
 """
 import os, sys, select, time, sqlite3
 
@@ -52,9 +52,10 @@ def render(tab, masked, banner_msg, subpage=0):
     load_disp = "[PROTECTED]" if masked else raw_load
     free_disp = "[CONFIDENTIAL]" if masked else raw_free
     btc_disp  = "BTC: #140 (38 V)" if masked else "BTC: #140 (38 V) [bc1q-cold-77a]"
-    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox Cut Active]"
+    fox_disp  = "FOX: [CONFIDENTIAL] L2 (#**)" if masked else "FOX: 13,654 L2 (#17) [1% Satoshi Fox DAO Cut]"
 
     if tab == 1:
+        # Tab 1: Overview
         print(f" {BOLD}[1] WORKERS{RESET} : {GREEN}telemetry:ON{RESET} | {GREEN}cron:ON{RESET} | {YELLOW}alert:STBY{RESET} | {GREEN}api:ON{RESET}")
         print(f" {BOLD}[2] METRICS{RESET} : CPU: {CYAN}{cpu_disp}{RESET} | Load: {CYAN}{load_disp}{RESET} | Free: {CYAN}{free_disp}{RESET} | θ: {MAGENTA}0.85{RESET}")
         print(f" {BOLD}[3] DEPIN{RESET}   : Mysterium: {GREEN}RUNNING{RESET} | RPC Loopback: {WHITE}127.0.0.1:8545{RESET}")
@@ -66,6 +67,7 @@ def render(tab, masked, banner_msg, subpage=0):
         print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
     elif tab == 2:
+        # Tab 2: DePIN Fleet
         print(f" {BOLD}DECENTRALIZED PROTOCOL RPC:{RESET} {CYAN}http://127.0.0.1:8545 [ONLINE]{RESET}")
         print(f" Mysterium (Native WireGuard) : • {GREEN}RUNNING{RESET} [L2 Edge]")
         print(f" Host Cluster Bridge (Docker) : o {YELLOW}STANDBY{RESET} [SECURE-PEER-DELEGATOR]")
@@ -80,6 +82,7 @@ def render(tab, masked, banner_msg, subpage=0):
             conn.close()
 
     elif tab == 3:
+        # Tab 3: L2 Vaults, Attached Wallets & Satoshi Fox 1% DAO Breakdown
         print(f" {BOLD}BTC L2 REGTEST{RESET} : Block #140 | 38 Active Vaults")
         print(f" {BOLD}EVM ADDRESS{RESET}    : {CYAN}0x7d6bede176a688c9...{RESET}")
         print(f" {BOLD}FOX L2 VAULT{RESET}   : {MAGENTA}{fox_disp}{RESET} | Swaps: #17")
@@ -88,29 +91,32 @@ def render(tab, masked, banner_msg, subpage=0):
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
             for r in conn.execute("SELECT sub_category, royalty_share_pct, global_economy_pct, target_wallet_address, governance_role FROM dao_royalty_distribution_ledger").fetchall():
-                print(f"   * {BOLD}{r[0]:<32}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET} of 1%] -> {CYAN}{r[3]}{RESET}")
+                addr_short = r[3][:16] + "..." if len(r[3]) > 18 else r[3]
+                print(f"   * {BOLD}{r[0]:<24}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{addr_short}{RESET}")
             print(f"\n {BOLD}{YELLOW}[+] GLOBAL 100% WALLET PERCENTAGE DISTRIBUTION:{RESET}")
-            for r in conn.execute("SELECT vault_category, allocation_pct, target_wallet_address, allocated_balance_usd, routing_status FROM wallet_distribution_rules").fetchall():
+            for r in conn.execute("SELECT vault_category, allocation_pct, target_wallet_address, allocated_balance_usd FROM wallet_distribution_rules").fetchall():
                 bal = "[MASKED]" if masked else f"${r[3]:>9,.2f}"
-                print(f"   * {BOLD}{r[0]:<26}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{r[2]}{RESET} ({bal})")
+                addr_short = r[2][:16] + "..." if len(r[2]) > 18 else r[2]
+                print(f"   * {BOLD}{r[0]:<20}{RESET} [{GREEN}{r[1]:>4.1f}%{RESET}] -> {CYAN}{addr_short:<19}{RESET} ({bal})")
             conn.close()
 
     elif tab == 4:
-        print(f" {BOLD}{YELLOW}SECURITY ENCLAVE PROTOCOLS{RESET}")
-        print(f" sos-truth        : • {GREEN}ACTIVE{RESET} [Hardware Nonce Certified]")
-        print(f" sos-error-logger : • {GREEN}SECURE{RESET} [Zero Buffer Anomalies]")
-        print(f" sos-dlp-guard    : • {GREEN}ACTIVE{RESET} [Zero PAT/Cred Leaks]")
-        print(f" PRoot Boundary   : • {GREEN}VERIFIED{RESET} [UID Namespace Isolation]")
-        print(f"\n {BOLD}{YELLOW}[+] ANTI-FRAUD HEURISTIC SHIELD & PROTOCOL FLAGS:{RESET}")
+        # Tab 4: 4D Security Vectors & DNT Dummy Middleman Firewall
+        print(f" {BOLD}{YELLOW}[+] 4D-FOX SECURITY VECTORS (SATOSHI-EINSTEIN-FISHER):{RESET}")
         if os.path.exists(METRICS_DB):
             conn = sqlite3.connect(METRICS_DB)
-            for r in conn.execute("SELECT domain_scope, flag_key, flag_status FROM kb_flag_inspection_catalog LIMIT 5").fetchall():
-                print(f"   * [{CYAN}{r[0]:<10}{RESET}] {BOLD}{r[1]:<30}{RESET} : {GREEN}{r[2]}{RESET}")
+            for r in conn.execute("SELECT quadrant_label, core_theorist, vector_metric FROM foxy_4d_security_vectors").fetchall():
+                print(f"   * {BOLD}{r[0]:<20}{RESET} ({CYAN}{r[1]}{RESET}) -> {GREEN}{r[2]}{RESET}")
+            print(f"\n {BOLD}{YELLOW}[+] DO-NOT-TRACK DUMMY MIDDLEMAN FIREWALL STATUS:{RESET}")
+            fw = conn.execute("SELECT traffic_source, dummy_node_relay_status, latency_ms FROM foxy_dummy_firewall_logs ORDER BY probe_id DESC LIMIT 2").fetchall()
+            for f in fw:
+                print(f"   * Probed: {f[0]:<24} -> {CYAN}{f[1]}{RESET} ({f[2]}ms)")
             conn.close()
 
     elif tab == 5:
+        # Tab 5: Master Matrix (Top Liquidity Pools, 12 Daemons, Ad Sponsor)
         offset = subpage * 4
-        print(f" {BOLD}{YELLOW}[+] TOP 33 CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/9):{RESET}")
+        print(f" {BOLD}{YELLOW}[+] TOP CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/3):{RESET}")
         print(f"   {'#':<3} {'Venue':<12} | {'Pair':<14} | {'TVL':<13} | {'Health'}")
         print(f"   {'-'*2:3} {'-'*10:12} | {'-'*12:14} | {'-'*11:13} | {'-'*16}")
         if os.path.exists(METRICS_DB):
@@ -118,16 +124,16 @@ def render(tab, masked, banner_msg, subpage=0):
             for r in conn.execute("SELECT rank_idx, dex_platform, pair_label, tvl_usd, pool_health FROM dex_cross_chain_liquidity ORDER BY rank_idx ASC LIMIT 4 OFFSET ?", (offset,)).fetchall():
                 tvl = "[MASKED]" if masked else f"${r[3]:>10,.0f}"
                 print(f"   #{r[0]:<2} {BOLD}{r[1]:<12}{RESET} | {CYAN}{r[2]:<14}{RESET} | {tvl:<13} | {GREEN}{r[4]}{RESET}")
-            print(f"   {CYAN}[Use '<' / '>' to cycle all 33 pools]{RESET}")
+            print(f"   {CYAN}[Use '<' / '>' to cycle liquidity venues]{RESET}")
 
-            print(f"\n {BOLD}{YELLOW}[+] THREE-PRONG ARBITRAGE (1% SATOSHI FOX DAO CUT):{RESET}")
-            for r in conn.execute("SELECT route_pair, prong_variation, profit_captured, dao_royalty_cut_fox, rollback_status FROM boomerang_arbitrage_logs ORDER BY trade_id DESC LIMIT 2").fetchall():
-                p_fox = "[MASKED]" if masked else f"+{r[2]:.2f} FOX (1% DAO: +{r[3]:.3f})"
-                print(f"   * {MAGENTA}{r[0]}{RESET} [{CYAN}{r[1][:18]}...{RESET}] -> {GREEN}{p_fox}{RESET} [{GREEN}{r[4]}{RESET}]")
+            print(f"\n {BOLD}{YELLOW}[+] SATOSHI FOX 500-CHAR MICRO-AD & EARLY BOUNTY:{RESET}")
+            ad = conn.execute("SELECT sponsor_tier, cost_usd, ad_text_500 FROM foxy_ad_bounty_ledger LIMIT 1").fetchone()
+            if ad:
+                print(f"   * [{CYAN}{ad[0]}{RESET} - ${ad[1]}/day]: "{YELLOW}{ad[2][:56]}...{RESET}"")
             conn.close()
 
     print(f"\n{CYAN}────────────────────────────────────────────────────────────────────────{RESET}")
-    print(f"{BOLD}ACTIONS: [1-5] Tab | [p] Mask | [x] Swap | [b] BTC | [</>] Pools | [q] Exit{RESET}")
+    print(f"{BOLD}ACTIONS: [1-5] Tab | [p] Mask | [x] Swap | [6] Files | [7] Verify | [q] Exit{RESET}")
     sys.stdout.write(f"{BOLD}Command: {RESET}")
     sys.stdout.flush()
 
@@ -175,18 +181,21 @@ def main():
             needs_render = True
         elif ch in ['>', 'right', 'f']:
             if cur_tab == 5:
-                dex_sub = (dex_sub + 1) % 9
+                dex_sub = (dex_sub + 1) % 3
                 needs_render = True
         elif ch in ['<', 'left', 'd']:
             if cur_tab == 5:
-                dex_sub = (dex_sub - 1) % 9
+                dex_sub = (dex_sub - 1) % 3
                 needs_render = True
+        elif ch == '6':
+            os.system("python3 /root/sos-fox-beta/sos_file_manager.py")
+            needs_render = True
+        elif ch == '7':
+            os.system("python3 /root/sos-fox-beta/verify_subsystems.py")
+            needs_render = True
         elif ch == 'x':
             os.system("python3 /root/sos-fox-beta/fox_boomerang_engine.py 2>/dev/null || true")
             banner = "⚡ Boomerang Swap Settled: 50,000 Sats <-> 500 FOX [1% DAO Cut Routed]"
-            needs_render = True
-        elif ch == 'b':
-            banner = "⚡ 2-of-2 Multisig Channel Settled!"
             needs_render = True
         elif ch in ['q', 'quit', 'exit']:
             post_exit_audit()
