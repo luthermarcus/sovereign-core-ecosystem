@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.170)
+dashboard.py - Sovereign Core Workstation (v7.71.183 / v7.72.175)
 Tab 1 Overview includes standard-keyboard ASCII Ad Box at the bottom.
 Direct tab navigation supported via integer argument (1-5).
 """
@@ -67,8 +67,7 @@ def render(tab, masked, banner_msg, subpage=0):
         print(f" #2083 | {t_now} | Load: {CYAN}{load_disp}{RESET} | {GREEN}Running{RESET}")
 
         # Standard ASCII Ad Box at Bottom of Overview
-        print(f"
- +{'-'*68}+")
+        print(f"\n +{'-'*68}+")
         print(f" | SPONSOR AD (1% DAO Yield & Bounty Fund) | Rate: $1/day, $13/mo, $120/yr  |")
         ad_txt = "Sovereign Core OS: Decentralized Foxy Node Microkernel & AMM Engine"
         if os.path.exists(METRICS_DB):
@@ -78,7 +77,7 @@ def render(tab, masked, banner_msg, subpage=0):
                 if r_ad: ad_txt = r_ad[0][:64]
                 c_ad.close()
             except: pass
-        print(f" | "{ad_txt:<64}" |")
+        print(f" | \"{ad_txt:<64}\" |")
         print(f" +{'-'*68}+")
 
     elif tab == 2:
@@ -129,7 +128,7 @@ def render(tab, masked, banner_msg, subpage=0):
             conn.close()
 
     elif tab == 5:
-        # Tab 5: Master Matrix (Top Liquidity Pools & P2P Media)
+        # Tab 5: Master Matrix (Top Liquidity Pools & Three-Prong AMM)
         offset = subpage * 4
         print(f" {BOLD}{YELLOW}[+] TOP CROSS-CHAIN LIQUIDITY MATRIX ({subpage+1}/3):{RESET}")
         print(f"   {'#':<3} {'Venue':<12} | {'Pair':<14} | {'TVL':<13} | {'Health'}")
